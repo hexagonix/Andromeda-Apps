@@ -1,4 +1,8 @@
 #!/bin/sh
+#
+# Este arquivo deve estar em Apps/Andromeda para ser executado. Nese diretório deve
+# ser clonado o repositório Andromeda-Apps
+#
 #;;************************************************************************************
 #;;
 #;;    
@@ -98,15 +102,12 @@ cd ..
 
 #;;************************************************************************************
 
-# cd Fasm/
+cd Fasm/
 
-# cd Exemplos/
+ cp *.asm ../../../Andromeda
 
-# cp *.asm ../../../Andromeda
-
-# cd ..
-# cd ..
-
+ cd ..
+ 
 #;;************************************************************************************
 
 cd Piano/
