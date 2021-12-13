@@ -248,10 +248,6 @@ cd ..
 
 #;;************************************************************************************
 
-cp *.app ../../Andromeda
-
-rm -r *.app
-
 echo
 echo "} Aplicativos base gerados com sucesso!"
 echo
