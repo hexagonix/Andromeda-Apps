@@ -5,7 +5,7 @@
 ;;        #$@$@$@#@#@#@$
 ;;        @#@$%    %#$#%
 ;;        @#$@$    #@#$@
-;;        #@#$$    !@#@#     Copyright © 2016-2021 Felipe Miguel Nery Lunkes
+;;        #@#$$    !@#@#     Copyright © 2016-2022 Felipe Miguel Nery Lunkes
 ;;        @#@%!$&%$&$#@#             Todos os direitos reservados
 ;;        !@$%#%&#&@&$%#
 ;;        @$#!%&@&@#&*@&
@@ -348,13 +348,13 @@ desligar:
 .msgFalha:               db "[Falha]", 0
 .bannerAndromeda:        db 10 
                          db "                                   Sistema Operacional Andromeda(R)", 10, 10, 10, 10
-                         db "                           Copyright (C) 2016-2021 Felipe Miguel Nery Lunkes", 10
+                         db "                           Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10
                          db "                                    Todos os direitos reservados", 0
 .falhaUtilitarioEnergia: db 10, 10, "Falha ao exeutar o utilitario Unix energia. Tente novamente mais tarde.", 10
                          db "Pressione qualquer tecla para finalizar este aplicativo...", 0
 
 .titulo: db "Opcoes de desligamento do Sistema Operacional Andromeda(R)",0
-.rodape: db "[BETA] | Sistema Operacional Andromeda(R). Copyright (C) 2016-2021 Felipe Miguel Nery Lunkes",0
+.rodape: db "[BETA] | Sistema Operacional Andromeda(R). Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes",0
 
 parametro: dd ?
 

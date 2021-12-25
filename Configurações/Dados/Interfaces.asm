@@ -5,7 +5,7 @@
 ;;        #$@$@$@#@#@#@$
 ;;        @#@$%    %#$#%
 ;;        @#$@$    #@#$@
-;;        #@#$$    !@#@#     Copyright © 2016-2021 Felipe Miguel Nery Lunkes
+;;        #@#$$    !@#@#     Copyright © 2016-2022 Felipe Miguel Nery Lunkes
 ;;        @#@%!$&%$&$#@#             Todos os direitos reservados
 ;;        !@$%#%&#&@&$%#
 ;;        @$#!%&@&@#&*@&
@@ -22,7 +22,7 @@ msgInicio: ;; Contêm todas as mensagens abaixo
 .versaoSistema: db "Versao do Sistema Operacional: ", 0
 .versao: db " ", 0
 .tipoSistema: db "Tipo de Sistema Operacional: Sistema Operacional de 32 bits", 0
-.copyrightAndromeda: db "Copyright (C) 2016-2021 Felipe Miguel Nery Lunkes", 0
+.copyrightAndromeda: db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 0
 .direitosReservados: db "Todos os direitos reservados.", 0
 .separador: db "++++++++++++++++++++++++++++++++++++++++", 0
 .sobrePC: db "Sobre o Computador", 0
@@ -53,7 +53,7 @@ msgInfo:
 .tipoSistema: db "Tipo de Sistema Operacional instalado:", 0
 .modeloSistema: db " 32 bits", 10, 0
 .pacoteAtualizacoes: db "Pacote de atualizacao instalado: ", 0
-.copyrightAndromeda: db "Copyright (C) 2016-2021 Felipe Miguel Nery Lunkes", 0
+.copyrightAndromeda: db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 0
 .direitosReservados: db "Todos os direitos reservados.", 0
 .introducaoHardware: db "Informacoes do Hardware deste computador", 0
 .processadorPrincipal: db "Processador instalado (considerando apenas o processador principal):", 0

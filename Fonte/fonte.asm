@@ -5,7 +5,7 @@
 ;;        #$@$@$@#@#@#@$
 ;;        @#@$%    %#$#%
 ;;        @#$@$    #@#$@
-;;        #@#$$    !@#@#     Copyright © 2016-2021 Felipe Miguel Nery Lunkes
+;;        #@#$$    !@#@#     Copyright © 2016-2022 Felipe Miguel Nery Lunkes
 ;;        @#@%!$&%$&$#@#             Todos os direitos reservados
 ;;        !@$%#%&#&@&$%#
 ;;        @$#!%&@&@#&*@&
@@ -314,7 +314,7 @@ fonte:
 
 .boasVindasTexto: db 10, 10, "Utilitario para alterar a fonte padrao do sistema versao ", versaoFonte, 10, 10
                   db "Sistema Operacional Andromeda(R)", 10, 10
-				  db "Copyright (C) 2016-2021 Felipe Miguel Nery Lunkes", 10, 0	 
+				  db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10, 0	 
 .nomeArquivo:     db 10, "Nome do arquivo de fonte: ", 0	
 
 .nomeFonte:       db "Nome do arquivo: ", 0
@@ -336,7 +336,7 @@ fonte:
 
 .bannerAndromeda: db 10, 10   
                   db "                                   Sistema Operacional Andromeda(R)", 10, 10, 10, 10
-                  db "                           Copyright (C) 2016-2021 Felipe Miguel Nery Lunkes", 10
+                  db "                           Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10
                   db "                                    Todos os direitos reservados", 0
                 
 .titulo:          db "Utilitario para troca de fonte padrao do Sistema Operacional Andromeda(R)", 0

@@ -10,6 +10,21 @@
 ;;       ou
 ;; fasmX tapp.asm tapp.app
 
+
+;; Agora, vamos definir o formato da imagem gerada. Como o fasmX nao
+;; tem suporte nativo ao formato HAPP, vamos gerar uma imagem binaria
+;; simples e vamos adicionar as informacoes especificas do formato com
+;; o cabecalho que esta definido abaixo, gerando de forma indireta uma
+;; imagem HAPP completa. Tambem vamos definir que o nome da imagem gerada
+;; sera o mesmo do arquivo .asm, mas como a extensao .app, que deve ser
+;; reconhecida pelo shell. Para isso, devemos usar:
+;;
+;; format binary as "app". O formato binario ja e o padrao e, caso o
+;; usuario insira fasmx tapp.asm tapp.app, toda essa linha pode ser
+;; ignorada e a linha abaixo nao precisa estar no codigo.
+
+format binary as "app" ;; Especifica o formato e extensao do arquivo
+
 use32
 
 cabecalhoAPP:

@@ -5,7 +5,7 @@
 ;;        #$@$@$@#@#@#@$
 ;;        @#@$%    %#$#%
 ;;        @#$@$    #@#$@
-;;        #@#$$    !@#@#     Copyright © 2016-2021 Felipe Miguel Nery Lunkes
+;;        #@#$$    !@#@#     Copyright © 2016-2022 Felipe Miguel Nery Lunkes
 ;;        @#@%!$&%$&$#@#             Todos os direitos reservados
 ;;        !@$%#%&#&@&$%#
 ;;        @$#!%&@&@#&*@&
@@ -782,15 +782,15 @@ versaoASH equ "3.0"
 ash:
 
 .prompt:             db "[/]: ", 0
-.extensaoProgramas:  db ".app", 0 ;; Extensão de aplicativos (executáveis Andromeda®)
-.comandoInvalido:    db 10, 10, "[!] Comando invalido ou aplicativo no formato Andromeda(R) nao encontrado.", 10, 0
+.extensaoProgramas:  db ".app", 0 ;; Extensão de aplicativos (executáveis Hexagon®)
+.comandoInvalido:    db 10, 10, "[!] Comando invalido ou aplicativo no formato HAPP nao encontrado.", 10, 0
 .bannerASH:          db "ASH - Andromeda (R) SHell", 0
 .boasVindas:         db 10, "Seja Bem Vindo ao Sistema Operacional Andromeda(R)", 10, 10
-                     db "Copyright (C) 2016-2021 Felipe Miguel Nery Lunkes", 10
+                     db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10
 			         db "Todos os direitos reservados.", 10, 0
 .versaoAndromeda:    db 10, 10, "Sistema Operacional Andromeda(R)", 10 
                      db "Versao ", 0
-.direitosAutorais:   db 10, 10, "Copyright (C) 2016-2021 Felipe Miguel Nery Lunkes", 10   
+.direitosAutorais:   db 10, 10, "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10   
                      db "Todos os direitos reservados.", 10, 0
 .limiteProcessos:    db 10, 10, "[!] Nao existe memoria disponivel para executar o aplicativo solicitado.", 10
                      db "[!] Tente primeiramente finalizar aplicativos ou suas instancias, e tente novamente.", 10, 0		             
@@ -801,8 +801,8 @@ match =SIM, VERBOSE
 {
 
 .verboseEntradaASH: db "[ASH]: Iniciando o Andromeda (R) SHell - ASH - para Andromeda 1.14.3 ou superior [24/11/2020].", 0
-.verboseVersaoASH:  db "[ASH]: Andromeda(R) Shell versao ", versaoASH, ".", 0
-.verboseAutor:      db "[ASH]: Copyright (C) 2016-2021 Felipe Miguel Nery Lunkes.", 0
+.verboseVersaoASH:  db "[ASH]: Andromeda(R) SHell versao ", versaoASH, ".", 0
+.verboseAutor:      db "[ASH]: Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes.", 0
 .verboseDireitos:   db "[ASH]: Todos os direitos reservados.", 0
 .verboseSaida:      db "[ASH]: Finalizando o ASH e retornando o controle ao processo pai...", 0
 .verboseLimite:     db "[ASH]: [!] Limite de memoria ou de processos atingido!", 0
@@ -823,7 +823,7 @@ comandos:
 
 ajuda:
 
-.introducao:    db 10, 10, "Andromeda(R) Shell versao ", versaoASH, 0
+.introducao:    db 10, 10, "Andromeda(R) SHell versao ", versaoASH, 0
 .conteudoAjuda: db 10, 10, "Comandos internos disponiveis:", 10, 10
 				db " VER - Exibe informacoes da versao do ASH em execucao", 10, 10
 				db "Tente digitar 'ls' para ver o que mais voce pode fazer!", 10, 0

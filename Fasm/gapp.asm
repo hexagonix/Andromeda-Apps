@@ -6,9 +6,23 @@
 ;; Voce pode gerar uma imagem HAPP executavel utilizando o montador
 ;; FASM incluido. Para isso, utilize a linha de comando abaixo:
 ;;
-;; fasmX tapp.asm
+;; fasmX gapp.asm
 ;;       ou
 ;; fasmX gapp.asm gapp.app
+
+;; Agora, vamos definir o formato da imagem gerada. Como o fasmX nao
+;; tem suporte nativo ao formato HAPP, vamos gerar uma imagem binaria
+;; simples e vamos adicionar as informacoes especificas do formato com
+;; o cabecalho que esta definido abaixo, gerando de forma indireta uma
+;; imagem HAPP completa. Tambem vamos definir que o nome da imagem gerada
+;; sera o mesmo do arquivo .asm, mas como a extensao .app, que deve ser
+;; reconhecida pelo shell. Para isso, devemos usar:
+;;
+;; format binary as "app". O formato binario ja e o padrao e, caso o
+;; usuario insira fasmx gapp.asm gapp.app, toda essa linha pode ser
+;; ignorada e a linha abaixo nao precisa estar no codigo.
+
+format binary as "app" ;; Especifica o formato e extensao do arquivo
 
 use32
 
