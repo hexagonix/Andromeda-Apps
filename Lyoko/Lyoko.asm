@@ -39,6 +39,90 @@ include "../../../LibAPP/dispositivos.s"
 
 ;;************************************************************************************
 
+;;************************************************************************************
+;;
+;; Dados do aplicativo
+;;
+;;************************************************************************************
+
+VERSAO        equ "1.1.2" 
+MONTADOR      equ "fasmX"
+
+;; Aparência
+
+CORDESTAQUE = VERMELHO_TIJOLO
+CORLISTRA   = LARANJA
+
+Lyoko:
+
+.formato:             db "UTF-8", 0
+.formatoFimLinha:     db "LF", 0
+.virgula:             db ", ", 0
+.separador:           db " | ", 0
+.rodapePrograma:      db "[^F] Sair | [^A] Abrir | [^S] Salvar | [^M] Montar", 0
+.linha:               db "Linha: ", 0
+.coluna:              db "Coluna: ", 0
+.arquivoSalvo:        db "Arquivo salvo", 0
+.solicitarArquivo:    db "Nome do arquivo [ENTER para cancelar]: ", 0
+.rodapeNovoArquivo:   db "Novo arquivo", 0
+.permissaoNegada:     db "Apenas um usuario administrativo pode alterar este arquivo."
+                      db " Pressione alguma tecla para continuar...", 0
+.erroDeletando:       db "Erro ao atualizar o arquivo.", 0
+.tituloPrograma:      db "Lyoko - Uma IDE para Andromeda(R) - Versao ", VERSAO, 0
+.fasmX:               db MONTADOR,".app", 0
+.semFonte:            db "Nenhum arquivo fonte especificado. Tente primeiramente salvar o seu arquivo no disco.", 10, 10
+                      db 0
+.avisoSalvamento:     db "O conteudo do arquivo foi alterado e nao foi salvo. Isso pode levar a perda de dados.", 10, 10
+                      db "Voce deseja salvar suas alteracoes no arquivo? (S/n)", 10, 0
+.saida:               db "saida.app", 0
+.tamanhoLinha:        dd 0
+.identificador:       db "| Arquivo:               ", 0
+.nomeMontador:        db "| ", MONTADOR, 0
+.fecharAviso:         db 10, 10, "Pressione [ESC] para fechar este aviso.", 10, 0
+.avisoRapido:         db "A IDE do Lyoko utiliza como padrao o montador '", MONTADOR, "' para a construcao de aplicativos.", 10
+                      db "Este montador de codigo livre foi portado e apresenta total compatibilidade com o Andromeda(R).", 10, 10
+                      db "Voce pode utilizar atalhos de teclado para realizar a interacao com Lyoko.", 10
+                      db "Os atalhos sao acionados pela tecla Ctrl (Control), juntamente com uma tecla indicadora de acao.", 10
+                      db "Essas combinacoes de teclas podem ser:", 10, 10
+                      db "   [^A] - Solicita a abertura de um arquivo previamente salvo no disco.", 10
+                      db "   [^S] - Solicita o salvamento das alteracoes em um arquivo no disco.", 10
+                      db "   [^F] - Fecha Lyoko apos confirmacao de salvamento.", 10
+                      db "   [^M] - Aciona o montador '", MONTADOR, "' para construir a imagem executavel.", 10, 10
+                      db "Apos construir uma imagem, voce recebera o status da operacao diretamente na tela e, se tudo", 10
+                      db "estiver certo, voce encontrara a imagem com a extensao .app no disco, contendo seu aplicativo.", 10
+                      db "Voce pode utilizar a ferramenta 'lshapp' para verificar informacoes da imagem, caso necessario.", 10
+                      db "Para saber mais sobre as informacoes que o utilitario pode oferecer ao analisar uma imagem,", 10
+                      db " consulte o manual ('man lshapp') ou utilize 'lshapp ?'.", 10, 0
+.boasVindas:          db "Seja bem vindo a Lyoko, a IDE oficial do Andromeda(R)!", 10, 10
+                      db "Com Lyoko, voce pode escrever e construir rapidamente maravilhosos aplicativos para o Andromeda(R).", 10
+                      db "Voce pode a qualquer momento pressionar [^X] (Ctrl+X) para obter ajuda.", 10, 10, 10
+                      db "Vamos comecar? Pressione [ESC] para fechar as boas vindas.", 10, 0
+.editado:             db " *", 0
+.tituloAlterado:      db 0
+.caixaMaior:          db 0
+.corFonte:            dd 0
+.corFundo:            dd 0
+.alterado:            db 0 ;; Armazenará se o buffer foi alterado pelo usuário
+.primeiraExecucao:    db 0
+
+totalLinhas:          dd 0	;; Contador de linhas no arquivo
+linha:                dd 0	;; Linha atual no arquivo
+posicaoLinhaAtual:    dd 0	;; Posição da linha atual em todo o arquivo
+posicaoAtualNaLinha:  dd 0	;; Posição do cursor na linha atual
+tamanhoLinhaAtual:    dd 0	;; Tamanho da linha atual
+posicaoLinhaNaTela:   dd 1	;; Posição da linha no display
+posicaoPaginaAtual:   dd 0	;; Posição da página atual no arquivo (uma tela)
+necessarioRedesenhar: db 1	;; Se não zero, é necessário redesenhar toda a tela
+nomeArquivo: times 13 db 0  ;; Espaço para armazenamento do nome do arquivo
+maxColunas:           db 0  ;; Total de colunas disponíveis no vídeo na resolução atual
+maxLinhas:            db 0  ;; Total de linhas disponíveis no vídeo na resolução atual
+linhaParametros:      db 30 ;; Tamanho de parâmetro
+resolucao:            dd 0  ;; Resolução de vídeo
+
+;;************************************************************************************
+
+;; Função inicial
+
 AndromedaIDE:
 
 	Andromeda obterInfoTela
@@ -216,7 +300,7 @@ AndromedaIDE:
 ;; Imprime o título do programa e rodapé
 
 	mov eax, BRANCO_ANDROMEDA
-	mov ebx, VERMELHO_TIJOLO
+	mov ebx, CORDESTAQUE
 	
 	Andromeda definirCor
 	
@@ -319,7 +403,7 @@ AndromedaIDE:
 ;; Imprimir linha e coluna atuais
 
 	mov eax, BRANCO_ANDROMEDA
-	mov ebx, VERMELHO_TIJOLO
+	mov ebx, CORDESTAQUE
 	
 	Andromeda definirCor
 
@@ -1643,7 +1727,7 @@ salvarArquivoEditor:
 .permissaoNegada:
 
 	mov eax, BRANCO_ANDROMEDA
-	mov ebx, VERMELHO_TIJOLO
+	mov ebx, CORDESTAQUE
 	
 	Andromeda definirCor
 	
@@ -1905,7 +1989,7 @@ montarAviso:
 	mov ebx, 350 ;; Início do bloco em Y
 	mov esi, 800 ;; Comprimento do bloco
 	mov edi, 200 ;; Altura do bloco
-	mov edx, VERMELHO_TIJOLO ;; Cor do bloco
+	mov edx, CORDESTAQUE ;; Cor do bloco
 	
 	Andromeda desenharBloco
 
@@ -1913,7 +1997,7 @@ montarAviso:
 	mov ebx, 340 ;; Início do bloco em Y
 	mov esi, 800 ;; Comprimento do bloco
 	mov edi, 10  ;; Altura do bloco
-	mov edx, AMARELO ;; Cor do bloco
+	mov edx, CORLISTRA ;; Cor do bloco
 	
 	Andromeda desenharBloco
 
@@ -1921,12 +2005,12 @@ montarAviso:
 	mov ebx, 550 ;; Início do bloco em Y
 	mov esi, 800 ;; Comprimento do bloco
 	mov edi, 10  ;; Altura do bloco
-	mov edx, AMARELO ;; Cor do bloco
+	mov edx, CORLISTRA ;; Cor do bloco
 	
 	Andromeda desenharBloco
 
 	mov eax, BRANCO_ANDROMEDA
-	mov ebx, VERMELHO_TIJOLO
+	mov ebx, CORDESTAQUE
 	
 	Andromeda definirCor
 
@@ -1943,7 +2027,7 @@ montarAviso:
 	mov ebx, 470  ;; Início do bloco em Y
 	mov esi, 1024 ;; Comprimento do bloco
 	mov edi, 250  ;; Altura do bloco
-	mov edx, VERMELHO_TIJOLO ;; Cor do bloco
+	mov edx, CORDESTAQUE ;; Cor do bloco
 	
 	Andromeda desenharBloco
 
@@ -1951,7 +2035,7 @@ montarAviso:
 	mov ebx, 460  ;; Início do bloco em Y
 	mov esi, 1024 ;; Comprimento do bloco
 	mov edi, 10   ;; Altura do bloco
-	mov edx, AMARELO ;; Cor do bloco
+	mov edx, CORLISTRA ;; Cor do bloco
 	
 	Andromeda desenharBloco
 
@@ -1959,12 +2043,12 @@ montarAviso:
 	mov ebx, 710  ;; Início do bloco em Y
 	mov esi, 1024 ;; Comprimento do bloco
 	mov edi, 10   ;; Altura do bloco
-	mov edx, AMARELO ;; Cor do bloco
+	mov edx, CORLISTRA ;; Cor do bloco
 	
 	Andromeda desenharBloco
 
 	mov eax, BRANCO_ANDROMEDA
-	mov ebx, VERMELHO_TIJOLO
+	mov ebx, CORDESTAQUE
 	
 	Andromeda definirCor
 
@@ -1981,7 +2065,7 @@ montarAviso:
 	mov ebx, 200 ;; Início do bloco em Y
 	mov esi, 800 ;; Comprimento do bloco
 	mov edi, 360 ;; Altura do bloco
-	mov edx, VERMELHO_TIJOLO ;; Cor do bloco
+	mov edx, CORDESTAQUE ;; Cor do bloco
 	
 	Andromeda desenharBloco
 
@@ -1989,7 +2073,7 @@ montarAviso:
 	mov ebx, 190 ;; Início do bloco em Y
 	mov esi, 800 ;; Comprimento do bloco
 	mov edi, 10  ;; Altura do bloco
-	mov edx, AMARELO ;; Cor do bloco
+	mov edx, CORLISTRA ;; Cor do bloco
 	
 	Andromeda desenharBloco
 
@@ -1997,12 +2081,12 @@ montarAviso:
 	mov ebx, 550 ;; Início do bloco em Y
 	mov esi, 800 ;; Comprimento do bloco
 	mov edi, 10  ;; Altura do bloco
-	mov edx, AMARELO ;; Cor do bloco
+	mov edx, CORLISTRA ;; Cor do bloco
 	
 	Andromeda desenharBloco
 
 	mov eax, BRANCO_ANDROMEDA
-	mov ebx, VERMELHO_TIJOLO
+	mov ebx, CORDESTAQUE
 	
 	Andromeda definirCor
 
@@ -2019,7 +2103,7 @@ montarAviso:
 	mov ebx, 200  ;; Início do bloco em Y
 	mov esi, 1024 ;; Comprimento do bloco
 	mov edi, 510  ;; Altura do bloco
-	mov edx, VERMELHO_TIJOLO ;; Cor do bloco
+	mov edx, CORDESTAQUE ;; Cor do bloco
 	
 	Andromeda desenharBloco
 
@@ -2027,7 +2111,7 @@ montarAviso:
 	mov ebx, 190  ;; Início do bloco em Y
 	mov esi, 1024 ;; Comprimento do bloco
 	mov edi, 10   ;; Altura do bloco
-	mov edx, AMARELO ;; Cor do bloco
+	mov edx, CORLISTRA ;; Cor do bloco
 	
 	Andromeda desenharBloco
 
@@ -2035,12 +2119,12 @@ montarAviso:
 	mov ebx, 710  ;; Início do bloco em Y
 	mov esi, 1024 ;; Comprimento do bloco
 	mov edi, 10   ;; Altura do bloco
-	mov edx, AMARELO ;; Cor do bloco
+	mov edx, CORLISTRA ;; Cor do bloco
 	
 	Andromeda desenharBloco
 
 	mov eax, BRANCO_ANDROMEDA
-	mov ebx, VERMELHO_TIJOLO
+	mov ebx, CORDESTAQUE
 	
 	Andromeda definirCor
 
@@ -2058,81 +2142,6 @@ montarAviso:
 	ret
 
 ;;************************************************************************************
-
-;;************************************************************************************
-;;
-;; Dados do aplicativo
-;;
-;;************************************************************************************
-
-VERSAO        equ "1.1.1" 
-MONTADOR      equ "fasmX"
-
-Lyoko:
-
-.formato:             db "UTF-8", 0
-.formatoFimLinha:     db "LF", 0
-.virgula:             db ", ", 0
-.separador:           db " | ", 0
-.rodapePrograma:      db "[^F] Sair | [^A] Abrir | [^S] Salvar | [^M] Montar", 0
-.linha:               db "Linha: ", 0
-.coluna:              db "Coluna: ", 0
-.arquivoSalvo:        db "Arquivo salvo", 0
-.solicitarArquivo:    db "Nome do arquivo [ENTER para cancelar]: ", 0
-.rodapeNovoArquivo:   db "Novo arquivo", 0
-.permissaoNegada:     db "Apenas um usuario administrativo pode alterar este arquivo."
-                      db " Pressione alguma tecla para continuar...", 0
-.erroDeletando:       db "Erro ao atualizar o arquivo.", 0
-.tituloPrograma:      db "Lyoko - Uma IDE para Andromeda(R) - Versao ", VERSAO, 0
-.fasmX:               db MONTADOR,".app", 0
-.semFonte:            db "Nenhum arquivo fonte especificado. Tente primeiramente salvar o seu arquivo no disco.", 10, 10
-                      db 0
-.avisoSalvamento:     db "O conteudo do arquivo foi alterado e nao foi salvo. Isso pode levar a perda de dados.", 10, 10
-                      db "Voce deseja salvar suas alteracoes no arquivo? (S/n)", 10, 0
-.saida:               db "saida.app", 0
-.tamanhoLinha:        dd 0
-.identificador:       db "| Arquivo:               ", 0
-.nomeMontador:        db "| ", MONTADOR, 0
-.fecharAviso:         db 10, 10, "Pressione [ESC] para fechar este aviso.", 10, 0
-.avisoRapido:         db "A IDE do Lyoko utiliza como padrao o montador '", MONTADOR, "' para a construcao de aplicativos.", 10
-                      db "Este montador de codigo livre foi portado e apresenta total compatibilidade com o Andromeda(R).", 10, 10
-                      db "Voce pode utilizar atalhos de teclado para realizar a interacao com Lyoko.", 10
-                      db "Os atalhos sao acionados pela tecla Ctrl (Control), juntamente com uma tecla indicadora de acao.", 10
-                      db "Essas combinacoes de teclas podem ser:", 10, 10
-                      db "   [^A] - Solicita a abertura de um arquivo previamente salvo no disco.", 10
-                      db "   [^S] - Solicita o salvamento das alteracoes em um arquivo no disco.", 10
-                      db "   [^F] - Fecha Lyoko apos confirmacao de salvamento.", 10
-                      db "   [^M] - Aciona o montador '", MONTADOR, "' para construir a imagem executavel.", 10, 10
-                      db "Apos construir uma imagem, voce recebera o status da operacao diretamente na tela e, se tudo", 10
-                      db "estiver certo, voce encontrara a imagem com a extensao .app no disco, contendo seu aplicativo.", 10
-                      db "Voce pode utilizar a ferramenta 'lshapp' para verificar informacoes da imagem, caso necessario.", 10
-                      db "Para saber mais sobre as informacoes que o utilitario pode oferecer ao analisar uma imagem,", 10
-                      db " consulte o manual ('man lshapp') ou utilize 'lshapp ?'.", 10, 0
-.boasVindas:          db "Seja bem vindo a Lyoko, a IDE oficial do Andromeda(R)!", 10, 10
-                      db "Com Lyoko, voce pode escrever e construir rapidamente maravilhosos aplicativos para o Andromeda(R).", 10
-                      db "Voce pode a qualquer momento pressionar [^X] (Ctrl+X) para obter ajuda.", 10, 10, 10
-                      db "Vamos comecar? Pressione [ESC] para fechar as boas vindas.", 10, 0
-.editado:             db " *", 0
-.tituloAlterado:      db 0
-.caixaMaior:          db 0
-.corFonte:            dd 0
-.corFundo:            dd 0
-.alterado:            db 0 ;; Armazenará se o buffer foi alterado pelo usuário
-.primeiraExecucao:    db 0
-
-totalLinhas:          dd 0	;; Contador de linhas no arquivo
-linha:                dd 0	;; Linha atual no arquivo
-posicaoLinhaAtual:    dd 0	;; Posição da linha atual em todo o arquivo
-posicaoAtualNaLinha:  dd 0	;; Posição do cursor na linha atual
-tamanhoLinhaAtual:    dd 0	;; Tamanho da linha atual
-posicaoLinhaNaTela:   dd 1	;; Posição da linha no display
-posicaoPaginaAtual:   dd 0	;; Posição da página atual no arquivo (uma tela)
-necessarioRedesenhar: db 1	;; Se não zero, é necessário redesenhar toda a tela
-nomeArquivo: times 13 db 0  ;; Espaço para armazenamento do nome do arquivo
-maxColunas:           db 0  ;; Total de colunas disponíveis no vídeo na resolução atual
-maxLinhas:            db 0  ;; Total de linhas disponíveis no vídeo na resolução atual
-linhaParametros:      db 30 ;; Tamanho de parâmetro
-resolucao:            dd 0  ;; Resolução de vídeo
 
 ;;************************************************************************************
 ;;
