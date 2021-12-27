@@ -39,6 +39,54 @@ include "../../../LibAPP/dispositivos.s"
 
 ;;************************************************************************************
 
+;;************************************************************************************
+;;
+;; Dados do aplicativo
+;;
+;;************************************************************************************
+
+VERSAO        equ "2.0.0" 
+tamanhoRodape = 46
+
+;; Aparência
+
+CORDESTAQUE = ROXO_ESCURO
+
+quartzo:
+
+.formato:             db "UTF-8", 0
+.formatoFimLinha:     db "LF", 0
+.virgula:             db ", ", 0
+.separador:           db " | ", 0
+.rodapePrograma:      db "[^F] Sair, [^A] Abrir, [^S] Salvar | Arquivo:               ", 0
+.linha:               db "Linha: ", 0
+.coluna:              db "Coluna: ", 0
+.arquivoSalvo:        db "Arquivo salvo", 0
+.solicitarArquivo:    db "Nome do arquivo [ENTER para cancelar]: ", 0
+.rodapeNovoArquivo:   db "Novo arquivo", 0
+.permissaoNegada:     db "Apenas um usuario administrativo pode alterar este arquivo."
+                      db " Pressione alguma tecla para continuar...", 0
+.erroDeletando:       db "Erro ao atualizar o arquivo.", 0
+.tituloPrograma:      db "Editor de texto Quartzo(R) para Andromeda(R) - Versao ", VERSAO, 0
+.corFonte:            dd 0
+.corFundo:            dd 0
+
+totalLinhas:          dd 0	;; Contador de linhas no arquivo
+linha:                dd 0	;; Linha atual no arquivo
+posicaoLinhaAtual:    dd 0	;; Posição da linha atual em todo o arquivo
+posicaoAtualNaLinha:  dd 0	;; Posição do cursor na linha atual
+tamanhoLinhaAtual:    dd 0	;; Tamanho da linha atual
+posicaoLinhaNaTela:   dd 1	;; Posição da linha no display
+posicaoPaginaAtual:   dd 0	;; Posição da página atual no arquivo (uma tela)
+necessarioRedesenhar: db 1	;; Se não zero, é necessário redesenhar toda a tela
+nomeArquivo: times 13 db 0
+maxColunas:           db 0 ;; Total de colunas disponíveis no vídeo na resolução atual
+maxLinhas:            db 0 ;; Total de linhas disponíveis no vídeo na resolução atual
+
+;;************************************************************************************
+
+;; Função de entrada:
+
 Quartzo:
 
 	Andromeda obterInfoTela
@@ -211,7 +259,7 @@ Quartzo:
 ;; Imprime o título do programa e rodapé
 
 	mov eax, BRANCO_ANDROMEDA
-	mov ebx, MARROM_PERU
+	mov ebx, CORDESTAQUE
 	
 	Andromeda definirCor
 	
@@ -292,7 +340,7 @@ Quartzo:
 ;; Imprimir linha e coluna atuais
 
 	mov eax, BRANCO_ANDROMEDA
-	mov ebx, MARROM_PERU
+	mov ebx, CORDESTAQUE
 	
 	Andromeda definirCor
 
@@ -1656,46 +1704,6 @@ abrirArquivoEditor:
 	ret
 	
 ;;************************************************************************************
-
-;;************************************************************************************
-;;
-;; Dados do aplicativo
-;;
-;;************************************************************************************
-
-VERSAO        equ "1.9.1" 
-tamanhoRodape = 46
-
-quartzo:
-
-.formato:             db "UTF-8", 0
-.formatoFimLinha:     db "LF", 0
-.virgula:             db ", ", 0
-.separador:           db " | ", 0
-.rodapePrograma:      db "[^F] Sair, [^A] Abrir, [^S] Salvar | Arquivo:               ", 0
-.linha:               db "Linha: ", 0
-.coluna:              db "Coluna: ", 0
-.arquivoSalvo:        db "Arquivo salvo", 0
-.solicitarArquivo:    db "Nome do arquivo [ENTER para cancelar]: ", 0
-.rodapeNovoArquivo:   db "Novo arquivo", 0
-.permissaoNegada:     db "Apenas um usuario administrativo pode alterar este arquivo."
-                      db " Pressione alguma tecla para continuar...", 0
-.erroDeletando:       db "Erro ao atualizar o arquivo.", 0
-.tituloPrograma:      db "Editor de texto Quartzo(R) para Andromeda(R) - Versao ", VERSAO, 0
-.corFonte:            dd 0
-.corFundo:            dd 0
-
-totalLinhas:          dd 0	;; Contador de linhas no arquivo
-linha:                dd 0	;; Linha atual no arquivo
-posicaoLinhaAtual:    dd 0	;; Posição da linha atual em todo o arquivo
-posicaoAtualNaLinha:  dd 0	;; Posição do cursor na linha atual
-tamanhoLinhaAtual:    dd 0	;; Tamanho da linha atual
-posicaoLinhaNaTela:   dd 1	;; Posição da linha no display
-posicaoPaginaAtual:   dd 0	;; Posição da página atual no arquivo (uma tela)
-necessarioRedesenhar: db 1	;; Se não zero, é necessário redesenhar toda a tela
-nomeArquivo: times 13 db 0
-maxColunas:           db 0 ;; Total de colunas disponíveis no vídeo na resolução atual
-maxLinhas:            db 0 ;; Total de linhas disponíveis no vídeo na resolução atual
 
 ;;************************************************************************************
 ;;
