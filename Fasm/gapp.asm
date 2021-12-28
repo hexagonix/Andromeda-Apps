@@ -113,7 +113,7 @@ inicioAPP:
 ;; titulo, rodape, cor do titulo, cor do rodape, cor do texto no titulo,
 ;; cor do texto no rodape, cor do texto inicial do app, cor de fundo inicial
 ;;
-;; Vocce pode utilizar '\' para quebrar a linha, caso esteja muito grande, como
+;; Voce pode utilizar '\' para quebrar a linha, caso esteja muito grande, como
 ;; abaixo
 
     Andromeda.Estelar.criarInterface gapp.TITULO, gapp.RODAPE, VERMELHO_TIJOLO,\
