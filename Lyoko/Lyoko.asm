@@ -28,7 +28,7 @@ use32
 include "../../../LibAPP/HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
 ;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 40, AndromedaIDE, 01h
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 56, AndromedaIDE, 01h
 
 ;;************************************************************************************
 
@@ -92,7 +92,7 @@ Lyoko:
                       db "estiver certo, voce encontrara a imagem com a extensao .app no disco, contendo seu aplicativo.", 10
                       db "Voce pode utilizar a ferramenta 'lshapp' para verificar informacoes da imagem, caso necessario.", 10
                       db "Para saber mais sobre as informacoes que o utilitario pode oferecer ao analisar uma imagem,", 10
-                      db " consulte o manual ('man lshapp') ou utilize 'lshapp ?'.", 10, 0
+                      db "consulte o manual ('man lshapp') ou utilize 'lshapp ?'.", 10, 0
 .boasVindas:          db "Seja bem vindo a Lyoko, a IDE oficial do Andromeda(R)!", 10, 10
                       db "Com Lyoko, voce pode escrever e construir rapidamente maravilhosos aplicativos para o Andromeda(R).", 10
                       db "Voce pode a qualquer momento pressionar [^X] (Ctrl+X) para obter ajuda.", 10, 10, 10
