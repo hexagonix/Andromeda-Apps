@@ -83,7 +83,7 @@ include "Dados\log.asm"
 
 include "Andromeda\Andromeda.asm"
 
-corPadraoInterface = LARANJA_VERMELHO
+corPadraoInterface = MARROM_PERU
 
 ;;************************************************************************************
 
