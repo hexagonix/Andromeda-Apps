@@ -163,7 +163,41 @@ mostrarInterfaceInfo:
 
 	imprimirString
 
-	mov dh, 10
+;; Agora vamos exibir informações sobre o Hexagon
+
+	mov dh, 09
+	mov dl, 18
+	
+	Andromeda definirCursor
+ 
+    mov esi, msgInfo.Hexagon
+    
+	imprimirString
+
+	Andromeda retornarVersao
+	
+	push ecx
+	push ebx
+	
+	imprimirInteiro
+	
+	mov esi, msgInfo.ponto
+	
+	imprimirString
+	
+	pop eax
+	
+	imprimirInteiro
+	
+	pop ecx
+	
+	mov al, ch
+	
+	Andromeda imprimirCaractere
+
+;; Voltamos à programação normal
+
+	mov dh, 11
 	mov dl, 18
 	
 	Andromeda definirCursor
@@ -172,7 +206,7 @@ mostrarInterfaceInfo:
 	
 	imprimirString
  
-    mov dh, 12
+    mov dh, 13
 	mov dl, 18
 	
 	Andromeda definirCursor
@@ -181,7 +215,7 @@ mostrarInterfaceInfo:
 	
 	imprimirString
 	
-	mov dh, 13
+	mov dh, 14
 	mov dl, 18
 	
 	Andromeda definirCursor
@@ -190,7 +224,7 @@ mostrarInterfaceInfo:
 	
 	imprimirString
 	
-	mov dh, 15
+	mov dh, 16
 	mov dl, 28
 	
 	Andromeda definirCursor
@@ -209,7 +243,7 @@ mostrarInterfaceInfo:
 
 	Andromeda definirCor
 	
-	mov dh, 17
+	mov dh, 18
 	mov dl, 02
 	
 	Andromeda definirCursor
@@ -218,7 +252,7 @@ mostrarInterfaceInfo:
 	
 	imprimirString
 
-	mov dh, 18
+	mov dh, 19
 	mov dl, 04
 	
 	Andromeda definirCursor
@@ -233,7 +267,7 @@ mostrarInterfaceInfo:
     
     imprimirString
 	
-	mov dh, 19
+	mov dh, 20
 	mov dl, 08
 	
 	Andromeda definirCursor
@@ -242,7 +276,7 @@ mostrarInterfaceInfo:
 	
 	imprimirString
 	
-	mov dh, 21
+	mov dh, 22
 	mov dl, 02
 	
 	Andromeda definirCursor
