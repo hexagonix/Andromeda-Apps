@@ -28,7 +28,7 @@ use32
 include "../../../LibAPP/HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
 ;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
-cabecalhoASH cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 56, inicioShell, 01h
+cabecalhoASH cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 57, inicioShell, 01h
 
 ;;************************************************************************************
 
@@ -800,7 +800,7 @@ ash:
 match =SIM, VERBOSE
 {
 
-.verboseEntradaASH: db "[ASH]: Iniciando o Andromeda (R) SHell - ASH - para Andromeda 1.15.4 ou superior [28/12/2021].", 0
+.verboseEntradaASH: db "[ASH]: Iniciando o Andromeda (R) SHell - ASH - para Andromeda 1.15.4 ou superior [05/01/2022].", 0
 .verboseVersaoASH:  db "[ASH]: Andromeda(R) SHell versao ", versaoASH, ".", 0
 .verboseAutor:      db "[ASH]: Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes.", 0
 .verboseDireitos:   db "[ASH]: Todos os direitos reservados.", 0
