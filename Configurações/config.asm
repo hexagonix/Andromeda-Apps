@@ -52,6 +52,11 @@ include "../../../LibAPP/dispositivos.s"
 
 include "Dados\versao.asm"
 
+;; Dados utilizados no aplicativo
+
+include "Dados\Video.asm"
+include "Dados\Interfaces.asm"
+
 ;; Interfaces do aplicativo
 
 include "Interfaces\Principal.asm"
@@ -63,11 +68,6 @@ include "Interfaces\Discos.asm"
 include "Interfaces\Fonte.asm"
 include "Interfaces\Paralela.asm"
 include "Interfaces\Serial.asm"
-
-;; Dados utilizados no aplicativo
-
-include "Dados\Video.asm"
-include "Dados\Interfaces.asm"
 
 ;; Os dados de log só serão incluídos no aplicativo se for necessário. O padrão é que
 ;; sejam incluídos
