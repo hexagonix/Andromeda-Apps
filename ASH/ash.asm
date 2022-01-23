@@ -28,7 +28,7 @@ use32
 include "../../../LibAPP/HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
 ;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
-cabecalhoASH cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 57, inicioShell, 01h
+cabecalhoASH cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 58, inicioShell, 01h
 
 ;;************************************************************************************
 
@@ -38,6 +38,104 @@ include "../../../LibAPP/erros.s"
 include "../../../LibAPP/log.s"
 include "../../../LibAPP/macros.s"
 include "../../../LibAPP/sistema.s"
+
+;;************************************************************************************
+;;
+;; Dados, variáveis e constantes utilizadas pelo Shell
+;;
+;;************************************************************************************
+
+;; A versão do ASH é independente da versão do restante do Sistema.
+;; Ela deve ser utilizada para identificar para qual versão do Andromeda® o ASH foi
+;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
+
+ASHPadrao          = VERDE_MAR
+ASHTerminal        = VERDE_MAR
+ASHAviso           = TOMATE
+ASHErro            = VERMELHO_TIJOLO
+ASHLimiteProcessos = AMARELO_ANDROMEDA
+ASHSucesso         = VERDE
+
+versaoASH           equ "3.1" 
+compativelAndromeda equ "1.16"
+                    
+;;**************************
+
+ash:
+
+.prompt:             db "[/]: ", 0
+.extensaoProgramas:  db ".app", 0 ;; Extensão de aplicativos (executáveis Hexagon®)
+.comandoInvalido:    db 10, 10, "[!] Comando invalido ou aplicativo no formato HAPP nao encontrado.", 10, 0
+.bannerASH:          db "ASH - Andromeda (R) SHell", 0
+.boasVindas:         db 10, "Seja Bem Vindo ao Sistema Operacional Andromeda(R)", 10, 10
+                     db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10
+			         db "Todos os direitos reservados.", 10, 0
+.versaoAndromeda:    db 10, 10, "Sistema Operacional Andromeda(R)", 10 
+                     db "Versao ", 0
+.direitosAutorais:   db 10, 10, "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10   
+                     db "Todos os direitos reservados.", 10, 0
+.limiteProcessos:    db 10, 10, "[!] Nao existe memoria disponivel para executar o aplicativo solicitado.", 10
+                     db "[!] Tente primeiramente finalizar aplicativos ou suas instancias, e tente novamente.", 10, 0		             
+.ponto:              db ".", 0
+.imagemInvalida:     db ": nao e possivel carregar a imagem. Formato executavel nao suportado.", 10, 0
+
+match =SIM, VERBOSE
+{
+
+.verboseEntradaASH: db "[ASH]: Iniciando o Andromeda (R) SHell - ASH - para Andromeda 1.16 ou superior [21/01/2022].", 0
+.verboseVersaoASH:  db "[ASH]: Andromeda(R) SHell versao ", versaoASH, ".", 0
+.verboseAutor:      db "[ASH]: Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes.", 0
+.verboseDireitos:   db "[ASH]: Todos os direitos reservados.", 0
+.verboseSaida:      db "[ASH]: Finalizando o ASH e retornando o controle ao processo pai...", 0
+.verboseLimite:     db "[ASH]: [!] Limite de memoria ou de processos atingido!", 0
+.verboseInterfaceMountAntiga: db "[ASH]: [!!!] Realizando manipulacao de pontos de montagem por funcao obsoleta e que sera removida.", 0
+
+}
+
+;;**************************
+
+comandos:
+
+.alterarDisco:  db "ad", 0
+.sair:		    db "sair",0
+.versao:	    db "ver", 0
+.ajuda:		    db "ajuda", 0
+
+;;**************************
+
+ajuda:
+
+.introducao:    db 10, 10, "Andromeda(R) SHell versao ", versaoASH, 10
+                db "Compativel com Andromeda(R) ", compativelAndromeda, " ou superior.", 0
+.conteudoAjuda: db 10, 10, "Comandos internos disponiveis:", 10, 10
+				db " VER - Exibe informacoes da versao do ASH em execucao", 10, 10
+				db "Tente digitar 'ls' para ver o que mais voce pode fazer!", 10, 0
+		     
+;;**************************
+
+discos:
+
+.hd0:              db "hd0", 0
+.hd1:              db "hd1", 0
+.hd2:              db "hd2", 0
+.hd3:              db "hd3", 0
+.info:             db "info", 0
+.discoAtual:       db 10, 10, "Volume atual utilizado pelo sistema: ", 0
+.erroAlterar:      db 10, 10, "Um volume valido ou parametro nao foram fornecidos para este comando.", 10, 10
+                   db "Impossivel alterar o volume Unix padrao.", 10, 10
+			       db "Utilize como argumento um nome de dispositivo ou entao 'info' para informacoes do disco atual.", 10, 0
+.rotuloVolume:     db 10, 10, "Rotulo do volume: ", 0
+.avisoSairdeLinha: db 10, 10, "Aviso! Este e um comando interno obsoleto do Andromeda(R) Shell que sera descontinuado.", 10
+                   db "Fique ciente que ele sera removido em breve. Em substituicao, utilize a ferramenta Unix 'mount'.", 10
+				   db "Voce pode encontrar a documentacao da ferramenta digitando 'man mount' a qualquer momento.", 0
+	
+;;**************************
+ 
+nomeArquivo: times 13 db 0	
+
+discoAtual:  times 3  db 0		  
+
+Andromeda.Interface Andromeda.Estelar.Interface
 
 ;;************************************************************************************
 
@@ -758,102 +856,6 @@ alterarCor:
 
 	ret
 	
-;;************************************************************************************
-;;
-;; Dados, variáveis e constantes utilizadas pelo Shell
-;;
-;;************************************************************************************
-
-;; A versão do ASH é independente da versão do restante do Sistema.
-;; Ela deve ser utilizada para identificar para qual versão do Andromeda® o ASH foi
-;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
-
-ASHPadrao          = VERDE_MAR
-ASHTerminal        = VERDE_MAR
-ASHAviso           = TOMATE
-ASHErro            = VERMELHO_TIJOLO
-ASHLimiteProcessos = AMARELO_ANDROMEDA
-ASHSucesso         = VERDE
-
-versaoASH equ "3.0" 
-                    
-;;**************************
-
-ash:
-
-.prompt:             db "[/]: ", 0
-.extensaoProgramas:  db ".app", 0 ;; Extensão de aplicativos (executáveis Hexagon®)
-.comandoInvalido:    db 10, 10, "[!] Comando invalido ou aplicativo no formato HAPP nao encontrado.", 10, 0
-.bannerASH:          db "ASH - Andromeda (R) SHell", 0
-.boasVindas:         db 10, "Seja Bem Vindo ao Sistema Operacional Andromeda(R)", 10, 10
-                     db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10
-			         db "Todos os direitos reservados.", 10, 0
-.versaoAndromeda:    db 10, 10, "Sistema Operacional Andromeda(R)", 10 
-                     db "Versao ", 0
-.direitosAutorais:   db 10, 10, "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10   
-                     db "Todos os direitos reservados.", 10, 0
-.limiteProcessos:    db 10, 10, "[!] Nao existe memoria disponivel para executar o aplicativo solicitado.", 10
-                     db "[!] Tente primeiramente finalizar aplicativos ou suas instancias, e tente novamente.", 10, 0		             
-.ponto:              db ".", 0
-.imagemInvalida:     db ": nao e possivel carregar a imagem. Formato executavel nao suportado.", 10, 0
-
-match =SIM, VERBOSE
-{
-
-.verboseEntradaASH: db "[ASH]: Iniciando o Andromeda (R) SHell - ASH - para Andromeda 1.15.4 ou superior [05/01/2022].", 0
-.verboseVersaoASH:  db "[ASH]: Andromeda(R) SHell versao ", versaoASH, ".", 0
-.verboseAutor:      db "[ASH]: Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes.", 0
-.verboseDireitos:   db "[ASH]: Todos os direitos reservados.", 0
-.verboseSaida:      db "[ASH]: Finalizando o ASH e retornando o controle ao processo pai...", 0
-.verboseLimite:     db "[ASH]: [!] Limite de memoria ou de processos atingido!", 0
-.verboseInterfaceMountAntiga: db "[ASH]: [!!!] Realizando manipulacao de pontos de montagem por funcao obsoleta e que sera removida.", 0
-
-}
-
-;;**************************
-
-comandos:
-
-.alterarDisco:  db "ad", 0
-.sair:		    db "sair",0
-.versao:	    db "ver", 0
-.ajuda:		    db "ajuda", 0
-
-;;**************************
-
-ajuda:
-
-.introducao:    db 10, 10, "Andromeda(R) SHell versao ", versaoASH, 0
-.conteudoAjuda: db 10, 10, "Comandos internos disponiveis:", 10, 10
-				db " VER - Exibe informacoes da versao do ASH em execucao", 10, 10
-				db "Tente digitar 'ls' para ver o que mais voce pode fazer!", 10, 0
-		     
-;;**************************
-
-discos:
-
-.hd0:              db "hd0", 0
-.hd1:              db "hd1", 0
-.hd2:              db "hd2", 0
-.hd3:              db "hd3", 0
-.info:             db "info", 0
-.discoAtual:       db 10, 10, "Volume atual utilizado pelo sistema: ", 0
-.erroAlterar:      db 10, 10, "Um volume valido ou parametro nao foram fornecidos para este comando.", 10, 10
-                   db "Impossivel alterar o volume Unix padrao.", 10, 10
-			       db "Utilize como argumento um nome de dispositivo ou entao 'info' para informacoes do disco atual.", 10, 0
-.rotuloVolume:     db 10, 10, "Rotulo do volume: ", 0
-.avisoSairdeLinha: db 10, 10, "Aviso! Este e um comando interno obsoleto do Andromeda(R) Shell que sera descontinuado.", 10
-                   db "Fique ciente que ele sera removido em breve. Em substituicao, utilize a ferramenta Unix 'mount'.", 10
-				   db "Voce pode encontrar a documentacao da ferramenta digitando 'man mount' a qualquer momento.", 0
-	
-;;**************************
- 
-nomeArquivo: times 13 db 0	
-
-discoAtual:  times 3  db 0		  
-
-Andromeda.Interface Andromeda.Estelar.Interface
-
 ;;************************************************************************************
 
 bufferArquivo:  ;; Endereço para carregamento de arquivos
