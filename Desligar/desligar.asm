@@ -28,7 +28,7 @@ use32
 include "../../../LibAPP/HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
 ;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 40, inicioAPP, 01h
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 58, inicioAPP, 01h
 
 ;;************************************************************************************
 
@@ -330,6 +330,7 @@ Andromeda_Sair:
 ;;************************************************************************************
 
 ENERGIA equ "energia.app"   
+VERSAO  equ "1.0"
 
 desligar:
 
@@ -354,7 +355,7 @@ desligar:
                          db "Pressione qualquer tecla para finalizar este aplicativo...", 0
 
 .titulo: db "Opcoes de desligamento do Sistema Operacional Andromeda(R)",0
-.rodape: db "[BETA] | Sistema Operacional Andromeda(R). Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes",0
+.rodape: db "[", VERSAO, "] | Sistema Operacional Andromeda(R). Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes",0
 
 parametro: dd ?
 
