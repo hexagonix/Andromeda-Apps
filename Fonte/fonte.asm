@@ -28,7 +28,7 @@ use32
 include "../../../LibAPP/HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
 ;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 40, inicioAPP, 01h
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 58, inicioAPP, 01h
 
 ;;************************************************************************************
 
@@ -45,100 +45,12 @@ inicioAPP:
 	push ds
 	pop es			
 	
-	mov	[linhaComando], edi
-	
 	Andromeda obterCor
 
 	mov dword[Andromeda.Interface.corFonte], eax
 	mov dword[Andromeda.Interface.corFundo], ebx
 
-    mov esi, [linhaComando]
-	mov [arquivoFonte], esi
 		
-	cmp byte[esi], 0
-	je .executarInterface
-	
-	mov byte[fonte.modoTexto], 01h
-
-	mov esi, fonte.boasVindasTexto
-	
-	imprimirString
-	
-	mov esi, fonte.nomeArquivo
-	
-	imprimirString
-	
-	mov esi, [arquivoFonte]
-	
-	imprimirString
-	
-	mov esi, [arquivoFonte]
-	
-	Andromeda cortarString			;; Remover espaços em branco extras
-	
-	call validarFonte
-
-	jc .erroFormato
-
-	Andromeda alterarFonte
-	
-	jc .erroTexto
-	
-	mov esi, fonte.sucessoTexto
-	
-	imprimirString
-
-	mov esi, fonte.introducaoTeste
-
-	imprimirString
-
-	mov esi, fonte.testeFonte
-
-	imprimirString
-	
-	mov ebx, 00h
-	
-	Andromeda encerrarProcesso
-	
-.erroTexto:
-
-	mov eax, VERMELHO_TIJOLO
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	Andromeda definirCor
-	
-	mov esi, fonte.falhaTexto
-	
-	imprimirString
-
-	jmp .erroFim
-
-.erroFormato:
-
-	mov eax, VERMELHO_TIJOLO
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	Andromeda definirCor
-	
-	mov esi, fonte.falhaFormatoT
-	
-	imprimirString
-
-	jmp .erroFim
-
-.erroFim:
-	
-	mov eax, Andromeda.Estelar.Tema.Fonte.fontePadrao
-	mov ebx, Andromeda.Estelar.Tema.Fonte.fundoPadrao
-	
-	Andromeda definirCor
-	
-	mov ebx, 00h
-	
-	jmp finalizarAPP.semConfirmacao
-	
-;;************************************************************************************
-	
 .executarInterface:
 
     Andromeda limparTela
@@ -218,12 +130,6 @@ finalizarAPP:
 	Andromeda aguardarTeclado
 
 	Andromeda.Estelar.finalizarProcessoGrafico 0, 0
-
-.semConfirmacao:
-
-	mov ebx, 00h
-
-	Andromeda encerrarProcesso
 	
 ;;************************************************************************************
 
@@ -250,48 +156,33 @@ validarFonte:
 	cmp byte[edi+3], "T"
 	jne .naoHFNT
 
+.verificarTamanho:
+
+	Andromeda arquivoExiste
+
+;; Em EAX, o tamanho do arquivo. Ele não deve ser maior que 2000 bytes, o que poderia
+;; sobrescrever dados na memória do Hexagon
+
+	mov ebx, 2000
+
+	cmp eax, ebx
+	jng .continuar
+
+	jmp .tamanhoSuperior
+
+.continuar:
+
+	clc 
+	
 	ret
 
 .erroSemFonte:
-
-	cmp byte[fonte.modoTexto], 01h
-	je .semFonteTexto
-
-;; Se não, vamos exibir a mensagem de erro em modo gráfico padrão
-
-	mov eax, VERMELHO_TIJOLO
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	Andromeda definirCor
 	
 	mov esi, fonte.falha
 	
 	imprimirString
 
-	mov eax, Andromeda.Estelar.Tema.Fonte.fontePadrao
-	mov ebx, Andromeda.Estelar.Tema.Fonte.fundoPadrao
-	
-	Andromeda definirCor
-
 	jmp finalizarAPP
-
-.semFonteTexto:
-
-	mov eax, VERMELHO_TIJOLO
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	Andromeda definirCor
-	
-	mov esi, fonte.falhaTexto
-	
-	imprimirString
-
-	mov eax, Andromeda.Estelar.Tema.Fonte.fontePadrao
-	mov ebx, Andromeda.Estelar.Tema.Fonte.fundoPadrao
-	
-	Andromeda definirCor
-
-	jmp finalizarAPP.semConfirmacao
 
 .naoHFNT:
 
@@ -299,22 +190,27 @@ validarFonte:
 
 	ret
 
+.tamanhoSuperior:
+
+	mov esi, fonte.tamanhoSuperior
+	
+	imprimirString
+
+	jmp finalizarAPP
+
 ;;************************************************************************************
 ;;
 ;; Dados do aplicativo
 ;;
 ;;************************************************************************************
 
-versaoFonte equ "1.5"
+versaoFonte equ "2.0"
 
 fonte:
 
 .boasVindas:      db 10, 10, "Use este programa para alterar a fonte padrao de exibicao do Sistema.", 10, 10
                   db "Lembrando que apenas fontes desenhadas para o Andromeda(R) podem ser utilizadas.", 10, 10, 10, 10, 0
 
-.boasVindasTexto: db 10, 10, "Utilitario para alterar a fonte padrao do sistema versao ", versaoFonte, 10, 10
-                  db "Sistema Operacional Andromeda(R)", 10, 10
-				  db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10, 0	 
 .nomeArquivo:     db 10, "Nome do arquivo de fonte: ", 0	
 
 .nomeFonte:       db "Nome do arquivo: ", 0
@@ -327,12 +223,6 @@ fonte:
 
 .falhaFormato:    db 10, 10, "O arquivo fornecido nao contem uma fonte no formato Hexagon(R).", 10, 10
                   db "Pressione qualquer tecla para continuar...", 10, 10, 0
-
-.falhaFormatoT:   db 10, 10, "O arquivo fornecido nao contem uma fonte no formato Hexagon(R).", 10, 0
-
-.sucessoTexto:    db 10, 10, "Fonte alterada com sucesso.", 10, 0
-
-.falhaTexto:      db 10, 10, "O arquivo nao pode ser localizado.", 10, 0
 
 .bannerAndromeda: db 10, 10   
                   db "                                   Sistema Operacional Andromeda(R)", 10, 10, 10, 10
@@ -353,11 +243,10 @@ fonte:
                   db "zxcvbnm,./", 10, 10
                   db "Sistema Operacional Andromeda(R)", 10, 0
 .modoTexto:       db 0
+.tamanhoSuperior: db 10, 10, "Este arquivo de fonte excede o tamanho maximo de 2 Kb.", 10, 0
 
 linhaComando:     dd 0
-
 arquivoFonte:     dd ?
-
 regES:	          dw 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
