@@ -38,6 +38,41 @@ include "../../../LibAPP/macros.s"
 
 ;;************************************************************************************
 
+;;************************************************************************************
+;;
+;; Dados do aplicativo
+;;
+;;************************************************************************************
+
+VERSAO equ "10047.09g"
+
+piano:
+
+.sobreTeclado:  db "Piano Virtual 'return PIANO;'(R) para Andromeda(R)", 0
+.versaoTeclado: db "Versao ", VERSAO, 0
+.autor:         db "Copyright (C) 2017-2022 Felipe Miguel Nery Lunkes", 0
+.direitos:      db "Todos os direitos reservados.", 0
+.ajuda:         db "Um pequeno topico de ajuda para este programa:", 0
+.topico1:       db "+ Utilize as teclas [QWERTYUI] para emitir notas.", 0
+.topico2:       db "+ Utilize a tecla [ESPACO] para silenciar as notas, quando necessario.", 0
+.topico3:       db "+ Por fim, utilize a tecla [Z] para finalizar este aplicativo a qualquer momento.", 0
+.titulo:        db "Piano Virtual 'return PIANO;'(R) para Andromeda(R) versao ", VERSAO, 0
+.rodape:        db "Pressione [Z] para sair e [ESPACO] para silenciar. Use [A] para mais informacoes", 0
+.rodapeInfo:    db "Pressione [V] para retornar ou [Z] para finalizar este aplicativo", 0
+
+.teclaQ:        db "Q", 0
+.teclaW:        db "W", 0
+.teclaE:        db "E", 0
+.teclaR:        db "R", 0
+.teclaT:        db "T", 0
+.teclaY:        db "Y", 0
+.teclaU:        db "U", 0
+.teclaI:        db "I", 0
+.teclaEspaco:   db "[ESPACO]", 0
+.teclaZ:        db "Z", 0
+
+;;************************************************************************************
+
 inicioAPP:
 	
 	Andromeda obterCor
@@ -702,38 +737,5 @@ exibirInterfaceSobre:
 	jmp .obterTeclas		
 
 ;;************************************************************	
-
-;;************************************************************************************
-;;
-;; Dados do aplicativo
-;;
-;;************************************************************************************
-
-VERSAO equ "10047.09g"
-
-piano:
-
-.sobreTeclado:  db "Piano Virtual 'return PIANO;'(R) para Sistema Operacional Andromeda(R)", 0
-.versaoTeclado: db "Versao ", VERSAO, 0
-.autor:         db "Copyright (C) 2017-2022 Felipe Miguel Nery Lunkes", 0
-.direitos:      db "Todos os direitos reservados.", 0
-.ajuda:         db "Um pequeno topico de ajuda para este programa:", 0
-.topico1:       db "+ Utilize as teclas [QWERTYUI] para emitir notas.", 0
-.topico2:       db "+ Utilize a tecla [ESPACO] para silenciar as notas, quando necessario.", 0
-.topico3:       db "+ Por fim, utilize a tecla [Z] para finalizar este aplicativo a qualquer momento.", 0
-.titulo:        db "Piano Virtual 'return PIANO;'(R) para Andromeda(R) versao ", VERSAO, 0
-.rodape:        db "Pressione [Z] para sair e [ESPACO] para silenciar. Use [A] para mais informacoes", 0
-.rodapeInfo:    db "Pressione [V] para retornar ou [Z] para finalizar este aplicativo", 0
-
-.teclaQ:        db "Q", 0
-.teclaW:        db "W", 0
-.teclaE:        db "E", 0
-.teclaR:        db "R", 0
-.teclaT:        db "T", 0
-.teclaY:        db "Y", 0
-.teclaU:        db "U", 0
-.teclaI:        db "I", 0
-.teclaEspaco:   db "[ESPACO]", 0
-.teclaZ:        db "Z", 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
