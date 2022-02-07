@@ -28,7 +28,7 @@ use32
 include "../../../LibAPP/HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
 ;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 56, Quartzo, 01h
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 58, Quartzo, 01h
 
 ;;************************************************************************************
 
@@ -45,12 +45,14 @@ include "../../../LibAPP/dispositivos.s"
 ;;
 ;;************************************************************************************
 
-VERSAO        equ "2.0.0" 
-tamanhoRodape = 46
-
 ;; Aparência
 
 CORDESTAQUE = ROXO_ESCURO
+
+;; Variáveis, constantes e estruturas
+
+VERSAO        equ "2.0.0" 
+tamanhoRodape = 46
 
 quartzo:
 
