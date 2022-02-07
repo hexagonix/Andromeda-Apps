@@ -28,7 +28,7 @@ use32
 include "../../../LibAPP/HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
 ;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 40, inicioAPP, 01h
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 58, inicioAPP, 01h
 
 ;;************************************************************************************
 
@@ -210,6 +210,8 @@ erroAbertura:
 ;;
 ;;************************************************************************************
 
+VERSAO equ "1.0"
+
 serial:
 
 .erroPorta:       db 10, 10, "Nao foi possivel utilizar a porta serial.", 10, 0
@@ -224,7 +226,7 @@ serial:
 .nomePorta:       db "com1", 0    
 .enviado:         db 10, 10, "Dados enviados via porta serial ", 0
 .titulo:          db "Utilitario de envio de dados via porta serial do Sistema Operacional Andromeda(R)", 0
-.rodape:          db "[BETA] | [^N] Nova mensagem  [^S] Sair", 0
+.rodape:          db "[", VERSAO, "] | [^N] Nova mensagem  [^S] Sair", 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
 
