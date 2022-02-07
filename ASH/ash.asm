@@ -82,8 +82,8 @@ ash:
 match =SIM, VERBOSE
 {
 
-.verboseEntradaASH: db "[ASH]: Iniciando o Andromeda (R) SHell - ASH - para Andromeda 1.16 ou superior [21/01/2022].", 0
-.verboseVersaoASH:  db "[ASH]: Andromeda(R) SHell versao ", versaoASH, ".", 0
+.verboseEntradaASH: db "[ASH]: Iniciando o Andromeda SHell (ASH) para Andromeda ", compativelAndromeda, " ou superior.", 0
+.verboseVersaoASH:  db "[ASH]: Andromeda SHell versao ", versaoASH, ".", 0
 .verboseAutor:      db "[ASH]: Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes.", 0
 .verboseDireitos:   db "[ASH]: Todos os direitos reservados.", 0
 .verboseSaida:      db "[ASH]: Finalizando o ASH e retornando o controle ao processo pai...", 0
@@ -105,7 +105,7 @@ comandos:
 
 ajuda:
 
-.introducao:    db 10, 10, "Andromeda(R) SHell versao ", versaoASH, 10
+.introducao:    db 10, 10, "Andromeda SHell versao ", versaoASH, 10
                 db "Compativel com Andromeda(R) ", compativelAndromeda, " ou superior.", 0
 .conteudoAjuda: db 10, 10, "Comandos internos disponiveis:", 10, 10
 				db " VER - Exibe informacoes da versao do ASH em execucao", 10, 10
@@ -125,8 +125,8 @@ discos:
                    db "Impossivel alterar o volume Unix padrao.", 10, 10
 			       db "Utilize como argumento um nome de dispositivo ou entao 'info' para informacoes do disco atual.", 10, 0
 .rotuloVolume:     db 10, 10, "Rotulo do volume: ", 0
-.avisoSairdeLinha: db 10, 10, "Aviso! Este e um comando interno obsoleto do Andromeda(R) Shell que sera descontinuado.", 10
-                   db "Fique ciente que ele sera removido em breve. Em substituicao, utilize a ferramenta Unix 'mount'.", 10
+.avisoSairdeLinha: db 10, 10, "Aviso! Este e um comando interno obsoleto do Andromeda SHell.", 10
+                   db "Fique ciente que ele pode ser removido em breve. Em substituicao, utilize a ferramenta Unix 'mount'.", 10
 				   db "Voce pode encontrar a documentacao da ferramenta digitando 'man mount' a qualquer momento.", 0
 	
 ;;**************************
