@@ -48,7 +48,7 @@ cabecalhoAPP:
 
 ;;*************************************************************
 
-include "andrmda.s" ;; Incluir as chamadas de sistema
+include "hexagon.s" ;; Incluir as chamadas de sistema
 include "estelar.s" ;; Inclui funcoes de criacao de interfaces
 
 ;;*************************************************************
