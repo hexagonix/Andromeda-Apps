@@ -52,7 +52,7 @@ CORLISTRA   = LARANJA
 
 ;; Constantes e estruturas
 
-VERSAO        equ "1.2" 
+VERSAO        equ "1.2.1" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-2022 Felipe Miguel Nery Lunkes"
 DIREITOS      equ "Todos os direitos reservados."
@@ -99,21 +99,24 @@ Lyoko:
                       db "estiver certo, voce encontrara a imagem com a extensao .app no disco, contendo seu aplicativo.", 10
                       db "Voce pode utilizar a ferramenta 'lshapp' para verificar informacoes da imagem, caso necessario.", 10
                       db "Para saber mais sobre as informacoes que o utilitario pode oferecer ao analisar uma imagem,", 10
-                      db "consulte o manual ('man lshapp') ou utilize 'lshapp ?'.", 10, 0
+                      db "consulte o manual ('man lshapp') ou utilize 'lshapp ?'.", 0
 .infoLyoko:           db "O nome Lyoko vem de uma serie que me marcou muito na infancia, chamada Code Lyoko.", 10
                       db "De certa forma, essa serie fez com que eu me apaixonasse ainda mais pela computacao e nada mais", 10
 					  db "justo que prestar uma simbolica homenagem.", 10, 10
 					  db "Lyoko foi desenvolvido para ser uma IDE simples e facil de utilizar para desenvolver aplicativos", 10
-					  db "para Hexagonix/Andromeda no proprio sistema. Ele tambem vem sendo utilizado para desenvolver varios", 10
-					  db "componentes do proprio sistema operacional.", 10
+					  db "nativos para Hexagonix/Andromeda no proprio sistema. Ele tambem vem sendo utilizado para desenvolver", 10
+					  db "varios componentes do proprio sistema operacional.", 10
 					  db "Lyoko vem ganhando cada vez mais funcoes e tambem e constantemente atualizado.", 10, 10
 					  db "Versao desta edicao do Lyoko: ", VERSAO, 10, 10
 					  db AUTOR, 10
 					  db DIREITOS, 10, 0
 .boasVindas:          db "Seja bem vindo a Lyoko, a IDE oficial do Andromeda(R)!", 10, 10
                       db "Com Lyoko, voce pode escrever e construir rapidamente maravilhosos aplicativos para o Andromeda(R).", 10
-                      db "Voce pode a qualquer momento pressionar [^X] (Ctrl+X) para obter ajuda.", 10, 10, 10
-                      db "Vamos comecar? Pressione [ESC] para fechar as boas vindas.", 10, 0
+                      db "Voce pode a qualquer momento pressionar [^X] (Ctrl+X) para obter ajuda.", 10, 10
+                      db "Vamos comecar?", 10, 10
+					  db "Voce pode comecar pressionando Ctrl-A [^A] para abrir um arquivo ou pressionar [ESC] e comecar a", 10
+					  db "codificar o seu projeto agora mesmo!" , 10, 10
+					  db "Pressione [ESC] para fechar as boas vindas e ir diretamente ao editor.", 10, 0
 .editado:             db " *", 0 ;; O arquivo foi editado?
 .tituloAlterado:      db 0  ;; Título alterado?
 .caixaMaior:          db 0  ;; Tamanho da caixa (relativo à resolução da tela)
