@@ -45,17 +45,19 @@ include "../../../LibAPP/dispositivos.s"
 ;;
 ;;************************************************************************************
 
-;; Aparência
+;; Aparência (cores)
 
 CORDESTAQUE = VERMELHO_TIJOLO
 CORLISTRA   = LARANJA
 
-;; Variáveis, constantes e estruturas
+;; Constantes e estruturas
 
 VERSAO        equ "1.2" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-2022 Felipe Miguel Nery Lunkes"
 DIREITOS      equ "Todos os direitos reservados."
+
+;; Área de mensagens e variáveis globais
 
 Lyoko:
 
@@ -112,22 +114,22 @@ Lyoko:
                       db "Com Lyoko, voce pode escrever e construir rapidamente maravilhosos aplicativos para o Andromeda(R).", 10
                       db "Voce pode a qualquer momento pressionar [^X] (Ctrl+X) para obter ajuda.", 10, 10, 10
                       db "Vamos comecar? Pressione [ESC] para fechar as boas vindas.", 10, 0
-.editado:             db " *", 0
-.tituloAlterado:      db 0
-.caixaMaior:          db 0
-.corFonte:            dd 0
-.corFundo:            dd 0
-.alterado:            db 0 ;; Armazenará se o buffer foi alterado pelo usuário
-.primeiraExecucao:    db 0
+.editado:             db " *", 0 ;; O arquivo foi editado?
+.tituloAlterado:      db 0  ;; Título alterado?
+.caixaMaior:          db 0  ;; Tamanho da caixa (relativo à resolução da tela)
+.corFonte:            dd 0  ;; Cor a ser utilizada na fonte
+.corFundo:            dd 0  ;; Cor a ser utilizada no fundo
+.alterado:            db 0  ;; Armazenará se o buffer foi alterado pelo usuário
+.primeiraExecucao:    db 0  ;; Primeira vez que a função inicial é chamada?
 
-totalLinhas:          dd 0	;; Contador de linhas no arquivo
-linha:                dd 0	;; Linha atual no arquivo
-posicaoLinhaAtual:    dd 0	;; Posição da linha atual em todo o arquivo
-posicaoAtualNaLinha:  dd 0	;; Posição do cursor na linha atual
-tamanhoLinhaAtual:    dd 0	;; Tamanho da linha atual
-posicaoLinhaNaTela:   dd 1	;; Posição da linha no display
-posicaoPaginaAtual:   dd 0	;; Posição da página atual no arquivo (uma tela)
-necessarioRedesenhar: db 1	;; Se não zero, é necessário redesenhar toda a tela
+totalLinhas:          dd 0  ;; Contador de linhas no arquivo
+linha:                dd 0  ;; Linha atual no arquivo
+posicaoLinhaAtual:    dd 0  ;; Posição da linha atual em todo o arquivo
+posicaoAtualNaLinha:  dd 0  ;; Posição do cursor na linha atual
+tamanhoLinhaAtual:    dd 0  ;; Tamanho da linha atual
+posicaoLinhaNaTela:   dd 1  ;; Posição da linha no display
+posicaoPaginaAtual:   dd 0  ;; Posição da página atual no arquivo (uma tela)
+necessarioRedesenhar: db 1  ;; Se não zero, é necessário redesenhar toda a tela
 nomeArquivo: times 13 db 0  ;; Espaço para armazenamento do nome do arquivo
 maxColunas:           db 0  ;; Total de colunas disponíveis no vídeo na resolução atual
 maxLinhas:            db 0  ;; Total de linhas disponíveis no vídeo na resolução atual
