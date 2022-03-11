@@ -28,7 +28,7 @@ use32
 include "../../../LibAPP/HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
 ;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 56, AndromedaIDE, 01h
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 8, 58, AndromedaIDE, 01h
 
 ;;************************************************************************************
 
@@ -53,8 +53,10 @@ CORLISTRA   = LARANJA
 ;; Variáveis, constantes e estruturas
 
 
-VERSAO        equ "1.1.2" 
+VERSAO        equ "1.2" 
 MONTADOR      equ "fasmX"
+AUTOR         equ "Copyright (C) 2017-2022 Felipe Miguel Nery Lunkes"
+DIREITOS      equ "Todos os direitos reservados."
 
 Lyoko:
 
@@ -77,7 +79,7 @@ Lyoko:
                       db 0
 .avisoSalvamento:     db "O conteudo do arquivo foi alterado e nao foi salvo. Isso pode levar a perda de dados.", 10, 10
                       db "Voce deseja salvar suas alteracoes no arquivo? (S/n)", 10, 0
-.saida:               db "saida.app", 0
+.saida:               db "appX.app", 0
 .tamanhoLinha:        dd 0
 .identificador:       db "| Arquivo:               ", 0
 .nomeMontador:        db "| ", MONTADOR, 0
@@ -85,17 +87,28 @@ Lyoko:
 .avisoRapido:         db "A IDE do Lyoko utiliza como padrao o montador '", MONTADOR, "' para a construcao de aplicativos.", 10
                       db "Este montador de codigo livre foi portado e apresenta total compatibilidade com o Andromeda(R).", 10, 10
                       db "Voce pode utilizar atalhos de teclado para realizar a interacao com Lyoko.", 10
-                      db "Os atalhos sao acionados pela tecla Ctrl (Control), juntamente com uma tecla indicadora de acao.", 10
-                      db "Essas combinacoes de teclas podem ser:", 10, 10
+                      db "Os atalhos sao acionados pela tecla Ctrl (Control, ^), juntamente com uma tecla indicadora de acao.", 10
+                      db "Essas combinacoes de teclas podem ser (a tecla Ctrl representada por ^):", 10, 10
                       db "   [^A] - Solicita a abertura de um arquivo previamente salvo no disco.", 10
                       db "   [^S] - Solicita o salvamento das alteracoes em um arquivo no disco.", 10
                       db "   [^F] - Fecha Lyoko apos confirmacao de salvamento.", 10
-                      db "   [^M] - Aciona o montador '", MONTADOR, "' para construir a imagem executavel.", 10, 10
+                      db "   [^M] - Aciona o montador '", MONTADOR, "' para construir a imagem executavel.", 10
+					  db "   [^V] - Informacoes de versao e mais sobre o Lyoko.", 10, 10
                       db "Apos construir uma imagem, voce recebera o status da operacao diretamente na tela e, se tudo", 10
                       db "estiver certo, voce encontrara a imagem com a extensao .app no disco, contendo seu aplicativo.", 10
                       db "Voce pode utilizar a ferramenta 'lshapp' para verificar informacoes da imagem, caso necessario.", 10
                       db "Para saber mais sobre as informacoes que o utilitario pode oferecer ao analisar uma imagem,", 10
                       db "consulte o manual ('man lshapp') ou utilize 'lshapp ?'.", 10, 0
+.infoLyoko:           db "O nome Lyoko vem de uma serie que me marcou muito na infancia, chamada Code Lyoko.", 10
+                      db "De certa forma, essa serie fez com que eu me apaixonasse ainda mais pela computacao e nada mais", 10
+					  db "justo que prestar uma simbolica homenagem.", 10, 10
+					  db "Lyoko foi desenvolvido para ser uma IDE simples e facil de utilizar para desenvolver aplicativos", 10
+					  db "para Hexagonix/Andromeda no proprio sistema. Ele tambem vem sendo utilizado para desenvolver varios", 10
+					  db "componentes do proprio sistema operacional.", 10
+					  db "Lyoko vem ganhando cada vez mais funcoes e tambem e constantemente atualizado.", 10, 10
+					  db "Versao desta edicao do Lyoko: ", VERSAO, 10, 10
+					  db AUTOR, 10
+					  db DIREITOS, 10, 0
 .boasVindas:          db "Seja bem vindo a Lyoko, a IDE oficial do Andromeda(R)!", 10, 10
                       db "Com Lyoko, voce pode escrever e construir rapidamente maravilhosos aplicativos para o Andromeda(R).", 10
                       db "Voce pode a qualquer momento pressionar [^X] (Ctrl+X) para obter ajuda.", 10, 10, 10
@@ -668,6 +681,12 @@ AndromedaIDE:
 	
 	cmp al, 'A'
 	je .teclaControlA
+
+	cmp al, 'v'
+	je .teclaControlV
+	
+	cmp al, 'V'
+	je .teclaControlV
 
 	cmp al, 'm'
 	je .teclaControlM
@@ -1339,6 +1358,12 @@ AndromedaIDE:
 	
 	jmp .proximo1
 
+.teclaControlV:
+
+	call exibirInfo
+	
+	jmp .proximo1
+
 .teclaControlM:
 
 	call realizarMontagem
@@ -1918,6 +1943,33 @@ exibirAjuda:
 	call montarAviso
 
 	mov esi, Lyoko.avisoRapido
+
+	imprimirString
+
+.fim:
+
+	mov esi, Lyoko.fecharAviso
+
+	imprimirString
+
+	mov eax, dword[Lyoko.corFonte]
+	mov ebx, dword[Lyoko.corFundo]
+	
+	Andromeda definirCor
+	
+	mov byte[necessarioRedesenhar], 1
+	
+	ret
+
+;;************************************************************************************
+
+exibirInfo:
+
+	mov byte[Lyoko.caixaMaior], 01h
+
+	call montarAviso
+
+	mov esi, Lyoko.infoLyoko
 
 	imprimirString
 
