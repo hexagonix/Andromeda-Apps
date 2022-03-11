@@ -52,7 +52,6 @@ CORLISTRA   = LARANJA
 
 ;; Variáveis, constantes e estruturas
 
-
 VERSAO        equ "1.2" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-2022 Felipe Miguel Nery Lunkes"
