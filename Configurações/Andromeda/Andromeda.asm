@@ -37,9 +37,9 @@ match =SIM, VERBOSE
 
 }
 
-	Andromeda limparTela
+	Hexagonix limparTela
 	
-	Andromeda encerrarProcesso	
+	Hexagonix encerrarProcesso	
 
 ;;************************************************************************************
 
