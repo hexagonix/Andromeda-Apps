@@ -98,14 +98,14 @@ match =SIM, VERBOSE
 
 }
 
-	Andromeda obterInfoTela
+	Hexagonix obterInfoTela
 	
 	mov byte[maxColunas], bl
 	mov byte[maxLinhas], bh
 	
 	mov byte[alterado], 0
 
-	Andromeda obterCor
+	Hexagonix obterCor
 
 	mov dword[corFonte], eax 
 	mov dword[corFundo], ebx

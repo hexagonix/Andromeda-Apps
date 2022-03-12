@@ -40,14 +40,14 @@ include "../../../LibAPP/macros.s"
 
 inicioAPP:
 
-	Andromeda obterCor
+	Hexagonix obterCor
 
 	mov dword[Andromeda.Interface.corFonte], eax
 	mov dword[Andromeda.Interface.corFundo], ebx
 
-	Andromeda limparTela
+	Hexagonix limparTela
 
-	Andromeda obterInfoTela
+	Hexagonix obterInfoTela
 	
 	mov byte[Andromeda.Interface.numColunas], bl
 	mov byte[Andromeda.Interface.numLinhas], bh
@@ -59,12 +59,12 @@ inicioAPP:
 	AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
 	[Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dl, 2
 	mov dh, 1
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, serial.bannerAndromeda
 
@@ -76,11 +76,11 @@ inicioAPP:
 	mov dh, 10
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	mov esi, serial.nomePorta
 	
-	Andromeda abrir
+	Hexagonix abrir
 	
 	jc erroAbertura
 	
@@ -102,22 +102,22 @@ inicioAPP:
 
 	sub al, 20
 	
-	Andromeda obterString
+	Hexagonix obterString
 	
-	;; Andromeda cortarString			;; Remover espaços em branco extras
+	;; Hexagonix cortarString			;; Remover espaços em branco extras
 	
 	mov [msg], esi
 	
 	mov si, [msg]
 	
-	Andromeda escrever
+	Hexagonix escrever
 	
 	jc erro
 	
 	mov eax, VERDE_FLORESTA
 	mov ebx, dword[Andromeda.Interface.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, serial.enviado
 	
@@ -130,7 +130,7 @@ inicioAPP:
 	mov eax, dword[Andromeda.Interface.corFonte]
 	mov ebx, dword[Andromeda.Interface.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	novaLinha
 	novaLinha
@@ -141,11 +141,11 @@ inicioAPP:
 
 obterTeclas:
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	push eax
 	
-	Andromeda obterEstadoTeclas
+	Hexagonix obterEstadoTeclas
 	
 	bt eax, 0
 	jc .teclasControl
@@ -186,11 +186,11 @@ erro:
 	
 	imprimirString
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 
-	Andromeda limparTela
+	Hexagonix limparTela
 
-	Andromeda encerrarProcesso
+	Hexagonix encerrarProcesso
 
 ;;************************************************************************************
 
@@ -200,7 +200,7 @@ erroAbertura:
 	
 	imprimirString
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 
 	jmp Andromeda_Sair
 

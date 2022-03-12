@@ -45,7 +45,7 @@ inicioAPP:
 	push ds
 	pop es			
 	
-	Andromeda obterCor
+	Hexagonix obterCor
 
 	mov dword[Andromeda.Interface.corFonte], eax
 	mov dword[Andromeda.Interface.corFundo], ebx
@@ -53,9 +53,9 @@ inicioAPP:
 		
 .executarInterface:
 
-    Andromeda limparTela
+    Hexagonix limparTela
 
-    Andromeda obterInfoTela
+    Hexagonix obterInfoTela
 	
 	mov byte[Andromeda.Interface.numColunas], bl
 	mov byte[Andromeda.Interface.numLinhas], bh
@@ -73,7 +73,7 @@ inicioAPP:
 	mov dh, 10
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, fonte.boasVindas
 	
@@ -87,9 +87,9 @@ inicioAPP:
 	
 	sub al, 20
 	
-	Andromeda obterString
+	Hexagonix obterString
 	
-	Andromeda cortarString			;; Remover espaços em branco extras
+	Hexagonix cortarString			;; Remover espaços em branco extras
 	
 	mov [arquivoFonte], esi
 
@@ -97,7 +97,7 @@ inicioAPP:
 
 	jc erroFormato
 
-	Andromeda alterarFonte
+	Hexagonix alterarFonte
 	
 	jc erroFonte
 	
@@ -127,7 +127,7 @@ erroFormato:
 
 finalizarAPP:
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 
 	Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 	
@@ -138,7 +138,7 @@ validarFonte:
 	mov esi, [arquivoFonte]
 	mov edi, bufferArquivo
 
-	Andromeda abrir
+	Hexagonix abrir
 
 	jc .erroSemFonte
 
@@ -158,7 +158,7 @@ validarFonte:
 
 .verificarTamanho:
 
-	Andromeda arquivoExiste
+	Hexagonix arquivoExiste
 
 ;; Em EAX, o tamanho do arquivo. Ele não deve ser maior que 2000 bytes, o que poderia
 ;; sobrescrever dados na memória do Hexagon

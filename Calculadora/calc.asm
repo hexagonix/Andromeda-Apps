@@ -40,14 +40,14 @@ include "../../../LibAPP/macros.s"
 
 inicioAPP:
 
-	Andromeda obterCor
+	Hexagonix obterCor
 
 	mov dword[Andromeda.Interface.corFonte], eax
 	mov dword[Andromeda.Interface.corFundo], ebx
 	
-	Andromeda limparTela
+	Hexagonix limparTela
 
-	Andromeda obterInfoTela
+	Hexagonix obterInfoTela
 	
 	mov byte[Andromeda.Interface.numColunas], bl
 	mov byte[Andromeda.Interface.numLinhas], bh
@@ -67,7 +67,7 @@ inicioAPP:
 	mov dh, 13
 	mov dl, 00
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 ;;************************************************************************************
 
@@ -105,7 +105,7 @@ calcular:
 	
 	imprimirString
 	
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	cmp al, '0'
 	je adicionarNumeros
@@ -211,7 +211,7 @@ imprimirResposta:
 	
 	imprimirString
 	
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	jmp inicioAPP
 
@@ -227,11 +227,11 @@ obterNumero:
 
 	mov al, 10			;; Máximo de 10 caracteres
 	
-	Andromeda obterString
+	Hexagonix obterString
 	
-	Andromeda cortarString
+	Hexagonix cortarString
 	
-	Andromeda stringParaInt
+	Hexagonix stringParaInt
 	
 	push eax
 	

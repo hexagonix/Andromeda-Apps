@@ -84,14 +84,14 @@ inicioAPP:
 
     mov esi, gapp.vd0
 
-    Andromeda abrir ;; Abrir dispositivo
+    Hexagonix abrir ;; Abrir dispositivo
 
 ;; Pronto, agora vamos continuar. Primeiro, limpar a saida e obter informacoes
 ;; de resolucao
 
-    Andromeda limparTela
+    Hexagonix limparTela
 
-    Andromeda obterInfoTela
+    Hexagonix obterInfoTela
 	
     mov byte[Andromeda.Interface.numColunas], bl
     mov byte[Andromeda.Interface.numLinhas], bh
@@ -100,7 +100,7 @@ inicioAPP:
 ;; Isso e importante para definir se estamos em modo claro ou escuro de
 ;; interface
 
-    Andromeda obterCor
+    Hexagonix obterCor
 
     mov dword[Andromeda.Interface.corFonte], eax
     mov dword[Andromeda.Interface.corFundo], ebx
@@ -128,7 +128,7 @@ inicioAPP:
 
 ;; Vamos aguardar interacao do usuario para finalizar o app
 
-    Andromeda aguardarTeclado
+    Hexagonix aguardarTeclado
 
 ;; Interagiu? Ok, vamos finalizar o app
 

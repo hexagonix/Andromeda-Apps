@@ -17,17 +17,17 @@
 
 mostrarInterfaceFonte:	
 
-	Andromeda limparTela
+	Hexagonix limparTela
 
 ;; Imprime o título do programa e rodapé
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, corPadraoInterface
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, 0
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, TITULO.fonte
 	
@@ -37,7 +37,7 @@ mostrarInterfaceFonte:
 	
 	dec al
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, RODAPE.fonte
 	
@@ -46,19 +46,19 @@ mostrarInterfaceFonte:
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	call mostrarAvisoResolucao
 	
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dh, 02
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgFonte.introducao
 	
@@ -67,7 +67,7 @@ mostrarInterfaceFonte:
 	mov dh, 03
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgFonte.introducao2
 	
@@ -76,7 +76,7 @@ mostrarInterfaceFonte:
     mov dh, 06
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
     mov esi, msgFonte.solicitarArquivo
     
@@ -92,13 +92,13 @@ match =SIM, VERBOSE
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 
     mov al, 13
 	
-	Andromeda obterString
+	Hexagonix obterString
 	
-	Andromeda cortarString ;; Remover espaços em branco extras
+	Hexagonix cortarString ;; Remover espaços em branco extras
 	
 	mov dword[fonte], esi
 
@@ -116,13 +116,13 @@ match =SIM, VERBOSE
 	
 	clc
 
-	Andromeda arquivoExiste
+	Hexagonix arquivoExiste
 
 	jc .erroArquivo
 	
 	clc 
 
-	Andromeda alterarFonte
+	Hexagonix alterarFonte
 	
 	jc .erroFonte
 
@@ -136,12 +136,12 @@ match =SIM, VERBOSE
 	mov dh, 08
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 
 	mov esi, msgFonte.sucesso
 	
@@ -150,7 +150,7 @@ match =SIM, VERBOSE
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, dword[fonte]
 	
@@ -159,7 +159,7 @@ match =SIM, VERBOSE
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, msgFonte.fechamento
 	
@@ -172,7 +172,7 @@ match =SIM, VERBOSE
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, dword[fonte]
 	
@@ -181,7 +181,7 @@ match =SIM, VERBOSE
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, msgFonte.ponto
 	
@@ -198,12 +198,12 @@ match =SIM, VERBOSE
 	mov dh, 08
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 
 	mov esi, msgFonte.semArquivo
 	
@@ -223,12 +223,12 @@ match =SIM, VERBOSE
 	mov dh, 08
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, msgFonte.arquivoAusente
 	
@@ -248,7 +248,7 @@ match =SIM, VERBOSE
 	mov dh, 08
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgFonte.falha
 	
@@ -262,7 +262,7 @@ match =SIM, VERBOSE
 	
 .obterTeclas:
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	cmp al, 'v'
 	je mostrarInterfaceConfiguracoes

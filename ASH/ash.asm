@@ -153,14 +153,14 @@ match =SIM, VERBOSE
 
 ;; Iniciar a configuração do terminal
 
-	Andromeda obterCor
+	Hexagonix obterCor
 
 	mov dword[Andromeda.Interface.corFonte], eax
 	mov dword[Andromeda.Interface.corFundo], ebx
 
-    Andromeda limparTela
+    Hexagonix limparTela
 	
-	Andromeda obterInfoTela
+	Hexagonix obterInfoTela
 	
 	novaLinha
 
@@ -169,7 +169,7 @@ match =SIM, VERBOSE
 
 .exibirInfoAndromeda:
 	
-	Andromeda obterCursor
+	Hexagonix obterCursor
 	
 	push edx
 	
@@ -186,7 +186,7 @@ match =SIM, VERBOSE
 	
 	mov al, 0
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, ash.bannerASH
 	
@@ -210,9 +210,9 @@ match =SIM, VERBOSE
    
     novaLinha
    
-	Andromeda obterCursor
+	Hexagonix obterCursor
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	push ecx
 	
@@ -237,9 +237,9 @@ match =SIM, VERBOSE
 
 	sub al, 20
 	
-	Andromeda obterString
+	Hexagonix obterString
 	
-	Andromeda cortarString			 ;; Remover espaços em branco extras
+	Hexagonix cortarString			 ;; Remover espaços em branco extras
 		
 	cmp byte[esi], 0		         ;; Nenhum comando inserido
 	je .obterComando
@@ -250,7 +250,7 @@ match =SIM, VERBOSE
 	
 	mov edi, comandos.sair	
 
-	Andromeda compararPalavrasString
+	Hexagonix compararPalavrasString
 
 	jc .finalizarShell
 
@@ -258,7 +258,7 @@ match =SIM, VERBOSE
 	
 	mov edi, comandos.versao	
 
-	Andromeda compararPalavrasString
+	Hexagonix compararPalavrasString
 
 	jc .comandoVER
 
@@ -266,7 +266,7 @@ match =SIM, VERBOSE
 	
 	mov edi, comandos.ajuda	
 
-	Andromeda compararPalavrasString
+	Hexagonix compararPalavrasString
 
 	jc .comandoAJUDA
 	
@@ -274,7 +274,7 @@ match =SIM, VERBOSE
 	
 	mov edi, comandos.alterarDisco
 	
-	Andromeda compararPalavrasString
+	Hexagonix compararPalavrasString
 
 	jc .comandoAD
 
@@ -287,7 +287,7 @@ match =SIM, VERBOSE
 	push esi
 	push edi
 	
-	Andromeda tamanhoString
+	Hexagonix tamanhoString
 	
 	add esi, eax
 
@@ -295,7 +295,7 @@ match =SIM, VERBOSE
 	
 	mov edi, ash.extensaoProgramas
 	
-	Andromeda compararPalavrasString  ;; Checar por extensão .APP
+	Hexagonix compararPalavrasString  ;; Checar por extensão .APP
 	
 	jc .carregarPrograma
 	
@@ -306,7 +306,7 @@ match =SIM, VERBOSE
 		
 ;; Tentar adicionar extensão
 
-	Andromeda tamanhoString
+	Hexagonix tamanhoString
 	
 	mov ebx, eax
 
@@ -344,13 +344,13 @@ match =SIM, VERBOSE
 	cmp eax, Hexagon.imagemInvalida  ;; Limite de processos em execução atingido
 	je .imagemHAPPInvalida           ;; Se sim, exibir a mensagem apropriada
 	
-	Andromeda obterCursor
+	Hexagonix obterCursor
 	
 	mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
 
 	sub dl, 17
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	push ecx
 	
@@ -377,13 +377,13 @@ match =SIM, VERBOSE
 
 	push esi
 
-	Andromeda obterCursor
+	Hexagonix obterCursor
 	
 	mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
 
 	sub dl, 17
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	novaLinha
 	novaLinha
@@ -422,13 +422,13 @@ match =SIM, VERBOSE
 	
 }
 
-	Andromeda obterCursor
+	Hexagonix obterCursor
 	
 	mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
 
 	sub dl, 17
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	push ecx
 	
@@ -457,7 +457,7 @@ match =SIM, VERBOSE
 
 	mov esi, edi
 	
-	Andromeda cortarString
+	Hexagonix cortarString
 	
 	pop esi
 	
@@ -465,7 +465,7 @@ match =SIM, VERBOSE
 	
 	stc
 	
-	Andromeda iniciarProcesso
+	Hexagonix iniciarProcesso
 	
 	jc .falhaExecutando
 	
@@ -512,35 +512,35 @@ match =SIM, VERBOSE
 
 	add esi, 02h
 	
-	Andromeda cortarString
+	Hexagonix cortarString
 	
 	mov edi, discos.hd0	
     	
-	Andromeda compararPalavrasString
+	Hexagonix compararPalavrasString
 	
 	jc .alterarParaHD0
 	
 	mov edi, discos.hd1	
     	
-	Andromeda compararPalavrasString	
+	Hexagonix compararPalavrasString	
 	
 	jc .alterarParaHD1
 	
 	mov edi, discos.hd2	
     
-	Andromeda compararPalavrasString
+	Hexagonix compararPalavrasString
 	
 	jc .alterarParaHD2
 	
 	mov edi, discos.hd3	
     
-	Andromeda compararPalavrasString	
+	Hexagonix compararPalavrasString	
 	
 	jc .alterarParaHD3
 	
 	mov edi, discos.info	
     	
-	Andromeda compararPalavrasString
+	Hexagonix compararPalavrasString
 	
 	jc .infoDisco
 	
@@ -557,7 +557,7 @@ match =SIM, VERBOSE
 
     mov esi, discos.hd0
 	
-    Andromeda abrir
+    Hexagonix abrir
 
 	novaLinha
 
@@ -574,7 +574,7 @@ match =SIM, VERBOSE
 
     mov esi, discos.hd1
 	
-    Andromeda abrir
+    Hexagonix abrir
 
 	novaLinha
 
@@ -591,7 +591,7 @@ match =SIM, VERBOSE
 
     mov esi, discos.hd2
 	
-    Andromeda abrir
+    Hexagonix abrir
 
 	novaLinha
 
@@ -608,7 +608,7 @@ match =SIM, VERBOSE
 
     mov esi, discos.hd3
 	
-    Andromeda abrir
+    Hexagonix abrir
 
 	novaLinha
 
@@ -628,7 +628,7 @@ match =SIM, VERBOSE
   
     imprimirString  
 	
-	Andromeda obterDisco
+	Hexagonix obterDisco
 	
 	push edi
 	push esi
@@ -727,13 +727,13 @@ match =SIM, VERBOSE
 
 	mov ebx, 00h
 	
-	Andromeda encerrarProcesso
+	Hexagonix encerrarProcesso
 	
 	jmp .obterComando
 	
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
-	Andromeda encerrarProcesso
+	Hexagonix encerrarProcesso
 
 ;;************************************************************************************
 
@@ -788,7 +788,7 @@ obterArgumentos:
 	mov byte[esi-1], 0
 	mov ebx, esi
 	
-	Andromeda tamanhoString
+	Hexagonix tamanhoString
 	
 	mov ecx, eax
 	
@@ -843,7 +843,7 @@ alterarCor:
 	cmp ecx, 01h
 	je .padrao
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	ret
 	
@@ -852,7 +852,7 @@ alterarCor:
 	mov eax, dword[Andromeda.Interface.corFonte]
 	mov ebx, dword[Andromeda.Interface.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 
 	ret
 	

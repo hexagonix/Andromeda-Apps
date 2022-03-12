@@ -17,7 +17,7 @@
 
 mostrarAvisoResolucao:
 
-    Andromeda obterResolucao
+    Hexagonix obterResolucao
 	
 	cmp eax, 1
 	je .modoGrafico1
@@ -32,7 +32,7 @@ mostrarAvisoResolucao:
     dec al
 	dec al
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, msgGeral.mensagemResolucao
 	
@@ -56,7 +56,7 @@ mostrarLogoSistema:
     mov edi, 150     ;; Altura
     mov edx, corPadraoInterface ;; Cor
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
  
 .segundaLinha:
 
@@ -66,7 +66,7 @@ mostrarLogoSistema:
     mov edi, 150     ;; Altura
     mov edx, corPadraoInterface ;; Cor
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
 
 .terceiraLinha:
 
@@ -76,7 +76,7 @@ mostrarLogoSistema:
     mov edi, 20      ;; Altura
     mov edx, corPadraoInterface ;; Cor
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
 .quartaLinha:
 
@@ -86,17 +86,17 @@ mostrarLogoSistema:
     mov edi, 20      ;; Altura
     mov edx, corPadraoInterface ;; Cor
     
-    Andromeda desenharBloco    
+    Hexagonix desenharBloco    
 
 	mov dh, 02
 	mov dl, 14
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 
 	mov esi, msgGeral.marcaRegistrada
 
@@ -105,6 +105,6 @@ mostrarLogoSistema:
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 
 ret

@@ -67,4 +67,4 @@ inicioAPP:
 
     imprimirString
 
-    Andromeda encerrarProcesso
+    Hexagonix encerrarProcesso

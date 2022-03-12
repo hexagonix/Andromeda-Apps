@@ -24,17 +24,17 @@ match =SIM, VERBOSE
 
 }
 
-	Andromeda limparTela
+	Hexagonix limparTela
 
 ;; Imprime o título do programa e rodapé
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, corPadraoInterface
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, 0
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, TITULO.portaSerial
 	
@@ -44,7 +44,7 @@ match =SIM, VERBOSE
 	
 	dec al
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, RODAPE.portaSerial
 	
@@ -53,19 +53,19 @@ match =SIM, VERBOSE
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	call mostrarAvisoResolucao
 	
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dh, 02
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgSerial.introducao
 	
@@ -74,7 +74,7 @@ match =SIM, VERBOSE
 	mov dh, 03
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgSerial.introducao2
 	
@@ -83,7 +83,7 @@ match =SIM, VERBOSE
 	mov dh, 04
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgSerial.portaPadrao
 	
@@ -92,7 +92,7 @@ match =SIM, VERBOSE
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, portasSeriais.com1
 	
@@ -101,12 +101,12 @@ match =SIM, VERBOSE
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dh, 05
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgSerial.opcoes
 	
@@ -115,7 +115,7 @@ match =SIM, VERBOSE
 	mov dh, 08
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgSerial.opcoes2
 	
@@ -124,7 +124,7 @@ match =SIM, VERBOSE
 	mov dh, 09
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgSerial.opcoes3
 	
@@ -133,7 +133,7 @@ match =SIM, VERBOSE
 	
 .obterTeclas:
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	cmp al, 'v'
 	je mostrarInterfaceConfiguracoes
@@ -181,7 +181,7 @@ match =SIM, VERBOSE
 	mov dh, 10
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
     mov esi, msgSerial.mensagemEnviando
 	
@@ -189,7 +189,7 @@ match =SIM, VERBOSE
 	
 	mov esi, portasSeriais.com1
 	
-	Andromeda abrir
+	Hexagonix abrir
 	
 	jc erroAbertura
 	
@@ -199,14 +199,14 @@ match =SIM, VERBOSE
 	
 	mov si, [Buffers.msg]
 	
-	Andromeda escrever
+	Hexagonix escrever
 	
 	jc erro
 	
 	mov eax, VERDE_FLORESTA
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, msgSerial.enviado
 	
@@ -215,7 +215,7 @@ match =SIM, VERBOSE
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	jmp mostrarInterfaceSerial.obterTeclas
 	
@@ -232,18 +232,18 @@ match =SIM, VERBOSE
 
 	mov esi, portasSeriais.com1
 	
-	Andromeda abrir
+	Hexagonix abrir
 	
 	jc erroAbertura
 	
 	mov al, 10
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov dh, 10
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgSerial.insiraMensagem
 	
@@ -256,7 +256,7 @@ match =SIM, VERBOSE
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, portasSeriais.com1
 	
@@ -265,7 +265,7 @@ match =SIM, VERBOSE
 	mov eax,  Andromeda.Estelar.Tema.Fonte.fontePadrao
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, msgSerial.colcheteDireito
 	
@@ -278,22 +278,22 @@ match =SIM, VERBOSE
     mov al, byte[maxColunas]		;; Máximo de caracteres para obter
 	sub al, 20
 	
-	Andromeda obterString
+	Hexagonix obterString
 	
-	;; Andromeda cortarString		;; Remover espaços em branco extras (por enquanto isso nao será feito!)
+	;; Hexagonix cortarString		;; Remover espaços em branco extras (por enquanto isso nao será feito!)
 
 	mov [Buffers.msg], esi
 	
 	mov si, [Buffers.msg]
 	
-	Andromeda escrever
+	Hexagonix escrever
 	
 	jc erro
 	
 	mov eax, VERDE_FLORESTA
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, msgSerial.enviado
 	
@@ -302,7 +302,7 @@ match =SIM, VERBOSE
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	jmp mostrarInterfaceSerial.obterTeclas
 

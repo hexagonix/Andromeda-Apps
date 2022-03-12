@@ -17,17 +17,17 @@
 
 mostrarInterfaceConfigResolucao:	
 
-	Andromeda limparTela
+	Hexagonix limparTela
 
 ;; Imprime o título do programa e rodapé
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, corPadraoInterface
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, 0
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, TITULO.resolucao
 	
@@ -37,7 +37,7 @@ mostrarInterfaceConfigResolucao:
 	
 	dec al
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, RODAPE.resolucao
 	
@@ -46,7 +46,7 @@ mostrarInterfaceConfigResolucao:
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	call mostrarAvisoResolucao
 	
@@ -55,12 +55,12 @@ mostrarInterfaceConfigResolucao:
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dh, 02
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgResolucao.introducao
 	
@@ -69,7 +69,7 @@ mostrarInterfaceConfigResolucao:
 	mov dh, 03
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgResolucao.introducao2
 	
@@ -78,7 +78,7 @@ mostrarInterfaceConfigResolucao:
 	mov dh, 06
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgResolucao.inserir
 	
@@ -87,7 +87,7 @@ mostrarInterfaceConfigResolucao:
 	mov dh, 08
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgResolucao.opcao1
 	
@@ -96,7 +96,7 @@ mostrarInterfaceConfigResolucao:
 	mov dh, 09
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgResolucao.opcao2
 	
@@ -109,7 +109,7 @@ mostrarInterfaceConfigResolucao:
 		
 .obterTeclas:
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	cmp al, 'v'
 	je mostrarInterfaceConfiguracoes
@@ -143,12 +143,12 @@ mostrarInterfaceConfigResolucao:
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dh, 15
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgResolucao.resolucaoAlterada
 	
@@ -157,7 +157,7 @@ mostrarInterfaceConfigResolucao:
 	mov dh, 17
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgResolucao.alterado
 	
@@ -166,7 +166,7 @@ mostrarInterfaceConfigResolucao:
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	jmp .obterTeclas
 	
@@ -180,9 +180,9 @@ match =SIM, VERBOSE
 }
 
     mov eax, 1
-    Andromeda definirResolucao
+    Hexagonix definirResolucao
 	
-	Andromeda obterInfoTela
+	Hexagonix obterInfoTela
 	
 	mov byte[maxColunas], bl
 	mov byte[maxLinhas], bh
@@ -204,9 +204,9 @@ match =SIM, VERBOSE
 }
 
     mov eax, 2
-    Andromeda definirResolucao
+    Hexagonix definirResolucao
 	
-	Andromeda obterInfoTela
+	Hexagonix obterInfoTela
 	
 	mov byte[maxColunas], bl
 	mov byte[maxLinhas], bh
@@ -220,9 +220,9 @@ exibirResolucao:
     mov dh, 13
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
-    Andromeda obterResolucao
+    Hexagonix obterResolucao
 
     cmp eax, 1
     je .modoGrafico1

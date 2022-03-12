@@ -145,19 +145,19 @@ resolucao:            dd 0  ;; Resolução de vídeo
 
 AndromedaIDE:
 
-	Andromeda obterInfoTela
+	Hexagonix obterInfoTela
 	
 	mov byte[maxColunas], bl
 	mov byte[maxLinhas], bh
 	
 	mov byte[Lyoko.primeiraExecucao], 01h
 
-	Andromeda obterCor
+	Hexagonix obterCor
 
 	mov dword[Lyoko.corFonte], eax
 	mov dword[Lyoko.corFundo], ebx
 
-	Andromeda obterResolucao
+	Hexagonix obterResolucao
 
 	mov dword[resolucao], eax
 
@@ -166,7 +166,7 @@ AndromedaIDE:
 	
 	mov esi, edi				;; Argumentos do programa
 	
-	Andromeda tamanhoString
+	Hexagonix tamanhoString
 	
 	cmp eax, 12				    ;; Nome de arquivo inválido
 	ja .novoArquivo
@@ -193,7 +193,7 @@ AndromedaIDE:
 	
 	mov esi, nomeArquivo
 	
-	Andromeda arquivoExiste
+	Hexagonix arquivoExiste
 	
 	jc .novoArquivo				;; O arquivo não existe
 	
@@ -201,11 +201,11 @@ AndromedaIDE:
 	
 	mov edi, bufferArquivo		;; Endereço para o carregamento
 	
-	Andromeda abrir
+	Hexagonix abrir
 	
 	mov esi, nomeArquivo
 	
-	Andromeda tamanhoString
+	Hexagonix tamanhoString
 	
 	mov ecx, eax
 
@@ -253,7 +253,7 @@ AndromedaIDE:
 	
 	mov esi, bufferArquivo
 	
-	Andromeda encontrarCaractere
+	Hexagonix encontrarCaractere
 	
 	mov dword[totalLinhas], eax
 	
@@ -284,9 +284,9 @@ AndromedaIDE:
 
 	mov esi, video.vd1
 	
-	Andromeda abrir
+	Hexagonix abrir
 	
-	Andromeda limparTela
+	Hexagonix limparTela
 	
 	mov eax, dword[totalLinhas]
 	
@@ -322,11 +322,11 @@ AndromedaIDE:
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, CORDESTAQUE
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, 0
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, Lyoko.tituloPrograma
 	
@@ -336,19 +336,19 @@ AndromedaIDE:
 	
 	dec al
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, Lyoko.rodapePrograma
 	
 	imprimirString
 
-	Andromeda obterCursor
+	Hexagonix obterCursor
 
 	mov dl, byte[maxColunas]
 
 	sub dl, 48
 
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	mov esi, Lyoko.nomeMontador
 
@@ -358,7 +358,7 @@ AndromedaIDE:
 
 	sub dl, 41
 
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	mov esi, Lyoko.separador
 
@@ -378,7 +378,7 @@ AndromedaIDE:
 	
 	mov dh, 0
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	mov esi, Lyoko.identificador
 	
@@ -387,17 +387,17 @@ AndromedaIDE:
 	mov eax, dword[Lyoko.corFonte]
 	mov ebx, dword[Lyoko.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 ;; Atualizar tela
 
 .atualizarBuffer:
 
-	Andromeda atualizarTela
+	Hexagonix atualizarTela
 	 
 	mov esi, video.vd0
 	
-	Andromeda abrir
+	Hexagonix abrir
 	
 .outrasLinhasImpressas:
 	
@@ -406,7 +406,7 @@ AndromedaIDE:
 	mov dl, 0
 	mov dh, byte[posicaoLinhaNaTela]
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 		
 ;; Imprimir linha atual
 
@@ -418,14 +418,14 @@ AndromedaIDE:
 	
 	mov al, ' '
 
-	Andromeda imprimirCaractere
+	Hexagonix imprimirCaractere
 	
 ;; Imprimir linha e coluna atuais
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, CORDESTAQUE
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 
 	mov dl, byte[maxColunas]
 	
@@ -435,7 +435,7 @@ AndromedaIDE:
 	
 	dec dh
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	mov esi, Lyoko.linha
 	
@@ -463,12 +463,12 @@ AndromedaIDE:
 	
 	mov al, ' '
 	
-	Andromeda imprimirCaractere
+	Hexagonix imprimirCaractere
 	
 	mov eax, dword[Lyoko.corFonte]
 	mov ebx, dword[Lyoko.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 
 	cmp byte[Lyoko.primeiraExecucao], 01h
 	je exibirBoasVindas
@@ -480,17 +480,17 @@ AndromedaIDE:
 	mov dl, byte[posicaoAtualNaLinha]
 	mov dh, byte[posicaoLinhaNaTela]
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 ;; Obter teclas
 	
 .prontoParaTecla:
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	push eax
 	
-	Andromeda obterEstadoTeclas
+	Hexagonix obterEstadoTeclas
 	
 	bt eax, 0
 	jc .teclasControl
@@ -562,7 +562,7 @@ AndromedaIDE:
 	add esi, dword[posicaoLinhaAtual]
 	add esi, bufferArquivo
 	
-	Andromeda inserirCaractere			;; Inserir char na string
+	Hexagonix inserirCaractere			;; Inserir char na string
 	
 	inc byte[posicaoAtualNaLinha]		;; Um caractere foi adicionado
 	inc byte[tamanhoLinhaAtual]
@@ -586,7 +586,7 @@ AndromedaIDE:
 	
 	mov al, 10
 	
-	Andromeda inserirCaractere
+	Hexagonix inserirCaractere
 	
 ;; Nova linha
 
@@ -618,7 +618,7 @@ AndromedaIDE:
 	mov al, 10				            ;; Caractere de nova linha
 	mov esi, bufferArquivo
 	
-	Andromeda encontrarCaractere
+	Hexagonix encontrarCaractere
 	
 	mov dword[totalLinhas], eax
 	
@@ -723,7 +723,7 @@ AndromedaIDE:
 
 	mov esi, bufferArquivo
 	
-	Andromeda removerCaractereString
+	Hexagonix removerCaractereString
 	
 	dec byte[posicaoAtualNaLinha]	;; Um caractere foi removido
 	dec byte[tamanhoLinhaAtual]
@@ -779,7 +779,7 @@ AndromedaIDE:
 
 	mov esi, bufferArquivo
 	
-	Andromeda removerCaractereString
+	Hexagonix removerCaractereString
 	
 	dec byte[totalLinhas]			;; Uma linha foi removida
 	dec dword[linha]
@@ -834,7 +834,7 @@ AndromedaIDE:
 	
 	mov esi, bufferArquivo
 	
-	Andromeda removerCaractereString
+	Hexagonix removerCaractereString
 	
 	dec byte[tamanhoLinhaAtual]	;; Um caractere foi removido
 	
@@ -1397,7 +1397,7 @@ fimPrograma:
 
 .loopTeclas:
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	cmp al, 's'
 	je .iniciarSalvamento
@@ -1422,13 +1422,13 @@ jmp .loopTeclas
 	mov eax, dword[Lyoko.corFonte]
 	mov ebx, dword[Lyoko.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 
-	Andromeda rolarTela
+	Hexagonix rolarTela
 	
 	mov ebx, 00h
 	
-	Andromeda encerrarProcesso
+	Hexagonix encerrarProcesso
 
 ;;************************************************************************************
 ;;
@@ -1471,7 +1471,7 @@ imprimirLinha:
 	
 	mov ebx, 01h
 	
-	Andromeda imprimirCaractere		;; Imprimir caractere em AL
+	Hexagonix imprimirCaractere		;; Imprimir caractere em AL
 	
 	popad
 	
@@ -1601,20 +1601,20 @@ salvarArquivoEditor:
 	mov eax, PRETO
 	mov ebx, CINZA_CLARO
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, byte[maxLinhas]
 	
 	sub al, 2
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 
 	mov dl, 0
 	mov dh, byte[maxLinhas]
 	
 	sub dh, 2
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, Lyoko.solicitarArquivo
 	
@@ -1622,9 +1622,9 @@ salvarArquivoEditor:
 	
 	mov eax, 12				;; Máximo de caracteres
 	
-	Andromeda obterString
+	Hexagonix obterString
 	
-	Andromeda tamanhoString
+	Hexagonix tamanhoString
 	
 	cmp eax, 0
 	je .fim
@@ -1659,7 +1659,7 @@ salvarArquivoEditor:
 	mov eax, dword[Lyoko.corFonte]
 	mov ebx, dword[Lyoko.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	jmp .continuar
 	
@@ -1669,7 +1669,7 @@ salvarArquivoEditor:
 
 	mov esi, nomeArquivo
 	
-	Andromeda deletarArquivo
+	Hexagonix deletarArquivo
 	
 	jc .erroDeletando
 
@@ -1679,34 +1679,34 @@ salvarArquivoEditor:
 
 	mov esi, bufferArquivo
 	
-	Andromeda tamanhoString
+	Hexagonix tamanhoString
 	
 ;; Salvar arquivo
 
 	mov esi, nomeArquivo
 	mov edi, bufferArquivo
 	
-	Andromeda salvarArquivo
+	Hexagonix salvarArquivo
 
 ;; Exibir mensagem de salvamento
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, VERDE
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, byte[maxLinhas]
 	
 	sub al, 2
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 
 	mov dl, 0
 	mov dh, byte[maxLinhas]
 	
 	sub dh, 2
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	mov esi, Lyoko.arquivoSalvo
 	
@@ -1719,7 +1719,7 @@ salvarArquivoEditor:
 	mov eax, dword[Lyoko.corFonte]
 	mov ebx, dword[Lyoko.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov byte[necessarioRedesenhar], 1
 	
@@ -1733,26 +1733,26 @@ salvarArquivoEditor:
 	mov eax, PRETO
 	mov ebx, CINZA_CLARO
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, byte[maxLinhas]
 	
 	sub al, 2
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 
 	mov dl, 0
 	mov dh, byte[maxLinhas]
 	
 	sub dh, 2
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, Lyoko.erroDeletando
 	
 	imprimirString
 	
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	jmp .fim
 	
@@ -1761,20 +1761,20 @@ salvarArquivoEditor:
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, CORDESTAQUE
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, byte[maxLinhas]
 	
 	sub al, 2
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 
 	mov dl, 0
 	mov dh, byte[maxLinhas]
 	
 	sub dh, 2
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, Lyoko.permissaoNegada
 	
@@ -1791,20 +1791,20 @@ abrirArquivoEditor:
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, VERDE
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, byte[maxLinhas]
 	
 	sub al, 2
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 
 	mov dl, 0
 	mov dh, byte[maxLinhas]
 	
 	sub dh, 2
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, Lyoko.solicitarArquivo
 	
@@ -1812,9 +1812,9 @@ abrirArquivoEditor:
 	
 	mov eax, 12				;; Máximo de caracteres
 	
-	Andromeda obterString
+	Hexagonix obterString
 	
-	Andromeda tamanhoString
+	Hexagonix tamanhoString
 	
 	cmp eax, 0
 	je .fim
@@ -1849,7 +1849,7 @@ abrirArquivoEditor:
 	mov eax, dword[Lyoko.corFonte]
 	mov ebx, dword[Lyoko.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 
 	mov byte[necessarioRedesenhar], 1
 
@@ -1860,7 +1860,7 @@ abrirArquivoEditor:
 	mov eax, dword[Lyoko.corFonte]
 	mov ebx, dword[Lyoko.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov byte[necessarioRedesenhar], 1
 	
@@ -1913,7 +1913,7 @@ realizarMontagem:
 	mov esi, Lyoko.fasmX
 	mov edi, nomeArquivo
 
-	Andromeda iniciarProcesso
+	Hexagonix iniciarProcesso
 
 	jmp .fim
 
@@ -1932,7 +1932,7 @@ realizarMontagem:
 	mov eax, dword[Lyoko.corFonte]
 	mov ebx, dword[Lyoko.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov byte[necessarioRedesenhar], 1
 	
@@ -1959,7 +1959,7 @@ exibirAjuda:
 	mov eax, dword[Lyoko.corFonte]
 	mov ebx, dword[Lyoko.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov byte[necessarioRedesenhar], 1
 	
@@ -1986,7 +1986,7 @@ exibirInfo:
 	mov eax, dword[Lyoko.corFonte]
 	mov ebx, dword[Lyoko.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov byte[necessarioRedesenhar], 1
 	
@@ -2007,7 +2007,7 @@ exibirBoasVindas:
 	mov eax, dword[Lyoko.corFonte]
 	mov ebx, dword[Lyoko.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov byte[necessarioRedesenhar], 1
 
@@ -2050,7 +2050,7 @@ montarAviso:
 	mov edi, 200 ;; Altura do bloco
 	mov edx, CORDESTAQUE ;; Cor do bloco
 	
-	Andromeda desenharBloco
+	Hexagonix desenharBloco
 
 	mov eax, 0   ;; Início do bloco em X
 	mov ebx, 340 ;; Início do bloco em Y
@@ -2058,7 +2058,7 @@ montarAviso:
 	mov edi, 10  ;; Altura do bloco
 	mov edx, CORLISTRA ;; Cor do bloco
 	
-	Andromeda desenharBloco
+	Hexagonix desenharBloco
 
 	mov eax, 0   ;; Início do bloco em X
 	mov ebx, 550 ;; Início do bloco em Y
@@ -2066,17 +2066,17 @@ montarAviso:
 	mov edi, 10  ;; Altura do bloco
 	mov edx, CORLISTRA ;; Cor do bloco
 	
-	Andromeda desenharBloco
+	Hexagonix desenharBloco
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, CORDESTAQUE
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 
 	mov dl, 0h
 	mov dh, 22
 
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	jmp .fim
 
@@ -2088,7 +2088,7 @@ montarAviso:
 	mov edi, 250  ;; Altura do bloco
 	mov edx, CORDESTAQUE ;; Cor do bloco
 	
-	Andromeda desenharBloco
+	Hexagonix desenharBloco
 
 	mov eax, 0    ;; Início do bloco em X
 	mov ebx, 460  ;; Início do bloco em Y
@@ -2096,7 +2096,7 @@ montarAviso:
 	mov edi, 10   ;; Altura do bloco
 	mov edx, CORLISTRA ;; Cor do bloco
 	
-	Andromeda desenharBloco
+	Hexagonix desenharBloco
 
 	mov eax, 0    ;; Início do bloco em X
 	mov ebx, 710  ;; Início do bloco em Y
@@ -2104,17 +2104,17 @@ montarAviso:
 	mov edi, 10   ;; Altura do bloco
 	mov edx, CORLISTRA ;; Cor do bloco
 	
-	Andromeda desenharBloco
+	Hexagonix desenharBloco
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, CORDESTAQUE
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 
 	mov dl, 0h
 	mov dh, 30
 
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	jmp .fim
 
@@ -2126,7 +2126,7 @@ montarAviso:
 	mov edi, 360 ;; Altura do bloco
 	mov edx, CORDESTAQUE ;; Cor do bloco
 	
-	Andromeda desenharBloco
+	Hexagonix desenharBloco
 
 	mov eax, 0   ;; Início do bloco em X
 	mov ebx, 190 ;; Início do bloco em Y
@@ -2134,7 +2134,7 @@ montarAviso:
 	mov edi, 10  ;; Altura do bloco
 	mov edx, CORLISTRA ;; Cor do bloco
 	
-	Andromeda desenharBloco
+	Hexagonix desenharBloco
 
 	mov eax, 0   ;; Início do bloco em X
 	mov ebx, 550 ;; Início do bloco em Y
@@ -2142,17 +2142,17 @@ montarAviso:
 	mov edi, 10  ;; Altura do bloco
 	mov edx, CORLISTRA ;; Cor do bloco
 	
-	Andromeda desenharBloco
+	Hexagonix desenharBloco
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, CORDESTAQUE
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 
 	mov dl, 0h
 	mov dh, 14
 
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	jmp .fim
 
@@ -2164,7 +2164,7 @@ montarAviso:
 	mov edi, 510  ;; Altura do bloco
 	mov edx, CORDESTAQUE ;; Cor do bloco
 	
-	Andromeda desenharBloco
+	Hexagonix desenharBloco
 
 	mov eax, 0    ;; Início do bloco em X
 	mov ebx, 190  ;; Início do bloco em Y
@@ -2172,7 +2172,7 @@ montarAviso:
 	mov edi, 10   ;; Altura do bloco
 	mov edx, CORLISTRA ;; Cor do bloco
 	
-	Andromeda desenharBloco
+	Hexagonix desenharBloco
 
 	mov eax, 0    ;; Início do bloco em X
 	mov ebx, 710  ;; Início do bloco em Y
@@ -2180,17 +2180,17 @@ montarAviso:
 	mov edi, 10   ;; Altura do bloco
 	mov edx, CORLISTRA ;; Cor do bloco
 	
-	Andromeda desenharBloco
+	Hexagonix desenharBloco
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, CORDESTAQUE
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 
 	mov dl, 0h
 	mov dh, 14
 
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	jmp .fim
 

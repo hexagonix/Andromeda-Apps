@@ -24,17 +24,17 @@ match =SIM, VERBOSE
 
 }
 
-	Andromeda limparTela
+	Hexagonix limparTela
 
 ;; Imprime o título do programa e rodapé
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, corPadraoInterface
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, 0
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, TITULO.portaParalela
 	
@@ -44,7 +44,7 @@ match =SIM, VERBOSE
 	
 	dec al
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, RODAPE.portaParalela
 	
@@ -53,19 +53,19 @@ match =SIM, VERBOSE
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	call mostrarAvisoResolucao
 	
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dh, 02
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgPortaParalela.introducao
 	
@@ -74,7 +74,7 @@ match =SIM, VERBOSE
 	mov dh, 03
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgPortaParalela.introducao2
 	
@@ -85,7 +85,7 @@ match =SIM, VERBOSE
     mov dh, 06
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
     mov esi, msgPortaParalela.impressoraPadrao
   
@@ -94,7 +94,7 @@ match =SIM, VERBOSE
     mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, portasParalelas.imp0
 	
@@ -103,12 +103,12 @@ match =SIM, VERBOSE
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dh, 07
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	jmp .novaLinha
 	
@@ -118,7 +118,7 @@ match =SIM, VERBOSE
 	
 .obterTeclas:
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	cmp al, 'v'
 	je mostrarInterfaceConfiguracoes

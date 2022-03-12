@@ -17,17 +17,17 @@
 
 mostrarInterfaceDiscos:	
 
-	Andromeda limparTela
+	Hexagonix limparTela
 
 ;; Imprime o título do programa e rodapé
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, corPadraoInterface
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, 0
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, TITULO.discos
 	
@@ -37,7 +37,7 @@ mostrarInterfaceDiscos:
 	
 	dec al
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, RODAPE.discos
 	
@@ -46,19 +46,19 @@ mostrarInterfaceDiscos:
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	call mostrarAvisoResolucao
 	
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dh, 02
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgDiscos.introducao
 	
@@ -67,7 +67,7 @@ mostrarInterfaceDiscos:
 	mov dh, 03
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgDiscos.introducao2
 	
@@ -78,7 +78,7 @@ mostrarInterfaceDiscos:
     mov dh, 06
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
     mov esi, msgDiscos.discoAtual
   
@@ -91,7 +91,7 @@ match =SIM, VERBOSE
 
 }
 
-	Andromeda obterDisco
+	Hexagonix obterDisco
 	
 	push edi ;; Rótulo do disco
 	push esi ;; Nome do dispositivo segundo o sistema
@@ -100,7 +100,7 @@ match =SIM, VERBOSE
     mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	pop esi
 	
@@ -109,12 +109,12 @@ match =SIM, VERBOSE
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dh, 07
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgDiscos.rotuloVolume
 	
@@ -123,7 +123,7 @@ match =SIM, VERBOSE
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	pop esi
 	
@@ -132,7 +132,7 @@ match =SIM, VERBOSE
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	jmp .novaLinha
 	
@@ -142,7 +142,7 @@ match =SIM, VERBOSE
 	
 .obterTeclas:
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	cmp al, 'v'
 	je mostrarInterfaceConfiguracoes

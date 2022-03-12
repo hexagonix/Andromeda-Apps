@@ -17,17 +17,17 @@
 
 mostrarInterfaceInfo:	
 
-	Andromeda limparTela
+	Hexagonix limparTela
 
 ;; Imprime o título do programa e rodapé
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, corPadraoInterface
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, 0
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, TITULO.info
 	
@@ -37,7 +37,7 @@ mostrarInterfaceInfo:
 	
 	dec al
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, RODAPE.info
 	
@@ -46,26 +46,26 @@ mostrarInterfaceInfo:
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	call mostrarAvisoResolucao
 	
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	call mostrarLogoSistema
 	
 	mov dh, 02
 	mov dl, 20
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, msgInfo.introducao
 	
@@ -74,12 +74,12 @@ mostrarInterfaceInfo:
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dh, 04
 	mov dl, 18
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgInfo.nomeSistema
 	
@@ -92,7 +92,7 @@ mostrarInterfaceInfo:
 	mov dh, 05
 	mov dl, 18
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgInfo.versaoSistema
 	
@@ -102,11 +102,11 @@ mostrarInterfaceInfo:
 	
 	mov al, ' '
 
-	Andromeda imprimirCaractere
+	Hexagonix imprimirCaractere
 
 	mov al, '['
 
-	Andromeda imprimirCaractere
+	Hexagonix imprimirCaractere
 
 	mov esi, codigoObtido
 
@@ -114,12 +114,12 @@ mostrarInterfaceInfo:
 
 	mov al, ']'
 
-	Andromeda imprimirCaractere
+	Hexagonix imprimirCaractere
 
 	mov dh, 06
 	mov dl, 18
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgInfo.buildSistema
 	
@@ -132,7 +132,7 @@ mostrarInterfaceInfo:
 	mov dh, 07
 	mov dl, 18
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgInfo.tipoSistema
 	
@@ -145,7 +145,7 @@ mostrarInterfaceInfo:
 	mov dh, 08
 	mov dl, 18
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
  
     mov esi, msgInfo.pacoteAtualizacoes
     
@@ -157,7 +157,7 @@ mostrarInterfaceInfo:
     
     mov al, ' '
     
-    Andromeda imprimirCaractere
+    Hexagonix imprimirCaractere
     
     mov esi, dataHora
 
@@ -168,13 +168,13 @@ mostrarInterfaceInfo:
 	mov dh, 09
 	mov dl, 18
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
  
     mov esi, msgInfo.Hexagon
     
 	imprimirString
 
-	Andromeda retornarVersao
+	Hexagonix retornarVersao
 	
 	push ecx
 	push ebx
@@ -193,14 +193,14 @@ mostrarInterfaceInfo:
 	
 	mov al, ch
 	
-	Andromeda imprimirCaractere
+	Hexagonix imprimirCaractere
 
 ;; Voltamos à programação normal
 
 	mov dh, 11
 	mov dl, 18
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, nomeSistema
 	
@@ -209,7 +209,7 @@ mostrarInterfaceInfo:
     mov dh, 13
 	mov dl, 18
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgInfo.copyrightAndromeda
 	
@@ -218,7 +218,7 @@ mostrarInterfaceInfo:
 	mov dh, 14
 	mov dl, 18
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgInfo.direitosReservados
 	
@@ -227,12 +227,12 @@ mostrarInterfaceInfo:
 	mov dh, 16
 	mov dl, 28
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, msgInfo.introducaoHardware
 	
@@ -241,12 +241,12 @@ mostrarInterfaceInfo:
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dh, 18
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgInfo.processadorPrincipal
 	
@@ -255,7 +255,7 @@ mostrarInterfaceInfo:
 	mov dh, 19
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	mov esi, msgInfo.numProcessador
 	
@@ -263,14 +263,14 @@ mostrarInterfaceInfo:
 
 	mov esi, processadores.proc0
 	
-	Andromeda abrir
+	Hexagonix abrir
     
     imprimirString
 	
 	mov dh, 20
 	mov dl, 08
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	mov esi, msgInfo.operacaoProcessador
 	
@@ -279,7 +279,7 @@ mostrarInterfaceInfo:
 	mov dh, 22
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 
 	mov esi, msgInfo.memoriaDisponivel
 	
@@ -288,9 +288,9 @@ mostrarInterfaceInfo:
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
-	Andromeda usoMemoria
+	Hexagonix usoMemoria
 	
 	mov eax, ecx
 	
@@ -299,7 +299,7 @@ mostrarInterfaceInfo:
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov esi, msgInfo.kbytes
 	
@@ -307,7 +307,7 @@ mostrarInterfaceInfo:
 	
 .obterTeclas:
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	cmp al, 'v'
 	je mostrarInterfacePrincipal

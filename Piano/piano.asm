@@ -75,14 +75,14 @@ piano:
 
 inicioAPP:
 	
-	Andromeda obterCor
+	Hexagonix obterCor
 
 	mov dword[Andromeda.Interface.corFonte], eax
 	mov dword[Andromeda.Interface.corFundo], ebx
 
-	Andromeda limparTela
+	Hexagonix limparTela
 
-	Andromeda obterInfoTela
+	Hexagonix obterInfoTela
 	
 	mov byte[Andromeda.Interface.numColunas], bl
 	mov byte[Andromeda.Interface.numLinhas], bh
@@ -102,13 +102,13 @@ inicioAPP:
 	mov edi, 450 ;; Altura do bloco
 	mov edx, LAVANDA_PASTEL ;; Cor do bloco
 	
-	Andromeda desenharBloco
+	Hexagonix desenharBloco
 	
 	call montarTeclas
     
 .novamente:
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 
 .semtecla:				; Procura as teclas e emite os sons
 
@@ -218,7 +218,7 @@ inicioAPP:
 	mov eax, dword[Andromeda.Interface.corFonte]
 	mov ebx, dword[Andromeda.Interface.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	jmp exibirInterfaceSobre
 
@@ -241,11 +241,11 @@ inicioAPP:
 	mov eax, dword[Andromeda.Interface.corFonte]
 	mov ebx, dword[Andromeda.Interface.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
-	Andromeda desligarSom
+	Hexagonix desligarSom
 
-	Andromeda limparTela
+	Hexagonix limparTela
 	
 	Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 
@@ -261,7 +261,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
  
 .segundaTecla:
 
@@ -271,7 +271,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
 
 .terceiraTecla:
 
@@ -281,7 +281,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
 .quartaTecla:
 
@@ -291,7 +291,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
 .quintaTecla:
 
@@ -301,7 +301,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
 .sextaTecla:
 
@@ -311,7 +311,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
 .setimaTecla:
 
@@ -321,7 +321,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
 .oitavaTecla:
    
@@ -331,7 +331,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
 .blocoEspaco:
 
@@ -341,21 +341,21 @@ montarTeclas:
     mov edi, 40
     mov edx, PRETO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
 .legenda:
     
     mov eax, PRETO
 	mov ebx, LAVANDA_PASTEL
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 
 .teclaQ:
 	
 	mov dl, 19
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Andromeda definirCursor
+    Hexagonix definirCursor
 	
     mov esi, piano.teclaQ
     
@@ -366,7 +366,7 @@ montarTeclas:
     mov dl, 27 ;; Anterior + 8
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Andromeda definirCursor
+    Hexagonix definirCursor
 	
     mov esi, piano.teclaW
     
@@ -377,7 +377,7 @@ montarTeclas:
     mov dl, 34 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Andromeda definirCursor
+    Hexagonix definirCursor
 	
     mov esi, piano.teclaE
     
@@ -388,7 +388,7 @@ montarTeclas:
 	mov dl, 42 ;; Anterior + 8
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Andromeda definirCursor
+    Hexagonix definirCursor
 	
     mov esi, piano.teclaR
     
@@ -399,7 +399,7 @@ montarTeclas:
 	mov dl, 49 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Andromeda definirCursor
+    Hexagonix definirCursor
 	
     mov esi, piano.teclaT
     
@@ -410,7 +410,7 @@ montarTeclas:
 	mov dl, 57 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Andromeda definirCursor
+    Hexagonix definirCursor
 	
     mov esi, piano.teclaY
     
@@ -421,7 +421,7 @@ montarTeclas:
 	mov dl, 64 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Andromeda definirCursor
+    Hexagonix definirCursor
 	
     mov esi, piano.teclaU
     
@@ -432,7 +432,7 @@ montarTeclas:
 	mov dl, 72 ;; Anterior + 8
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Andromeda definirCursor
+    Hexagonix definirCursor
 	
     mov esi, piano.teclaI
     
@@ -443,12 +443,12 @@ montarTeclas:
     mov eax, BRANCO_ANDROMEDA
 	mov ebx, PRETO
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	    
     mov dl, 45 
     mov dh, 29 
     
-    Andromeda definirCursor
+    Hexagonix definirCursor
 	
     mov esi, piano.teclaEspaco
     
@@ -457,7 +457,7 @@ montarTeclas:
 	mov eax, dword[Andromeda.Interface.corFonte]
 	mov ebx, dword[Andromeda.Interface.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 
     ret
     
@@ -475,7 +475,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
  
 	ret
 	
@@ -489,7 +489,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
     ret
 
@@ -503,7 +503,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
     ret
     
@@ -517,7 +517,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
     ret
     
@@ -531,7 +531,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
     ret
     
@@ -545,7 +545,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
     ret
     
@@ -559,7 +559,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
     ret
     
@@ -573,7 +573,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
     ret
     
@@ -587,17 +587,17 @@ evidenciarTeclas:
     mov edi, 40
     mov edx, VERMELHO
     
-    Andromeda desenharBloco
+    Hexagonix desenharBloco
     
     mov eax, BRANCO_ANDROMEDA
 	mov ebx, VERMELHO
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	    
     mov dl, 45 
     mov dh, 29 
     
-    Andromeda definirCursor
+    Hexagonix definirCursor
 	
     mov esi, piano.teclaEspaco
     
@@ -606,7 +606,7 @@ evidenciarTeclas:
 	mov eax, dword[Andromeda.Interface.corFonte]
 	mov ebx, dword[Andromeda.Interface.corFundo]
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 
     ret
 
@@ -614,19 +614,19 @@ evidenciarTeclas:
     
 exibirInterfaceSobre:
 
-	Andromeda desligarSom
+	Hexagonix desligarSom
 	
-    Andromeda limparTela
+    Hexagonix limparTela
 
 	;; Imprime o título do programa e rodapé
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, AZUL_METALICO
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, 0
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, piano.titulo
 	imprimirString
@@ -635,7 +635,7 @@ exibirInterfaceSobre:
 	
 	dec al
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, piano.rodapeInfo
 	imprimirString
@@ -643,12 +643,12 @@ exibirInterfaceSobre:
 	mov eax, dword[Andromeda.Interface.corFonte]
 	mov ebx, dword[Andromeda.Interface.corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dh, 02
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, piano.sobreTeclado
 	
@@ -657,7 +657,7 @@ exibirInterfaceSobre:
 	mov dh, 03
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, piano.versaoTeclado
 	
@@ -666,7 +666,7 @@ exibirInterfaceSobre:
 	mov dh, 05
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, piano.autor
 	
@@ -675,7 +675,7 @@ exibirInterfaceSobre:
 	mov dh, 06
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, piano.direitos
 	
@@ -684,7 +684,7 @@ exibirInterfaceSobre:
 	mov dh, 08
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, piano.ajuda
 	
@@ -693,7 +693,7 @@ exibirInterfaceSobre:
 	mov dh, 10
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, piano.topico1
 	
@@ -702,7 +702,7 @@ exibirInterfaceSobre:
 	mov dh, 11
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, piano.topico2
 	
@@ -711,7 +711,7 @@ exibirInterfaceSobre:
 	mov dh, 12
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, piano.topico3
 	
@@ -720,7 +720,7 @@ exibirInterfaceSobre:
 	
 .obterTeclas:
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	cmp al, 'v'
 	je inicioAPP

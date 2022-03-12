@@ -17,17 +17,17 @@
 
 mostrarInterfaceConfiguracoes:	
 
-	Andromeda limparTela
+	Hexagonix limparTela
 
 ;; Imprime o título do programa e rodapé
 
 	mov eax, BRANCO_ANDROMEDA
 	mov ebx, corPadraoInterface
 	
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov al, 0
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, TITULO.configuracoes
 	imprimirString
@@ -36,7 +36,7 @@ mostrarInterfaceConfiguracoes:
 	
 	dec al
 	
-	Andromeda limparLinha
+	Hexagonix limparLinha
 	
 	mov esi, RODAPE.configuracoes
 	imprimirString
@@ -44,19 +44,19 @@ mostrarInterfaceConfiguracoes:
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	call mostrarAvisoResolucao
 	
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
 
-	Andromeda definirCor
+	Hexagonix definirCor
 	
 	mov dh, 02
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgConfig.introducao
 	
@@ -65,7 +65,7 @@ mostrarInterfaceConfiguracoes:
 	mov dh, 05
 	mov dl, 02
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgConfig.introducao2
 	
@@ -74,7 +74,7 @@ mostrarInterfaceConfiguracoes:
 	mov dh, 07
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgConfig.categoria1
 	
@@ -83,7 +83,7 @@ mostrarInterfaceConfiguracoes:
 	mov dh, 08
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgConfig.categoria2
 	
@@ -92,7 +92,7 @@ mostrarInterfaceConfiguracoes:
 	mov dh, 09
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgConfig.categoria3
 	
@@ -101,7 +101,7 @@ mostrarInterfaceConfiguracoes:
 	mov dh, 10
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgConfig.categoria4
 	
@@ -110,7 +110,7 @@ mostrarInterfaceConfiguracoes:
 	mov dh, 11
 	mov dl, 04
 	
-	Andromeda definirCursor
+	Hexagonix definirCursor
 	
 	mov esi, msgConfig.categoria5
 	
@@ -118,7 +118,7 @@ mostrarInterfaceConfiguracoes:
 	
 .obterTeclas:
 
-	Andromeda aguardarTeclado
+	Hexagonix aguardarTeclado
 	
 	cmp al, 'v'
 	je mostrarInterfacePrincipal
