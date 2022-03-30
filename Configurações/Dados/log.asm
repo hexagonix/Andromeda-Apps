@@ -22,6 +22,7 @@ Log.Config:
 .logInicio:                  db "[Config]: Iniciando o Configuracoes do Andromeda(R)...", 0
 .logInicioResolucaoCores:    db "[Config]: Obtendo a resolucao atual inicial do video...", 0
 .logVersaoDistro:            db "[Config]: Obtendo versao do Andromeda(R)...", 0 
+.logErroVersaoDistro:        db "[Config]: Impossivel obter informacoes de versao junto ao arquivo de dados.", 0 
 .logDiscos:                  db "[Config]: Requisitando dados de volumes junto ao Hexagon(R)...", 0
 .logPedirArquivoFonte:       db "[Config]: Solicitando do usuario um nome de arquivo que contenha uma fonte compativel...", 0
 .logFontes:                  db "[Config]: Configurando e solicitando troca de fonte de exibicao...", 0

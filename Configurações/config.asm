@@ -120,8 +120,24 @@ match =SIM, VERBOSE
 
 	call obterVersaoDistribuicao
 	
-	jmp mostrarInterfacePrincipal
+	jc .erroVersao
 
+	jmp .continuar
+
+.erroVersao:
+
+match =SIM, VERBOSE
+
+{
+
+	logSistema Log.Config.logErroVersaoDistro, 00h, Log.Prioridades.p4
+
+}
+
+.continuar:
+
+	jmp mostrarInterfacePrincipal
+	
 fonte: times 13 db 0
 
 corFundo: dd 0

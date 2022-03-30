@@ -15,6 +15,6 @@
 ;;
 ;;************************************************************************************
 
-VERSAOCONFIG             equ "1.6"
+VERSAOCONFIG             equ "1.6.1"
 VERSAOFERRAMENTAS        equ "1.0"
-VERSAODESIGNADAANDROMEDA equ "1.15.3"
+VERSAODESIGNADAANDROMEDA equ "1.0.4"
