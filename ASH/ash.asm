@@ -39,6 +39,8 @@ include "../../../LibAPP/log.s"
 include "../../../LibAPP/macros.s"
 include "../../../LibAPP/sistema.s"
 
+align 32
+
 ;;************************************************************************************
 ;;
 ;; Dados, variáveis e constantes utilizadas pelo Shell
@@ -56,8 +58,8 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "3.1" 
-compativelAndromeda equ "1.16"
+versaoASH           equ "3.4-beta" 
+compativelAndromeda equ "1.0.4-beta"
                     
 ;;**************************
 
@@ -65,9 +67,9 @@ ash:
 
 .prompt:             db "[/]: ", 0
 .extensaoProgramas:  db ".app", 0 ;; Extensão de aplicativos (executáveis Hexagon®)
-.comandoInvalido:    db 10, 10, "[!] Comando invalido ou aplicativo no formato HAPP nao encontrado.", 10, 0
-.bannerASH:          db "ASH - Andromeda (R) SHell", 0
-.boasVindas:         db 10, "Seja Bem Vindo ao Sistema Operacional Andromeda(R)", 10, 10
+.comandoInvalido:    db 10, 10, "[!] Comando interno invalido ou aplicativo no formato HAPP nao encontrado.", 10, 0
+.bannerASH:          db "ASH - Andromeda(R) SHell", 0
+.boasVindas:         db "Seja Bem Vindo ao Andromeda(R) SHell - ASH", 10, 10
                      db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10
 			         db "Todos os direitos reservados.", 10, 0
 .versaoAndromeda:    db 10, 10, "Sistema Operacional Andromeda(R)", 10 
@@ -108,8 +110,9 @@ ajuda:
 .introducao:    db 10, 10, "Andromeda SHell versao ", versaoASH, 10
                 db "Compativel com Andromeda(R) ", compativelAndromeda, " ou superior.", 0
 .conteudoAjuda: db 10, 10, "Comandos internos disponiveis:", 10, 10
-				db " VER - Exibe informacoes da versao do ASH em execucao", 10, 10
-				db "Tente digitar 'ls' para ver o que mais voce pode fazer!", 10, 0
+				db " VER  - Exibe informacoes da versao do ASH em execucao.", 10
+				db " SAIR - Finalizar essa sessao do ASH.", 10, 10
+				db "Tente digitar 'ls' para ver outros utilitarios e aplicativos disponiveis!", 10, 0
 		     
 ;;**************************
 
@@ -167,39 +170,8 @@ match =SIM, VERBOSE
 	mov byte[Andromeda.Interface.numColunas], bl
 	mov byte[Andromeda.Interface.numLinhas], bh
 
-.exibirInfoAndromeda:
-	
-	Hexagonix obterCursor
-	
-	push edx
-	
-	push ecx
-	
-	xor ecx, ecx
+	call exibirBannerASH
 
-	mov eax, BRANCO_ANDROMEDA
-	mov ebx, ASHPadrao
-	
-	call alterarCor
-	
-	pop ecx
-	
-	mov al, 0
-	
-	Hexagonix limparLinha
-	
-	mov esi, ash.bannerASH
-	
-	imprimirString
-	
-	mov ecx, 01h
-	
-	call alterarCor		
-	
-	pop edx	
-	
-	novaLinha
-	
 	mov esi, ash.boasVindas
 	
 	imprimirString
@@ -208,7 +180,7 @@ match =SIM, VERBOSE
 
 .obterComando:	
    
-    novaLinha
+    call exibirBannerASH
    
 	Hexagonix obterCursor
 	
@@ -856,6 +828,45 @@ alterarCor:
 
 	ret
 	
+;;************************************************************************************
+
+exibirBannerASH:
+	
+	Hexagonix obterCursor
+	
+	push edx
+	
+	push ecx
+	
+	xor ecx, ecx
+
+	mov eax, BRANCO_ANDROMEDA
+	mov ebx, ASHPadrao
+	
+	call alterarCor
+	
+	pop ecx
+	
+	mov al, 0
+	
+	Hexagonix limparLinha
+	
+	mov esi, ash.bannerASH
+	
+	imprimirString
+	
+	mov ecx, 01h
+	
+	call alterarCor		
+	
+	pop edx	
+	
+	inc dh 
+
+	Hexagonix definirCursor
+
+	ret 
+
 ;;************************************************************************************
 
 bufferArquivo:  ;; Endereço para carregamento de arquivos
