@@ -37,7 +37,6 @@ include "../../../LibAPP/Estelar/estelar.s"
 include "../../../LibAPP/erros.s"
 include "../../../LibAPP/log.s"
 include "../../../LibAPP/macros.s"
-include "../../../LibAPP/sistema.s"
 
 align 32
 
@@ -788,18 +787,6 @@ obterArgumentos:
 
 	ret
 	
-;;************************************************************************************	
-
-;; Solicita a versão do Sistema e a exibe para o usuário
- 	
-imprimirVersao:
-
-	mov esi, sistemaBase.versaoAndromeda
-	
-	imprimirString
-		
-	ret
-
 ;;************************************************************************************
 
 ;; Altera a cor da fonte e do plano de fundo

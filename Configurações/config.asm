@@ -39,7 +39,6 @@ include "../../../LibAPP/log.s"
 
 ;; Funções exclusivas de aplicativos base do Andromeda®
 
-include "../../../LibAPP/sistema.s"
 include "../../../LibAPP/verUtils.s"
 
 ;; Lista de dispositivos do Hexagon®
