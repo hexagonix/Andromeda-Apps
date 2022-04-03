@@ -49,10 +49,10 @@ msgInfo:
 .introducao:           db "Informacoes detalhadas do Sistema Operacional Andromeda(R)", 0
 .nomeSistema:          db "Nome do Sistema Operacional instalado: ", 0
 .versaoSistema:        db "Versao do Sistema Operacional: ", 0
-.buildSistema:         db "Build: ", 0
+.buildSistema:         db "Build do Sistema Operacional: ", 0
 .tipoSistema:          db "Tipo de Sistema Operacional instalado:", 0
 .modeloSistema:        db " 32 bits", 10, 0
-.pacoteAtualizacoes:   db "Pacote de atualizacao instalado: ", 0
+.pacoteAtualizacoes:   db "Pacote de atualizacoes instalado: ", 0
 .copyrightAndromeda:   db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 0
 .direitosReservados:   db "Todos os direitos reservados.", 0
 .introducaoHardware:   db "Informacoes do Hardware deste computador", 0
