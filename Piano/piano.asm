@@ -44,7 +44,7 @@ include "../../../LibAPP/macros.s"
 ;;
 ;;************************************************************************************
 
-VERSAO equ "10047.09g"
+VERSAO equ "1.0"
 
 piano:
 
@@ -56,9 +56,9 @@ piano:
 .topico1:       db "+ Utilize as teclas [QWERTYUI] para emitir notas.", 0
 .topico2:       db "+ Utilize a tecla [ESPACO] para silenciar as notas, quando necessario.", 0
 .topico3:       db "+ Por fim, utilize a tecla [Z] para finalizar este aplicativo a qualquer momento.", 0
-.titulo:        db "Piano Virtual 'return PIANO;'(R) para Andromeda(R) versao ", VERSAO, 0
-.rodape:        db "Pressione [Z] para sair e [ESPACO] para silenciar. Use [A] para mais informacoes", 0
-.rodapeInfo:    db "Pressione [V] para retornar ou [Z] para finalizar este aplicativo", 0
+.titulo:        db "Piano Virtual 'return PIANO;'(R) para Andromeda(R)", 0
+.rodape:        db "[", VERSAO, "] Pressione [Z] para sair e [ESPACO] para silenciar. Use [A] para mais informacoes", 0
+.rodapeInfo:    db "[", VERSAO, "] Pressione [V] para retornar ou [Z] para finalizar este aplicativo", 0
 
 .teclaQ:        db "Q", 0
 .teclaW:        db "W", 0

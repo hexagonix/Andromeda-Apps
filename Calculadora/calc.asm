@@ -264,6 +264,8 @@ mostrarLogoSistema:
 ;;
 ;;************************************************************************************
 
+VERSAO equ "1.6"
+
 calc:
 
 .dividirPorZero:  db "Divisao por zero nao permitida!", 0
@@ -285,8 +287,8 @@ calc:
                   db "                                    Todos os direitos reservados", 0              
 .marcaRegistrada: db "tm", 0
 
-.titulo:          db "Calculadora basica do Sistema Operacional Andromeda(R) versao 1.6",0
-.rodape:          db "[BETA] | [F1] Sair Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes",0
+.titulo:          db "Calculadora basica do Sistema Operacional Andromeda(R)",0
+.rodape:          db "[", VERSAO, "] | [F1] Sair",0
 
 primeiroNumero:   dd 0
 segundoNumero:	  dd 0
