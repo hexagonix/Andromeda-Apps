@@ -204,7 +204,7 @@ validarFonte:
 ;;
 ;;************************************************************************************
 
-versaoFonte equ "2.0"
+VERSAO equ "2.0"
 
 fonte:
 
@@ -230,7 +230,7 @@ fonte:
                   db "                                    Todos os direitos reservados", 0
                 
 .titulo:          db "Utilitario para troca de fonte padrao do Sistema Operacional Andromeda(R)", 0
-.rodape:          db "[", versaoFonte, "] | Utilize [F1] para cancelar o carregamento de uma nova fonte", 0
+.rodape:          db "[", VERSAO, "] | Utilize [F1] para cancelar o carregamento de uma nova fonte", 0
 .introducaoTeste: db 10, "Pre-visualizacao da fonte e disposicao dos caracteres: ", 0
 .testeFonte:      db "Sistema Operacional Andromeda(R)", 10, 10
                   db "1234567890-=", 10

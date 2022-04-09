@@ -63,13 +63,15 @@ Andromeda.Interface Andromeda.Estelar.Interface
 
 ;; Dentro de gapp estarao todos os dados de texto que serao exibidos ao usuario.
 
+VERSAO equ "1.0" ;; Versao do aplicativo
+
 gapp:
 
 .mensagemOla: db 10, 10, "Este e um exemplo de aplicativo HAPP grafico do Andromeda(R)!", 10, 10
               db 10, 10, "Pressione qualquer tecla para finalizar este programa...", 10, 10, 0 
 
 .TITULO:      db "Seja bem-vindo!", 0
-.RODAPE:      db "[BETA] | Pressione qualquer tecla para continuar...", 0			 	 
+.RODAPE:      db "[", VERSAO, "] | Pressione qualquer tecla para continuar...", 0			 	 
 
 .vd0:         db "vd0", 0 ;; Dispositivo padrao de saida
 
