@@ -52,7 +52,7 @@ CORLISTRA   = LARANJA
 
 ;; Constantes e estruturas
 
-VERSAO        equ "1.2.1" 
+VERSAO        equ "1.3.0" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-2022 Felipe Miguel Nery Lunkes"
 DIREITOS      equ "Todos os direitos reservados."
@@ -117,6 +117,7 @@ Lyoko:
 					  db "Voce pode comecar pressionando Ctrl-A [^A] para abrir um arquivo ou pressionar [ESC] e comecar a", 10
 					  db "codificar o seu projeto agora mesmo!" , 10, 10
 					  db "Pressione [ESC] para fechar as boas vindas e ir diretamente ao editor.", 10, 0
+.solicitandoMontagem: db "Executando o montador (", MONTADOR, ") para gerar seu aplicativo...", 10, 10, 0
 .editado:             db " *", 0 ;; O arquivo foi editado?
 .tituloAlterado:      db 0  ;; Título alterado?
 .caixaMaior:          db 0  ;; Tamanho da caixa (relativo à resolução da tela)
@@ -1905,6 +1906,10 @@ realizarMontagem:
 
 	call montarAviso
 
+	mov esi, Lyoko.solicitandoMontagem
+
+	imprimirString
+
 	mov esi, nomeArquivo
 
 	cmp byte[esi], 0
@@ -1936,7 +1941,7 @@ realizarMontagem:
 	
 	mov byte[necessarioRedesenhar], 1
 	
-	jmp AndromedaIDE.obterTecla
+	jmp AndromedaIDE.proximo1
 	
 ;;************************************************************************************
 
