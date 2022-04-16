@@ -57,8 +57,8 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "3.4-beta" 
-compativelAndromeda equ "1.0.4-beta"
+versaoASH           equ "3.4" 
+compativelAndromeda equ "1.1-beta3"
                     
 ;;**************************
 
