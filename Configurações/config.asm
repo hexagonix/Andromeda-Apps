@@ -32,6 +32,10 @@ cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 9, 00, inicioAPP, 01h
 
 ;;************************************************************************************
 
+inicioAPP:
+
+	jmp entradaConfig
+
 include "../../../LibAPP/hexagon.s"
 include "../../../LibAPP/Estelar/estelar.s"
 include "../../../LibAPP/macros.s"
@@ -51,22 +55,9 @@ include "../../../LibAPP/dispositivos.s"
 
 include "Dados\versao.asm"
 
-;; Dados utilizados no aplicativo
+;; Dados de gerenciamento
 
 include "Dados\Video.asm"
-include "Dados\Interfaces.asm"
-
-;; Interfaces do aplicativo
-
-include "Interfaces\Principal.asm"
-include "Interfaces\Info.asm"
-include "Interfaces\Config.asm"
-include "Interfaces\Resolucao.asm"
-include "Interfaces\Video.asm"
-include "Interfaces\Discos.asm"
-include "Interfaces\Fonte.asm"
-include "Interfaces\Paralela.asm"
-include "Interfaces\Serial.asm"
 
 ;; Os dados de log só serão incluídos no aplicativo se for necessário. O padrão é que
 ;; sejam incluídos
@@ -82,11 +73,27 @@ include "Dados\log.asm"
 
 include "Andromeda\Andromeda.asm"
 
+;; Interfaces do aplicativo
+
+include "Interfaces\Principal.asm"
+include "Interfaces\Info.asm"
+include "Interfaces\Config.asm"
+include "Interfaces\Resolucao.asm"
+include "Interfaces\Video.asm"
+include "Interfaces\Discos.asm"
+include "Interfaces\Fonte.asm"
+include "Interfaces\Paralela.asm"
+include "Interfaces\Serial.asm"
+
+;; Mensagens do aplicativo 
+
+include "Dados\Interfaces.asm"
+
 corPadraoInterface = MARROM_PERU
 
 ;;************************************************************************************
 
-inicioAPP:
+entradaConfig:
 
 match =SIM, VERBOSE
 

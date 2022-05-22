@@ -15,6 +15,10 @@
 ;;
 ;;************************************************************************************
 
+use32 
+
+align 32
+
 msgInicio: ;; Contêm todas as mensagens abaixo
 
 .introducao:           db "Sobre o Sistema Operacional", 0
