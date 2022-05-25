@@ -43,17 +43,11 @@ mostrarInterfaceInfo:
 	
 	imprimirString
 	
-	mov eax, corPadraoInterface
-	mov ebx, dword[corFundo]
-
-	Hexagonix definirCor
+	call definirCorTema
 	
 	call mostrarAvisoResolucao
 	
-	mov eax, dword[corFonte]
-	mov ebx, dword[corFundo]
-
-	Hexagonix definirCor
+	call definirCorPadrao
 	
 	call mostrarLogoSistema
 	
@@ -62,19 +56,13 @@ mostrarInterfaceInfo:
 	
 	Hexagonix definirCursor
 
-	mov eax, corPadraoInterface
-	mov ebx, dword[corFundo]
-
-	Hexagonix definirCor
+	call definirCorTema
 	
 	mov esi, msgInfo.introducao
 	
     imprimirString	
 
-	mov eax, dword[corFonte]
-	mov ebx, dword[corFundo]
-
-	Hexagonix definirCor
+	call definirCorPadrao
 	
 	mov dh, 04
 	mov dl, 18
@@ -85,10 +73,14 @@ mostrarInterfaceInfo:
 	
 	imprimirString
 	
+	call definirCorTema
+	
 	mov esi, nomeSistema
 	
 	imprimirString
 	
+	call definirCorPadrao
+
 	mov dh, 05
 	mov dl, 18
 	
@@ -97,6 +89,8 @@ mostrarInterfaceInfo:
 	mov esi, msgInfo.versaoSistema
 	
 	imprimirString
+	
+	call definirCorTema
 	
 	call imprimirVersao
 	
@@ -116,6 +110,8 @@ mostrarInterfaceInfo:
 
 	Hexagonix imprimirCaractere
 
+	call definirCorPadrao
+
 	mov dh, 06
 	mov dl, 18
 	
@@ -125,10 +121,14 @@ mostrarInterfaceInfo:
 	
 	imprimirString
 	
+	call definirCorTema
+	
 	mov esi, buildObtida
 	
 	imprimirString
 	
+	call definirCorPadrao
+
 	mov dh, 07
 	mov dl, 18
 	
@@ -138,10 +138,14 @@ mostrarInterfaceInfo:
 	
 	imprimirString
 	
+	call definirCorTema
+
 	mov esi, msgInfo.modeloSistema
 	
 	imprimirString
 	
+	call definirCorPadrao
+
 	mov dh, 08
 	mov dl, 18
 	
@@ -150,6 +154,8 @@ mostrarInterfaceInfo:
     mov esi, msgInfo.pacoteAtualizacoes
     
 	imprimirString
+	
+	call definirCorTema
 	
 	mov esi, pacoteAtualizacoes
 	
@@ -163,6 +169,8 @@ mostrarInterfaceInfo:
 
 	imprimirString
 
+	call definirCorPadrao
+
 ;; Agora vamos exibir informações sobre o Hexagon
 
 	mov dh, 09
@@ -174,6 +182,8 @@ mostrarInterfaceInfo:
     
 	imprimirString
 
+	call definirCorTema
+	
 	Hexagonix retornarVersao
 	
 	push ecx
@@ -194,6 +204,8 @@ mostrarInterfaceInfo:
 	mov al, ch
 	
 	Hexagonix imprimirCaractere
+
+	call definirCorPadrao
 
 ;; Voltamos à programação normal
 
@@ -229,19 +241,13 @@ mostrarInterfaceInfo:
 	
 	Hexagonix definirCursor
 	
-	mov eax, corPadraoInterface
-	mov ebx, dword[corFundo]
-
-	Hexagonix definirCor
+	call definirCorTema
 	
 	mov esi, msgInfo.introducaoHardware
 	
 	imprimirString
 	
-	mov eax, dword[corFonte]
-	mov ebx, dword[corFundo]
-
-	Hexagonix definirCor
+	call definirCorPadrao
 	
 	mov dh, 18
 	mov dl, 02
@@ -285,10 +291,7 @@ mostrarInterfaceInfo:
 	
 	imprimirString
 	
-	mov eax, corPadraoInterface
-	mov ebx, dword[corFundo]
-
-	Hexagonix definirCor
+	call definirCorTema
 	
 	Hexagonix usoMemoria
 	
@@ -296,10 +299,7 @@ mostrarInterfaceInfo:
 	
 	imprimirInteiro
 	
-	mov eax, dword[corFonte]
-	mov ebx, dword[corFundo]
-
-	Hexagonix definirCor
+	call definirCorPadrao
 	
 	mov esi, msgInfo.kbytes
 	
