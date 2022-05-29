@@ -38,8 +38,6 @@ include "../../../LibAPP/erros.s"
 include "../../../LibAPP/log.s"
 include "../../../LibAPP/macros.s"
 
-align 32
-
 ;;************************************************************************************
 ;;
 ;; Dados, variáveis e constantes utilizadas pelo Shell
@@ -57,14 +55,13 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "3.5" 
+versaoASH           equ "3.5.1" 
 compativelAndromeda equ "H1 R2"
                     
 ;;**************************
 
 ash:
 
-.prompt:             db "[/]: ", 0
 .extensaoProgramas:  db ".app", 0 ;; Extensão de aplicativos (executáveis Hexagon®)
 .comandoInvalido:    db 10, 10, "[!] Comando interno invalido ou aplicativo no formato HAPP nao encontrado.", 10, 0
 .bannerASH:          db "ASH - Andromeda(R) SHell", 0
@@ -79,6 +76,7 @@ ash:
                      db "[!] Tente primeiramente finalizar aplicativos ou suas instancias, e tente novamente.", 10, 0		             
 .ponto:              db ".", 0
 .imagemInvalida:     db ": nao e possivel carregar a imagem. Formato executavel nao suportado.", 10, 0
+.prompt:             db "[/]: ", 0
 
 match =SIM, VERBOSE
 {
@@ -849,6 +847,8 @@ exibirBannerASH:
 	pop edx	
 	
 	inc dh 
+
+	mov dl, 00h
 
 	Hexagonix definirCursor
 
