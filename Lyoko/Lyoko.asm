@@ -45,6 +45,8 @@ include "../../../LibAPP/dispositivos.s"
 ;;
 ;;************************************************************************************
 
+align 128
+
 ;; Aparência (cores)
 
 CORDESTAQUE = VERMELHO_TIJOLO
@@ -52,7 +54,7 @@ CORLISTRA   = LARANJA
 
 ;; Constantes e estruturas
 
-VERSAO        equ "1.3.0" 
+VERSAO        equ "1.3.1" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-2022 Felipe Miguel Nery Lunkes"
 DIREITOS      equ "Todos os direitos reservados."

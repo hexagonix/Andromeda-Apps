@@ -28,7 +28,7 @@ use32
 include "../../../LibAPP/HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
 ;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
-cabecalhoASH cabecalhoHAPP HAPP.Arquiteturas.i386, 9, 00, inicioShell, 01h
+cabecalhoASH cabecalhoHAPP HAPP.Arquiteturas.i386, 9, 03, inicioShell, 01h
 
 ;;************************************************************************************
 
@@ -57,8 +57,8 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "3.4" 
-compativelAndromeda equ "H1"
+versaoASH           equ "3.5" 
+compativelAndromeda equ "H1 R2"
                     
 ;;**************************
 
@@ -68,7 +68,7 @@ ash:
 .extensaoProgramas:  db ".app", 0 ;; Extensão de aplicativos (executáveis Hexagon®)
 .comandoInvalido:    db 10, 10, "[!] Comando interno invalido ou aplicativo no formato HAPP nao encontrado.", 10, 0
 .bannerASH:          db "ASH - Andromeda(R) SHell", 0
-.boasVindas:         db "Seja Bem Vindo ao Andromeda(R) SHell - ASH", 10, 10
+.boasVindas:         db "Seja bem-vindo ao Andromeda(R) SHell - ASH", 10, 10
                      db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10
 			         db "Todos os direitos reservados.", 10, 0
 .versaoAndromeda:    db 10, 10, "Sistema Operacional Andromeda(R)", 10 
