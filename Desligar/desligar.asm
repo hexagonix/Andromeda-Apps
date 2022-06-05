@@ -81,28 +81,19 @@ iniciarInterface:
 	Andromeda.Estelar.criarLogotipo INDIGO, BRANCO_ANDROMEDA,\
 	[Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-	mov dh, 14
-	mov dl, 02
-	
-	Hexagonix definirCursor
+	cursorPara 02, 14
 	
 	mov esi, desligar.msgFinalizar
 
 	imprimirString
 
-	mov dh, 15
-	mov dl, 02
-	
-	Hexagonix definirCursor
+	cursorPara 02, 15
 
 	mov esi, desligar.msgReiniciar
 
 	imprimirString
 	
-	mov dh, 17
-	mov dl, 02
-	
-	Hexagonix definirCursor
+	cursorPara 02, 17
 
 	mov esi, desligar.msgSair
 
@@ -114,10 +105,7 @@ iniciarInterface:
 
  finalizarSistema:
 
-	mov dh, 18
-	mov dl, 02
-	
-	Hexagonix definirCursor
+	cursorPara 02, 18
 
 	mov esi, desligar.msgDesligamento
 
@@ -330,10 +318,16 @@ Andromeda_Sair:
 ;;************************************************************************************
 
 ENERGIA equ "energia.app"   
-VERSAO  equ "1.0"
+VERSAO  equ "1.0.1"
+
+align 16
 
 desligar:
 
+.bannerAndromeda:        db 10 
+                         db "                                   Sistema Operacional Andromeda(R)", 10, 10, 10, 10
+                         db "                           Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10
+                         db "                                    Todos os direitos reservados", 0
 .energia:                db ENERGIA, 0
 .parametroDesligar:      db "-de", 0 ;; Parâmetro que indica que não deve haver eco
 .parametroReiniciar:     db "-re", 0 ;; Parâmetro que indica que não deve haver eco
@@ -347,15 +341,11 @@ desligar:
 .msgSair:                db "Pressione [Ctrl-S] ou [F1] para retornar ao Andromeda(R)", 0
 .msgPronto:              db "[Concluido]", 0
 .msgFalha:               db "[Falha]", 0
-.bannerAndromeda:        db 10 
-                         db "                                   Sistema Operacional Andromeda(R)", 10, 10, 10, 10
-                         db "                           Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10
-                         db "                                    Todos os direitos reservados", 0
 .falhaUtilitarioEnergia: db 10, 10, "Falha ao executar o utilitario Unix energia. Tente novamente mais tarde.", 10
                          db "Pressione qualquer tecla para finalizar este aplicativo...", 0
 
 .titulo: db "Opcoes de desligamento do Sistema Operacional Andromeda(R)",0
-.rodape: db "[", VERSAO, "] | Sistema Operacional Andromeda(R). Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes",0
+.rodape: db "[", VERSAO, "]",0
 
 parametro: dd ?
 
