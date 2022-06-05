@@ -28,7 +28,7 @@ use32
 include "../../../LibAPP/HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
 ;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
-cabecalhoASH cabecalhoHAPP HAPP.Arquiteturas.i386, 9, 03, inicioShell, 01h
+cabecalhoASH cabecalhoHAPP HAPP.Arquiteturas.i386, 9, 04, inicioShell, 01h
 
 ;;************************************************************************************
 
@@ -55,7 +55,7 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "3.5.1" 
+versaoASH           equ "3.5.2" 
 compativelAndromeda equ "H1 R2"
                     
 ;;**************************
@@ -78,8 +78,7 @@ ash:
 .imagemInvalida:     db ": nao e possivel carregar a imagem. Formato executavel nao suportado.", 10, 0
 .prompt:             db "[/]: ", 0
 
-match =SIM, VERBOSE
-{
+;; Verbose 
 
 .verboseEntradaASH: db "[ASH]: Iniciando o Andromeda SHell (ASH) para Andromeda ", compativelAndromeda, " ou superior.", 0
 .verboseVersaoASH:  db "[ASH]: Andromeda SHell versao ", versaoASH, ".", 0
@@ -88,8 +87,6 @@ match =SIM, VERBOSE
 .verboseSaida:      db "[ASH]: Finalizando o ASH e retornando o controle ao processo pai...", 0
 .verboseLimite:     db "[ASH]: [!] Limite de memoria ou de processos atingido!", 0
 .verboseInterfaceMountAntiga: db "[ASH]: [!!!] Realizando manipulacao de pontos de montagem por funcao obsoleta e que sera removida.", 0
-
-}
 
 ;;**************************
 
