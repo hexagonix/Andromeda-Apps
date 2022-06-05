@@ -67,6 +67,7 @@ msgInfo:
 .kbytes:               db " megabytes.", 0
 .Hexagon:              db "Versao do Hexagon: ", 0
 .ponto:                db ".", 0
+.semCPUID:             db "O processador principal nao suporta a instrucao CPUID e nao pode ser nomeado.", 0
 
 ;;************************************************************************************
 

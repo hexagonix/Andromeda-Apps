@@ -55,19 +55,13 @@ mostrarInterfaceDiscos:
 
 	Hexagonix definirCor
 	
-	mov dh, 02
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 02
 	
 	mov esi, msgDiscos.introducao
 	
 	imprimirString
 	
-	mov dh, 03
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 03
 	
 	mov esi, msgDiscos.introducao2
 	
@@ -75,10 +69,7 @@ mostrarInterfaceDiscos:
 	
 .infoDisco:
 
-    mov dh, 06
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 06
 	
     mov esi, msgDiscos.discoAtual
   
@@ -111,10 +102,7 @@ match =SIM, VERBOSE
 	
 	Hexagonix definirCor
 	
-	mov dh, 07
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 07
 	
 	mov esi, msgDiscos.rotuloVolume
 	

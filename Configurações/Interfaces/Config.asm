@@ -53,64 +53,43 @@ mostrarInterfaceConfiguracoes:
 
 	Hexagonix definirCor
 	
-	mov dh, 02
-	mov dl, 02
-	
-	Hexagonix definirCursor
+	cursorPara 02, 02
 	
 	mov esi, msgConfig.introducao
 	
 	imprimirString
 	
-	mov dh, 05
-	mov dl, 02
-	
-	Hexagonix definirCursor
+	cursorPara 02, 05
 	
 	mov esi, msgConfig.introducao2
 	
 	imprimirString
 	
-	mov dh, 07
-	mov dl, 04
-	
-	Hexagonix definirCursor
+	cursorPara 04, 07 
 	
 	mov esi, msgConfig.categoria1
 	
 	imprimirString
 	
-	mov dh, 08
-	mov dl, 04
-	
-	Hexagonix definirCursor
+	cursorPara 04, 08
 	
 	mov esi, msgConfig.categoria2
 	
 	imprimirString
 	
-	mov dh, 09
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 09 
 	
 	mov esi, msgConfig.categoria3
 	
 	imprimirString
 	
-	mov dh, 10
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 10
 	
 	mov esi, msgConfig.categoria4
 	
 	imprimirString
 	
-	mov dh, 11
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 11
 	
 	mov esi, msgConfig.categoria5
 	

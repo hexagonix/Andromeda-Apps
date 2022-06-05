@@ -55,28 +55,19 @@ mostrarInterfaceFonte:
 
 	Hexagonix definirCor
 	
-	mov dh, 02
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
+    cursorPara 02, 02
+
 	mov esi, msgFonte.introducao
 	
 	imprimirString
 	
-	mov dh, 03
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 03
 	
 	mov esi, msgFonte.introducao2
 	
 	imprimirString
 
-    mov dh, 06
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 06
 	
     mov esi, msgFonte.solicitarArquivo
     
@@ -133,10 +124,7 @@ match =SIM, VERBOSE
 
 }
 
-	mov dh, 08
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 08
 	
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
@@ -195,10 +183,7 @@ match =SIM, VERBOSE
 
 .semArquivo:
 
-	mov dh, 08
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 08
 	
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
@@ -220,10 +205,7 @@ match =SIM, VERBOSE
 
 }
 
-	mov dh, 08
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 08
 	
 	mov eax, dword[corFonte]
 	mov ebx, dword[corFundo]
@@ -245,10 +227,7 @@ match =SIM, VERBOSE
 
 }
 
-	mov dh, 08
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 08
 	
 	mov esi, msgFonte.falha
 	

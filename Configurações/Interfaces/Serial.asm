@@ -62,28 +62,19 @@ match =SIM, VERBOSE
 
 	Hexagonix definirCor
 	
-	mov dh, 02
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 02
 	
 	mov esi, msgSerial.introducao
 	
 	imprimirString
 	
-	mov dh, 03
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 03
 	
 	mov esi, msgSerial.introducao2
 	
 	imprimirString
 	
-	mov dh, 04
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 04
 	
 	mov esi, msgSerial.portaPadrao
 	
@@ -103,28 +94,19 @@ match =SIM, VERBOSE
 	
 	Hexagonix definirCor
 	
-	mov dh, 05
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 05
 	
 	mov esi, msgSerial.opcoes
 	
 	imprimirString
 	
-	mov dh, 08
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 08
 	
 	mov esi, msgSerial.opcoes2
 	
 	imprimirString
 	
-	mov dh, 09
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 09
 	
 	mov esi, msgSerial.opcoes3
 	

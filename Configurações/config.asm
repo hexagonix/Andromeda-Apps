@@ -72,6 +72,8 @@ include "Dados\log.asm"
 ;; Funções de comunicação com o Sistema Operacional Andromeda®
 
 include "Andromeda\Andromeda.asm"
+include "Andromeda\hardware.asm"
+
 
 ;; Interfaces do aplicativo
 

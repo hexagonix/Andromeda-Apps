@@ -62,19 +62,13 @@ match =SIM, VERBOSE
 
 	Hexagonix definirCor
 	
-	mov dh, 02
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 02
 	
 	mov esi, msgPortaParalela.introducao
 	
 	imprimirString
 	
-	mov dh, 03
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 03
 	
 	mov esi, msgPortaParalela.introducao2
 	
@@ -82,10 +76,7 @@ match =SIM, VERBOSE
 	
 .infoParalela:
 
-    mov dh, 06
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 06
 	
     mov esi, msgPortaParalela.impressoraPadrao
   
@@ -105,10 +96,7 @@ match =SIM, VERBOSE
 	
 	Hexagonix definirCor
 	
-	mov dh, 07
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 07
 	
 	jmp .novaLinha
 	

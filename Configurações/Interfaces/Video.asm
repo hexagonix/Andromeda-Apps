@@ -88,10 +88,7 @@ mostrarLogoSistema:
     
     Hexagonix desenharBloco    
 
-	mov dh, 02
-	mov dl, 14
-	
-	Hexagonix definirCursor
+    cursorPara 14, 02
 	
 	mov eax, corPadraoInterface
 	mov ebx, dword[corFundo]

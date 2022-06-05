@@ -57,46 +57,31 @@ mostrarInterfaceConfigResolucao:
 
 	Hexagonix definirCor
 	
-	mov dh, 02
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 02
 	
 	mov esi, msgResolucao.introducao
 	
 	imprimirString
 	
-	mov dh, 03
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 03
 	
 	mov esi, msgResolucao.introducao2
 	
 	imprimirString
 	
-	mov dh, 06
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 06
 	
 	mov esi, msgResolucao.inserir
 	
 	imprimirString
 	
-	mov dh, 08
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 08
 	
 	mov esi, msgResolucao.opcao1
 	
 	imprimirString
 	
-	mov dh, 09
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 09
 	
 	mov esi, msgResolucao.opcao2
 	

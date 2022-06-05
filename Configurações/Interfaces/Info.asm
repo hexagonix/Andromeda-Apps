@@ -51,10 +51,7 @@ mostrarInterfaceInfo:
 	
 	call mostrarLogoSistema
 	
-	mov dh, 02
-	mov dl, 20
-	
-	Hexagonix definirCursor
+    cursorPara 20, 02
 
 	call definirCorTema
 	
@@ -64,10 +61,7 @@ mostrarInterfaceInfo:
 
 	call definirCorPadrao
 	
-	mov dh, 04
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 04
 	
 	mov esi, msgInfo.nomeSistema
 	
@@ -81,10 +75,7 @@ mostrarInterfaceInfo:
 	
 	call definirCorPadrao
 
-	mov dh, 05
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 05
 	
 	mov esi, msgInfo.versaoSistema
 	
@@ -112,10 +103,7 @@ mostrarInterfaceInfo:
 
 	call definirCorPadrao
 
-	mov dh, 06
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 06
 	
 	mov esi, msgInfo.buildSistema
 	
@@ -129,10 +117,7 @@ mostrarInterfaceInfo:
 	
 	call definirCorPadrao
 
-	mov dh, 07
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 07
 	
 	mov esi, msgInfo.tipoSistema
 	
@@ -146,10 +131,7 @@ mostrarInterfaceInfo:
 	
 	call definirCorPadrao
 
-	mov dh, 08
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 08
  
     mov esi, msgInfo.pacoteAtualizacoes
     
@@ -173,10 +155,7 @@ mostrarInterfaceInfo:
 
 ;; Agora vamos exibir informações sobre o Hexagon
 
-	mov dh, 09
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 09
  
     mov esi, msgInfo.Hexagon
     
@@ -209,37 +188,25 @@ mostrarInterfaceInfo:
 
 ;; Voltamos à programação normal
 
-	mov dh, 11
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 11
 	
 	mov esi, nomeSistema
 	
 	imprimirString
  
-    mov dh, 13
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 13
 	
 	mov esi, msgInfo.copyrightAndromeda
 	
 	imprimirString
 	
-	mov dh, 14
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 14
 	
 	mov esi, msgInfo.direitosReservados
 	
 	imprimirString
 	
-	mov dh, 16
-	mov dl, 28
-	
-	Hexagonix definirCursor
+    cursorPara 28, 16
 	
 	call definirCorTema
 	
@@ -249,43 +216,27 @@ mostrarInterfaceInfo:
 	
 	call definirCorPadrao
 	
-	mov dh, 18
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 18
 	
 	mov esi, msgInfo.processadorPrincipal
 	
 	imprimirString
 
-	mov dh, 19
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 19
 
 	mov esi, msgInfo.numProcessador
 	
 	imprimirString
 
-	mov esi, processadores.proc0
+	call exibirProcessadorInstalado
 	
-	Hexagonix abrir
-    
-    imprimirString
-	
-	mov dh, 20
-	mov dl, 08
-	
-	Hexagonix definirCursor
+    cursorPara 08, 20
 
 	mov esi, msgInfo.operacaoProcessador
 	
 	imprimirString
 	
-	mov dh, 22
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 22
 
 	mov esi, msgInfo.memoriaDisponivel
 	

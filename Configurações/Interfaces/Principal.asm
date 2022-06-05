@@ -57,19 +57,13 @@ mostrarInterfacePrincipal:
 
 	call mostrarLogoSistema
 	
-	mov dh, 02
-	mov dl, 34
-	
-	Hexagonix definirCursor
+    cursorPara 34, 02
 
 	mov esi, msgInicio.introducao
 	
     imprimirString	
 
-	mov dh, 04
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 04
 
 	mov esi, msgInicio.nomeSistema
 	
@@ -79,10 +73,7 @@ mostrarInterfacePrincipal:
 	
 	imprimirString
 
-	mov dh, 05
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 05
 
 	mov esi, msgInicio.versaoSistema
 	
@@ -93,93 +84,57 @@ mostrarInterfacePrincipal:
 	mov esi, msgInicio.versao
 	imprimirString
 
-	mov dh, 06
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 06
 
 	mov esi, msgInicio.tipoSistema
 	
 	imprimirString
 
-	mov dh, 08
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 08
 
 	mov esi, msgInicio.copyrightAndromeda
 	
 	imprimirString
 
-	mov dh, 09
-	mov dl, 18
-	
-	Hexagonix definirCursor
+    cursorPara 18, 09
 
 	mov esi, msgInicio.direitosReservados
 	
 	imprimirString
 
-	mov dh, 11
-	mov dl, 28
-	
-	Hexagonix definirCursor
+    cursorPara 28, 11
 
 	mov esi, msgInicio.separador
 	
 	imprimirString
 
-	mov dh, 13
-	mov dl, 39
-	
-	Hexagonix definirCursor
+    cursorPara 39, 13
 
 	mov esi, msgInicio.sobrePC
 	
 	imprimirString
 
-	mov dh, 15
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 15
 
 	mov esi, msgInicio.processadorPrincipal
 	
 	imprimirString
 
-	mov dh, 16
-	mov dl, 04
-	
-	Hexagonix definirCursor
+    cursorPara 04, 16
 
 	mov esi, msgInicio.numProcessador
 	
 	imprimirString
 
-	mov esi, processadores.proc0
-	
-	Hexagonix abrir
-    
-    imprimirString
+	call exibirProcessadorInstalado
 
-	mov dh, 17
-	mov dl, 08
-	
-	Hexagonix definirCursor
+    cursorPara 08, 17
 
 	mov esi, msgInicio.operacaoProcessador
 	
 	imprimirString
-
-	mov dh, 18
-	mov dl, 02
 	
-	Hexagonix definirCursor
-	
-	mov dh, 19
-	mov dl, 02
-	
-	Hexagonix definirCursor
+    cursorPara 02, 19
 
 	mov esi, msgInfo.memoriaDisponivel
 	
