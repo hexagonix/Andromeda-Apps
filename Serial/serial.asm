@@ -61,10 +61,7 @@ inicioAPP:
 
 	Hexagonix definirCor
 	
-	mov dl, 2
-	mov dh, 1
-	
-	Hexagonix definirCursor
+	cursorPara 02, 01
 	
 	mov esi, serial.bannerAndromeda
 
@@ -73,10 +70,7 @@ inicioAPP:
 	Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, \
 	[Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-	mov dh, 10
-	mov dl, 02
-	
-	Hexagonix definirCursor
+	cursorPara 02, 10
 
 	mov esi, serial.nomePorta
 	
@@ -210,7 +204,7 @@ erroAbertura:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.0"
+VERSAO equ "1.0.1"
 
 serial:
 
