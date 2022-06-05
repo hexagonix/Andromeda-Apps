@@ -70,10 +70,7 @@ inicioAPP:
 
 	Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-	mov dh, 10
-	mov dl, 02
-	
-	Hexagonix definirCursor
+	cursorPara 02, 10
 	
 	mov esi, fonte.boasVindas
 	
@@ -204,7 +201,7 @@ validarFonte:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "2.0"
+VERSAO equ "2.1"
 
 fonte:
 
