@@ -45,8 +45,6 @@ include "../../../LibAPP/dispositivos.s"
 ;;
 ;;************************************************************************************
 
-align 4
-
 ;; Aparência (cores)
 
 CORDESTAQUE = VERMELHO_TIJOLO
@@ -54,7 +52,7 @@ CORLISTRA   = LARANJA
 
 ;; Constantes e estruturas
 
-VERSAO        equ "1.3.1" 
+VERSAO        equ "1.4" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-2022 Felipe Miguel Nery Lunkes"
 DIREITOS      equ "Todos os direitos reservados."
@@ -63,6 +61,21 @@ DIREITOS      equ "Todos os direitos reservados."
 
 Lyoko:
 
+.avisoRapido:         db "A IDE do Lyoko utiliza como padrao o montador '", MONTADOR, "' para a construcao de aplicativos.", 10
+                      db "Este montador de codigo livre foi portado e apresenta total compatibilidade com o Andromeda(R).", 10, 10
+                      db "Voce pode utilizar atalhos de teclado para realizar a interacao com Lyoko.", 10
+                      db "Os atalhos sao acionados pela tecla Ctrl (Control, ^), juntamente com uma tecla indicadora de acao.", 10
+                      db "Essas combinacoes de teclas podem ser (a tecla Ctrl representada por ^):", 10, 10
+                      db "   [^A] - Solicita a abertura de um arquivo previamente salvo no disco.", 10
+                      db "   [^S] - Solicita o salvamento das alteracoes em um arquivo no disco.", 10
+                      db "   [^F] - Fecha Lyoko apos confirmacao de salvamento.", 10
+                      db "   [^M] - Aciona o montador '", MONTADOR, "' para construir a imagem executavel.", 10
+					  db "   [^V] - Informacoes de versao e mais sobre o Lyoko.", 10, 10
+                      db "Apos construir uma imagem, voce recebera o status da operacao diretamente na tela e, se tudo", 10
+                      db "estiver certo, voce encontrara a imagem com a extensao .app no disco, contendo seu aplicativo.", 10
+                      db "Voce pode utilizar a ferramenta 'lshapp' para verificar informacoes da imagem, caso necessario.", 10
+                      db "Para saber mais sobre as informacoes que o utilitario pode oferecer ao analisar uma imagem,", 10
+                      db "consulte o manual ('man lshapp') ou utilize 'lshapp ?'.", 0
 .formato:             db "UTF-8", 0
 .formatoFimLinha:     db "LF", 0
 .virgula:             db ", ", 0
@@ -87,21 +100,6 @@ Lyoko:
 .identificador:       db "| Arquivo:               ", 0
 .nomeMontador:        db "| ", MONTADOR, 0
 .fecharAviso:         db 10, 10, "Pressione [ESC] para fechar este aviso.", 10, 0
-.avisoRapido:         db "A IDE do Lyoko utiliza como padrao o montador '", MONTADOR, "' para a construcao de aplicativos.", 10
-                      db "Este montador de codigo livre foi portado e apresenta total compatibilidade com o Andromeda(R).", 10, 10
-                      db "Voce pode utilizar atalhos de teclado para realizar a interacao com Lyoko.", 10
-                      db "Os atalhos sao acionados pela tecla Ctrl (Control, ^), juntamente com uma tecla indicadora de acao.", 10
-                      db "Essas combinacoes de teclas podem ser (a tecla Ctrl representada por ^):", 10, 10
-                      db "   [^A] - Solicita a abertura de um arquivo previamente salvo no disco.", 10
-                      db "   [^S] - Solicita o salvamento das alteracoes em um arquivo no disco.", 10
-                      db "   [^F] - Fecha Lyoko apos confirmacao de salvamento.", 10
-                      db "   [^M] - Aciona o montador '", MONTADOR, "' para construir a imagem executavel.", 10
-					  db "   [^V] - Informacoes de versao e mais sobre o Lyoko.", 10, 10
-                      db "Apos construir uma imagem, voce recebera o status da operacao diretamente na tela e, se tudo", 10
-                      db "estiver certo, voce encontrara a imagem com a extensao .app no disco, contendo seu aplicativo.", 10
-                      db "Voce pode utilizar a ferramenta 'lshapp' para verificar informacoes da imagem, caso necessario.", 10
-                      db "Para saber mais sobre as informacoes que o utilitario pode oferecer ao analisar uma imagem,", 10
-                      db "consulte o manual ('man lshapp') ou utilize 'lshapp ?'.", 0
 .infoLyoko:           db "O nome Lyoko vem de uma serie que me marcou muito na infancia, chamada Code Lyoko.", 10
                       db "De certa forma, essa serie fez com que eu me apaixonasse ainda mais pela computacao e nada mais", 10
 					  db "justo que prestar uma simbolica homenagem.", 10, 10
