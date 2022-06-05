@@ -31,7 +31,7 @@ cabecalhoAPP:
 .assinatura:      db "HAPP"    ;; Assinatura
 .arquitetura:     db 01h       ;; Arquitetura (i386 = 01h)
 .versaoMinima:    db 9         ;; Versao minima do Hexagon(R)
-.subversaoMinima: db 00        ;; Subversao minima do Hexagon(R)
+.subversaoMinima: db 04        ;; Subversao minima do Hexagon(R)
 .pontoEntrada:    dd inicioAPP ;; Offset do ponto de entrada
 .tipoImagem:      db 01h       ;; Imagem executavel
 .reservado0:      dd 0         ;; Reservado (Dword)
@@ -63,7 +63,7 @@ Andromeda.Interface Andromeda.Estelar.Interface
 
 ;; Dentro de gapp estarao todos os dados de texto que serao exibidos ao usuario.
 
-VERSAO equ "1.0" ;; Versao do aplicativo
+VERSAO equ "1.1" ;; Versao do aplicativo
 
 gapp:
 
@@ -73,7 +73,7 @@ gapp:
 .TITULO:      db "Seja bem-vindo!", 0
 .RODAPE:      db "[", VERSAO, "] | Pressione qualquer tecla para continuar...", 0			 	 
 
-.vd0:         db "vd0", 0 ;; Dispositivo padrao de saida
+.vd0:         db "vd0", 0 ;; Console principal
 
 ;;************************************************************************************
 
@@ -82,7 +82,7 @@ inicioAPP:
 ;; Vamos definir que queremos saida direta para vd0 (similar a tty0 no Linux)
 ;; Isso nem sempre e necessario. Se o shell foi utilizado para chamar o app, 
 ;; vd0 ja esta aberto. A menos que seja chamado por um app que esteja usando, por
-;; exemplo, vd1
+;; exemplo, vd1. vd0 é o console principal, enquanto vd1-vdn são consoles virtuais.
 
     mov esi, gapp.vd0
 
