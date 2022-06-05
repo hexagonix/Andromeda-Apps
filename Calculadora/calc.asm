@@ -64,10 +64,7 @@ inicioAPP:
 
 	call mostrarLogoSistema
 
-	mov dh, 13
-	mov dl, 00
-	
-	Hexagonix definirCursor
+	cursorPara 00, 13
 
 ;;************************************************************************************
 
@@ -264,7 +261,7 @@ mostrarLogoSistema:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.6"
+VERSAO equ "1.6.1"
 
 calc:
 
