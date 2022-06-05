@@ -141,15 +141,10 @@ Andromeda.Interface Andromeda.Estelar.Interface
 
 inicioShell:	
 
-match =SIM, VERBOSE
-{
-
 	logSistema ash.verboseEntradaASH, 00h, Log.Prioridades.p4
 	logSistema ash.verboseVersaoASH, 00h, Log.Prioridades.p4
 	logSistema ash.verboseAutor, 00h, Log.Prioridades.p4
 	logSistema ash.verboseDireitos, 00h, Log.Prioridades.p4
-
-}
 
 ;; Iniciar a configuração do terminal
 
@@ -384,12 +379,7 @@ match =SIM, VERBOSE
 
 .limiteAtingido:
 
-match =SIM, VERBOSE
-{
-
 	logSistema ash.verboseLimite, 00h, Log.Prioridades.p4
-	
-}
 
 	Hexagonix obterCursor
 	
@@ -517,12 +507,7 @@ match =SIM, VERBOSE
 
 .alterarParaHD0:
 
-match =SIM, VERBOSE
-{
-
 	logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
-	
-}
 
     mov esi, discos.hd0
 	
@@ -534,12 +519,7 @@ match =SIM, VERBOSE
 	
 .alterarParaHD1:
 
-match =SIM, VERBOSE
-{
-
 	logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
-	
-}
 
     mov esi, discos.hd1
 	
@@ -551,13 +531,8 @@ match =SIM, VERBOSE
 
 .alterarParaHD2:
 
-match =SIM, VERBOSE
-{
-
 	logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
 	
-}
-
     mov esi, discos.hd2
 	
     Hexagonix abrir
@@ -568,12 +543,7 @@ match =SIM, VERBOSE
 
 .alterarParaHD3:
 
-match =SIM, VERBOSE
-{
-
 	logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
-	
-}
 
     mov esi, discos.hd3
 	
@@ -685,12 +655,7 @@ match =SIM, VERBOSE
 	
 .finalizarShell:
 
-match =SIM, VERBOSE
-{
-
 	logSistema ash.verboseSaida, 00h, Log.Prioridades.p4
-
-}
 
 	novaLinha
 
