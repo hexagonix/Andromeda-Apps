@@ -41,6 +41,132 @@ include "../../../LibAPP/macros.s"
 align 32
 
 ;;************************************************************************************
+   
+exibirInterfaceSobre:
+
+	Hexagonix desligarSom
+	
+    Hexagonix limparTela
+
+	;; Imprime o título do programa e rodapé
+
+	mov eax, BRANCO_ANDROMEDA
+	mov ebx, AZUL_METALICO
+	
+	Hexagonix definirCor
+	
+	mov al, 0
+	Hexagonix limparLinha
+	
+	mov esi, piano.titulo
+	imprimirString
+	
+	mov al, byte[Andromeda.Interface.numLinhas]		;; Última linha
+	
+	dec al
+	
+	Hexagonix limparLinha
+	
+	mov esi, piano.rodapeInfo
+	imprimirString
+	
+	mov eax, dword[Andromeda.Interface.corFonte]
+	mov ebx, dword[Andromeda.Interface.corFundo]
+
+	Hexagonix definirCor
+	
+	mov dh, 02
+	mov dl, 02
+	
+	Hexagonix definirCursor
+	
+	mov esi, piano.sobreTeclado
+	
+	imprimirString
+	
+	mov dh, 03
+	mov dl, 02
+	
+	Hexagonix definirCursor
+	
+	mov esi, piano.versaoTeclado
+	
+	imprimirString
+	
+	mov dh, 05
+	mov dl, 02
+	
+	Hexagonix definirCursor
+	
+	mov esi, piano.autor
+	
+	imprimirString
+	
+	mov dh, 06
+	mov dl, 02
+	
+	Hexagonix definirCursor
+	
+	mov esi, piano.direitos
+	
+	imprimirString
+	
+	mov dh, 08
+	mov dl, 04
+	
+	Hexagonix definirCursor
+	
+	mov esi, piano.ajuda
+	
+	imprimirString
+	
+	mov dh, 10
+	mov dl, 02
+	
+	Hexagonix definirCursor
+	
+	mov esi, piano.topico1
+	
+	imprimirString
+	
+	mov dh, 11
+	mov dl, 02
+	
+	Hexagonix definirCursor
+	
+	mov esi, piano.topico2
+	
+	imprimirString
+	
+	mov dh, 12
+	mov dl, 02
+	
+	Hexagonix definirCursor
+	
+	mov esi, piano.topico3
+	
+	imprimirString
+	
+	
+.obterTeclas:
+
+	Hexagonix aguardarTeclado
+	
+	cmp al, 'v'
+	je inicioAPP
+	
+	cmp al, 'V'
+	je inicioAPP
+	
+	cmp al, 'z'
+	je inicioAPP.fim
+	
+	cmp al, 'Z'
+	je inicioAPP.fim
+
+	jmp .obterTeclas		
+
+;;************************************************************	
 
 inicioAPP:
 	
@@ -580,132 +706,6 @@ evidenciarTeclas:
     ret
 
 ;;************************************************************
-    
-exibirInterfaceSobre:
-
-	Hexagonix desligarSom
-	
-    Hexagonix limparTela
-
-	;; Imprime o título do programa e rodapé
-
-	mov eax, BRANCO_ANDROMEDA
-	mov ebx, AZUL_METALICO
-	
-	Hexagonix definirCor
-	
-	mov al, 0
-	Hexagonix limparLinha
-	
-	mov esi, piano.titulo
-	imprimirString
-	
-	mov al, byte[Andromeda.Interface.numLinhas]		;; Última linha
-	
-	dec al
-	
-	Hexagonix limparLinha
-	
-	mov esi, piano.rodapeInfo
-	imprimirString
-	
-	mov eax, dword[Andromeda.Interface.corFonte]
-	mov ebx, dword[Andromeda.Interface.corFundo]
-
-	Hexagonix definirCor
-	
-	mov dh, 02
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.sobreTeclado
-	
-	imprimirString
-	
-	mov dh, 03
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.versaoTeclado
-	
-	imprimirString
-	
-	mov dh, 05
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.autor
-	
-	imprimirString
-	
-	mov dh, 06
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.direitos
-	
-	imprimirString
-	
-	mov dh, 08
-	mov dl, 04
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.ajuda
-	
-	imprimirString
-	
-	mov dh, 10
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.topico1
-	
-	imprimirString
-	
-	mov dh, 11
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.topico2
-	
-	imprimirString
-	
-	mov dh, 12
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.topico3
-	
-	imprimirString
-	
-	
-.obterTeclas:
-
-	Hexagonix aguardarTeclado
-	
-	cmp al, 'v'
-	je inicioAPP
-	
-	cmp al, 'V'
-	je inicioAPP
-	
-	cmp al, 'z'
-	je inicioAPP.fim
-	
-	cmp al, 'Z'
-	je inicioAPP.fim
-
-	jmp .obterTeclas		
-
-;;************************************************************	
 
 align 32
 
@@ -715,7 +715,7 @@ align 32
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.2"
+VERSAO equ "1.3"
 
 piano:
 
