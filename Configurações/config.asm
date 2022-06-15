@@ -25,7 +25,7 @@ use32
 ;; arquivo por arquivo. O arquivo contém uma estrutura instanciável com definição de 
 ;; parâmetros no momento da instância, tornando o cabeçalho tão personalizável quanto antes.
 
-include "../../../lib/HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
+include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
 ;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
 cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 9, 03, inicioAPP, 01h
@@ -36,18 +36,18 @@ inicioAPP:
 
 	jmp entradaConfig
 
-include "../../../lib/hexagon.s"
-include "../../../lib/Estelar/estelar.s"
-include "../../../lib/macros.s"
-include "../../../lib/log.s"
+include "hexagon.s"
+include "Estelar/estelar.s"
+include "macros.s"
+include "log.s"
 
 ;; Funções exclusivas de aplicativos base do Andromeda®
 
-include "../../../lib/verUtils.s"
+include "verUtils.s"
 
 ;; Lista de dispositivos do Hexagon®
 
-include "../../../lib/dispositivos.s"
+include "dispositivos.s"
 
 ;;************************************************************************************
 
