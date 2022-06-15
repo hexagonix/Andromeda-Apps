@@ -30,8 +30,8 @@ cabecalhoAPP:
 
 .assinatura:      db "HAPP"    ;; Assinatura
 .arquitetura:     db 01h       ;; Arquitetura (i386 = 01h)
-.versaoMinima:    db 9         ;; Versao minima do Hexagon(R)
-.subversaoMinima: db 04        ;; Subversao minima do Hexagon(R)
+.versaoMinima:    db 1         ;; Versao minima do Hexagon(R)
+.subversaoMinima: db 00        ;; Subversao minima do Hexagon(R)
 .pontoEntrada:    dd inicioAPP ;; Offset do ponto de entrada
 .tipoImagem:      db 01h       ;; Imagem executavel
 .reservado0:      dd 0         ;; Reservado (Dword)

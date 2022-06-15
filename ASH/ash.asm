@@ -28,7 +28,7 @@ use32
 include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
 ;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
-cabecalhoASH cabecalhoHAPP HAPP.Arquiteturas.i386, 9, 04, inicioShell, 01h
+cabecalhoASH cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioShell, 01h
 
 ;;************************************************************************************
 
