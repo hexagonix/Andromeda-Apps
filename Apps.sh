@@ -21,10 +21,10 @@ gerarApps()
 
 #;;************************************************************************************
 
-echo "Gerando aplicativos base do Andromeda®... {"
+echo "Construindo aplicativos base do Andromeda®... {"
 echo
 
-echo "Gerando aplicativos base do Andromeda®... {" >> $LOG
+echo "Construindo aplicativos base do Andromeda®... {" >> $LOG
 echo >> $LOG
 
 #;;************************************************************************************
@@ -34,9 +34,9 @@ cd ASH/
 for i in *.asm
 do
 
-	echo -n Gerando aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
 	
-	echo Gerando aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
@@ -57,9 +57,9 @@ cd Calculadora/
 for i in *.asm
 do
 
-	echo -n Gerando aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
 	
-	echo Gerando aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
@@ -80,9 +80,9 @@ cd Desligar/
 for i in *.asm
 do
 
-	echo -n Gerando aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
 	
-	echo Gerando aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
@@ -111,9 +111,9 @@ cd Piano/
 for i in *.asm
 do
 
-	echo -n Gerando aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
 	
-	echo Gerando aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
@@ -134,9 +134,9 @@ cd Lyoko/
 for i in *.asm
 do
 
-	echo -n Gerando aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
 	
-	echo Gerando aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
@@ -157,9 +157,9 @@ cd Quartzo/
 for i in *.asm
 do
 
-	echo -n Gerando aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
 	
-	echo Gerando aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
@@ -180,9 +180,9 @@ cd Fonte/
 for i in *.asm
 do
 
-	echo -n Gerando aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
 	
-	echo Gerando aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
@@ -203,9 +203,9 @@ cd "Configurações"/
 for i in *.asm
 do
 
-	echo -n Gerando aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
 	
-	echo Gerando aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
@@ -227,9 +227,9 @@ cd Serial/
 for i in *.asm
 do
 
-	echo -n Gerando aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
 	
-	echo Gerando aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
@@ -246,13 +246,9 @@ cd ..
 #;;************************************************************************************
 
 echo
-echo "} Aplicativos base gerados com sucesso!"
-echo
+echo -e "} [\e[32mAplicativos Andromeda construídos com sucesso\e[0m]."
 
-echo "} Aplicativos base gerados com sucesso!" >> $LOG
-echo >> $LOG
-echo "----------------------------------------------------------------------" >> $LOG
-echo >> $LOG
+echo
 
 }
 
