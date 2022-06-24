@@ -21,7 +21,7 @@ gerarApps()
 
 #;;************************************************************************************
 
-echo "Construindo aplicativos base do Andromeda®... {"
+echo -e "\e1;94mConstruindo aplicativos base do Andromeda®...\e[0m {"
 echo
 
 echo "Construindo aplicativos base do Andromeda®... {" >> $LOG
@@ -34,7 +34,7 @@ cd ASH/
 for i in *.asm
 do
 
-	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -en "Construindo aplicativo base do Andromeda® \e[1;94m$(basename $i .asm).app\e[0m..."
 	
 	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
@@ -57,7 +57,7 @@ cd Calculadora/
 for i in *.asm
 do
 
-	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -en "Construindo aplicativo base do Andromeda® \e[1;94m$(basename $i .asm).app\e[0m..."
 	
 	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
@@ -80,7 +80,7 @@ cd Desligar/
 for i in *.asm
 do
 
-	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -en "Construindo aplicativo base do Andromeda® \e[1;94m$(basename $i .asm).app\e[0m..."
 	
 	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
@@ -111,7 +111,7 @@ cd Piano/
 for i in *.asm
 do
 
-	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -en "Construindo aplicativo base do Andromeda® \e[1;94m$(basename $i .asm).app\e[0m..."
 	
 	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
@@ -134,7 +134,7 @@ cd Lyoko/
 for i in *.asm
 do
 
-	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -en "Construindo aplicativo base do Andromeda® \e[1;94m$(basename $i .asm).app\e[0m..."
 	
 	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
@@ -157,7 +157,7 @@ cd Quartzo/
 for i in *.asm
 do
 
-	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -en "Construindo aplicativo base do Andromeda® \e[1;94m$(basename $i .asm).app\e[0m..."
 	
 	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
@@ -180,7 +180,7 @@ cd Fonte/
 for i in *.asm
 do
 
-	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -en "Construindo aplicativo base do Andromeda® \e[1;94m$(basename $i .asm).app\e[0m..."
 	
 	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
@@ -203,7 +203,7 @@ cd "Configurações"/
 for i in *.asm
 do
 
-	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -en "Construindo aplicativo base do Andromeda® \e[1;94m$(basename $i .asm).app\e[0m..."
 	
 	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
@@ -227,7 +227,7 @@ cd Serial/
 for i in *.asm
 do
 
-	echo -n Construindo aplicativo base do Andromeda® $(basename $i .asm).app...
+	echo -en "Construindo aplicativo base do Andromeda® \e[1;94m$(basename $i .asm).app\e[0m..."
 	
 	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
 	
