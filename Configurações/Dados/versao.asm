@@ -15,6 +15,6 @@
 ;;
 ;;************************************************************************************
 
-VERSAOCONFIG             equ "2.0.1"
+VERSAOCONFIG             equ "2.0.2"
 VERSAOFERRAMENTAS        equ "1.2"
 VERSAODESIGNADAANDROMEDA equ "H1 R4"
