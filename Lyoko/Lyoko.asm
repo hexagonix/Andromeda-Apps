@@ -52,7 +52,7 @@ CORLISTRA   = LARANJA
 
 ;; Constantes e estruturas
 
-VERSAO        equ "1.4" 
+VERSAO        equ "1.4.1" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-2022 Felipe Miguel Nery Lunkes"
 DIREITOS      equ "Todos os direitos reservados."
@@ -61,6 +61,7 @@ DIREITOS      equ "Todos os direitos reservados."
 
 Lyoko:
 
+.rodapeNovoArquivo:   db "Novo arquivo", 0
 .avisoRapido:         db "A IDE do Lyoko utiliza como padrao o montador '", MONTADOR, "' para a construcao de aplicativos.", 10
                       db "Este montador de codigo livre foi portado e apresenta total compatibilidade com o Andromeda(R).", 10, 10
                       db "Voce pode utilizar atalhos de teclado para realizar a interacao com Lyoko.", 10
@@ -85,7 +86,6 @@ Lyoko:
 .coluna:              db "Coluna: ", 0
 .arquivoSalvo:        db "Arquivo salvo", 0
 .solicitarArquivo:    db "Nome do arquivo [ENTER para cancelar]: ", 0
-.rodapeNovoArquivo:   db "Novo arquivo", 0
 .permissaoNegada:     db "Apenas um usuario administrativo pode alterar este arquivo."
                       db " Pressione alguma tecla para continuar...", 0
 .erroDeletando:       db "Erro ao atualizar o arquivo.", 0

@@ -318,9 +318,9 @@ Andromeda_Sair:
 ;;************************************************************************************
 
 ENERGIA equ "energia.app"   
-VERSAO  equ "1.0.1"
+VERSAO  equ "1.0.2"
 
-align 16
+align 32
 
 desligar:
 
