@@ -56,7 +56,7 @@ ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
 versaoASH           equ "3.5.3" 
-compativelAndromeda equ "H1 R3 (Duna)"
+compativelAndromeda equ "H1 R5 (Orion)"
                     
 ;;**************************
 

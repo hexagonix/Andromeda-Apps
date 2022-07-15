@@ -65,7 +65,7 @@ msgInfo:
 .operacaoProcessador:  db "Processador em modo 32 bits compativel com modo protegido", 0
 .memoriaDisponivel:    db "Memoria total instalada disponivel: ", 0
 .kbytes:               db " megabytes.", 0
-.Hexagon:              db "Versao do Hexagon: ", 0
+.Hexagon:              db "Versao do Hexagon (kernel): ", 0
 .ponto:                db ".", 0
 .semCPUID:             db "O processador nao suporta a instrucao CPUID e nao pode ser identificado.", 0
 
