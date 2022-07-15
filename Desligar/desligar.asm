@@ -39,277 +39,277 @@ include "log.s"
 
 ;;************************************************************************************
 
-inicioAPP:	
+inicioAPP:  
 
-	push ds
-	pop es			
-	
-	mov	[parametro], edi ;; Salvar os parâmetros da linha de comando para uso futuro
-	
-	mov esi, [parametro]
+    push ds
+    pop es          
+    
+    mov [parametro], edi ;; Salvar os parâmetros da linha de comando para uso futuro
+    
+    mov esi, [parametro]
 
-	jmp iniciarInterface
+    jmp iniciarInterface
 
 ;;************************************************************************************
-	
+    
 iniciarInterface:
 
-	Hexagonix obterCor
+    Hexagonix obterCor
 
-	mov dword[Andromeda.Interface.corFonte], eax
-	mov dword[Andromeda.Interface.corFundo], ebx
+    mov dword[Andromeda.Interface.corFonte], eax
+    mov dword[Andromeda.Interface.corFundo], ebx
 
-	Hexagonix limparTela
+    Hexagonix limparTela
 
-	Hexagonix obterInfoTela
-	
-	mov byte[Andromeda.Interface.numColunas], bl
-	mov byte[Andromeda.Interface.numLinhas], bh
-	
+    Hexagonix obterInfoTela
+    
+    mov byte[Andromeda.Interface.numColunas], bl
+    mov byte[Andromeda.Interface.numLinhas], bh
+    
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
 
-	Andromeda.Estelar.criarInterface desligar.titulo, desligar.rodape, \
-	INDIGO, INDIGO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
-	[Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
-	
-	novaLinha
-	
-	mov esi, desligar.bannerAndromeda
+    Andromeda.Estelar.criarInterface desligar.titulo, desligar.rodape, \
+    INDIGO, INDIGO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
+    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    
+    novaLinha
+    
+    mov esi, desligar.bannerAndromeda
 
-	imprimirString
+    imprimirString
 
-	Andromeda.Estelar.criarLogotipo INDIGO, BRANCO_ANDROMEDA,\
-	[Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    Andromeda.Estelar.criarLogotipo INDIGO, BRANCO_ANDROMEDA,\
+    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-	cursorPara 02, 14
-	
-	mov esi, desligar.msgFinalizar
+    cursorPara 02, 14
+    
+    mov esi, desligar.msgFinalizar
 
-	imprimirString
+    imprimirString
 
-	cursorPara 02, 15
+    cursorPara 02, 15
 
-	mov esi, desligar.msgReiniciar
+    mov esi, desligar.msgReiniciar
 
-	imprimirString
-	
-	cursorPara 02, 17
+    imprimirString
+    
+    cursorPara 02, 17
 
-	mov esi, desligar.msgSair
+    mov esi, desligar.msgSair
 
-	imprimirString
+    imprimirString
 
-	call obterTeclas
+    call obterTeclas
 
 ;;************************************************************************************
 
  finalizarSistema:
 
-	cursorPara 02, 18
+    cursorPara 02, 18
 
-	mov esi, desligar.msgDesligamento
+    mov esi, desligar.msgDesligamento
 
-	imprimirString
+    imprimirString
 
-	mov ecx, 500
-	
-	Hexagonix causarAtraso
+    mov ecx, 500
+    
+    Hexagonix causarAtraso
 
-	mov eax, VERDE_FLORESTA
-	mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, VERDE_FLORESTA
+    mov ebx, dword[Andromeda.Interface.corFundo]
 
-	Hexagonix definirCor
-	
-	mov esi, desligar.msgPronto
+    Hexagonix definirCor
+    
+    mov esi, desligar.msgPronto
 
-	imprimirString
+    imprimirString
 
-	mov eax, dword[Andromeda.Interface.corFonte]
-	mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, dword[Andromeda.Interface.corFonte]
+    mov ebx, dword[Andromeda.Interface.corFundo]
 
-	Hexagonix definirCor
+    Hexagonix definirCor
 
-	mov esi, desligar.msgFinalizando
+    mov esi, desligar.msgFinalizando
 
-	imprimirString
+    imprimirString
 
-	mov ecx, 500
-	
-	Hexagonix causarAtraso
+    mov ecx, 500
+    
+    Hexagonix causarAtraso
 
-	mov eax, VERDE_FLORESTA
-	mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, VERDE_FLORESTA
+    mov ebx, dword[Andromeda.Interface.corFundo]
 
-	Hexagonix definirCor
-	
-	mov esi, desligar.msgPronto
+    Hexagonix definirCor
+    
+    mov esi, desligar.msgPronto
 
-	imprimirString
+    imprimirString
 
-	mov eax, dword[Andromeda.Interface.corFonte]
-	mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, dword[Andromeda.Interface.corFonte]
+    mov ebx, dword[Andromeda.Interface.corFundo]
 
-	Hexagonix definirCor
+    Hexagonix definirCor
 
-	mov esi, desligar.msgAndromeda
+    mov esi, desligar.msgAndromeda
 
-	imprimirString
+    imprimirString
 
-	mov ecx, 500
-	
-	Hexagonix causarAtraso
+    mov ecx, 500
+    
+    Hexagonix causarAtraso
 
-	mov eax, VERDE_FLORESTA
-	mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, VERDE_FLORESTA
+    mov ebx, dword[Andromeda.Interface.corFundo]
 
-	Hexagonix definirCor
-	
-	mov esi, desligar.msgPronto
+    Hexagonix definirCor
+    
+    mov esi, desligar.msgPronto
 
-	imprimirString
+    imprimirString
 
-	mov eax, dword[Andromeda.Interface.corFonte]
-	mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, dword[Andromeda.Interface.corFonte]
+    mov ebx, dword[Andromeda.Interface.corFundo]
 
-	Hexagonix definirCor
+    Hexagonix definirCor
 
-	mov esi, desligar.msgDiscos
+    mov esi, desligar.msgDiscos
 
-	imprimirString
+    imprimirString
 
-	mov ecx, 500
-	
-	Hexagonix causarAtraso
+    mov ecx, 500
+    
+    Hexagonix causarAtraso
 
-	mov eax, VERDE_FLORESTA
-	mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, VERDE_FLORESTA
+    mov ebx, dword[Andromeda.Interface.corFundo]
 
-	Hexagonix definirCor
-	
-	mov esi, desligar.msgPronto
+    Hexagonix definirCor
+    
+    mov esi, desligar.msgPronto
 
-	imprimirString
+    imprimirString
 
-	mov eax, VERMELHO
-	mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, VERMELHO
+    mov ebx, dword[Andromeda.Interface.corFundo]
 
-	Hexagonix definirCor
+    Hexagonix definirCor
 
-	mov eax, dword[Andromeda.Interface.corFonte]
-	mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, dword[Andromeda.Interface.corFonte]
+    mov ebx, dword[Andromeda.Interface.corFundo]
 
-	Hexagonix definirCor
+    Hexagonix definirCor
 
-	novaLinha
+    novaLinha
 
-	mov ecx, 500
-	
-	Hexagonix causarAtraso
+    mov ecx, 500
+    
+    Hexagonix causarAtraso
 
-	ret
+    ret
 
 ;;************************************************************************************
 
 obterTeclas:
 
-	Hexagonix aguardarTeclado
-	
-	push eax
-	
-	Hexagonix obterEstadoTeclas
-	
-	bt eax, 0
-	jc .teclasControl
-	
-	pop eax
-	
-	jmp obterTeclas
-	
+    Hexagonix aguardarTeclado
+    
+    push eax
+    
+    Hexagonix obterEstadoTeclas
+    
+    bt eax, 0
+    jc .teclasControl
+    
+    pop eax
+    
+    jmp obterTeclas
+    
 .teclasControl:
 
-	pop eax
-	
-	cmp al, 'd'
-	je Andromeda_Desligar
-	
-	cmp al, 'D'
-	je Andromeda_Desligar
-	
-	cmp al, 'r'
-	je Andromeda_Reiniciar
-	
-	cmp al, 'R'
-	je Andromeda_Reiniciar
-	
-	cmp al, 's'
-	je Andromeda_Sair
-	
-	cmp al, 'S'
-	je Andromeda_Sair
+    pop eax
+    
+    cmp al, 'd'
+    je Andromeda_Desligar
+    
+    cmp al, 'D'
+    je Andromeda_Desligar
+    
+    cmp al, 'r'
+    je Andromeda_Reiniciar
+    
+    cmp al, 'R'
+    je Andromeda_Reiniciar
+    
+    cmp al, 's'
+    je Andromeda_Sair
+    
+    cmp al, 'S'
+    je Andromeda_Sair
 
-	jmp obterTeclas	
-	
-;;************************************************************************************	
-	
+    jmp obterTeclas 
+    
+;;************************************************************************************  
+    
 Andromeda_Desligar:
 
-	call finalizarSistema
+    call finalizarSistema
 
-	call executarEnergiaDesligamento
+    call executarEnergiaDesligamento
 
-	jmp Andromeda_Sair
+    jmp Andromeda_Sair
 
 ;;************************************************************************************
 
 Andromeda_Reiniciar:
 
-	call finalizarSistema
+    call finalizarSistema
 
-	call executarEnergiaReinicio
+    call executarEnergiaReinicio
 
-	jmp Andromeda_Sair
+    jmp Andromeda_Sair
 
 ;;************************************************************************************
 
 executarEnergiaDesligamento:
 
-	mov esi, desligar.energia
-	mov edi, desligar.parametroDesligar
-	mov eax, 01h
+    mov esi, desligar.energia
+    mov edi, desligar.parametroDesligar
+    mov eax, 01h
 
-	Hexagonix iniciarProcesso
+    Hexagonix iniciarProcesso
 
-	jc falhaEnergia
+    jc falhaEnergia
 
 ;;************************************************************************************
 
 executarEnergiaReinicio:
 
-	mov esi, desligar.energia
-	mov edi, desligar.parametroReiniciar
-	mov eax, 01h
+    mov esi, desligar.energia
+    mov edi, desligar.parametroReiniciar
+    mov eax, 01h
 
-	Hexagonix iniciarProcesso
+    Hexagonix iniciarProcesso
 
-	jc falhaEnergia
+    jc falhaEnergia
 
 ;;************************************************************************************
 
 falhaEnergia:
 
-	mov esi, desligar.falhaUtilitarioEnergia
+    mov esi, desligar.falhaUtilitarioEnergia
 
-	imprimirString
+    imprimirString
 
-	Hexagonix aguardarTeclado
+    Hexagonix aguardarTeclado
 
-	jmp Andromeda_Sair
+    jmp Andromeda_Sair
 
 ;;************************************************************************************
 
 Andromeda_Sair:
 
-	Andromeda.Estelar.finalizarProcessoGrafico 0, 0
+    Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 
 ;;************************************************************************************
 ;;

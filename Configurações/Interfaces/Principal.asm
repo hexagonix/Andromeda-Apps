@@ -15,173 +15,173 @@
 ;;
 ;;************************************************************************************
 
-mostrarInterfacePrincipal:	
+mostrarInterfacePrincipal:  
 
-	Hexagonix limparTela
+    Hexagonix limparTela
 
 ;; Imprime o título do programa e rodapé
 
-	mov eax, BRANCO_ANDROMEDA
-	mov ebx, corPadraoInterface
-	
-	Hexagonix definirCor
-	
-	mov al, 0
-	Hexagonix limparLinha
-	
-	mov esi, TITULO.inicio
-	
-	imprimirString
-	
-	mov al, byte[maxLinhas]		;; Última linha
-	
-	dec al
-	
-	Hexagonix limparLinha
-	
-	mov esi, RODAPE.inicio
-	
-	imprimirString
-	
-	mov eax, corPadraoInterface
-	mov ebx, dword[corFundo]
+    mov eax, BRANCO_ANDROMEDA
+    mov ebx, corPadraoInterface
+    
+    Hexagonix definirCor
+    
+    mov al, 0
+    Hexagonix limparLinha
+    
+    mov esi, TITULO.inicio
+    
+    imprimirString
+    
+    mov al, byte[maxLinhas]     ;; Última linha
+    
+    dec al
+    
+    Hexagonix limparLinha
+    
+    mov esi, RODAPE.inicio
+    
+    imprimirString
+    
+    mov eax, corPadraoInterface
+    mov ebx, dword[corFundo]
 
-	Hexagonix definirCor
-	
-	call mostrarAvisoResolucao
-	
-	mov eax, dword[corFonte]
-	mov ebx, dword[corFundo]
+    Hexagonix definirCor
+    
+    call mostrarAvisoResolucao
+    
+    mov eax, dword[corFonte]
+    mov ebx, dword[corFundo]
 
-	Hexagonix definirCor
+    Hexagonix definirCor
 
-	call mostrarLogoSistema
-	
+    call mostrarLogoSistema
+    
     cursorPara 34, 02
 
-	mov esi, msgInicio.introducao
-	
-    imprimirString	
+    mov esi, msgInicio.introducao
+    
+    imprimirString  
 
     cursorPara 18, 04
 
-	mov esi, msgInicio.nomeSistema
-	
-	imprimirString
-	
-	mov esi, nomeSistema
-	
-	imprimirString
+    mov esi, msgInicio.nomeSistema
+    
+    imprimirString
+    
+    mov esi, nomeSistema
+    
+    imprimirString
 
     cursorPara 18, 05
 
-	mov esi, msgInicio.versaoSistema
-	
-	imprimirString
-	
-	call imprimirVersao
-	
-	mov esi, msgInicio.versao
-	imprimirString
+    mov esi, msgInicio.versaoSistema
+    
+    imprimirString
+    
+    call imprimirVersao
+    
+    mov esi, msgInicio.versao
+    imprimirString
 
     cursorPara 18, 06
 
-	mov esi, msgInicio.tipoSistema
-	
-	imprimirString
+    mov esi, msgInicio.tipoSistema
+    
+    imprimirString
 
     cursorPara 18, 08
 
-	mov esi, msgInicio.copyrightAndromeda
-	
-	imprimirString
+    mov esi, msgInicio.copyrightAndromeda
+    
+    imprimirString
 
     cursorPara 18, 09
 
-	mov esi, msgInicio.direitosReservados
-	
-	imprimirString
+    mov esi, msgInicio.direitosReservados
+    
+    imprimirString
 
     cursorPara 28, 11
 
-	mov esi, msgInicio.separador
-	
-	imprimirString
+    mov esi, msgInicio.separador
+    
+    imprimirString
 
     cursorPara 39, 13
 
-	mov esi, msgInicio.sobrePC
-	
-	imprimirString
+    mov esi, msgInicio.sobrePC
+    
+    imprimirString
 
     cursorPara 02, 15
 
-	mov esi, msgInicio.processadorPrincipal
-	
-	imprimirString
+    mov esi, msgInicio.processadorPrincipal
+    
+    imprimirString
 
     cursorPara 04, 16
 
-	mov esi, msgInicio.numProcessador
-	
-	imprimirString
+    mov esi, msgInicio.numProcessador
+    
+    imprimirString
 
-	call exibirProcessadorInstalado
+    call exibirProcessadorInstalado
 
     cursorPara 08, 17
 
-	mov esi, msgInicio.operacaoProcessador
-	
-	imprimirString
-	
+    mov esi, msgInicio.operacaoProcessador
+    
+    imprimirString
+    
     cursorPara 02, 19
 
-	mov esi, msgInfo.memoriaDisponivel
-	
-	imprimirString
-	
-	mov eax, corPadraoInterface
-	mov ebx, dword[corFundo]
+    mov esi, msgInfo.memoriaDisponivel
+    
+    imprimirString
+    
+    mov eax, corPadraoInterface
+    mov ebx, dword[corFundo]
 
-	Hexagonix definirCor
-	
-	Hexagonix usoMemoria
-	
-	mov eax, ecx
-	
-	imprimirInteiro
-	
-	mov eax, dword[corFonte]
-	mov ebx, dword[corFundo]
+    Hexagonix definirCor
+    
+    Hexagonix usoMemoria
+    
+    mov eax, ecx
+    
+    imprimirInteiro
+    
+    mov eax, dword[corFonte]
+    mov ebx, dword[corFundo]
 
-	Hexagonix definirCor
-	
-	mov esi, msgInfo.kbytes
-	
-	imprimirString
-	
+    Hexagonix definirCor
+    
+    mov esi, msgInfo.kbytes
+    
+    imprimirString
+    
 .obterTeclas:
 
-	Hexagonix aguardarTeclado
-	
-	cmp al, 'a'
-	je mostrarInterfaceInfo
-	
-	cmp al, 'A'
-	je mostrarInterfaceInfo
-	
-	cmp al, 'b'
-	je mostrarInterfaceConfiguracoes
-	
-	cmp al, 'B'
-	je mostrarInterfaceConfiguracoes
-	
-	cmp al, 'c'
-	je finalizarAPP
-	
-	cmp al, 'C'
-	je finalizarAPP
+    Hexagonix aguardarTeclado
+    
+    cmp al, 'a'
+    je mostrarInterfaceInfo
+    
+    cmp al, 'A'
+    je mostrarInterfaceInfo
+    
+    cmp al, 'b'
+    je mostrarInterfaceConfiguracoes
+    
+    cmp al, 'B'
+    je mostrarInterfaceConfiguracoes
+    
+    cmp al, 'c'
+    je finalizarAPP
+    
+    cmp al, 'C'
+    je finalizarAPP
 
-	jmp .obterTeclas		
-	
-	
+    jmp .obterTeclas        
+    
+    

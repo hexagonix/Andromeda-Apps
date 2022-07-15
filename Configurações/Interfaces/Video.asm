@@ -18,27 +18,27 @@
 mostrarAvisoResolucao:
 
     Hexagonix obterResolucao
-	
-	cmp eax, 1
-	je .modoGrafico1
-	
-	ret
-	
+    
+    cmp eax, 1
+    je .modoGrafico1
+    
+    ret
+    
 .modoGrafico1:
-	
-    mov al, byte[maxLinhas]		;; Última linha
-	
-	dec al
+    
+    mov al, byte[maxLinhas]     ;; Última linha
+    
     dec al
-	dec al
-	
-	Hexagonix limparLinha
-	
-	mov esi, msgGeral.mensagemResolucao
-	
-	imprimirString
-	
-	ret	
+    dec al
+    dec al
+    
+    Hexagonix limparLinha
+    
+    mov esi, msgGeral.mensagemResolucao
+    
+    imprimirString
+    
+    ret 
 
 ;;************************************************************************************
 
@@ -49,7 +49,7 @@ mostrarLogoSistema:
 ;; Entrada: EDI - Altura; EDX - Cor em hexadecimal
 
 .primeiraLinha:
-	
+    
     mov eax, 20      ;; Posição X
     mov ebx, 30      ;; Posição Y
     mov esi, 20      ;; Comprimento
@@ -60,7 +60,7 @@ mostrarLogoSistema:
  
 .segundaLinha:
 
-	mov eax, 89      ;; Posição X
+    mov eax, 89      ;; Posição X
     mov ebx, 30      ;; Posição Y
     mov esi, 20      ;; Comprimento
     mov edi, 150     ;; Altura
@@ -70,7 +70,7 @@ mostrarLogoSistema:
 
 .terceiraLinha:
 
-	mov eax, 39      ;; Posição X
+    mov eax, 39      ;; Posição X
     mov ebx, 30      ;; Posição Y
     mov esi, 50      ;; Comprimento
     mov edi, 20      ;; Altura
@@ -80,7 +80,7 @@ mostrarLogoSistema:
     
 .quartaLinha:
 
-	mov eax, 39      ;; Posição X
+    mov eax, 39      ;; Posição X
     mov ebx, 100     ;; Posição Y
     mov esi, 50      ;; Comprimento
     mov edi, 20      ;; Altura
@@ -89,19 +89,19 @@ mostrarLogoSistema:
     Hexagonix desenharBloco    
 
     cursorPara 14, 02
-	
-	mov eax, corPadraoInterface
-	mov ebx, dword[corFundo]
+    
+    mov eax, corPadraoInterface
+    mov ebx, dword[corFundo]
 
-	Hexagonix definirCor
+    Hexagonix definirCor
 
-	mov esi, msgGeral.marcaRegistrada
+    mov esi, msgGeral.marcaRegistrada
 
-	imprimirString
-	
-	mov eax, dword[corFonte]
-	mov ebx, dword[corFundo]
+    imprimirString
+    
+    mov eax, dword[corFonte]
+    mov ebx, dword[corFundo]
 
-	Hexagonix definirCor
+    Hexagonix definirCor
 
 ret

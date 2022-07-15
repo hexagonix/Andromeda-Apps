@@ -15,133 +15,133 @@
 ;;
 ;;************************************************************************************
 
-mostrarInterfaceInfo:	
+mostrarInterfaceInfo:   
 
-	Hexagonix limparTela
+    Hexagonix limparTela
 
 ;; Imprime o título do programa e rodapé
 
-	mov eax, BRANCO_ANDROMEDA
-	mov ebx, corPadraoInterface
-	
-	Hexagonix definirCor
-	
-	mov al, 0
-	Hexagonix limparLinha
-	
-	mov esi, TITULO.info
-	
-	imprimirString
-	
-	mov al, byte[maxLinhas]		;; Última linha
-	
-	dec al
-	
-	Hexagonix limparLinha
-	
-	mov esi, RODAPE.info
-	
-	imprimirString
-	
-	call definirCorTema
-	
-	call mostrarAvisoResolucao
-	
-	call definirCorPadrao
-	
-	call mostrarLogoSistema
-	
+    mov eax, BRANCO_ANDROMEDA
+    mov ebx, corPadraoInterface
+    
+    Hexagonix definirCor
+    
+    mov al, 0
+    Hexagonix limparLinha
+    
+    mov esi, TITULO.info
+    
+    imprimirString
+    
+    mov al, byte[maxLinhas]     ;; Última linha
+    
+    dec al
+    
+    Hexagonix limparLinha
+    
+    mov esi, RODAPE.info
+    
+    imprimirString
+    
+    call definirCorTema
+    
+    call mostrarAvisoResolucao
+    
+    call definirCorPadrao
+    
+    call mostrarLogoSistema
+    
     cursorPara 20, 02
 
-	call definirCorTema
-	
-	mov esi, msgInfo.introducao
-	
-    imprimirString	
+    call definirCorTema
+    
+    mov esi, msgInfo.introducao
+    
+    imprimirString  
 
-	call definirCorPadrao
-	
+    call definirCorPadrao
+    
     cursorPara 18, 04
-	
-	mov esi, msgInfo.nomeSistema
-	
-	imprimirString
-	
-	call definirCorTema
-	
-	mov esi, nomeSistema
-	
-	imprimirString
-	
-	call definirCorPadrao
+    
+    mov esi, msgInfo.nomeSistema
+    
+    imprimirString
+    
+    call definirCorTema
+    
+    mov esi, nomeSistema
+    
+    imprimirString
+    
+    call definirCorPadrao
 
     cursorPara 18, 05
-	
-	mov esi, msgInfo.versaoSistema
-	
-	imprimirString
-	
-	call definirCorTema
-	
-	call imprimirVersao
-	
-	mov al, ' '
+    
+    mov esi, msgInfo.versaoSistema
+    
+    imprimirString
+    
+    call definirCorTema
+    
+    call imprimirVersao
+    
+    mov al, ' '
 
-	Hexagonix imprimirCaractere
+    Hexagonix imprimirCaractere
 
-	mov al, '['
+    mov al, '['
 
-	Hexagonix imprimirCaractere
+    Hexagonix imprimirCaractere
 
-	mov esi, codigoObtido
+    mov esi, codigoObtido
 
-	imprimirString
+    imprimirString
 
-	mov al, ']'
+    mov al, ']'
 
-	Hexagonix imprimirCaractere
+    Hexagonix imprimirCaractere
 
-	call definirCorPadrao
+    call definirCorPadrao
 
     cursorPara 18, 06
-	
-	mov esi, msgInfo.buildSistema
-	
-	imprimirString
-	
-	call definirCorTema
-	
-	mov esi, buildObtida
-	
-	imprimirString
-	
-	call definirCorPadrao
+    
+    mov esi, msgInfo.buildSistema
+    
+    imprimirString
+    
+    call definirCorTema
+    
+    mov esi, buildObtida
+    
+    imprimirString
+    
+    call definirCorPadrao
 
     cursorPara 18, 07
-	
-	mov esi, msgInfo.tipoSistema
-	
-	imprimirString
-	
-	call definirCorTema
+    
+    mov esi, msgInfo.tipoSistema
+    
+    imprimirString
+    
+    call definirCorTema
 
-	mov esi, msgInfo.modeloSistema
-	
-	imprimirString
-	
-	call definirCorPadrao
+    mov esi, msgInfo.modeloSistema
+    
+    imprimirString
+    
+    call definirCorPadrao
 
     cursorPara 18, 08
  
     mov esi, msgInfo.pacoteAtualizacoes
     
-	imprimirString
-	
-	call definirCorTema
-	
-	mov esi, pacoteAtualizacoes
-	
-	imprimirString
+    imprimirString
+    
+    call definirCorTema
+    
+    mov esi, pacoteAtualizacoes
+    
+    imprimirString
     
     mov al, ' '
     
@@ -149,9 +149,9 @@ mostrarInterfaceInfo:
     
     mov esi, dataHora
 
-	imprimirString
+    imprimirString
 
-	call definirCorPadrao
+    call definirCorPadrao
 
 ;; Agora vamos exibir informações sobre o Hexagon
 
@@ -159,124 +159,124 @@ mostrarInterfaceInfo:
  
     mov esi, msgInfo.Hexagon
     
-	imprimirString
+    imprimirString
 
-	call definirCorTema
-	
-	Hexagonix retornarVersao
-	
-	push ecx
-	push ebx
-	
-	imprimirInteiro
-	
-	mov esi, msgInfo.ponto
-	
-	imprimirString
-	
-	pop eax
-	
-	imprimirInteiro
-	
-	pop ecx
-	
-	mov al, ch
-	
-	Hexagonix imprimirCaractere
+    call definirCorTema
+    
+    Hexagonix retornarVersao
+    
+    push ecx
+    push ebx
+    
+    imprimirInteiro
+    
+    mov esi, msgInfo.ponto
+    
+    imprimirString
+    
+    pop eax
+    
+    imprimirInteiro
+    
+    pop ecx
+    
+    mov al, ch
+    
+    Hexagonix imprimirCaractere
 
-	call definirCorPadrao
+    call definirCorPadrao
 
 ;; Voltamos à programação normal
 
     cursorPara 18, 11
-	
-	mov esi, nomeSistema
-	
-	imprimirString
+    
+    mov esi, nomeSistema
+    
+    imprimirString
  
     cursorPara 18, 13
-	
-	mov esi, msgInfo.copyrightAndromeda
-	
-	imprimirString
-	
+    
+    mov esi, msgInfo.copyrightAndromeda
+    
+    imprimirString
+    
     cursorPara 18, 14
-	
-	mov esi, msgInfo.direitosReservados
-	
-	imprimirString
-	
+    
+    mov esi, msgInfo.direitosReservados
+    
+    imprimirString
+    
     cursorPara 28, 16
-	
-	call definirCorTema
-	
-	mov esi, msgInfo.introducaoHardware
-	
-	imprimirString
-	
-	call definirCorPadrao
-	
+    
+    call definirCorTema
+    
+    mov esi, msgInfo.introducaoHardware
+    
+    imprimirString
+    
+    call definirCorPadrao
+    
     cursorPara 02, 18
-	
-	mov esi, msgInfo.processadorPrincipal
-	
-	imprimirString
+    
+    mov esi, msgInfo.processadorPrincipal
+    
+    imprimirString
 
     cursorPara 04, 19
 
-	mov esi, msgInfo.numProcessador
-	
-	imprimirString
+    mov esi, msgInfo.numProcessador
+    
+    imprimirString
 
-	call exibirProcessadorInstalado
-	
+    call exibirProcessadorInstalado
+    
     cursorPara 08, 20
 
-	mov esi, msgInfo.operacaoProcessador
-	
-	imprimirString
-	
+    mov esi, msgInfo.operacaoProcessador
+    
+    imprimirString
+    
     cursorPara 02, 22
 
-	mov esi, msgInfo.memoriaDisponivel
-	
-	imprimirString
-	
-	call definirCorTema
-	
-	Hexagonix usoMemoria
-	
-	mov eax, ecx
-	
-	imprimirInteiro
-	
-	call definirCorPadrao
-	
-	mov esi, msgInfo.kbytes
-	
-	imprimirString
-	
+    mov esi, msgInfo.memoriaDisponivel
+    
+    imprimirString
+    
+    call definirCorTema
+    
+    Hexagonix usoMemoria
+    
+    mov eax, ecx
+    
+    imprimirInteiro
+    
+    call definirCorPadrao
+    
+    mov esi, msgInfo.kbytes
+    
+    imprimirString
+    
 .obterTeclas:
 
-	Hexagonix aguardarTeclado
-	
-	cmp al, 'v'
-	je mostrarInterfacePrincipal
-	
-	cmp al, 'V'
-	je mostrarInterfacePrincipal
-	
-	cmp al, 'b'
-	je mostrarInterfaceConfiguracoes
-	
-	cmp al, 'B'
-	je mostrarInterfaceConfiguracoes
-	
-	cmp al, 'c'
-	je finalizarAPP
-	
-	cmp al, 'C'
-	je finalizarAPP
+    Hexagonix aguardarTeclado
+    
+    cmp al, 'v'
+    je mostrarInterfacePrincipal
+    
+    cmp al, 'V'
+    je mostrarInterfacePrincipal
+    
+    cmp al, 'b'
+    je mostrarInterfaceConfiguracoes
+    
+    cmp al, 'B'
+    je mostrarInterfaceConfiguracoes
+    
+    cmp al, 'c'
+    je finalizarAPP
+    
+    cmp al, 'C'
+    je finalizarAPP
 
-	jmp .obterTeclas		
-	
+    jmp .obterTeclas        
+    

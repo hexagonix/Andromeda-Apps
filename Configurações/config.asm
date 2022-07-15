@@ -34,7 +34,7 @@ cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioAPP, 01h
 
 inicioAPP:
 
-	jmp entradaConfig
+    jmp entradaConfig
 
 include "hexagon.s"
 include "Estelar/estelar.s"
@@ -101,36 +101,36 @@ match =SIM, VERBOSE
 
 {
 
-	logSistema Log.Config.logInicio, 00h, Log.Prioridades.p4
-	logSistema Log.Config.logInicioResolucaoCores, 00h, Log.Prioridades.p4
+    logSistema Log.Config.logInicio, 00h, Log.Prioridades.p4
+    logSistema Log.Config.logInicioResolucaoCores, 00h, Log.Prioridades.p4
 
 }
 
-	Hexagonix obterInfoTela
-	
-	mov byte[maxColunas], bl
-	mov byte[maxLinhas], bh
-	
-	mov byte[alterado], 0
+    Hexagonix obterInfoTela
+    
+    mov byte[maxColunas], bl
+    mov byte[maxLinhas], bh
+    
+    mov byte[alterado], 0
 
-	Hexagonix obterCor
+    Hexagonix obterCor
 
-	mov dword[corFonte], eax 
-	mov dword[corFundo], ebx
+    mov dword[corFonte], eax 
+    mov dword[corFundo], ebx
 
 match =SIM, VERBOSE
 
 {
 
-	logSistema Log.Config.logVersaoDistro, 00h, Log.Prioridades.p4
+    logSistema Log.Config.logVersaoDistro, 00h, Log.Prioridades.p4
 
 }
 
-	call obterVersaoDistribuicao
-	
-	jc .erroVersao
+    call obterVersaoDistribuicao
+    
+    jc .erroVersao
 
-	jmp .continuar
+    jmp .continuar
 
 .erroVersao:
 
@@ -138,14 +138,14 @@ match =SIM, VERBOSE
 
 {
 
-	logSistema Log.Config.logErroVersaoDistro, 00h, Log.Prioridades.p4
+    logSistema Log.Config.logErroVersaoDistro, 00h, Log.Prioridades.p4
 
 }
 
 .continuar:
 
-	jmp mostrarInterfacePrincipal
-	
+    jmp mostrarInterfacePrincipal
+    
 fonte: times 13 db 0
 
 corFundo: dd 0

@@ -22,7 +22,7 @@ align 32
 msgInicio: ;; Contêm todas as mensagens abaixo
 
 .introducao:           db "Sobre o Sistema Operacional", 0
-.nomeSistema:          db "Nome do Sistema Operacional: ", 0		
+.nomeSistema:          db "Nome do Sistema Operacional: ", 0        
 .versaoSistema:        db "Versao do Sistema Operacional: ", 0
 .versao:               db " ", 0
 .tipoSistema:          db "Tipo de Sistema Operacional: Sistema Operacional de 32 bits", 0
