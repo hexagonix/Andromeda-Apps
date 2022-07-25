@@ -21,8 +21,8 @@ exibirProcessadorInstalado:
 ;; não suporta a instrução CPUID
 
     mov esi, processadores.proc0
-	
-	Hexagonix abrir
+    
+    Hexagonix abrir
 
     cmp byte [esi], 0
     je .semCPUID

@@ -40,31 +40,31 @@ include "macros.s"
 
 inicioAPP:
 
-	Hexagonix obterCor
+    Hexagonix obterCor
 
-	mov dword[Andromeda.Interface.corFonte], eax
-	mov dword[Andromeda.Interface.corFundo], ebx
-	
-	Hexagonix limparTela
+    mov dword[Andromeda.Interface.corFonte], eax
+    mov dword[Andromeda.Interface.corFundo], ebx
+    
+    Hexagonix limparTela
 
-	Hexagonix obterInfoTela
-	
-	mov byte[Andromeda.Interface.numColunas], bl
-	mov byte[Andromeda.Interface.numLinhas], bh
-	
+    Hexagonix obterInfoTela
+    
+    mov byte[Andromeda.Interface.numColunas], bl
+    mov byte[Andromeda.Interface.numLinhas], bh
+    
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
 
-	Andromeda.Estelar.criarInterface calc.titulo, calc.rodape, \
-	VERDE_ESCURO, VERDE_ESCURO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
-	[Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
-	
-	mov esi, calc.bannerAndromeda
+    Andromeda.Estelar.criarInterface calc.titulo, calc.rodape, \
+    VERDE_ESCURO, VERDE_ESCURO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
+    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    
+    mov esi, calc.bannerAndromeda
 
-	imprimirString
+    imprimirString
 
-	call mostrarLogoSistema
+    call mostrarLogoSistema
 
-	cursorPara 00, 13
+    cursorPara 00, 13
 
 ;;************************************************************************************
 
@@ -72,148 +72,148 @@ calcular:
 
 ;; Obter primeiro número
 
-	mov esi, calc.primeiroNumero
-	
-	imprimirString
-	
-	call obterNumero
-	
-	mov dword[primeiroNumero], eax		;; Salvar primeiro número
-	
-	cmp eax, 0
-	je fim
+    mov esi, calc.primeiroNumero
+    
+    imprimirString
+    
+    call obterNumero
+    
+    mov dword[primeiroNumero], eax      ;; Salvar primeiro número
+    
+    cmp eax, 0
+    je fim
 
 ;; Obter segundo número
-	
-	mov esi, calc.segundoNumero
-	
-	imprimirString
-	
-	call obterNumero
-	
-	mov dword[segundoNumero], eax		;; Salvar segundo número
-	
-	cmp eax, 0
-	je fim
-	
+    
+    mov esi, calc.segundoNumero
+    
+    imprimirString
+    
+    call obterNumero
+    
+    mov dword[segundoNumero], eax       ;; Salvar segundo número
+    
+    cmp eax, 0
+    je fim
+    
 ;; Perguntar qual operação executar
 
-	mov esi, calc.operacao
-	
-	imprimirString
-	
-	Hexagonix aguardarTeclado
-	
-	cmp al, '0'
-	je adicionarNumeros
-	
-	cmp al, '1'
-	je subtrair
-	
-	cmp al, '2'
-	je multiplicar
-	
-	cmp al, '3'
-	je dividir
-	
-	cmp al, '4'
-	je fim
+    mov esi, calc.operacao
+    
+    imprimirString
+    
+    Hexagonix aguardarTeclado
+    
+    cmp al, '0'
+    je adicionarNumeros
+    
+    cmp al, '1'
+    je subtrair
+    
+    cmp al, '2'
+    je multiplicar
+    
+    cmp al, '3'
+    je dividir
+    
+    cmp al, '4'
+    je fim
 
 ;;************************************************************************************
 
 adicionarNumeros:
 
-	mov eax, dword[primeiroNumero]
-	mov ebx, dword[segundoNumero]
-	
-	add eax, ebx		;; EAX = EAX + EBX
-	
-	mov dword[resposta], eax
-	
-	jmp imprimirResposta
+    mov eax, dword[primeiroNumero]
+    mov ebx, dword[segundoNumero]
+    
+    add eax, ebx        ;; EAX = EAX + EBX
+    
+    mov dword[resposta], eax
+    
+    jmp imprimirResposta
 
 ;;************************************************************************************
-	
+    
 subtrair:
 
-	mov eax, dword[primeiroNumero]
-	mov ebx, dword[segundoNumero]
-	
-	sub eax, ebx		;; EAX = EAX - EBX
-	
-	mov dword[resposta], eax
-	
-	jmp imprimirResposta
+    mov eax, dword[primeiroNumero]
+    mov ebx, dword[segundoNumero]
+    
+    sub eax, ebx        ;; EAX = EAX - EBX
+    
+    mov dword[resposta], eax
+    
+    jmp imprimirResposta
 
 ;;************************************************************************************
-	
+    
 multiplicar:
 
-	mov eax, dword[primeiroNumero]
-	mov ebx, dword[segundoNumero]
-	
-	mul ebx			    ;; EAX = EAX * EBX
-	
-	mov dword[resposta], eax
-	
-	jmp imprimirResposta
+    mov eax, dword[primeiroNumero]
+    mov ebx, dword[segundoNumero]
+    
+    mul ebx             ;; EAX = EAX * EBX
+    
+    mov dword[resposta], eax
+    
+    jmp imprimirResposta
 
 ;;************************************************************************************
-	
+    
 dividir:
 
-	cmp ebx, 0
-	je .dividirPorZero
-		
-	mov eax, dword[primeiroNumero]
-	mov ebx, dword[segundoNumero]
-	mov edx, 0
-	
-	div ebx			    ;; EAX = EAX / EBX
-	
-	mov dword[resposta], eax
+    cmp ebx, 0
+    je .dividirPorZero
+        
+    mov eax, dword[primeiroNumero]
+    mov ebx, dword[segundoNumero]
+    mov edx, 0
+    
+    div ebx             ;; EAX = EAX / EBX
+    
+    mov dword[resposta], eax
 
-	jmp imprimirResposta
+    jmp imprimirResposta
 
 ;;************************************************************************************
-	
+    
 .dividirPorZero:
 
-	mov esi, calc.dividirPorZero
-	
-	imprimirString
-	
-	jmp imprimirResposta.proximo
+    mov esi, calc.dividirPorZero
+    
+    imprimirString
+    
+    jmp imprimirResposta.proximo
 
 ;;************************************************************************************
-	
+    
 imprimirResposta:
 
-	novaLinha
-	
-	mov esi, calc.resultado
-	
-	imprimirString
-	
-	mov eax, dword[resposta]
-	
-	imprimirInteiro
-	
+    novaLinha
+    
+    mov esi, calc.resultado
+    
+    imprimirString
+    
+    mov eax, dword[resposta]
+    
+    imprimirInteiro
+    
 .proximo:
 
-	novaLinha
-	novaLinha
+    novaLinha
+    novaLinha
 
-	mov esi, calc.solicitarTecla
-	
-	imprimirString
-	
-	Hexagonix aguardarTeclado
-	
-	jmp inicioAPP
+    mov esi, calc.solicitarTecla
+    
+    imprimirString
+    
+    Hexagonix aguardarTeclado
+    
+    jmp inicioAPP
 
 ;;************************************************************************************
-	
+    
 ;; Obter um número do teclado
 ;;
 ;; Saída:
@@ -222,36 +222,36 @@ imprimirResposta:
 
 obterNumero:
 
-	mov al, 10			;; Máximo de 10 caracteres
-	
-	Hexagonix obterString
-	
-	Hexagonix cortarString
-	
-	Hexagonix stringParaInt
-	
-	push eax
-	
-	novaLinha
-	
-	pop eax
-	
-	ret
+    mov al, 10          ;; Máximo de 10 caracteres
+    
+    Hexagonix obterString
+    
+    Hexagonix cortarString
+    
+    Hexagonix stringParaInt
+    
+    push eax
+    
+    novaLinha
+    
+    pop eax
+    
+    ret
 
 ;;************************************************************************************
-	
+    
 fim:
 
-	Andromeda.Estelar.finalizarProcessoGrafico 0, 0
+    Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 
 ;;************************************************************************************
 
 mostrarLogoSistema:
-	
-	Andromeda.Estelar.criarLogotipo VERDE_ESCURO, BRANCO_ANDROMEDA, \
-	[Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
-	
-	ret
+    
+    Andromeda.Estelar.criarLogotipo VERDE_ESCURO, BRANCO_ANDROMEDA, \
+    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    
+    ret
 
 ;;************************************************************************************
 
@@ -274,7 +274,7 @@ calc:
                   db "[2] MUL  (*)", 10
                   db "[3] DIV  (/)", 10
                   db "[4] SAIR", 10
-				  db 10, "Opcao: ", 0 
+                  db 10, "Opcao: ", 0 
 .resultado:       db 10, 10, "O resultado e = ", 0
 .solicitarTecla:  db 10, 10, "Pressione qualquer tecla para continuar...", 10, 10, 0
 
@@ -288,7 +288,7 @@ calc:
 .rodape:          db "[", VERSAO, "] | [F1] Sair",0
 
 primeiroNumero:   dd 0
-segundoNumero:	  dd 0
+segundoNumero:    dd 0
 resposta:         dd 0
 
 Andromeda.Interface Andromeda.Estelar.Interface 

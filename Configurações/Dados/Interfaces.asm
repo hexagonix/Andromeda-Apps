@@ -22,7 +22,7 @@ align 32
 msgInicio: ;; Contêm todas as mensagens abaixo
 
 .introducao:           db "Sobre o Sistema Operacional", 0
-.nomeSistema:          db "Nome do Sistema Operacional: ", 0		
+.nomeSistema:          db "Nome do Sistema Operacional: ", 0        
 .versaoSistema:        db "Versao do Sistema Operacional: ", 0
 .versao:               db " ", 0
 .tipoSistema:          db "Tipo de Sistema Operacional: Sistema Operacional de 32 bits", 0
@@ -65,7 +65,7 @@ msgInfo:
 .operacaoProcessador:  db "Processador em modo 32 bits compativel com modo protegido", 0
 .memoriaDisponivel:    db "Memoria total instalada disponivel: ", 0
 .kbytes:               db " megabytes.", 0
-.Hexagon:              db "Versao do Hexagon: ", 0
+.Hexagon:              db "Versao do Hexagon (kernel): ", 0
 .ponto:                db ".", 0
 .semCPUID:             db "O processador nao suporta a instrucao CPUID e nao pode ser identificado.", 0
 

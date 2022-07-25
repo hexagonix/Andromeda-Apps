@@ -44,312 +44,312 @@ align 32
    
 exibirInterfaceSobre:
 
-	Hexagonix desligarSom
-	
+    Hexagonix desligarSom
+    
     Hexagonix limparTela
 
-	;; Imprime o título do programa e rodapé
+    ;; Imprime o título do programa e rodapé
 
-	mov eax, BRANCO_ANDROMEDA
-	mov ebx, AZUL_METALICO
-	
-	Hexagonix definirCor
-	
-	mov al, 0
-	Hexagonix limparLinha
-	
-	mov esi, piano.titulo
-	imprimirString
-	
-	mov al, byte[Andromeda.Interface.numLinhas]		;; Última linha
-	
-	dec al
-	
-	Hexagonix limparLinha
-	
-	mov esi, piano.rodapeInfo
-	imprimirString
-	
-	mov eax, dword[Andromeda.Interface.corFonte]
-	mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, BRANCO_ANDROMEDA
+    mov ebx, AZUL_METALICO
+    
+    Hexagonix definirCor
+    
+    mov al, 0
+    Hexagonix limparLinha
+    
+    mov esi, piano.titulo
+    imprimirString
+    
+    mov al, byte[Andromeda.Interface.numLinhas]     ;; Última linha
+    
+    dec al
+    
+    Hexagonix limparLinha
+    
+    mov esi, piano.rodapeInfo
+    imprimirString
+    
+    mov eax, dword[Andromeda.Interface.corFonte]
+    mov ebx, dword[Andromeda.Interface.corFundo]
 
-	Hexagonix definirCor
-	
-	mov dh, 02
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.sobreTeclado
-	
-	imprimirString
-	
-	mov dh, 03
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.versaoTeclado
-	
-	imprimirString
-	
-	mov dh, 05
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.autor
-	
-	imprimirString
-	
-	mov dh, 06
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.direitos
-	
-	imprimirString
-	
-	mov dh, 08
-	mov dl, 04
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.ajuda
-	
-	imprimirString
-	
-	mov dh, 10
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.topico1
-	
-	imprimirString
-	
-	mov dh, 11
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.topico2
-	
-	imprimirString
-	
-	mov dh, 12
-	mov dl, 02
-	
-	Hexagonix definirCursor
-	
-	mov esi, piano.topico3
-	
-	imprimirString
-	
-	
+    Hexagonix definirCor
+    
+    mov dh, 02
+    mov dl, 02
+    
+    Hexagonix definirCursor
+    
+    mov esi, piano.sobreTeclado
+    
+    imprimirString
+    
+    mov dh, 03
+    mov dl, 02
+    
+    Hexagonix definirCursor
+    
+    mov esi, piano.versaoTeclado
+    
+    imprimirString
+    
+    mov dh, 05
+    mov dl, 02
+    
+    Hexagonix definirCursor
+    
+    mov esi, piano.autor
+    
+    imprimirString
+    
+    mov dh, 06
+    mov dl, 02
+    
+    Hexagonix definirCursor
+    
+    mov esi, piano.direitos
+    
+    imprimirString
+    
+    mov dh, 08
+    mov dl, 04
+    
+    Hexagonix definirCursor
+    
+    mov esi, piano.ajuda
+    
+    imprimirString
+    
+    mov dh, 10
+    mov dl, 02
+    
+    Hexagonix definirCursor
+    
+    mov esi, piano.topico1
+    
+    imprimirString
+    
+    mov dh, 11
+    mov dl, 02
+    
+    Hexagonix definirCursor
+    
+    mov esi, piano.topico2
+    
+    imprimirString
+    
+    mov dh, 12
+    mov dl, 02
+    
+    Hexagonix definirCursor
+    
+    mov esi, piano.topico3
+    
+    imprimirString
+    
+    
 .obterTeclas:
 
-	Hexagonix aguardarTeclado
-	
-	cmp al, 'v'
-	je inicioAPP
-	
-	cmp al, 'V'
-	je inicioAPP
-	
-	cmp al, 'z'
-	je inicioAPP.fim
-	
-	cmp al, 'Z'
-	je inicioAPP.fim
+    Hexagonix aguardarTeclado
+    
+    cmp al, 'v'
+    je inicioAPP
+    
+    cmp al, 'V'
+    je inicioAPP
+    
+    cmp al, 'z'
+    je inicioAPP.fim
+    
+    cmp al, 'Z'
+    je inicioAPP.fim
 
-	jmp .obterTeclas		
+    jmp .obterTeclas        
 
-;;************************************************************	
+;;************************************************************  
 
 inicioAPP:
-	
-	Hexagonix obterCor
+    
+    Hexagonix obterCor
 
-	mov dword[Andromeda.Interface.corFonte], eax
-	mov dword[Andromeda.Interface.corFundo], ebx
+    mov dword[Andromeda.Interface.corFonte], eax
+    mov dword[Andromeda.Interface.corFundo], ebx
 
-	Hexagonix limparTela
+    Hexagonix limparTela
 
-	Hexagonix obterInfoTela
-	
-	mov byte[Andromeda.Interface.numColunas], bl
-	mov byte[Andromeda.Interface.numLinhas], bh
+    Hexagonix obterInfoTela
+    
+    mov byte[Andromeda.Interface.numColunas], bl
+    mov byte[Andromeda.Interface.numLinhas], bh
 
 ;; Imprime o título do programa e rodapé.
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
 
-	Andromeda.Estelar.criarInterface piano.titulo, piano.rodape, \
-	AZUL_METALICO, AZUL_METALICO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
-	[Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    Andromeda.Estelar.criarInterface piano.titulo, piano.rodape, \
+    AZUL_METALICO, AZUL_METALICO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
+    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
 .blocoTeclado:
-		
-	mov eax, 80  ;; Início do bloco em X
-	mov ebx, 80  ;; Início do bloco em Y
-	mov esi, 635 ;; Comprimento do bloco
-	mov edi, 450 ;; Altura do bloco
-	mov edx, LAVANDA_PASTEL ;; Cor do bloco
-	
-	Hexagonix desenharBloco
-	
-	call montarTeclas
+        
+    mov eax, 80  ;; Início do bloco em X
+    mov ebx, 80  ;; Início do bloco em Y
+    mov esi, 635 ;; Comprimento do bloco
+    mov edi, 450 ;; Altura do bloco
+    mov edx, LAVANDA_PASTEL ;; Cor do bloco
+    
+    Hexagonix desenharBloco
+    
+    call montarTeclas
     
 .novamente:
 
-	Hexagonix aguardarTeclado
+    Hexagonix aguardarTeclado
 
-.semtecla:				; Procura as teclas e emite os sons
+.semtecla:              ; Procura as teclas e emite os sons
 
-	cmp al, 'q'
-	jne .w
-	
-	call evidenciarTeclas.evidenciarQ
-	
-	tocarNota 4000
-	
-	jmp .novamente
+    cmp al, 'q'
+    jne .w
+    
+    call evidenciarTeclas.evidenciarQ
+    
+    tocarNota 4000
+    
+    jmp .novamente
 
 .w:
 
-	cmp al, 'w'
-	jne .e
-	
-	call evidenciarTeclas.evidenciarW
-	
-	tocarNota 3600
-	
-	jmp .novamente
+    cmp al, 'w'
+    jne .e
+    
+    call evidenciarTeclas.evidenciarW
+    
+    tocarNota 3600
+    
+    jmp .novamente
 
 .e:
 
-	cmp al, 'e'
-	jne .r
-	
-	call evidenciarTeclas.evidenciarE
-	
-	tocarNota 3200
-	
-	jmp .novamente
+    cmp al, 'e'
+    jne .r
+    
+    call evidenciarTeclas.evidenciarE
+    
+    tocarNota 3200
+    
+    jmp .novamente
 
 
 .r:
 
-	cmp al, 'r'
-	jne .t
-	
-	call evidenciarTeclas.evidenciarR
-	
-	tocarNota 3000
-	
-	jmp .novamente
+    cmp al, 'r'
+    jne .t
+    
+    call evidenciarTeclas.evidenciarR
+    
+    tocarNota 3000
+    
+    jmp .novamente
 
 .t:
 
-	cmp al, 't'
-	jne .y
-	
-	call evidenciarTeclas.evidenciarT
-	
-	tocarNota 2700
-	
-	jmp .novamente
+    cmp al, 't'
+    jne .y
+    
+    call evidenciarTeclas.evidenciarT
+    
+    tocarNota 2700
+    
+    jmp .novamente
 
 .y:
 
-	cmp al, 'y'
-	jne .u
-	
-	call evidenciarTeclas.evidenciarY
-	
-	tocarNota 2400
-	
-	jmp .novamente
+    cmp al, 'y'
+    jne .u
+    
+    call evidenciarTeclas.evidenciarY
+    
+    tocarNota 2400
+    
+    jmp .novamente
 
 .u:
 
-	cmp al, 'u'
-	jne .i
-	
-	call evidenciarTeclas.evidenciarU
-	
-	tocarNota 2100
-	
-	jmp .novamente
+    cmp al, 'u'
+    jne .i
+    
+    call evidenciarTeclas.evidenciarU
+    
+    tocarNota 2100
+    
+    jmp .novamente
 
 .i:
 
-	cmp al, 'i'
-	jne .espaco
-	
-	call evidenciarTeclas.evidenciarI
-	
-	tocarNota 2000
-	
-	jmp .novamente
+    cmp al, 'i'
+    jne .espaco
+    
+    call evidenciarTeclas.evidenciarI
+    
+    tocarNota 2000
+    
+    jmp .novamente
 
 .espaco:
 
-	cmp al, ' '
-	jne .informacoes
-	
-	call evidenciarTeclas.evidenciarEspaco
-	
-	finalizarNota
-	
-	jmp .novamente
-	
+    cmp al, ' '
+    jne .informacoes
+    
+    call evidenciarTeclas.evidenciarEspaco
+    
+    finalizarNota
+    
+    jmp .novamente
+    
 .informacoes:
 
-	cmp al, 'a'
-	jne .sair
-	
-	mov eax, dword[Andromeda.Interface.corFonte]
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	Hexagonix definirCor
-	
-	jmp exibirInterfaceSobre
+    cmp al, 'a'
+    jne .sair
+    
+    mov eax, dword[Andromeda.Interface.corFonte]
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    Hexagonix definirCor
+    
+    jmp exibirInterfaceSobre
 
 .sair:
 
-	cmp al, 'z'
-	je .fim
-	
-	cmp al, 'Z'
-	je .fim
-	
-	jmp .agora
+    cmp al, 'z'
+    je .fim
+    
+    cmp al, 'Z'
+    je .fim
+    
+    jmp .agora
 
 .agora:
 
-	jmp .novamente
+    jmp .novamente
 
 .fim:
 
-	mov eax, dword[Andromeda.Interface.corFonte]
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	Hexagonix definirCor
-	
-	Hexagonix desligarSom
+    mov eax, dword[Andromeda.Interface.corFonte]
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    Hexagonix definirCor
+    
+    Hexagonix desligarSom
 
-	Hexagonix limparTela
-	
-	Andromeda.Estelar.finalizarProcessoGrafico 0, 0
+    Hexagonix limparTela
+    
+    Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 
 ;;************************************************************
 
 montarTeclas:
 
 .primeiraTecla:
-	
+    
     mov eax, 144
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
@@ -360,7 +360,7 @@ montarTeclas:
  
 .segundaTecla:
 
-	mov eax, 204
+    mov eax, 204
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
@@ -370,7 +370,7 @@ montarTeclas:
 
 .terceiraTecla:
 
-	mov eax, 264
+    mov eax, 264
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
@@ -380,7 +380,7 @@ montarTeclas:
     
 .quartaTecla:
 
-	mov eax, 324
+    mov eax, 324
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
@@ -390,7 +390,7 @@ montarTeclas:
     
 .quintaTecla:
 
-	mov eax, 384
+    mov eax, 384
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
@@ -400,7 +400,7 @@ montarTeclas:
     
 .sextaTecla:
 
-	mov eax, 444
+    mov eax, 444
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
@@ -410,7 +410,7 @@ montarTeclas:
     
 .setimaTecla:
 
-	mov eax, 504
+    mov eax, 504
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
@@ -430,7 +430,7 @@ montarTeclas:
     
 .blocoEspaco:
 
-	mov eax, 145
+    mov eax, 145
     mov ebx, 460
     mov esi, 500
     mov edi, 40
@@ -441,17 +441,17 @@ montarTeclas:
 .legenda:
     
     mov eax, PRETO
-	mov ebx, LAVANDA_PASTEL
-	
-	Hexagonix definirCor
+    mov ebx, LAVANDA_PASTEL
+    
+    Hexagonix definirCor
 
 .teclaQ:
-	
-	mov dl, 19
+    
+    mov dl, 19
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
     Hexagonix definirCursor
-	
+    
     mov esi, piano.teclaQ
     
     imprimirString
@@ -462,7 +462,7 @@ montarTeclas:
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
     Hexagonix definirCursor
-	
+    
     mov esi, piano.teclaW
     
     imprimirString
@@ -473,62 +473,62 @@ montarTeclas:
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
     Hexagonix definirCursor
-	
+    
     mov esi, piano.teclaE
     
     imprimirString
-	
+    
 .teclaR:
 
-	mov dl, 42 ;; Anterior + 8
+    mov dl, 42 ;; Anterior + 8
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
     Hexagonix definirCursor
-	
+    
     mov esi, piano.teclaR
     
     imprimirString
 
 .teclaT:
 
-	mov dl, 49 ;; Anterior + 7
+    mov dl, 49 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
     Hexagonix definirCursor
-	
+    
     mov esi, piano.teclaT
     
     imprimirString
     
 .teclaY:
 
-	mov dl, 57 ;; Anterior + 7
+    mov dl, 57 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
     Hexagonix definirCursor
-	
+    
     mov esi, piano.teclaY
     
     imprimirString   
     
 .teclaU:
 
-	mov dl, 64 ;; Anterior + 7
+    mov dl, 64 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
     Hexagonix definirCursor
-	
+    
     mov esi, piano.teclaU
     
-    imprimirString      	
+    imprimirString          
     
 .teclaI:
 
-	mov dl, 72 ;; Anterior + 8
+    mov dl, 72 ;; Anterior + 8
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
     Hexagonix definirCursor
-	
+    
     mov esi, piano.teclaI
     
     imprimirString  
@@ -536,23 +536,23 @@ montarTeclas:
 .teclaEspaco:
         
     mov eax, BRANCO_ANDROMEDA
-	mov ebx, PRETO
-	
-	Hexagonix definirCor
-	    
+    mov ebx, PRETO
+    
+    Hexagonix definirCor
+        
     mov dl, 45 
     mov dh, 29 
     
     Hexagonix definirCursor
-	
+    
     mov esi, piano.teclaEspaco
     
     imprimirString 
     
-	mov eax, dword[Andromeda.Interface.corFonte]
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	Hexagonix definirCor
+    mov eax, dword[Andromeda.Interface.corFonte]
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    Hexagonix definirCor
 
     ret
     
@@ -561,9 +561,9 @@ montarTeclas:
 evidenciarTeclas:
 
 .evidenciarQ:
-	
-	call montarTeclas
-	
+    
+    call montarTeclas
+    
     mov eax, 144
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
@@ -572,13 +572,13 @@ evidenciarTeclas:
     
     Hexagonix desenharBloco
  
-	ret
-	
+    ret
+    
 .evidenciarW:
 
-	call montarTeclas
-	
-	mov eax, 204
+    call montarTeclas
+    
+    mov eax, 204
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
@@ -590,9 +590,9 @@ evidenciarTeclas:
 
 .evidenciarE:
 
-	call montarTeclas
-	
-	mov eax, 264
+    call montarTeclas
+    
+    mov eax, 264
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
@@ -604,9 +604,9 @@ evidenciarTeclas:
     
 .evidenciarR:
 
-	call montarTeclas
-	
-	mov eax, 324
+    call montarTeclas
+    
+    mov eax, 324
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
@@ -618,9 +618,9 @@ evidenciarTeclas:
     
 .evidenciarT:
 
-	call montarTeclas
-	
-	mov eax, 384
+    call montarTeclas
+    
+    mov eax, 384
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
@@ -632,9 +632,9 @@ evidenciarTeclas:
     
 .evidenciarY:
 
-	call montarTeclas
-	
-	mov eax, 444
+    call montarTeclas
+    
+    mov eax, 444
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
@@ -646,9 +646,9 @@ evidenciarTeclas:
     
 .evidenciarU:
 
-	call montarTeclas
-	
-	mov eax, 504
+    call montarTeclas
+    
+    mov eax, 504
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
@@ -674,9 +674,9 @@ evidenciarTeclas:
     
 .evidenciarEspaco:
 
-	call montarTeclas
-	
-	mov eax, 145
+    call montarTeclas
+    
+    mov eax, 145
     mov ebx, 460
     mov esi, 500
     mov edi, 40
@@ -685,23 +685,23 @@ evidenciarTeclas:
     Hexagonix desenharBloco
     
     mov eax, BRANCO_ANDROMEDA
-	mov ebx, VERMELHO
-	
-	Hexagonix definirCor
-	    
+    mov ebx, VERMELHO
+    
+    Hexagonix definirCor
+        
     mov dl, 45 
     mov dh, 29 
     
     Hexagonix definirCursor
-	
+    
     mov esi, piano.teclaEspaco
     
     imprimirString 
     
-	mov eax, dword[Andromeda.Interface.corFonte]
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	Hexagonix definirCor
+    mov eax, dword[Andromeda.Interface.corFonte]
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    Hexagonix definirCor
 
     ret
 

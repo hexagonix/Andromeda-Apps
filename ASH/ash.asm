@@ -56,7 +56,7 @@ ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
 versaoASH           equ "3.5.3" 
-compativelAndromeda equ "H1 R3 (Duna)"
+compativelAndromeda equ "H1 R5 (Orion)"
                     
 ;;**************************
 
@@ -67,13 +67,13 @@ ash:
 .bannerASH:          db "ASH - Andromeda(R) SHell", 0
 .boasVindas:         db "Seja bem-vindo ao Andromeda(R) SHell - ASH", 10, 10
                      db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10
-			         db "Todos os direitos reservados.", 10, 0
+                     db "Todos os direitos reservados.", 10, 0
 .versaoAndromeda:    db 10, 10, "Sistema Operacional Andromeda(R)", 10 
                      db "Versao ", 0
 .direitosAutorais:   db 10, 10, "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10   
                      db "Todos os direitos reservados.", 10, 0
 .limiteProcessos:    db 10, 10, "[!] Nao existe memoria disponivel para executar o aplicativo solicitado.", 10
-                     db "[!] Tente primeiramente finalizar aplicativos ou suas instancias, e tente novamente.", 10, 0		             
+                     db "[!] Tente primeiramente finalizar aplicativos ou suas instancias, e tente novamente.", 10, 0                    
 .ponto:              db ".", 0
 .imagemInvalida:     db ": nao e possivel carregar a imagem. Formato executavel nao suportado.", 10, 0
 .prompt:             db "[/]: ", 0
@@ -93,9 +93,9 @@ ash:
 comandos:
 
 .alterarDisco:  db "ad", 0
-.sair:		    db "sair",0
-.versao:	    db "ver", 0
-.ajuda:		    db "ajuda", 0
+.sair:          db "sair",0
+.versao:        db "ver", 0
+.ajuda:         db "ajuda", 0
 
 ;;**************************
 
@@ -104,10 +104,10 @@ ajuda:
 .introducao:    db 10, 10, "Andromeda SHell versao ", versaoASH, 10
                 db "Compativel com Andromeda(R) ", compativelAndromeda, " ou superior.", 0
 .conteudoAjuda: db 10, 10, "Comandos internos disponiveis:", 10, 10
-				db " VER  - Exibe informacoes da versao do ASH em execucao.", 10
-				db " SAIR - Finalizar essa sessao do ASH.", 10, 10
-				db "Tente digitar 'ls' para ver outros utilitarios e aplicativos disponiveis!", 10, 0
-		     
+                db " VER  - Exibe informacoes da versao do ASH em execucao.", 10
+                db " SAIR - Finalizar essa sessao do ASH.", 10, 10
+                db "Tente digitar 'ls' para ver outros utilitarios e aplicativos disponiveis!", 10, 0
+             
 ;;**************************
 
 discos:
@@ -120,551 +120,551 @@ discos:
 .discoAtual:       db 10, 10, "Volume atual utilizado pelo sistema: ", 0
 .erroAlterar:      db 10, 10, "Um volume valido ou parametro nao foram fornecidos para este comando.", 10, 10
                    db "Impossivel alterar o volume Unix padrao.", 10, 10
-			       db "Utilize como argumento um nome de dispositivo ou entao 'info' para informacoes do disco atual.", 10, 0
+                   db "Utilize como argumento um nome de dispositivo ou entao 'info' para informacoes do disco atual.", 10, 0
 .rotuloVolume:     db 10, 10, "Rotulo do volume: ", 0
 .avisoSairdeLinha: db 10, 10, "Aviso! Este e um comando interno obsoleto do Andromeda SHell.", 10
                    db "Fique ciente que ele pode ser removido em breve. Em substituicao, utilize a ferramenta Unix 'mount'.", 10
-				   db "Voce pode encontrar a documentacao da ferramenta digitando 'man mount' a qualquer momento.", 0
-	
+                   db "Voce pode encontrar a documentacao da ferramenta digitando 'man mount' a qualquer momento.", 0
+    
 ;;**************************
  
-nomeArquivo: times 13 db 0	
+nomeArquivo: times 13 db 0  
 
-discoAtual:  times 3  db 0		  
+discoAtual:  times 3  db 0        
 
 Andromeda.Interface Andromeda.Estelar.Interface
 
 ;;************************************************************************************
 
-inicioShell:	
+inicioShell:    
 
-	logSistema ash.verboseEntradaASH, 00h, Log.Prioridades.p4
-	logSistema ash.verboseVersaoASH, 00h, Log.Prioridades.p4
-	logSistema ash.verboseAutor, 00h, Log.Prioridades.p4
-	logSistema ash.verboseDireitos, 00h, Log.Prioridades.p4
+    logSistema ash.verboseEntradaASH, 00h, Log.Prioridades.p4
+    logSistema ash.verboseVersaoASH, 00h, Log.Prioridades.p4
+    logSistema ash.verboseAutor, 00h, Log.Prioridades.p4
+    logSistema ash.verboseDireitos, 00h, Log.Prioridades.p4
 
 ;; Iniciar a configuração do terminal
 
-	Hexagonix obterCor
+    Hexagonix obterCor
 
-	mov dword[Andromeda.Interface.corFonte], eax
-	mov dword[Andromeda.Interface.corFundo], ebx
+    mov dword[Andromeda.Interface.corFonte], eax
+    mov dword[Andromeda.Interface.corFundo], ebx
 
     Hexagonix limparTela
-	
-	Hexagonix obterInfoTela
-	
-	novaLinha
+    
+    Hexagonix obterInfoTela
+    
+    novaLinha
 
-	mov byte[Andromeda.Interface.numColunas], bl
-	mov byte[Andromeda.Interface.numLinhas], bh
+    mov byte[Andromeda.Interface.numColunas], bl
+    mov byte[Andromeda.Interface.numLinhas], bh
 
-	call exibirBannerASH
+    call exibirBannerASH
 
-	mov esi, ash.boasVindas
-	
-	imprimirString
+    mov esi, ash.boasVindas
+    
+    imprimirString
 
 ;;************************************************************************************
 
-.obterComando:	
+.obterComando:  
    
     call exibirBannerASH
    
-	Hexagonix obterCursor
-	
-	Hexagonix definirCursor
-	
-	push ecx
-	
-	xor ecx, ecx
-	
-	mov eax, ASHTerminal
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	call alterarCor
-	
-	pop ecx
-	
-	mov esi, ash.prompt
-	
-	imprimirString
-	
-	mov ecx, 01h
-	
-	call alterarCor
-	
-	mov al, byte[Andromeda.Interface.numColunas]		 ;; Máximo de caracteres para obter
+    Hexagonix obterCursor
+    
+    Hexagonix definirCursor
+    
+    push ecx
+    
+    xor ecx, ecx
+    
+    mov eax, ASHTerminal
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    call alterarCor
+    
+    pop ecx
+    
+    mov esi, ash.prompt
+    
+    imprimirString
+    
+    mov ecx, 01h
+    
+    call alterarCor
+    
+    mov al, byte[Andromeda.Interface.numColunas]         ;; Máximo de caracteres para obter
 
-	sub al, 20
-	
-	Hexagonix obterString
-	
-	Hexagonix cortarString			 ;; Remover espaços em branco extras
-		
-	cmp byte[esi], 0		         ;; Nenhum comando inserido
-	je .obterComando
-	
+    sub al, 20
+    
+    Hexagonix obterString
+    
+    Hexagonix cortarString           ;; Remover espaços em branco extras
+        
+    cmp byte[esi], 0                 ;; Nenhum comando inserido
+    je .obterComando
+    
 ;; Comparar com comandos internos disponíveis
 
-	;; Comando SAIR
-	
-	mov edi, comandos.sair	
+    ;; Comando SAIR
+    
+    mov edi, comandos.sair  
 
-	Hexagonix compararPalavrasString
+    Hexagonix compararPalavrasString
 
-	jc .finalizarShell
+    jc .finalizarShell
 
-	;; Comando VER
-	
-	mov edi, comandos.versao	
+    ;; Comando VER
+    
+    mov edi, comandos.versao    
 
-	Hexagonix compararPalavrasString
+    Hexagonix compararPalavrasString
 
-	jc .comandoVER
+    jc .comandoVER
 
-	;; Comando AJUDA
-	
-	mov edi, comandos.ajuda	
+    ;; Comando AJUDA
+    
+    mov edi, comandos.ajuda 
 
-	Hexagonix compararPalavrasString
+    Hexagonix compararPalavrasString
 
-	jc .comandoAJUDA
-	
-	;; Comando AD
-	
-	mov edi, comandos.alterarDisco
-	
-	Hexagonix compararPalavrasString
+    jc .comandoAJUDA
+    
+    ;; Comando AD
+    
+    mov edi, comandos.alterarDisco
+    
+    Hexagonix compararPalavrasString
 
-	jc .comandoAD
+    jc .comandoAD
 
 ;;************************************************************************************
 
 ;; Tentar carregar um programa
-	
-	call obterArgumentos		      ;; Separar comando e argumentos
-	
-	push esi
-	push edi
-	
-	Hexagonix tamanhoString
-	
-	add esi, eax
+    
+    call obterArgumentos              ;; Separar comando e argumentos
+    
+    push esi
+    push edi
+    
+    Hexagonix tamanhoString
+    
+    add esi, eax
 
-	sub esi, 4
-	
-	mov edi, ash.extensaoProgramas
-	
-	Hexagonix compararPalavrasString  ;; Checar por extensão .APP
-	
-	jc .carregarPrograma
-	
-	pop edi
-	pop esi
-	
+    sub esi, 4
+    
+    mov edi, ash.extensaoProgramas
+    
+    Hexagonix compararPalavrasString  ;; Checar por extensão .APP
+    
+    jc .carregarPrograma
+    
+    pop edi
+    pop esi
+    
 .semExtensao:
-		
+        
 ;; Tentar adicionar extensão
 
-	Hexagonix tamanhoString
-	
-	mov ebx, eax
+    Hexagonix tamanhoString
+    
+    mov ebx, eax
 
-	mov al, byte[ash.extensaoProgramas+0]
-	
-	mov byte[esi+ebx+0], al
-	
-	mov al, byte[ash.extensaoProgramas+1]
-	
-	mov byte[esi+ebx+1], al
-	
-	mov al, byte[ash.extensaoProgramas+2]
-	
-	mov byte[esi+ebx+2], al
-	
-	mov al, byte[ash.extensaoProgramas+3]
-	
-	mov byte[esi+ebx+3], al
-	
-	mov byte[esi+ebx+4], 0		;; Fim da string
-	
-	push esi
-	push edi
-	
-	jmp .carregarPrograma
-	
+    mov al, byte[ash.extensaoProgramas+0]
+    
+    mov byte[esi+ebx+0], al
+    
+    mov al, byte[ash.extensaoProgramas+1]
+    
+    mov byte[esi+ebx+1], al
+    
+    mov al, byte[ash.extensaoProgramas+2]
+    
+    mov byte[esi+ebx+2], al
+    
+    mov al, byte[ash.extensaoProgramas+3]
+    
+    mov byte[esi+ebx+3], al
+    
+    mov byte[esi+ebx+4], 0      ;; Fim da string
+    
+    push esi
+    push edi
+    
+    jmp .carregarPrograma
+    
 .falhaExecutando:
 
 ;; Agora o erro enviado pelo Sistema será analisado, para que o Shell conheça
 ;; sua natureza
 
-	cmp eax, Hexagon.limiteProcessos ;; Limite de processos em execução atingido
-	je .limiteAtingido               ;; Se sim, exibir a mensagem apropriada
-	
-	cmp eax, Hexagon.imagemInvalida  ;; Limite de processos em execução atingido
-	je .imagemHAPPInvalida           ;; Se sim, exibir a mensagem apropriada
-	
-	Hexagonix obterCursor
-	
-	mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
+    cmp eax, Hexagon.limiteProcessos ;; Limite de processos em execução atingido
+    je .limiteAtingido               ;; Se sim, exibir a mensagem apropriada
+    
+    cmp eax, Hexagon.imagemInvalida  ;; Limite de processos em execução atingido
+    je .imagemHAPPInvalida           ;; Se sim, exibir a mensagem apropriada
+    
+    Hexagonix obterCursor
+    
+    mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
 
-	sub dl, 17
-	
-	Hexagonix definirCursor
-	
-	push ecx
-	
-	xor ecx, ecx
-	
-	mov eax, ASHErro          
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	call alterarCor
-	
-	pop ecx
-	
-	mov esi, ash.comandoInvalido
-	
-	imprimirString
-	
-	mov ecx, 01h
-	
-	call alterarCor
-	
-	jmp .obterComando	
+    sub dl, 17
+    
+    Hexagonix definirCursor
+    
+    push ecx
+    
+    xor ecx, ecx
+    
+    mov eax, ASHErro          
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    call alterarCor
+    
+    pop ecx
+    
+    mov esi, ash.comandoInvalido
+    
+    imprimirString
+    
+    mov ecx, 01h
+    
+    call alterarCor
+    
+    jmp .obterComando   
 
 .imagemHAPPInvalida:
 
-	push esi
+    push esi
 
-	Hexagonix obterCursor
-	
-	mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
+    Hexagonix obterCursor
+    
+    mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
 
-	sub dl, 17
-	
-	Hexagonix definirCursor
-	
-	novaLinha
-	novaLinha
-	
-	pop esi
-	
-	imprimirString
-	
-	push ecx 
+    sub dl, 17
+    
+    Hexagonix definirCursor
+    
+    novaLinha
+    novaLinha
+    
+    pop esi
+    
+    imprimirString
+    
+    push ecx 
 
-	xor ecx, ecx
-	
-	mov eax, ASHErro          
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	call alterarCor
-	
-	pop ecx
+    xor ecx, ecx
+    
+    mov eax, ASHErro          
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    call alterarCor
+    
+    pop ecx
 
-	mov esi, ash.imagemInvalida
-	
-	imprimirString
-	
-	mov ecx, 01h
-	
-	call alterarCor
+    mov esi, ash.imagemInvalida
+    
+    imprimirString
+    
+    mov ecx, 01h
+    
+    call alterarCor
 
-	jmp .obterComando	
+    jmp .obterComando   
 
 .limiteAtingido:
 
-	logSistema ash.verboseLimite, 00h, Log.Prioridades.p4
+    logSistema ash.verboseLimite, 00h, Log.Prioridades.p4
 
-	Hexagonix obterCursor
-	
-	mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
+    Hexagonix obterCursor
+    
+    mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
 
-	sub dl, 17
-	
-	Hexagonix definirCursor
-	
-	push ecx
-	
-	xor ecx, ecx
-	
-	mov eax, ASHLimiteProcessos        
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	call alterarCor
-	
-	pop ecx
-	
-	mov esi, ash.limiteProcessos
-	
-	imprimirString
-	
-	mov ecx, 01h
-	
-	call alterarCor
-	
-	jmp .obterComando	
+    sub dl, 17
+    
+    Hexagonix definirCursor
+    
+    push ecx
+    
+    xor ecx, ecx
+    
+    mov eax, ASHLimiteProcessos        
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    call alterarCor
+    
+    pop ecx
+    
+    mov esi, ash.limiteProcessos
+    
+    imprimirString
+    
+    mov ecx, 01h
+    
+    call alterarCor
+    
+    jmp .obterComando   
 
 .carregarPrograma:
-	
-	pop edi
+    
+    pop edi
 
-	mov esi, edi
-	
-	Hexagonix cortarString
-	
-	pop esi
-	
-	mov eax, edi
-	
-	stc
-	
-	Hexagonix iniciarProcesso
-	
-	jc .falhaExecutando
-	
-	jmp .obterComando
+    mov esi, edi
+    
+    Hexagonix cortarString
+    
+    pop esi
+    
+    mov eax, edi
+    
+    stc
+    
+    Hexagonix iniciarProcesso
+    
+    jc .falhaExecutando
+    
+    jmp .obterComando
 
 ;;************************************************************************************
-	
+    
 .comandoAJUDA:
 
-	mov esi, ajuda.conteudoAjuda
-	
-	imprimirString
-	
-	jmp .obterComando
+    mov esi, ajuda.conteudoAjuda
+    
+    imprimirString
+    
+    jmp .obterComando
 
 ;;************************************************************************************
 
 .comandoAD:
-	
-	push esi
-	push edi
-
-	push ecx
-	
-	xor ecx, ecx
-	
-	mov eax, ASHAviso        
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	call alterarCor
-	
-	pop ecx
-	
-	mov esi, discos.avisoSairdeLinha
-
-	imprimirString
-
-	mov ecx, 01h
-	
-	call alterarCor
-
-	pop edi
-	pop esi
-
-	add esi, 02h
-	
-	Hexagonix cortarString
-	
-	mov edi, discos.hd0	
-    	
-	Hexagonix compararPalavrasString
-	
-	jc .alterarParaHD0
-	
-	mov edi, discos.hd1	
-    	
-	Hexagonix compararPalavrasString	
-	
-	jc .alterarParaHD1
-	
-	mov edi, discos.hd2	
     
-	Hexagonix compararPalavrasString
-	
-	jc .alterarParaHD2
-	
-	mov edi, discos.hd3	
+    push esi
+    push edi
+
+    push ecx
     
-	Hexagonix compararPalavrasString	
-	
-	jc .alterarParaHD3
-	
-	mov edi, discos.info	
-    	
-	Hexagonix compararPalavrasString
-	
-	jc .infoDisco
-	
-	jmp .erroAlterar
+    xor ecx, ecx
+    
+    mov eax, ASHAviso        
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    call alterarCor
+    
+    pop ecx
+    
+    mov esi, discos.avisoSairdeLinha
+
+    imprimirString
+
+    mov ecx, 01h
+    
+    call alterarCor
+
+    pop edi
+    pop esi
+
+    add esi, 02h
+    
+    Hexagonix cortarString
+    
+    mov edi, discos.hd0 
+        
+    Hexagonix compararPalavrasString
+    
+    jc .alterarParaHD0
+    
+    mov edi, discos.hd1 
+        
+    Hexagonix compararPalavrasString    
+    
+    jc .alterarParaHD1
+    
+    mov edi, discos.hd2 
+    
+    Hexagonix compararPalavrasString
+    
+    jc .alterarParaHD2
+    
+    mov edi, discos.hd3 
+    
+    Hexagonix compararPalavrasString    
+    
+    jc .alterarParaHD3
+    
+    mov edi, discos.info    
+        
+    Hexagonix compararPalavrasString
+    
+    jc .infoDisco
+    
+    jmp .erroAlterar
 
 .alterarParaHD0:
 
-	logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
+    logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
 
     mov esi, discos.hd0
-	
+    
     Hexagonix abrir
 
-	novaLinha
+    novaLinha
 
     jmp .obterComando
-	
+    
 .alterarParaHD1:
 
-	logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
+    logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
 
     mov esi, discos.hd1
-	
+    
     Hexagonix abrir
 
-	novaLinha
+    novaLinha
 
     jmp .obterComando
 
 .alterarParaHD2:
 
-	logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
-	
+    logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
+    
     mov esi, discos.hd2
-	
+    
     Hexagonix abrir
 
-	novaLinha
+    novaLinha
 
     jmp .obterComando
 
 .alterarParaHD3:
 
-	logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
+    logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
 
     mov esi, discos.hd3
-	
+    
     Hexagonix abrir
 
-	novaLinha
+    novaLinha
 
-    jmp .obterComando	
-	
+    jmp .obterComando   
+    
 .erroAlterar:
 
     mov esi, discos.erroAlterar
 
     imprimirString
 
-    jmp .obterComando 	
-	
+    jmp .obterComando   
+    
 .infoDisco:
 
     mov esi, discos.discoAtual
   
     imprimirString  
-	
-	Hexagonix obterDisco
-	
-	push edi
-	push esi
-	
-	push ecx
-	
-	xor ecx, ecx
-	
-	mov eax, ASHPadrao
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	call alterarCor
-	
-	pop ecx
-	
-	pop esi
-	
-	imprimirString
-	
-	mov ecx, 01h
-	
-	call alterarCor
-	
-	mov esi, discos.rotuloVolume
-	
-	imprimirString
-	
-	push ecx
-	
-	xor ecx, ecx
-	
-	mov eax, ASHPadrao
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	call alterarCor
-	
-	pop ecx
-	
-	pop edi
-	
-	mov esi, edi
-	
-	imprimirString
-	
-	mov ecx, 01h
-	
-	call alterarCor
-	
+    
+    Hexagonix obterDisco
+    
+    push edi
+    push esi
+    
+    push ecx
+    
+    xor ecx, ecx
+    
+    mov eax, ASHPadrao
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    call alterarCor
+    
+    pop ecx
+    
+    pop esi
+    
+    imprimirString
+    
+    mov ecx, 01h
+    
+    call alterarCor
+    
+    mov esi, discos.rotuloVolume
+    
+    imprimirString
+    
+    push ecx
+    
+    xor ecx, ecx
+    
+    mov eax, ASHPadrao
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    call alterarCor
+    
+    pop ecx
+    
+    pop edi
+    
+    mov esi, edi
+    
+    imprimirString
+    
+    mov ecx, 01h
+    
+    call alterarCor
+    
 .novaLinha:
   
     novaLinha
 
-    jmp .obterComando	
+    jmp .obterComando   
 
 ;;************************************************************************************
-	
+    
 .comandoVER:
-	
+    
     push ecx
-	
-	xor ecx, ecx
-	
-	mov eax, ASHPadrao          
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	call alterarCor
-	
-	pop ecx
-	
-	mov esi, ajuda.introducao
-	
-	imprimirString
-	
-	mov ecx, 01h
-	
-	call alterarCor
-	
-	mov esi, ash.direitosAutorais
-	
-	imprimirString
+    
+    xor ecx, ecx
+    
+    mov eax, ASHPadrao          
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    call alterarCor
+    
+    pop ecx
+    
+    mov esi, ajuda.introducao
+    
+    imprimirString
+    
+    mov ecx, 01h
+    
+    call alterarCor
+    
+    mov esi, ash.direitosAutorais
+    
+    imprimirString
 
-	jmp .obterComando
+    jmp .obterComando
 
 ;;************************************************************************************
-	
+    
 .finalizarShell:
 
-	logSistema ash.verboseSaida, 00h, Log.Prioridades.p4
+    logSistema ash.verboseSaida, 00h, Log.Prioridades.p4
 
-	novaLinha
+    novaLinha
 
-	mov ebx, 00h
-	
-	Hexagonix encerrarProcesso
-	
-	jmp .obterComando
-	
-	Hexagonix aguardarTeclado
-	
-	Hexagonix encerrarProcesso
+    mov ebx, 00h
+    
+    Hexagonix encerrarProcesso
+    
+    jmp .obterComando
+    
+    Hexagonix aguardarTeclado
+    
+    Hexagonix encerrarProcesso
 
 ;;************************************************************************************
 
@@ -690,63 +690,63 @@ inicioShell:
 
 obterArgumentos:
 
-	push esi
-	
+    push esi
+    
 .loop:
 
-	lodsb			;; mov AL, byte[ESI] & inc ESI
-	
-	cmp al, 0
-	je .naoencontrado
-	
-	cmp al, ' '
-	je .espacoEncontrado
-	
-	jmp .loop
-	
+    lodsb           ;; mov AL, byte[ESI] & inc ESI
+    
+    cmp al, 0
+    je .naoencontrado
+    
+    cmp al, ' '
+    je .espacoEncontrado
+    
+    jmp .loop
+    
 .naoencontrado:
 
-	pop esi
-	
-	mov edi, 0
-	
-	stc
-	
-	jmp .fim
+    pop esi
+    
+    mov edi, 0
+    
+    stc
+    
+    jmp .fim
 
 .espacoEncontrado:
 
-	mov byte[esi-1], 0
-	mov ebx, esi
-	
-	Hexagonix tamanhoString
-	
-	mov ecx, eax
-	
-	inc ecx			;; Incluindo o último caractere (NULL)
-	
-	push es
-	
-	push ds
-	pop es
-	
-	mov esi, ebx
-	mov edi, bufferArquivo
-	
-	rep movsb		;; Copiar (ECX) caracteres da string de ESI para EDI
-	
-	pop es
-	
-	mov edi, bufferArquivo
-	
-	pop esi
-	
-	clc
-	
+    mov byte[esi-1], 0
+    mov ebx, esi
+    
+    Hexagonix tamanhoString
+    
+    mov ecx, eax
+    
+    inc ecx         ;; Incluindo o último caractere (NULL)
+    
+    push es
+    
+    push ds
+    pop es
+    
+    mov esi, ebx
+    mov edi, bufferArquivo
+    
+    rep movsb       ;; Copiar (ECX) caracteres da string de ESI para EDI
+    
+    pop es
+    
+    mov edi, bufferArquivo
+    
+    pop esi
+    
+    clc
+    
 .fim:
 
-	ret
-	
+    ret
+    
 ;;************************************************************************************
 
 ;; Altera a cor da fonte e do plano de fundo
@@ -759,62 +759,62 @@ obterArgumentos:
  
 alterarCor:
 
-	cmp ecx, 01h
-	je .padrao
-	
-	Hexagonix definirCor
-	
-	ret
-	
+    cmp ecx, 01h
+    je .padrao
+    
+    Hexagonix definirCor
+    
+    ret
+    
 .padrao:
 
-	mov eax, dword[Andromeda.Interface.corFonte]
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	Hexagonix definirCor
+    mov eax, dword[Andromeda.Interface.corFonte]
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    Hexagonix definirCor
 
-	ret
-	
+    ret
+    
 ;;************************************************************************************
 
 exibirBannerASH:
-	
-	Hexagonix obterCursor
-	
-	push edx
-	
-	push ecx
-	
-	xor ecx, ecx
+    
+    Hexagonix obterCursor
+    
+    push edx
+    
+    push ecx
+    
+    xor ecx, ecx
 
-	mov eax, BRANCO_ANDROMEDA
-	mov ebx, ASHPadrao
-	
-	call alterarCor
-	
-	pop ecx
-	
-	mov al, 0
-	
-	Hexagonix limparLinha
-	
-	mov esi, ash.bannerASH
-	
-	imprimirString
-	
-	mov ecx, 01h
-	
-	call alterarCor		
-	
-	pop edx	
-	
-	inc dh 
+    mov eax, BRANCO_ANDROMEDA
+    mov ebx, ASHPadrao
+    
+    call alterarCor
+    
+    pop ecx
+    
+    mov al, 0
+    
+    Hexagonix limparLinha
+    
+    mov esi, ash.bannerASH
+    
+    imprimirString
+    
+    mov ecx, 01h
+    
+    call alterarCor     
+    
+    pop edx 
+    
+    inc dh 
 
-	mov dl, 00h
+    mov dl, 00h
 
-	Hexagonix definirCursor
+    Hexagonix definirCursor
 
-	ret 
+    ret 
 
 ;;************************************************************************************
 

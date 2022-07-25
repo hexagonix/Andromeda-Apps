@@ -40,160 +40,160 @@ include "macros.s"
 
 inicioAPP:
 
-	mov [regES], es
-	
-	push ds
-	pop es			
-	
-	Hexagonix obterCor
+    mov [regES], es
+    
+    push ds
+    pop es          
+    
+    Hexagonix obterCor
 
-	mov dword[Andromeda.Interface.corFonte], eax
-	mov dword[Andromeda.Interface.corFundo], ebx
+    mov dword[Andromeda.Interface.corFonte], eax
+    mov dword[Andromeda.Interface.corFundo], ebx
 
-		
+        
 .executarInterface:
 
     Hexagonix limparTela
 
     Hexagonix obterInfoTela
-	
-	mov byte[Andromeda.Interface.numColunas], bl
-	mov byte[Andromeda.Interface.numLinhas], bh
-	
+    
+    mov byte[Andromeda.Interface.numColunas], bl
+    mov byte[Andromeda.Interface.numLinhas], bh
+    
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
 
-	Andromeda.Estelar.criarInterface fonte.titulo, fonte.rodape, AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
-	
-	mov esi, fonte.bannerAndromeda
+    Andromeda.Estelar.criarInterface fonte.titulo, fonte.rodape, AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    
+    mov esi, fonte.bannerAndromeda
 
-	imprimirString
+    imprimirString
 
-	Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-	cursorPara 02, 10
-	
-	mov esi, fonte.boasVindas
-	
-	imprimirString
-	
-	mov esi, fonte.nomeFonte
-	
-	imprimirString
-	
-	mov al, byte[Andromeda.Interface.numColunas]		;; Máximo de caracteres para obter
-	
-	sub al, 20
-	
-	Hexagonix obterString
-	
-	Hexagonix cortarString			;; Remover espaços em branco extras
-	
-	mov [arquivoFonte], esi
+    cursorPara 02, 10
+    
+    mov esi, fonte.boasVindas
+    
+    imprimirString
+    
+    mov esi, fonte.nomeFonte
+    
+    imprimirString
+    
+    mov al, byte[Andromeda.Interface.numColunas]        ;; Máximo de caracteres para obter
+    
+    sub al, 20
+    
+    Hexagonix obterString
+    
+    Hexagonix cortarString          ;; Remover espaços em branco extras
+    
+    mov [arquivoFonte], esi
 
-	call validarFonte
+    call validarFonte
 
-	jc erroFormato
+    jc erroFormato
 
-	Hexagonix alterarFonte
-	
-	jc erroFonte
-	
-	mov esi, fonte.sucesso
-	
-	imprimirString
+    Hexagonix alterarFonte
+    
+    jc erroFonte
+    
+    mov esi, fonte.sucesso
+    
+    imprimirString
 
-	jmp finalizarAPP
-	
+    jmp finalizarAPP
+    
 erroFonte:
 
-	mov esi, fonte.falha
-		
-	imprimirString
-	
-	jmp finalizarAPP
+    mov esi, fonte.falha
+        
+    imprimirString
+    
+    jmp finalizarAPP
 
 erroFormato:
 
-	mov esi, fonte.falhaFormato
-		
-	imprimirString
-	
-	jmp finalizarAPP
+    mov esi, fonte.falhaFormato
+        
+    imprimirString
+    
+    jmp finalizarAPP
 
 ;;************************************************************************************
 
 finalizarAPP:
 
-	Hexagonix aguardarTeclado
+    Hexagonix aguardarTeclado
 
-	Andromeda.Estelar.finalizarProcessoGrafico 0, 0
-	
+    Andromeda.Estelar.finalizarProcessoGrafico 0, 0
+    
 ;;************************************************************************************
 
 validarFonte:
 
-	mov esi, [arquivoFonte]
-	mov edi, bufferArquivo
+    mov esi, [arquivoFonte]
+    mov edi, bufferArquivo
 
-	Hexagonix abrir
+    Hexagonix abrir
 
-	jc .erroSemFonte
+    jc .erroSemFonte
 
-	mov edi, bufferArquivo
+    mov edi, bufferArquivo
 
-	cmp byte[edi+0], "H"
-	jne .naoHFNT
+    cmp byte[edi+0], "H"
+    jne .naoHFNT
 
-	cmp byte[edi+1], "F"
-	jne .naoHFNT
+    cmp byte[edi+1], "F"
+    jne .naoHFNT
 
-	cmp byte[edi+2], "N"
-	jne .naoHFNT
+    cmp byte[edi+2], "N"
+    jne .naoHFNT
 
-	cmp byte[edi+3], "T"
-	jne .naoHFNT
+    cmp byte[edi+3], "T"
+    jne .naoHFNT
 
 .verificarTamanho:
 
-	Hexagonix arquivoExiste
+    Hexagonix arquivoExiste
 
 ;; Em EAX, o tamanho do arquivo. Ele não deve ser maior que 2000 bytes, o que poderia
 ;; sobrescrever dados na memória do Hexagon
 
-	mov ebx, 2000
+    mov ebx, 2000
 
-	cmp eax, ebx
-	jng .continuar
+    cmp eax, ebx
+    jng .continuar
 
-	jmp .tamanhoSuperior
+    jmp .tamanhoSuperior
 
 .continuar:
 
-	clc 
-	
-	ret
+    clc 
+    
+    ret
 
 .erroSemFonte:
-	
-	mov esi, fonte.falha
-	
-	imprimirString
+    
+    mov esi, fonte.falha
+    
+    imprimirString
 
-	jmp finalizarAPP
+    jmp finalizarAPP
 
 .naoHFNT:
 
-	stc
+    stc
 
-	ret
+    ret
 
 .tamanhoSuperior:
 
-	mov esi, fonte.tamanhoSuperior
-	
-	imprimirString
+    mov esi, fonte.tamanhoSuperior
+    
+    imprimirString
 
-	jmp finalizarAPP
+    jmp finalizarAPP
 
 ;;************************************************************************************
 ;;
@@ -208,7 +208,7 @@ fonte:
 .boasVindas:      db 10, 10, "Use este programa para alterar a fonte padrao de exibicao do Sistema.", 10, 10
                   db "Lembrando que apenas fontes desenhadas para o Andromeda(R) podem ser utilizadas.", 10, 10, 10, 10, 0
 
-.nomeArquivo:     db 10, "Nome do arquivo de fonte: ", 0	
+.nomeArquivo:     db 10, "Nome do arquivo de fonte: ", 0    
 
 .nomeFonte:       db "Nome do arquivo: ", 0
 
@@ -244,7 +244,7 @@ fonte:
 
 linhaComando:     dd 0
 arquivoFonte:     dd ?
-regES:	          dw 0
+regES:            dw 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
 

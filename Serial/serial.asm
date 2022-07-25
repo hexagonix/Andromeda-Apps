@@ -40,163 +40,163 @@ include "macros.s"
 
 inicioAPP:
 
-	Hexagonix obterCor
+    Hexagonix obterCor
 
-	mov dword[Andromeda.Interface.corFonte], eax
-	mov dword[Andromeda.Interface.corFundo], ebx
+    mov dword[Andromeda.Interface.corFonte], eax
+    mov dword[Andromeda.Interface.corFundo], ebx
 
-	Hexagonix limparTela
+    Hexagonix limparTela
 
-	Hexagonix obterInfoTela
-	
-	mov byte[Andromeda.Interface.numColunas], bl
-	mov byte[Andromeda.Interface.numLinhas], bh
-	
+    Hexagonix obterInfoTela
+    
+    mov byte[Andromeda.Interface.numColunas], bl
+    mov byte[Andromeda.Interface.numLinhas], bh
+    
 ;; Imprime o título do programa e rodapé.
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
 
-	Andromeda.Estelar.criarInterface serial.titulo, serial.rodape, \
-	AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
-	[Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    Andromeda.Estelar.criarInterface serial.titulo, serial.rodape, \
+    AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
+    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-	Hexagonix definirCor
-	
-	cursorPara 02, 01
-	
-	mov esi, serial.bannerAndromeda
+    Hexagonix definirCor
+    
+    cursorPara 02, 01
+    
+    mov esi, serial.bannerAndromeda
 
-	imprimirString
+    imprimirString
 
-	Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, \
-	[Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, \
+    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-	cursorPara 02, 10
+    cursorPara 02, 10
 
-	mov esi, serial.nomePorta
-	
-	Hexagonix abrir
-	
-	jc erroAbertura
-	
-	novaLinha
+    mov esi, serial.nomePorta
+    
+    Hexagonix abrir
+    
+    jc erroAbertura
+    
+    novaLinha
 
-	mov esi, serial.ajuda
-	
-	imprimirString
-	
-	mov esi, serial.prompt
-	
-	imprimirString
-	
-	mov esi, serial.separador
-	
-	imprimirString
+    mov esi, serial.ajuda
+    
+    imprimirString
+    
+    mov esi, serial.prompt
+    
+    imprimirString
+    
+    mov esi, serial.separador
+    
+    imprimirString
 
-    mov al, byte[Andromeda.Interface.numColunas]		;; Máximo de caracteres para obter
+    mov al, byte[Andromeda.Interface.numColunas]        ;; Máximo de caracteres para obter
 
-	sub al, 20
-	
-	Hexagonix obterString
-	
-	;; Hexagonix cortarString			;; Remover espaços em branco extras
-	
-	mov [msg], esi
-	
-	mov si, [msg]
-	
-	Hexagonix escrever
-	
-	jc erro
-	
-	mov eax, VERDE_FLORESTA
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	Hexagonix definirCor
-	
-	mov esi, serial.enviado
-	
-	imprimirString
-	
-	mov esi, serial.prompt
-	
-	imprimirString
-	
-	mov eax, dword[Andromeda.Interface.corFonte]
-	mov ebx, dword[Andromeda.Interface.corFundo]
-	
-	Hexagonix definirCor
-	
-	novaLinha
-	novaLinha
-	
-	jmp obterTeclas
+    sub al, 20
+    
+    Hexagonix obterString
+    
+    ;; Hexagonix cortarString           ;; Remover espaços em branco extras
+    
+    mov [msg], esi
+    
+    mov si, [msg]
+    
+    Hexagonix escrever
+    
+    jc erro
+    
+    mov eax, VERDE_FLORESTA
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    Hexagonix definirCor
+    
+    mov esi, serial.enviado
+    
+    imprimirString
+    
+    mov esi, serial.prompt
+    
+    imprimirString
+    
+    mov eax, dword[Andromeda.Interface.corFonte]
+    mov ebx, dword[Andromeda.Interface.corFundo]
+    
+    Hexagonix definirCor
+    
+    novaLinha
+    novaLinha
+    
+    jmp obterTeclas
 
 ;;************************************************************************************
 
 obterTeclas:
 
-	Hexagonix aguardarTeclado
-	
-	push eax
-	
-	Hexagonix obterEstadoTeclas
-	
-	bt eax, 0
-	jc .teclasControl
-	
-	pop eax
-	
-	jmp obterTeclas
-	
+    Hexagonix aguardarTeclado
+    
+    push eax
+    
+    Hexagonix obterEstadoTeclas
+    
+    bt eax, 0
+    jc .teclasControl
+    
+    pop eax
+    
+    jmp obterTeclas
+    
 .teclasControl:
 
-	pop eax
-	
-	cmp al, 'n'
-	je inicioAPP
-	
-	cmp al, 'N'
-	je inicioAPP
-	
-	cmp al, 's'
-	je Andromeda_Sair
-	
-	cmp al, 'S'
-	je Andromeda_Sair
+    pop eax
+    
+    cmp al, 'n'
+    je inicioAPP
+    
+    cmp al, 'N'
+    je inicioAPP
+    
+    cmp al, 's'
+    je Andromeda_Sair
+    
+    cmp al, 'S'
+    je Andromeda_Sair
 
-	jmp obterTeclas	
+    jmp obterTeclas 
 
 ;;************************************************************************************
 
 Andromeda_Sair:
 
-	Andromeda.Estelar.finalizarProcessoGrafico 0, 0
+    Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 
 ;;************************************************************************************
 
 erro:
 
-	mov esi, serial.erroPorta
-	
-	imprimirString
+    mov esi, serial.erroPorta
+    
+    imprimirString
 
-	Hexagonix aguardarTeclado
+    Hexagonix aguardarTeclado
 
-	Hexagonix limparTela
+    Hexagonix limparTela
 
-	Hexagonix encerrarProcesso
+    Hexagonix encerrarProcesso
 
 ;;************************************************************************************
 
 erroAbertura:
 
-	mov esi, serial.erroAbertura
-	
-	imprimirString
+    mov esi, serial.erroAbertura
+    
+    imprimirString
 
-	Hexagonix aguardarTeclado
+    Hexagonix aguardarTeclado
 
-	jmp Andromeda_Sair
+    jmp Andromeda_Sair
 
 ;;************************************************************************************
 ;;
