@@ -53,9 +53,9 @@ O Quartzo é um editor de propósito geral para o Andromeda.
 
 Este utilitário permite ao usuário enviar dados via porta serial, atuando como terminal.
 
-# Informação de localização na árvore de construção do Hexagonix/Andromeda:
-
-Este repositório deve ser clonado na pasta Andromeda, dentro do diretório Apps, disponível no diretório raiz de construção.
+<!--
 
 Versão deste arquivo: 1.0
+
+-->
 
