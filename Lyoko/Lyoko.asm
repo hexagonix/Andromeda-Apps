@@ -36,6 +36,7 @@ include "hexagon.s"
 include "Estelar/estelar.s"
 include "erros.s"
 include "dispositivos.s"
+include "macros.s"
 
 ;;************************************************************************************
 
@@ -54,7 +55,7 @@ CORLISTRA   = LARANJA
 
 VERSAO        equ "1.4.1" 
 MONTADOR      equ "fasmX"
-AUTOR         equ "Copyright (C) 2017-2022 Felipe Miguel Nery Lunkes"
+AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "Todos os direitos reservados."
 
 ;; Área de mensagens e variáveis globais

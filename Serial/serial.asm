@@ -212,7 +212,7 @@ serial:
 .erroAbertura:    db 10, 10, "Nao foi possivel abrir o dispositivo para gravacao.", 10, 0
 .bannerAndromeda: db 10, 10   
                   db "                                   Sistema Operacional Andromeda(R)", 10, 10, 10, 10
-                  db "                           Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10
+                  db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                   db "                                    Todos os direitos reservados", 0              
 .ajuda:           db 10, 10, "Este aplicativo ira te auxiliar a escrever dados via porta serial.", 10, 10, 10, 10, 0
 .prompt:          db "[com1]", 0

@@ -56,7 +56,7 @@ ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
 versaoASH           equ "3.5.3" 
-compativelAndromeda equ "H1 R5 (Orion)"
+compativelAndromeda equ "H1 H1.R6 (Helius)"
                     
 ;;**************************
 
@@ -66,11 +66,11 @@ ash:
 .comandoInvalido:    db 10, 10, "[!] Comando interno invalido ou aplicativo no formato HAPP nao encontrado.", 10, 0
 .bannerASH:          db "ASH - Andromeda(R) SHell", 0
 .boasVindas:         db "Seja bem-vindo ao Andromeda(R) SHell - ASH", 10, 10
-                     db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10
+                     db "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                      db "Todos os direitos reservados.", 10, 0
 .versaoAndromeda:    db 10, 10, "Sistema Operacional Andromeda(R)", 10 
                      db "Versao ", 0
-.direitosAutorais:   db 10, 10, "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10   
+.direitosAutorais:   db 10, 10, "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10   
                      db "Todos os direitos reservados.", 10, 0
 .limiteProcessos:    db 10, 10, "[!] Nao existe memoria disponivel para executar o aplicativo solicitado.", 10
                      db "[!] Tente primeiramente finalizar aplicativos ou suas instancias, e tente novamente.", 10, 0                    
@@ -82,7 +82,7 @@ ash:
 
 .verboseEntradaASH: db "[ASH]: Iniciando o Andromeda SHell (ASH) para Andromeda ", compativelAndromeda, " ou superior.", 0
 .verboseVersaoASH:  db "[ASH]: Andromeda SHell versao ", versaoASH, ".", 0
-.verboseAutor:      db "[ASH]: Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes.", 0
+.verboseAutor:      db "[ASH]: Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes.", 0
 .verboseDireitos:   db "[ASH]: Todos os direitos reservados.", 0
 .verboseSaida:      db "[ASH]: Finalizando o ASH e retornando o controle ao processo pai...", 0
 .verboseLimite:     db "[ASH]: [!] Limite de memoria ou de processos atingido!", 0

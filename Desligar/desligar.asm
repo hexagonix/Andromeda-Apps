@@ -326,7 +326,7 @@ desligar:
 
 .bannerAndromeda:        db 10 
                          db "                                   Sistema Operacional Andromeda(R)", 10, 10, 10, 10
-                         db "                           Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 10
+                         db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                          db "                                    Todos os direitos reservados", 0
 .energia:                db ENERGIA, 0
 .parametroDesligar:      db "-de", 0 ;; Parâmetro que indica que não deve haver eco

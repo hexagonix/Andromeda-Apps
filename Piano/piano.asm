@@ -721,7 +721,7 @@ piano:
 
 .sobreTeclado:  db "Piano Virtual 'return PIANO;'(R) para Andromeda(R)", 0
 .versaoTeclado: db "Versao ", VERSAO, 0
-.autor:         db "Copyright (C) 2017-2022 Felipe Miguel Nery Lunkes", 0
+.autor:         db "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes", 0
 .direitos:      db "Todos os direitos reservados.", 0
 .ajuda:         db "Um pequeno topico de ajuda para este programa:", 0
 .topico1:       db "+ Utilize as teclas [QWERTYUI] para emitir notas.", 0
