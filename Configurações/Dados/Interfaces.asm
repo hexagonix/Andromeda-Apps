@@ -1,19 +1,24 @@
 ;;************************************************************************************
 ;;
 ;;    
-;;        %#@$%&@$%&@$%$             Sistema Operacional Andromeda®
-;;        #$@$@$@#@#@#@$
-;;        @#@$%    %#$#%
-;;        @#$@$    #@#$@
-;;        #@#$$    !@#@#     Copyright © 2016-2022 Felipe Miguel Nery Lunkes
-;;        @#@%!$&%$&$#@#             Todos os direitos reservados
-;;        !@$%#%&#&@&$%#
-;;        @$#!%&@&@#&*@&
-;;        $#$#%    &%$#@
-;;        @#!$$    !#@#@
+;; ┌┐ ┌┐                                 Sistema Operacional Hexagonix®
+;; ││ ││
+;; │└─┘├──┬┐┌┬──┬──┬──┬─┐┌┬┐┌┐    Copyright © 2016-2022 Felipe Miguel Nery Lunkes
+;; │┌─┐││─┼┼┼┤┌┐│┌┐│┌┐│┌┐┼┼┼┼┘          Todos os direitos reservados
+;; ││ │││─┼┼┼┤┌┐│└┘│└┘││││├┼┼┐
+;; └┘ └┴──┴┘└┴┘└┴─┐├──┴┘└┴┴┘└┘
+;;              ┌─┘│                 Licenciado sob licença BSD-3-Clause
+;;              └──┘          
 ;;
 ;;
 ;;************************************************************************************
+;;
+;; Este arquivo é licenciado sob licença BSD-3-Clause. Observe o arquivo de licença 
+;; disponível no repositório para mais informações sobre seus direitos e deveres ao 
+;; utilizar qualquer trecho deste arquivo.
+;;
+;; Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes
+;; Todos os direitos reservados.
 
 use32 
 
@@ -26,13 +31,13 @@ msgInicio: ;; Contêm todas as mensagens abaixo
 .versaoSistema:        db "Versao do Sistema Operacional: ", 0
 .versao:               db " ", 0
 .tipoSistema:          db "Tipo de Sistema Operacional: Sistema Operacional de 32 bits", 0
-.copyrightAndromeda:   db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 0
+.copyrightAndromeda:   db "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 0
 .direitosReservados:   db "Todos os direitos reservados.", 0
 .separador:            db "++++++++++++++++++++++++++++++++++++++++", 0
 .sobrePC:              db "Sobre o Computador", 0
 .processadorPrincipal: db "Processador instalado (considerando apenas o processador principal):", 0
 .numProcessador:       db "1) ", 0
-.operacaoProcessador:  db "Processador em modo 32 bits de operacao", 0
+.operacaoProcessador:  db "Processador em modo 32 bits", 0
 .memoriaDisponivel:    db "Memoria total instalada disponivel: ", 0
 .kbytes:               db " megabytes.", 0
 
@@ -57,7 +62,7 @@ msgInfo:
 .tipoSistema:          db "Tipo de Sistema Operacional instalado:", 0
 .modeloSistema:        db " 32 bits", 10, 0
 .pacoteAtualizacoes:   db "Pacote de atualizacoes instalado: ", 0
-.copyrightAndromeda:   db "Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes", 0
+.copyrightAndromeda:   db "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 0
 .direitosReservados:   db "Todos os direitos reservados.", 0
 .introducaoHardware:   db "Informacoes do Hardware deste computador", 0
 .processadorPrincipal: db "Processador instalado (considerando apenas o processador principal):", 0

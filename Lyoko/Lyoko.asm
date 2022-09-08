@@ -1,19 +1,24 @@
 ;;************************************************************************************
 ;;
 ;;    
-;;        %#@$%&@$%&@$%$             Sistema Operacional Andromeda®
-;;        #$@$@$@#@#@#@$
-;;        @#@$%    %#$#%
-;;        @#$@$    #@#$@
-;;        #@#$$    !@#@#     Copyright © 2016-2022 Felipe Miguel Nery Lunkes
-;;        @#@%!$&%$&$#@#             Todos os direitos reservados
-;;        !@$%#%&#&@&$%#
-;;        @$#!%&@&@#&*@&
-;;        $#$#%    &%$#@
-;;        @#!$$    !#@#@
+;; ┌┐ ┌┐                                 Sistema Operacional Hexagonix®
+;; ││ ││
+;; │└─┘├──┬┐┌┬──┬──┬──┬─┐┌┬┐┌┐    Copyright © 2016-2022 Felipe Miguel Nery Lunkes
+;; │┌─┐││─┼┼┼┤┌┐│┌┐│┌┐│┌┐┼┼┼┼┘          Todos os direitos reservados
+;; ││ │││─┼┼┼┤┌┐│└┘│└┘││││├┼┼┐
+;; └┘ └┴──┴┘└┴┘└┴─┐├──┴┘└┴┴┘└┘
+;;              ┌─┘│                 Licenciado sob licença BSD-3-Clause
+;;              └──┘          
 ;;
 ;;
 ;;************************************************************************************
+;;
+;; Este arquivo é licenciado sob licença BSD-3-Clause. Observe o arquivo de licença 
+;; disponível no repositório para mais informações sobre seus direitos e deveres ao 
+;; utilizar qualquer trecho deste arquivo.
+;;
+;; Copyright (C) 2016-2022 Felipe Miguel Nery Lunkes
+;; Todos os direitos reservados.
 
 use32
 
@@ -36,6 +41,7 @@ include "hexagon.s"
 include "Estelar/estelar.s"
 include "erros.s"
 include "dispositivos.s"
+include "macros.s"
 
 ;;************************************************************************************
 
@@ -54,7 +60,7 @@ CORLISTRA   = LARANJA
 
 VERSAO        equ "1.4.1" 
 MONTADOR      equ "fasmX"
-AUTOR         equ "Copyright (C) 2017-2022 Felipe Miguel Nery Lunkes"
+AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "Todos os direitos reservados."
 
 ;; Área de mensagens e variáveis globais

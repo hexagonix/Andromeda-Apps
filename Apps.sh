@@ -52,6 +52,29 @@ cd ..
 
 #;;************************************************************************************
 
+cd DOSsh/
+
+for i in *.asm
+do
+
+	echo -en "Construindo aplicativo base do Andromeda® \e[1;94m$(basename $i .asm).app\e[0m..."
+	
+	echo Construindo aplicativo base do Andromeda® $(basename $i .asm).app... >> $LOG
+	
+	echo >> $LOG
+	
+	fasm $i ../../`basename $i .asm`.app -d $BANDEIRAS >> $LOG || desmontar
+	
+	echo -e " [\e[32mOk\e[0m]"
+	
+	echo >> $LOG
+	
+done
+
+cd ..
+
+#;;************************************************************************************
+
 cd Calculadora/
 
 for i in *.asm
