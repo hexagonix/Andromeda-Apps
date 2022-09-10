@@ -53,7 +53,7 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Andromeda® o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh           equ "0.1" 
+versaoDOSsh         equ "0.2" 
 compativelAndromeda equ "H1 H1.R6 (Helius)"
                     
 ;;**************************
@@ -72,7 +72,7 @@ DOSsh:
 .ponto:              db ".", 0
 .imagemInvalida:     db ": nao e possivel carregar a imagem. Formato executavel nao suportado.", 10, 0
 .prompt:             db "C:/> ", 0
-.erroArquivo:        db 10, "Arquivo nao encontrado.", 10, 0
+.erroGeralArquivo:   db 10, "Arquivo nao encontrado.", 10, 0
 
 .extensaoCOW:        db ".COW",0
 .extensaoMAN:        db ".MAN",0
@@ -198,7 +198,7 @@ obterComando:
 
     Hexagonix compararPalavrasString
 
-    jc .finalizarShell
+    jc finalizarShell
 
     ;; Comando VER
     
@@ -206,7 +206,7 @@ obterComando:
 
     Hexagonix compararPalavrasString
 
-    jc .comandoVER
+    jc comandoVER
 
     ;; Comando AJUDA
     
@@ -214,7 +214,7 @@ obterComando:
 
     Hexagonix compararPalavrasString
 
-    jc .comandoAJUDA
+    jc comandoAJUDA
     
     ;; Comando CHDIR
     
@@ -222,7 +222,7 @@ obterComando:
     
     Hexagonix compararPalavrasString
 
-    jc .comandoAD
+    jc comandoAD
 
     ;; Comando CLS
     
@@ -230,7 +230,7 @@ obterComando:
     
     Hexagonix compararPalavrasString
 
-    jc .comandoCLS
+    jc comandoCLS
 
     ;; Comando DIR
     
@@ -238,7 +238,7 @@ obterComando:
     
     Hexagonix compararPalavrasString
 
-    jc .comandoDIR
+    jc comandoDIR
 
     ;; Comando TYPE
     
@@ -246,9 +246,11 @@ obterComando:
     
     Hexagonix compararPalavrasString
 
-    jc .comandoTYPE
+    jc comandoTYPE
 
 ;;************************************************************************************
+
+carregarImagem:
 
 ;; Tentar carregar um programa
     
@@ -393,7 +395,7 @@ obterComando:
 
 ;;************************************************************************************
     
-.comandoAJUDA:
+comandoAJUDA:
 
     mov esi, ajuda.conteudoAjuda
     
@@ -403,7 +405,7 @@ obterComando:
 
 ;;************************************************************************************
 
-.comandoCLS:
+comandoCLS:
 
     Hexagonix limparTela
     
@@ -411,7 +413,7 @@ obterComando:
 
 ;;************************************************************************************
 
-.comandoDIR:
+comandoDIR:
     
     Hexagonix listarArquivos    ;; Obter arquivos em ESI
     
@@ -500,7 +502,7 @@ obterComando:
 
 ;;************************************************************************************
 
-.comandoTYPE:
+comandoTYPE:
     
     call obterArgumentos
 
@@ -510,14 +512,14 @@ obterComando:
 
     Hexagonix arquivoExiste
 
-    jc .erroArquivo
+    jc erroGeralArquivo
 
     mov esi, edi
     mov edi, bufferArquivo
 
     Hexagonix abrir
     
-    jc .erroArquivo
+    jc erroGeralArquivo
     
     novaLinha
     novaLinha
@@ -532,7 +534,7 @@ obterComando:
 
 ;;************************************************************************************
 
-.comandoAD:
+comandoAD:
     
     push esi
     push edi
@@ -669,7 +671,7 @@ obterComando:
 
 ;;************************************************************************************
     
-.comandoVER:
+comandoVER:
     
     mov esi, ajuda.introducao
     
@@ -685,7 +687,7 @@ obterComando:
 
 ;;************************************************************************************
     
-.finalizarShell:
+finalizarShell:
 
     logSistema DOSsh.verboseSaida, 00h, Log.Prioridades.p4
 
@@ -703,9 +705,9 @@ obterComando:
 
 ;;************************************************************************************
 
-.erroArquivo:
+erroGeralArquivo:
 
-    mov esi, DOSsh.erroArquivo
+    mov esi, DOSsh.erroGeralArquivo
 
     imprimirString
 
@@ -850,5 +852,7 @@ encontrarCaractereListaArquivos:
     mov byte[esi-1], 0
     
     ret
+
+;;************************************************************************************
 
 bufferArquivo:  ;; Endereço para carregamento de arquivos
