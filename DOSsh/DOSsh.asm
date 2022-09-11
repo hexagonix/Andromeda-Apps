@@ -53,7 +53,7 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Andromeda® o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.2" 
+versaoDOSsh         equ "0.3" 
 compativelAndromeda equ "H1 H1.R6 (Helius)"
                     
 ;;**************************
@@ -86,13 +86,11 @@ DOSsh:
 .verboseDireitos:     db "[DOSsh]: Todos os direitos reservados.", 0
 .verboseSaida:        db "[DOSsh]: Finalizando o DOSsh e retornando o controle ao processo pai...", 0
 .verboseLimite:       db "[DOSsh]: Limite de memoria ou de processos atingido!", 0
-.verboseInterfaceMountAntiga: db "[DOSsh]: Realizando manipulacao de pontos de montagem por funcao obsoleta e que sera removida.", 0
 
 ;;**************************
 
 comandos:
 
-.alterarDisco:  db "chdir", 0
 .sair:          db "sair",0
 .versao:        db "ver", 0
 .ajuda:         db "ajuda", 0
@@ -114,29 +112,11 @@ ajuda:
                 db " SAIR - Finalizar essa sessao do DOSsh.", 10, 10, 0
              
 ;;**************************
-
-discos:
-
-.hd0:              db "hd0", 0
-.hd1:              db "hd1", 0
-.hd2:              db "hd2", 0
-.hd3:              db "hd3", 0
-.info:             db "info", 0
-.discoAtual:       db 10, 10, "Volume atual utilizado pelo sistema: ", 0
-.erroAlterar:      db 10, 10, "Um volume valido ou parametro nao foram fornecidos para este comando.", 10, 10
-                   db "Impossivel alterar o volume Unix padrao.", 10, 10
-                   db "Utilize como argumento um nome de dispositivo ou entao 'info' para informacoes do disco atual.", 10, 0
-.rotuloVolume:     db 10, 10, "Rotulo do volume: ", 0
-.avisoSairdeLinha: db 10, 10, "Aviso! Este e um comando interno obsoleto do DOSsh.", 10
-                   db "Fique ciente que ele pode ser removido em breve. Em substituicao, utilize a ferramenta Unix 'mount'.", 10
-                   db "Voce pode encontrar a documentacao da ferramenta digitando 'man mount' a qualquer momento.", 0
-    
-;;**************************
  
 nomeArquivo: times 13 db 0  
 discoAtual:  times 3  db 0        
-listaRemanescente: dd ?
-arquivoAtual:      dd ' '
+listaRemanescente:    dd ?
+arquivoAtual:         dd ' '
 
 Andromeda.Interface Andromeda.Estelar.Interface
 
@@ -215,14 +195,6 @@ obterComando:
     Hexagonix compararPalavrasString
 
     jc comandoAJUDA
-    
-    ;; Comando CHDIR
-    
-    mov edi, comandos.alterarDisco
-    
-    Hexagonix compararPalavrasString
-
-    jc comandoAD
 
     ;; Comando CLS
     
@@ -534,143 +506,6 @@ comandoTYPE:
 
 ;;************************************************************************************
 
-comandoAD:
-    
-    push esi
-    push edi
-    
-    mov esi, discos.avisoSairdeLinha
-
-    imprimirString
-
-    pop edi
-    pop esi
-
-    add esi, 02h
-    
-    Hexagonix cortarString
-    
-    mov edi, discos.hd0 
-        
-    Hexagonix compararPalavrasString
-    
-    jc .alterarParaHD0
-    
-    mov edi, discos.hd1 
-        
-    Hexagonix compararPalavrasString    
-    
-    jc .alterarParaHD1
-    
-    mov edi, discos.hd2 
-    
-    Hexagonix compararPalavrasString
-    
-    jc .alterarParaHD2
-    
-    mov edi, discos.hd3 
-    
-    Hexagonix compararPalavrasString    
-    
-    jc .alterarParaHD3
-    
-    mov edi, discos.info    
-        
-    Hexagonix compararPalavrasString
-    
-    jc .infoDisco
-    
-    jmp .erroAlterar
-
-.alterarParaHD0:
-
-    logSistema DOSsh.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
-
-    mov esi, discos.hd0
-    
-    Hexagonix abrir
-
-    novaLinha
-
-    jmp obterComando
-    
-.alterarParaHD1:
-
-    logSistema DOSsh.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
-
-    mov esi, discos.hd1
-    
-    Hexagonix abrir
-
-    novaLinha
-
-    jmp obterComando
-
-.alterarParaHD2:
-
-    logSistema DOSsh.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
-    
-    mov esi, discos.hd2
-    
-    Hexagonix abrir
-
-    novaLinha
-
-    jmp obterComando
-
-.alterarParaHD3:
-
-    logSistema DOSsh.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
-
-    mov esi, discos.hd3
-    
-    Hexagonix abrir
-
-    novaLinha
-
-    jmp obterComando   
-    
-.erroAlterar:
-
-    mov esi, discos.erroAlterar
-
-    imprimirString
-
-    jmp obterComando   
-    
-.infoDisco:
-
-    mov esi, discos.discoAtual
-  
-    imprimirString  
-    
-    Hexagonix obterDisco
-    
-    push edi
-    push esi
-    
-    pop esi
-    
-    imprimirString
-    
-    mov esi, discos.rotuloVolume
-    
-    imprimirString
-    
-    pop edi
-    
-    mov esi, edi
-    
-    imprimirString
-    
-.novaLinha:
-  
-    novaLinha
-
-    jmp obterComando   
-
-;;************************************************************************************
-    
 comandoVER:
     
     mov esi, ajuda.introducao
