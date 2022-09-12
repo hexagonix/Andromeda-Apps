@@ -53,7 +53,7 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Andromeda® o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.3" 
+versaoDOSsh         equ "0.3.1" 
 compativelAndromeda equ "H1 H1.R6 (Helius)"
                     
 ;;**************************
@@ -87,9 +87,7 @@ DOSsh:
 .verboseSaida:        db "[DOSsh]: Finalizando o DOSsh e retornando o controle ao processo pai...", 0
 .verboseLimite:       db "[DOSsh]: Limite de memoria ou de processos atingido!", 0
 
-;;**************************
-
-comandos:
+DOSsh.comandos:
 
 .sair:          db "sair",0
 .versao:        db "ver", 0
@@ -98,9 +96,7 @@ comandos:
 .dir:           db "dir", 0
 .type:          db "type", 0
 
-;;**************************
-
-ajuda:
+DOSsh.ajuda:
 
 .introducao:    db 10, 10, "DOSsh versao ", versaoDOSsh, 10
                 db "Compativel com Andromeda(R) ", compativelAndromeda, " ou superior.", 0
@@ -174,7 +170,7 @@ obterComando:
 
     ;; Comando SAIR
     
-    mov edi, comandos.sair  
+    mov edi, DOSsh.comandos.sair  
 
     Hexagonix compararPalavrasString
 
@@ -182,7 +178,7 @@ obterComando:
 
     ;; Comando VER
     
-    mov edi, comandos.versao    
+    mov edi, DOSsh.comandos.versao    
 
     Hexagonix compararPalavrasString
 
@@ -190,7 +186,7 @@ obterComando:
 
     ;; Comando AJUDA
     
-    mov edi, comandos.ajuda 
+    mov edi, DOSsh.comandos.ajuda 
 
     Hexagonix compararPalavrasString
 
@@ -198,7 +194,7 @@ obterComando:
 
     ;; Comando CLS
     
-    mov edi, comandos.cls
+    mov edi, DOSsh.comandos.cls
     
     Hexagonix compararPalavrasString
 
@@ -206,7 +202,7 @@ obterComando:
 
     ;; Comando DIR
     
-    mov edi, comandos.dir
+    mov edi, DOSsh.comandos.dir
     
     Hexagonix compararPalavrasString
 
@@ -214,7 +210,7 @@ obterComando:
 
     ;; Comando TYPE
     
-    mov edi, comandos.type
+    mov edi, DOSsh.comandos.type
     
     Hexagonix compararPalavrasString
 
@@ -369,7 +365,7 @@ carregarImagem:
     
 comandoAJUDA:
 
-    mov esi, ajuda.conteudoAjuda
+    mov esi, DOSsh.ajuda.conteudoAjuda
     
     imprimirString
     
@@ -508,7 +504,7 @@ comandoTYPE:
 
 comandoVER:
     
-    mov esi, ajuda.introducao
+    mov esi, DOSsh.ajuda.introducao
     
     imprimirString
     
