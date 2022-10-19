@@ -96,7 +96,7 @@ Lyoko:
                       db " Pressione alguma tecla para continuar...", 0
 .erroDeletando:       db "Erro ao atualizar o arquivo.", 0
 .tituloPrograma:      db "Lyoko - Uma IDE para Hexagonix(R) - Versao ", VERSAO, 0
-.fasmX:               db MONTADOR, ".app", 0
+.fasmX:               db MONTADOR, 0
 .semFonte:            db "Nenhum arquivo fonte especificado. Tente primeiramente salvar o seu arquivo no disco.", 10, 10
                       db 0
 .avisoSalvamento:     db "O conteudo do arquivo foi alterado e nao foi salvo. Isso pode levar a perda de dados.", 10, 10
