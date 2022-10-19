@@ -284,12 +284,12 @@ calc:
 .solicitarTecla:  db 10, 10, "Pressione qualquer tecla para continuar...", 10, 10, 0
 
 .bannerAndromeda: db 10, 10   
-                  db "                                   Sistema Operacional Andromeda(R)", 10, 10, 10, 10
+                  db "                                   Sistema Operacional Hexagonix(R)", 10, 10, 10, 10
                   db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                   db "                                    Todos os direitos reservados", 0              
 .marcaRegistrada: db "tm", 0
 
-.titulo:          db "Calculadora basica do Sistema Operacional Andromeda(R)",0
+.titulo:          db "Calculadora basica do Sistema Operacional Hexagonix(R)",0
 .rodape:          db "[", VERSAO, "] | [F1] Sair",0
 
 primeiroNumero:   dd 0

@@ -216,7 +216,7 @@ serial:
 .erroPorta:       db 10, 10, "Nao foi possivel utilizar a porta serial.", 10, 0
 .erroAbertura:    db 10, 10, "Nao foi possivel abrir o dispositivo para gravacao.", 10, 0
 .bannerAndromeda: db 10, 10   
-                  db "                                   Sistema Operacional Andromeda(R)", 10, 10, 10, 10
+                  db "                                   Sistema Operacional Hexagonix(R)", 10, 10, 10, 10
                   db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                   db "                                    Todos os direitos reservados", 0              
 .ajuda:           db 10, 10, "Este aplicativo ira te auxiliar a escrever dados via porta serial.", 10, 10, 10, 10, 0
@@ -224,7 +224,7 @@ serial:
 .separador:       db ": ", 0 
 .nomePorta:       db "com1", 0    
 .enviado:         db 10, 10, "Dados enviados via porta serial ", 0
-.titulo:          db "Utilitario de envio de dados via porta serial do Sistema Operacional Andromeda(R)", 0
+.titulo:          db "Utilitario de envio de dados via porta serial do Sistema Operacional Hexagonix(R)", 0
 .rodape:          db "[", VERSAO, "] | [^N] Nova mensagem  [^S] Sair", 0
 
 Andromeda.Interface Andromeda.Estelar.Interface

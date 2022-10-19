@@ -210,8 +210,8 @@ VERSAO equ "2.1"
 
 fonte:
 
-.boasVindas:      db 10, 10, "Use este programa para alterar a fonte padrao de exibicao do Sistema.", 10, 10
-                  db "Lembrando que apenas fontes desenhadas para o Andromeda(R) podem ser utilizadas.", 10, 10, 10, 10, 0
+.boasVindas:      db 10, 10, "Use este programa para alterar a fonte padrao de exibicao do sistema.", 10, 10
+                  db "Lembrando que apenas fontes desenhadas para o Hexagonix(R) podem ser utilizadas.", 10, 10, 10, 10, 0
 
 .nomeArquivo:     db 10, "Nome do arquivo de fonte: ", 0    
 
@@ -227,14 +227,14 @@ fonte:
                   db "Pressione qualquer tecla para continuar...", 10, 10, 0
 
 .bannerAndromeda: db 10, 10   
-                  db "                                   Sistema Operacional Andromeda(R)", 10, 10, 10, 10
+                  db "                                   Sistema Operacional Hexagonix(R)", 10, 10, 10, 10
                   db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                   db "                                    Todos os direitos reservados", 0
                 
-.titulo:          db "Utilitario para troca de fonte padrao do Sistema Operacional Andromeda(R)", 0
+.titulo:          db "Utilitario para troca de fonte padrao do Sistema Operacional Hexagonix(R)", 0
 .rodape:          db "[", VERSAO, "] | Utilize [F1] para cancelar o carregamento de uma nova fonte", 0
 .introducaoTeste: db 10, "Pre-visualizacao da fonte e disposicao dos caracteres: ", 0
-.testeFonte:      db "Sistema Operacional Andromeda(R)", 10, 10
+.testeFonte:      db "Sistema Operacional Hexagonix(R)", 10, 10
                   db "1234567890-=", 10
                   db "!@#$%^&*()_+", 10
                   db "QWERTYUIOP{}", 10
@@ -243,7 +243,7 @@ fonte:
                   db "asdfghjkl;'\", 10
                   db "ZXCVBNM<>?", 10
                   db "zxcvbnm,./", 10, 10
-                  db "Sistema Operacional Andromeda(R)", 10, 0
+                  db "Sistema Operacional Hexagonix(R)", 10, 0
 .modoTexto:       db 0
 .tamanhoSuperior: db 10, 10, "Este arquivo de fonte excede o tamanho maximo de 2 Kb.", 10, 0
 

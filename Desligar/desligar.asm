@@ -330,7 +330,7 @@ align 32
 desligar:
 
 .bannerAndromeda:        db 10 
-                         db "                                   Sistema Operacional Andromeda(R)", 10, 10, 10, 10
+                         db "                                   Sistema Operacional Hexagonix(R)", 10, 10, 10, 10
                          db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                          db "                                    Todos os direitos reservados", 0
 .energia:                db ENERGIA, 0
@@ -338,18 +338,18 @@ desligar:
 .parametroReiniciar:     db "-re", 0 ;; Parâmetro que indica que não deve haver eco
 .msgDesligamento:        db 10, 10, "!> Preparando para desligar seu computador... ", 0
 .msgFinalizando:         db 10, 10, "#> Finalizando todos os processos ainda em execucao...  ", 0
-.msgAndromeda:           db 10, 10, "#> Finalizando o Sistema Operacional Andromeda(R)...    ", 0
+.msgAndromeda:           db 10, 10, "#> Finalizando o Sistema Operacional Hexagonix(R)...    ", 0
 .msgDiscos:              db 10, 10, "#> Finalizando os discos e desligando seu computador... ", 0
 .msgReinicio:            db "Reiniciando seu computador...", 10, 10, 0
 .msgFinalizar:           db "Pressione [Ctrl-D] para desligar seu computador.", 10, 0
 .msgReiniciar:           db "Pressione [Ctrl-R] para reiniciar seu computador.", 10, 0
-.msgSair:                db "Pressione [Ctrl-S] ou [F1] para retornar ao Andromeda(R)", 0
+.msgSair:                db "Pressione [Ctrl-S] ou [F1] para retornar ao Hexagonix(R)", 0
 .msgPronto:              db "[Concluido]", 0
 .msgFalha:               db "[Falha]", 0
 .falhaUtilitarioEnergia: db 10, 10, "Falha ao executar o utilitario Unix energia. Tente novamente mais tarde.", 10
                          db "Pressione qualquer tecla para finalizar este aplicativo...", 0
 
-.titulo: db "Opcoes de desligamento do Sistema Operacional Andromeda(R)",0
+.titulo: db "Opcoes de desligamento do Sistema Operacional Hexagonix(R)",0
 .rodape: db "[", VERSAO, "]",0
 
 parametro: dd ?

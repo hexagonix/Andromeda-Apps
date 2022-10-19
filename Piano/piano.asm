@@ -724,7 +724,7 @@ VERSAO equ "1.3"
 
 piano:
 
-.sobreTeclado:  db "Piano Virtual 'return PIANO;'(R) para Andromeda(R)", 0
+.sobreTeclado:  db "Piano Virtual 'return PIANO;'(R) para Hexagonix(R)", 0
 .versaoTeclado: db "Versao ", VERSAO, 0
 .autor:         db "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes", 0
 .direitos:      db "Todos os direitos reservados.", 0
@@ -732,7 +732,7 @@ piano:
 .topico1:       db "+ Utilize as teclas [QWERTYUI] para emitir notas.", 0
 .topico2:       db "+ Utilize a tecla [ESPACO] para silenciar as notas, quando necessario.", 0
 .topico3:       db "+ Por fim, utilize a tecla [Z] para finalizar este aplicativo a qualquer momento.", 0
-.titulo:        db "Piano Virtual 'return PIANO;'(R) para Andromeda(R)", 0
+.titulo:        db "Piano Virtual 'return PIANO;'(R) para Hexagonix(R)", 0
 .rodape:        db "[", VERSAO, "] Pressione [Z] para sair e [ESPACO] para silenciar. Use [A] para mais informacoes", 0
 .rodapeInfo:    db "[", VERSAO, "] Pressione [V] para retornar ou [Z] para finalizar este aplicativo", 0
 

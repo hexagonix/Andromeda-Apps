@@ -54,7 +54,7 @@ include "macros.s"
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
 versaoDOSsh         equ "0.3.1" 
-compativelAndromeda equ "H1 H1.R6 (Helius)"
+compativelHexagonix equ "H2"
                     
 ;;**************************
 
@@ -80,7 +80,7 @@ DOSsh:
 
 ;; Verbose 
 
-.verboseEntradaDOSsh: db "[DOSsh]: DOSsh para Andromeda versao ", compativelAndromeda, " ou superior.", 0
+.verboseEntradaDOSsh: db "[DOSsh]: DOSsh para Andromeda versao ", compativelHexagonix, " ou superior.", 0
 .verboseVersaoDOSsh:  db "[DOSsh]: DOSsh versao ", versaoDOSsh, ".", 0
 .verboseAutor:        db "[DOSsh]: Copyright (C) 2022-", __stringano, " Felipe Miguel Nery Lunkes.", 0
 .verboseDireitos:     db "[DOSsh]: Todos os direitos reservados.", 0
@@ -99,7 +99,7 @@ DOSsh.comandos:
 DOSsh.ajuda:
 
 .introducao:    db 10, 10, "DOSsh versao ", versaoDOSsh, 10
-                db "Compativel com Andromeda(R) ", compativelAndromeda, " ou superior.", 0
+                db "Compativel com Andromeda(R) ", compativelHexagonix, " ou superior.", 0
 .conteudoAjuda: db 10, 10, "Comandos internos disponiveis:", 10, 10
                 db " DIR  - Exibe os arquivos do volume atual.", 10
                 db " TYPE - Exibe o conteudo de um arquivo fornecido como parametro.", 10
