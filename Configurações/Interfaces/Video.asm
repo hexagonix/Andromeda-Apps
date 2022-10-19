@@ -72,23 +72,13 @@ mostrarLogoSistema:
     mov edx, corPadraoInterface ;; Cor
     
     Hexagonix desenharBloco
-
+    
 .terceiraLinha:
 
     mov eax, 39      ;; Posição X
-    mov ebx, 30      ;; Posição Y
+    mov ebx, 90      ;; Posição Y
     mov esi, 50      ;; Comprimento
-    mov edi, 20      ;; Altura
-    mov edx, corPadraoInterface ;; Cor
-    
-    Hexagonix desenharBloco
-    
-.quartaLinha:
-
-    mov eax, 39      ;; Posição X
-    mov ebx, 100     ;; Posição Y
-    mov esi, 50      ;; Comprimento
-    mov edi, 20      ;; Altura
+    mov edi, 30      ;; Altura
     mov edx, corPadraoInterface ;; Cor
     
     Hexagonix desenharBloco    
