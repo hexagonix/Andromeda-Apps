@@ -47,7 +47,7 @@ msgGeral:
 
 .mensagemResolucao: db "Recomenda-se utilizar este aplicativo em resolucao de 1024x768 para melhor aproveitamento da tela.", 0
 .msgErro:           db "Erro ao realizar a operacao solicitada.", 0
-.msgVersao:         db "Voce esta utilizando uma versao do Andromeda(R) que nao oferece suporte a este recurso.", 0
+.msgVersao:         db "Voce esta utilizando uma versao do Hexagonix(R) que nao oferece suporte a este recurso.", 0
 .ponto:             db ".", 0
 .marcaRegistrada:   db "tm", 0
 
@@ -55,7 +55,7 @@ msgGeral:
  
 msgInfo:
 
-.introducao:           db "Informacoes detalhadas do Sistema Operacional Andromeda(R)", 0
+.introducao:           db "Informacoes detalhadas do Sistema Operacional Hexagonix(R)", 0
 .nomeSistema:          db "Nome do Sistema Operacional instalado: ", 0
 .versaoSistema:        db "Versao do Sistema Operacional: ", 0
 .buildSistema:         db "Build do Sistema Operacional: ", 0
@@ -78,7 +78,7 @@ msgInfo:
 
 msgConfig:
 
-.introducao:  db "Aqui voce podera alterar algumas configuracoes do Andromeda(R)", 0
+.introducao:  db "Aqui voce podera alterar algumas configuracoes do Hexagonix(R)", 0
 .introducao2: db "Para comecar, selecione alguma categoria listada a seguir:", 0
 .categoria1:  db "[1] Alterar a resolucao utilizada pelo monitor atual.", 0
 .categoria2:  db "[2] Verificar discos e armazenamento.", 0
@@ -114,15 +114,15 @@ msgDiscos:
 msgFonte:
 
 .introducao:       db "Aqui voce podera alterar a fonte padrao de exibicao do sistema. Lembrando que a fonte", 0
-.introducao2:      db "devera ser compativel com o Sistema Operacional Andromeda(R)", 0
-.solicitarArquivo: db "Por favor, insira o nome do arquivo de fonte Andromeda(R) ([ENTER] para cancelar): ", 0
+.introducao2:      db "devera ser compativel com o Sistema Operacional Hexagonix(R)", 0
+.solicitarArquivo: db "Por favor, insira o nome do arquivo de fonte Hexagonix(R) ([ENTER] para cancelar): ", 0
 .sucesso:          db "Sucesso a alterar a fonte padrao do sistema para: [", 0
 .fechamento:       db "]", 0
 .introducaoTeste:  db 10, 10, "Pre-visualizacao da fonte e disposicao dos caracteres: ", 0
 .arquivoAusente:   db "O arquivo solicitado nao foi encontrado no disco.", 0
 .semArquivo:       db "Um nome de arquivo nao foi fornecido. A operacao foi cancelada.", 0
 .ponto:            db ".", 10, 10, 0
-.testeFonte: db "Sistema Operacional Andromeda(R)", 10, 10
+.testeFonte: db "Sistema Operacional Hexagonix(R)", 10, 10
              db "1234567890-=", 10
              db "!@#$%^&*()_+", 10
              db "QWERTYUIOP{}", 10
@@ -131,12 +131,12 @@ msgFonte:
              db "asdfghjkl;'\", 10
              db "ZXCVBNM<>?", 10
              db "zxcvbnm,./", 10, 10
-             db "Sistema Operacional Andromeda(R)", 10, 10, 0
-.falha:      db "O arquivo solicitado nao foi encontrado ou nao e compativel com o Andromeda(R).", 0
+             db "Sistema Operacional Hexagonix(R)", 10, 10, 0
+.falha:      db "O arquivo solicitado nao foi encontrado ou nao e compativel com o Hexagonix(R).", 0
 
 ;;************************************************************************************
  
-nomeSistema: db "Sistema Operacional Andromeda(R)", 0
+nomeSistema: db "Sistema Operacional Hexagonix(R)", 0
 
 ;;************************************************************************************
 
@@ -160,7 +160,7 @@ msgSerial:
 .enviado:            db " [Enviado]", 0
 .erroEnvio:          db "Erro ao realizar o envio para a porta serial.", 0
 .erroAbertura:       db "Erro ao abrir o dispositivo para escrita.", 0
-.mensagemAutomatica: db "Esta e uma mensagem automatica enviada pelo Painel de Controle do Sistema Operacional Andromeda(R)! ", 10, 0
+.mensagemAutomatica: db "Esta e uma mensagem automatica enviada pelo Painel de Controle do Sistema Operacional Hexagonix(R)! ", 10, 0
 .insiraMensagem:     db "Insira sua mensagem para ", 0
 .doisPontos:         db ": ", 0
 .colcheteEsquerdo:   db "[", 0
@@ -170,11 +170,11 @@ msgSerial:
  
 TITULO: 
 
-.inicio:        db "Configuracoes do Sistema Operacional Andromeda(R)", 0
-.info:          db "Sobre o Sistema Operacional Andromeda(R) e atualizacoes do sistema", 0
-.configuracoes: db "Configuracoes do Sistema Operacional Andromeda(R)", 0
+.inicio:        db "Configuracoes do Sistema Operacional Hexagonix(R)", 0
+.info:          db "Sobre o Sistema Operacional Hexagonix(R) e atualizacoes do sistema", 0
+.configuracoes: db "Configuracoes do Sistema Operacional Hexagonix(R)", 0
 .resolucao:     db "Configuracoes de resolucao de video", 0
-.discos:        db "Informacoes de discos e armazenamento do Andromeda(R)", 0
+.discos:        db "Informacoes de discos e armazenamento do Hexagonix(R)", 0
 .fonte:         db "Alterar a fonte padrao de exibicao do sistema", 0
 .portaParalela: db "Configurar portas paralelas (impressoras)", 0
 .portaSerial:   db "Configuracoes e diagnosticos de porta serial", 0

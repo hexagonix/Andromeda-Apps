@@ -69,7 +69,7 @@ Lyoko:
 
 .rodapeNovoArquivo:   db "Novo arquivo", 0
 .avisoRapido:         db "A IDE do Lyoko utiliza como padrao o montador '", MONTADOR, "' para a construcao de aplicativos.", 10
-                      db "Este montador de codigo livre foi portado e apresenta total compatibilidade com o Andromeda(R).", 10, 10
+                      db "Este montador de codigo livre foi portado e apresenta total compatibilidade com o Hexagonix(R).", 10, 10
                       db "Voce pode utilizar atalhos de teclado para realizar a interacao com Lyoko.", 10
                       db "Os atalhos sao acionados pela tecla Ctrl (Control, ^), juntamente com uma tecla indicadora de acao.", 10
                       db "Essas combinacoes de teclas podem ser (a tecla Ctrl representada por ^):", 10, 10
@@ -95,7 +95,7 @@ Lyoko:
 .permissaoNegada:     db "Apenas um usuario administrativo pode alterar este arquivo."
                       db " Pressione alguma tecla para continuar...", 0
 .erroDeletando:       db "Erro ao atualizar o arquivo.", 0
-.tituloPrograma:      db "Lyoko - Uma IDE para Andromeda(R) - Versao ", VERSAO, 0
+.tituloPrograma:      db "Lyoko - Uma IDE para Hexagonix(R) - Versao ", VERSAO, 0
 .fasmX:               db MONTADOR, ".app", 0
 .semFonte:            db "Nenhum arquivo fonte especificado. Tente primeiramente salvar o seu arquivo no disco.", 10, 10
                       db 0
@@ -110,14 +110,14 @@ Lyoko:
                       db "De certa forma, essa serie fez com que eu me apaixonasse ainda mais pela computacao e nada mais", 10
                       db "justo que prestar uma simbolica homenagem.", 10, 10
                       db "Lyoko foi desenvolvido para ser uma IDE simples e facil de utilizar para desenvolver aplicativos", 10
-                      db "nativos para Hexagonix/Andromeda no proprio sistema. Ele tambem vem sendo utilizado para desenvolver", 10
+                      db "nativos para Hexagonix no proprio sistema. Ele tambem vem sendo utilizado para desenvolver", 10
                       db "varios componentes do proprio sistema operacional.", 10
                       db "Lyoko vem ganhando cada vez mais funcoes e tambem e constantemente atualizado.", 10, 10
                       db "Versao desta edicao do Lyoko: ", VERSAO, 10, 10
                       db AUTOR, 10
                       db DIREITOS, 10, 0
-.boasVindas:          db "Seja bem vindo a Lyoko, a IDE oficial do Andromeda(R)!", 10, 10
-                      db "Com Lyoko, voce pode escrever e construir rapidamente maravilhosos aplicativos para o Andromeda(R).", 10
+.boasVindas:          db "Seja bem vindo a Lyoko, a IDE oficial do Hexagonix(R)!", 10, 10
+                      db "Com Lyoko, voce pode escrever e construir rapidamente maravilhosos aplicativos para o Hexagonix(R).", 10
                       db "Voce pode a qualquer momento pressionar [^X] (Ctrl+X) para obter ajuda.", 10, 10
                       db "Vamos comecar?", 10, 10
                       db "Voce pode comecar pressionando Ctrl-A [^A] para abrir um arquivo ou pressionar [ESC] e comecar a", 10

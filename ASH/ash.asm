@@ -50,7 +50,7 @@ include "macros.s"
 ;;************************************************************************************
 
 ;; A versão do ASH é independente da versão do restante do Sistema.
-;; Ela deve ser utilizada para identificar para qual versão do Andromeda® o ASH foi
+;; Ela deve ser utilizada para identificar para qual versão do Hexagonix® o ASH foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
 ASHPadrao          = VERDE_MAR
@@ -61,7 +61,7 @@ ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
 versaoASH           equ "3.5.3" 
-compativelAndromeda equ "H1 H1.R6 (Helius)"
+compativelHexagonix equ "H2"
                     
 ;;**************************
 
@@ -73,7 +73,7 @@ ash:
 .boasVindas:         db "Seja bem-vindo ao Andromeda(R) SHell - ASH", 10, 10
                      db "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                      db "Todos os direitos reservados.", 10, 0
-.versaoAndromeda:    db 10, 10, "Sistema Operacional Andromeda(R)", 10 
+.versaoAndromeda:    db 10, 10, "Sistema Operacional Hexagonix(R)", 10 
                      db "Versao ", 0
 .direitosAutorais:   db 10, 10, "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10   
                      db "Todos os direitos reservados.", 10, 0
@@ -85,7 +85,7 @@ ash:
 
 ;; Verbose 
 
-.verboseEntradaASH: db "[ASH]: Iniciando o Andromeda SHell (ASH) para Andromeda ", compativelAndromeda, " ou superior.", 0
+.verboseEntradaASH: db "[ASH]: Iniciando o Andromeda SHell (ASH) para Hexagonix ", compativelHexagonix, " ou superior.", 0
 .verboseVersaoASH:  db "[ASH]: Andromeda SHell versao ", versaoASH, ".", 0
 .verboseAutor:      db "[ASH]: Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes.", 0
 .verboseDireitos:   db "[ASH]: Todos os direitos reservados.", 0
@@ -107,7 +107,7 @@ comandos:
 ajuda:
 
 .introducao:    db 10, 10, "Andromeda SHell versao ", versaoASH, 10
-                db "Compativel com Andromeda(R) ", compativelAndromeda, " ou superior.", 0
+                db "Compativel com Hexagonix(R) ", compativelHexagonix, " ou superior.", 0
 .conteudoAjuda: db 10, 10, "Comandos internos disponiveis:", 10, 10
                 db " VER  - Exibe informacoes da versao do ASH em execucao.", 10
                 db " SAIR - Finalizar essa sessao do ASH.", 10, 10

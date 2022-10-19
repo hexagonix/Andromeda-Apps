@@ -74,7 +74,7 @@ quartzo:
 .permissaoNegada:     db "Apenas um usuario administrativo pode alterar este arquivo."
                       db " Pressione alguma tecla para continuar...", 0
 .erroDeletando:       db "Erro ao atualizar o arquivo.", 0
-.tituloPrograma:      db "Editor de texto Quartzo(R) para Andromeda(R) - Versao ", VERSAO, 0
+.tituloPrograma:      db "Editor de texto Quartzo(R) para Hexagonix(R) - Versao ", VERSAO, 0
 .corFonte:            dd 0
 .corFundo:            dd 0
 
