@@ -322,7 +322,7 @@ Andromeda_Sair:
 ;;
 ;;************************************************************************************
 
-ENERGIA equ "energia.app"   
+ENERGIA equ "energia"   
 VERSAO  equ "1.0.2"
 
 align 32
