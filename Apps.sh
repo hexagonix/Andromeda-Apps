@@ -21,10 +21,10 @@ gerarApps()
 
 #;;************************************************************************************
 
-echo -e "\e1;94mConstruindo aplicativos base do Andromeda-Hexagonix...\e[0m {"
+echo -e "\e[1;94mConstruindo aplicativos base do Hexagonix-Andromeda...\e[0m {"
 echo
 
-echo "Construindo aplicativos base do Andromeda-Hexagonix... {" >> $LOG
+echo "Construindo aplicativos base do Hexagonix-Andromeda... {" >> $LOG
 echo >> $LOG
 
 #;;************************************************************************************
@@ -34,13 +34,13 @@ cd ASH/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo base do Andromeda-Hexagonix \e[1;94m$(basename $i .asm).app\e[0m..."
+	echo -en "Construindo aplicativo base do Hexagonix-Andromeda \e[1;94m$(basename $i .asm).app\e[0m..."
 	
-	echo Construindo aplicativo base do Andromeda-Hexagonix $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Hexagonix-Andromeda $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
-	fasm $i ../../`basename $i .asm`.app -d $BANDEIRAS >> $LOG || desmontar
+	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
 	
 	echo -e " [\e[32mOk\e[0m]"
 	
@@ -57,13 +57,13 @@ cd DOSsh/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo base do Andromeda-Hexagonix \e[1;94m$(basename $i .asm).app\e[0m..."
+	echo -en "Construindo aplicativo base do Hexagonix-Andromeda \e[1;94m$(basename $i .asm).app\e[0m..."
 	
-	echo Construindo aplicativo base do Andromeda-Hexagonix $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Hexagonix-Andromeda $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
-	fasm $i ../../`basename $i .asm`.app -d $BANDEIRAS >> $LOG || desmontar
+	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
 	
 	echo -e " [\e[32mOk\e[0m]"
 	
@@ -80,13 +80,13 @@ cd Calculadora/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo base do Andromeda-Hexagonix \e[1;94m$(basename $i .asm).app\e[0m..."
+	echo -en "Construindo aplicativo base do Hexagonix-Andromeda \e[1;94m$(basename $i .asm).app\e[0m..."
 	
-	echo Construindo aplicativo base do Andromeda-Hexagonix $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Hexagonix-Andromeda $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
-	fasm $i ../../`basename $i .asm`.app -d $BANDEIRAS >> $LOG || desmontar
+	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
 	
 	echo -e " [\e[32mOk\e[0m]"
 	
@@ -103,13 +103,13 @@ cd Desligar/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo base do Andromeda-Hexagonix \e[1;94m$(basename $i .asm).app\e[0m..."
+	echo -en "Construindo aplicativo base do Hexagonix-Andromeda \e[1;94m$(basename $i .asm).app\e[0m..."
 	
-	echo Construindo aplicativo base do Andromeda-Hexagonix $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Hexagonix-Andromeda $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
-	fasm $i ../../`basename $i .asm`.app -d $BANDEIRAS >> $LOG || desmontar
+	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
 	
 	echo -e " [\e[32mOk\e[0m]"
 	
@@ -126,13 +126,13 @@ cd Piano/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo base do Andromeda-Hexagonix \e[1;94m$(basename $i .asm).app\e[0m..."
+	echo -en "Construindo aplicativo base do Hexagonix-Andromeda \e[1;94m$(basename $i .asm).app\e[0m..."
 	
-	echo Construindo aplicativo base do Andromeda-Hexagonix $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Hexagonix-Andromeda $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
-	fasm $i ../../`basename $i .asm`.app -d $BANDEIRAS >> $LOG || desmontar
+	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
 	
 	echo -e " [\e[32mOk\e[0m]"
 	
@@ -149,13 +149,13 @@ cd Lyoko/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo base do Andromeda-Hexagonix \e[1;94m$(basename $i .asm).app\e[0m..."
+	echo -en "Construindo aplicativo base do Hexagonix-Andromeda \e[1;94m$(basename $i .asm).app\e[0m..."
 	
-	echo Construindo aplicativo base do Andromeda-Hexagonix $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Hexagonix-Andromeda $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
-	fasm $i ../../`basename $i .asm`.app -d $BANDEIRAS >> $LOG || desmontar
+	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
 	
 	echo -e " [\e[32mOk\e[0m]"
 	
@@ -172,13 +172,13 @@ cd Quartzo/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo base do Andromeda-Hexagonix \e[1;94m$(basename $i .asm).app\e[0m..."
+	echo -en "Construindo aplicativo base do Hexagonix-Andromeda \e[1;94m$(basename $i .asm).app\e[0m..."
 	
-	echo Construindo aplicativo base do Andromeda-Hexagonix $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Hexagonix-Andromeda $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
-	fasm $i ../../`basename $i .asm`.app  -d $BANDEIRAS >> $LOG || desmontar
+	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
 	
 	echo -e " [\e[32mOk\e[0m]"
 	
@@ -195,13 +195,13 @@ cd Fonte/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo base do Andromeda-Hexagonix \e[1;94m$(basename $i .asm).app\e[0m..."
+	echo -en "Construindo aplicativo base do Hexagonix-Andromeda \e[1;94m$(basename $i .asm).app\e[0m..."
 	
-	echo Construindo aplicativo base do Andromeda-Hexagonix $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Hexagonix-Andromeda $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
-	fasm $i ../../`basename $i .asm`.app -d $BANDEIRAS >> $LOG || desmontar
+	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
 	
 	echo -e " [\e[32mOk\e[0m]"
 	
@@ -218,13 +218,13 @@ cd "Configurações"/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo base do Andromeda-Hexagonix \e[1;94m$(basename $i .asm).app\e[0m..."
+	echo -en "Construindo aplicativo base do Hexagonix-Andromeda \e[1;94m$(basename $i .asm).app\e[0m..."
 	
-	echo Construindo aplicativo base do Andromeda-Hexagonix $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Hexagonix-Andromeda $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
-	fasm $i ../../`basename $i .asm`.app -d $BANDEIRAS >> $LOG || desmontar
+	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
 	
 	echo -e " [\e[32mOk\e[0m]"
 	
@@ -242,13 +242,13 @@ cd Serial/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo base do Andromeda-Hexagonix \e[1;94m$(basename $i .asm).app\e[0m..."
+	echo -en "Construindo aplicativo base do Hexagonix-Andromeda \e[1;94m$(basename $i .asm).app\e[0m..."
 	
-	echo Construindo aplicativo base do Andromeda-Hexagonix $(basename $i .asm).app... >> $LOG
+	echo Construindo aplicativo base do Hexagonix-Andromeda $(basename $i .asm).app... >> $LOG
 	
 	echo >> $LOG
 	
-	fasm $i ../../`basename $i .asm`.app -d $BANDEIRAS >> $LOG || desmontar
+	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
 	
 	echo -e " [\e[32mOk\e[0m]"
 	
@@ -271,8 +271,6 @@ desmontar()
 {
 
 cd ..
-
-rm -r *.app
 
 cd ..
 

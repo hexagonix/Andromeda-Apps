@@ -60,8 +60,8 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "3.5.3" 
-compativelHexagonix equ "H2"
+versaoASH           equ "4.0.0" 
+compativelHexagonix equ "H2-dev"
                     
 ;;**************************
 
@@ -249,50 +249,6 @@ inicioShell:
 ;; Tentar carregar um programa
     
     call obterArgumentos              ;; Separar comando e argumentos
-    
-    push esi
-    push edi
-    
-    Hexagonix tamanhoString
-    
-    add esi, eax
-
-    sub esi, 4
-    
-    mov edi, ash.extensaoProgramas
-    
-    Hexagonix compararPalavrasString  ;; Checar por extensão .APP
-    
-    jc .carregarPrograma
-    
-    pop edi
-    pop esi
-    
-.semExtensao:
-        
-;; Tentar adicionar extensão
-
-    Hexagonix tamanhoString
-    
-    mov ebx, eax
-
-    mov al, byte[ash.extensaoProgramas+0]
-    
-    mov byte[esi+ebx+0], al
-    
-    mov al, byte[ash.extensaoProgramas+1]
-    
-    mov byte[esi+ebx+1], al
-    
-    mov al, byte[ash.extensaoProgramas+2]
-    
-    mov byte[esi+ebx+2], al
-    
-    mov al, byte[ash.extensaoProgramas+3]
-    
-    mov byte[esi+ebx+3], al
-    
-    mov byte[esi+ebx+4], 0      ;; Fim da string
     
     push esi
     push edi
