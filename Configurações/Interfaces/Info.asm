@@ -185,9 +185,22 @@ mostrarInterfaceInfo:
     
     pop ecx
     
+    cmp ch, 0
+    je .continuar
+
+    push ecx
+
+    mov esi, msgInfo.ponto
+    
+    imprimirString
+    
+    pop ecx 
+    
     mov al, ch
     
     Hexagonix imprimirCaractere
+
+.continuar:
 
     call definirCorPadrao
 
