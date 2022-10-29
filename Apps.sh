@@ -12,7 +12,7 @@
 #;; └┘ └┴──┴┘└┴┘└┴─┐├──┴┘└┴┴┘└┘
 #;;              ┌─┘│                 Licenciado sob licença BSD-3-Clause
 #;;              └──┘          
-#;;                                                Versão 1.0
+#;;                                                Versão 1.1
 #;;
 #;;************************************************************************************
 #;;
@@ -57,10 +57,10 @@ gerarApps()
 
 #;;************************************************************************************
 
-echo -e "\e[1;94mConstruindo aplicativos base do Hexagonix-Andromeda...\e[0m {"
+echo -e "\e[1;94mConstruindo aplicativos do Hexagonix...\e[0m {"
 echo
 
-echo "Construindo aplicativos base do Hexagonix-Andromeda... {" >> $LOG
+echo "Construindo aplicativos do Hexagonix... {" >> $LOG
 echo >> $LOG
 
 #;;************************************************************************************
