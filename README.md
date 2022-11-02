@@ -21,8 +21,7 @@
 
 <details title="Português (Brasil)" align='left'>
 <br>
-<summary align='left'>Português (Brasil)</summary>
-
+<summary align='left'>🇧🇷 Português (Brasil)</summary>
 # Aplicativos e utilitários do Andromeda
 
 Este repositório contém os aplicativos e utilitários exclusivos de ambiente Andromeda.
@@ -63,7 +62,7 @@ Este utilitário permite ao usuário enviar dados via porta serial, atuando como
 
 <details title="English" align='left'>
 <br>
-<summary align='left'>English</summary>
+<summary align='left'>🇬🇧 English</summary>
 
 # Andromeda apps and utilities
 
