@@ -15,8 +15,13 @@
 
 </div>
 
-<hr>
+<!-- Vai funcionar como <hr> -->
 
+<img src="https://github.com/hexagonix/Doc/blob/main/Img/hr.png" width="100%" height="2px" />
+
+<details title="Português (Brasil)" align='left'>
+<br>
+<summary align='left'>🇧🇷 Português (Brasil)</summary>
 # Aplicativos e utilitários do Andromeda
 
 Este repositório contém os aplicativos e utilitários exclusivos de ambiente Andromeda.
@@ -52,6 +57,50 @@ O Quartzo é um editor de propósito geral para o Andromeda.
 ## Serial
 
 Este utilitário permite ao usuário enviar dados via porta serial, atuando como terminal.
+
+</details>
+
+<details title="English" align='left'>
+<br>
+<summary align='left'>🇬🇧 English</summary>
+
+# Andromeda apps and utilities
+
+This repository contains the Andromeda environment-only applications and utilities.
+
+## Andromeda SHell (ASH)
+
+Andromeda SHell, or simply ASH, was developed as an alternative to Hexagonix's default shell, sh. sh resembles what is expected in appearance and basic functionality of a Unix-like system. ASH has no such claim, and has and will receive functions that expand its capability and usefulness.
+
+## Calculator
+
+The calculator allows the user to perform basic calculations.
+
+## Desligar
+
+The utility allows the user to easily shut down or restart the computer.
+
+## Fonte
+
+This utility allows you to interactively change the system's default graphic font.
+
+## Lyoko
+
+Lyoko was developed as an IDE that allows the user to develop programs to run on the system. It allows you to edit code and manipulate it, as well as build and test the application. So far, it works together with the flat assembler Hexagonix edition [(fasmX)](https://github.com/hexagonix/fasm) to allow building applications.
+
+## Piano return Piano;
+
+The return Piano; is an electronic keyboard that allows the user to play music by emitting selected notes.
+
+## Quartzo
+
+Quartzo is a general purpose editor for Andromeda.
+
+## Serial
+
+This utility allows the user to send data via the serial port, acting as a terminal.
+
+</details>
 
 <!--
 
