@@ -12,6 +12,7 @@
 ![](https://img.shields.io/github/issues-pr-closed/hexagonix/Andromeda-Apps.svg)
 ![](https://img.shields.io/github/downloads/hexagonix/Andromeda-Apps/total.svg)
 ![](https://img.shields.io/github/release/hexagonix/Andromeda-Apps.svg)
+[![](https://img.shields.io/twitter/follow/hexagonixOS.svg?style=social&label=Follow%20%40HexagonixOS)](https://twitter.com/hexagonixOS)
 
 </div>
 
