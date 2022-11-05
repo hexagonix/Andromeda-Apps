@@ -75,7 +75,7 @@ include "Estelar/estelar.s"
 include "macros.s"
 include "log.s"
 
-;; Funções exclusivas de aplicativos base do Andromeda®
+;; Funções de gerenciamento de versão
 
 include "verUtils.s"
 
@@ -103,10 +103,10 @@ include "Dados\log.asm"
 
 }
 
-;; Funções de comunicação com o Sistema Operacional Andromeda®
+;; Funções de comunicação com o Sistema Operacional Hexagonix®
 
-include "Andromeda\Andromeda.asm"
-include "Andromeda\hardware.asm"
+include "Hexagonix\Hexagonix.asm"
+include "Hexagonix\hardware.asm"
 
 
 ;; Interfaces do aplicativo

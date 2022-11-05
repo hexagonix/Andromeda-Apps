@@ -126,49 +126,67 @@ mostrarInterfacePrincipal:
 
     cursorPara 18, 08
 
+    call definirCorTema
+
+    mov esi, msgInfo.licenciado
+
+    imprimirString
+
+    call definirCorPadrao
+
+    cursorPara 18, 10
+
     mov esi, msgInicio.copyrightAndromeda
     
     imprimirString
 
-    cursorPara 18, 09
+    cursorPara 18, 11
 
     mov esi, msgInicio.direitosReservados
     
     imprimirString
 
-    cursorPara 28, 11
+    cursorPara 28, 13
+
+    call definirCorTema
 
     mov esi, msgInicio.separador
-    
+
     imprimirString
 
-    cursorPara 39, 13
+    call definirCorPadrao
+
+    cursorPara 39, 15
 
     mov esi, msgInicio.sobrePC
     
     imprimirString
 
-    cursorPara 02, 15
+    cursorPara 02, 17
 
     mov esi, msgInicio.processadorPrincipal
     
     imprimirString
 
-    cursorPara 04, 16
+    cursorPara 04, 19
 
     mov esi, msgInicio.numProcessador
     
     imprimirString
 
+    call definirCorTema
+
     call exibirProcessadorInstalado
 
-    cursorPara 08, 17
+    call definirCorPadrao
+
+    cursorPara 08, 20
 
     mov esi, msgInicio.operacaoProcessador
     
     imprimirString
     
-    cursorPara 02, 19
+    cursorPara 02, 22
 
     mov esi, msgInfo.memoriaDisponivel
     
