@@ -49,6 +49,6 @@
 ;;
 ;; $HexagonixOS$
 
-VERSAOCONFIG             equ "2.0.4"
+VERSAOCONFIG             equ "2.1"
 VERSAOFERRAMENTAS        equ "1.2"
-VERSAODESIGNADAANDROMEDA equ "H2"
+VERSAODESIGNADAHEXAGONIX equ "H2-dev"

@@ -102,6 +102,7 @@ msgInfo:
 .Hexagon:              db "Versao do Hexagon (kernel): ", 0
 .ponto:                db ".", 0
 .semCPUID:             db "O processador nao suporta a instrucao CPUID e nao pode ser identificado.", 0
+.licenciado:           db "Licenciado sob BSD-3-Clause", 0
 
 ;;************************************************************************************
 

@@ -241,19 +241,31 @@ mostrarInterfaceInfo:
     
     imprimirString
  
+    call definirCorTema
+
+;; Exibir licenciamento
+
     cursorPara 18, 13
     
+    mov esi, msgInfo.licenciado
+
+    imprimirString
+
+    call definirCorPadrao
+    
+    cursorPara 18, 15
+
     mov esi, msgInfo.copyrightAndromeda
     
     imprimirString
     
-    cursorPara 18, 14
+    cursorPara 18, 16
     
     mov esi, msgInfo.direitosReservados
     
     imprimirString
     
-    cursorPara 28, 16
+    cursorPara 28, 18
     
     call definirCorTema
     
@@ -263,27 +275,31 @@ mostrarInterfaceInfo:
     
     call definirCorPadrao
     
-    cursorPara 02, 18
+    cursorPara 02, 20
     
     mov esi, msgInfo.processadorPrincipal
     
     imprimirString
 
-    cursorPara 04, 19
+    cursorPara 04, 22
 
     mov esi, msgInfo.numProcessador
     
     imprimirString
 
+    call definirCorTema
+
     call exibirProcessadorInstalado
     
-    cursorPara 08, 20
+    call definirCorPadrao
+
+    cursorPara 08, 23
 
     mov esi, msgInfo.operacaoProcessador
     
     imprimirString
     
-    cursorPara 02, 22
+    cursorPara 02, 25
 
     mov esi, msgInfo.memoriaDisponivel
     
