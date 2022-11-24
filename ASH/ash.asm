@@ -74,11 +74,11 @@ include "macros.s"
 
 ;;************************************************************************************
 ;;
-;; Dados, variáveis e constantes utilizadas pelo Shell
+;; Dados, variáveis e constantes utilizadas pelo shell
 ;;
 ;;************************************************************************************
 
-;; A versão do ASH é independente da versão do restante do Sistema.
+;; A versão do ASH é independente da versão do restante do sistema.
 ;; Ela deve ser utilizada para identificar para qual versão do Hexagonix® o ASH foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
@@ -96,7 +96,6 @@ compativelHexagonix equ "H2-dev"
 
 ash:
 
-.extensaoProgramas:  db ".app", 0 ;; Extensão de aplicativos (executáveis Hexagon®)
 .comandoInvalido:    db 10, 10, "[!] Comando interno invalido ou aplicativo no formato HAPP nao encontrado.", 10, 0
 .bannerASH:          db "ASH - Andromeda(R) SHell", 0
 .boasVindas:         db "Seja bem-vindo ao Andromeda(R) SHell - ASH", 10, 10
@@ -114,12 +113,12 @@ ash:
 
 ;; Verbose 
 
-.verboseEntradaASH: db "[ASH]: Iniciando o Andromeda SHell (ASH) para Hexagonix ", compativelHexagonix, " ou superior.", 0
-.verboseVersaoASH:  db "[ASH]: Andromeda SHell versao ", versaoASH, ".", 0
-.verboseAutor:      db "[ASH]: Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes.", 0
-.verboseDireitos:   db "[ASH]: Todos os direitos reservados.", 0
-.verboseSaida:      db "[ASH]: Finalizando o ASH e retornando o controle ao processo pai...", 0
-.verboseLimite:     db "[ASH]: [!] Limite de memoria ou de processos atingido!", 0
+.verboseEntradaASH:           db "[ASH]: Iniciando o Andromeda SHell (ASH) para Hexagonix ", compativelHexagonix, " ou superior.", 0
+.verboseVersaoASH:            db "[ASH]: Andromeda SHell versao ", versaoASH, ".", 0
+.verboseAutor:                db "[ASH]: Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes.", 0
+.verboseDireitos:             db "[ASH]: Todos os direitos reservados.", 0
+.verboseSaida:                db "[ASH]: Finalizando o ASH e retornando o controle ao processo pai...", 0
+.verboseLimite:               db "[ASH]: [!] Limite de memoria ou de processos atingido!", 0
 .verboseInterfaceMountAntiga: db "[ASH]: [!!!] Realizando manipulacao de pontos de montagem por funcao obsoleta e que sera removida.", 0
 
 ;;**************************
@@ -163,7 +162,6 @@ discos:
 ;;**************************
  
 nomeArquivo: times 13 db 0  
-
 discoAtual:  times 3  db 0        
 
 Andromeda.Interface Andromeda.Estelar.Interface
@@ -286,7 +284,7 @@ inicioShell:
     
 .falhaExecutando:
 
-;; Agora o erro enviado pelo Sistema será analisado, para que o Shell conheça
+;; Agora o erro enviado pelo sistema será analisado, para que o shell conheça
 ;; sua natureza
 
     cmp eax, Hexagon.limiteProcessos ;; Limite de processos em execução atingido
@@ -660,9 +658,9 @@ inicioShell:
 
 ;;************************************************************************************
 ;;
-;; Fim dos comandos internos do Shell do Andromeda®
+;; Fim dos comandos internos do ASH
 ;;
-;; Funções úteis para o manipulação de dados no Shell do Andromeda® 
+;; Funções úteis para o manipulação de dados no shell do ASH
 ;;
 ;;************************************************************************************
 
@@ -745,7 +743,7 @@ obterArgumentos:
 ;;
 ;; EAX - Cor da fonte
 ;; EBX - Cor do plano de fundo
-;; ECX - 01h para restaurar ao padrão do Sistema
+;; ECX - 01h para restaurar ao padrão do sistema
  
 alterarCor:
 

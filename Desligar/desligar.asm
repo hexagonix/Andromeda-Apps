@@ -377,9 +377,8 @@ desligar:
 .msgFalha:               db "[Falha]", 0
 .falhaUtilitarioEnergia: db 10, 10, "Falha ao executar o utilitario Unix energia. Tente novamente mais tarde.", 10
                          db "Pressione qualquer tecla para finalizar este aplicativo...", 0
-
-.titulo: db "Opcoes de desligamento do Sistema Operacional Hexagonix(R)",0
-.rodape: db "[", VERSAO, "]",0
+.titulo:                 db "Opcoes de desligamento do Sistema Operacional Hexagonix(R)",0
+.rodape:                 db "[", VERSAO, "]",0
 
 parametro: dd ?
 
