@@ -241,25 +241,18 @@ fonte:
 
 .boasVindas:      db 10, 10, "Use este programa para alterar a fonte padrao de exibicao do sistema.", 10, 10
                   db "Lembrando que apenas fontes desenhadas para o Hexagonix(R) podem ser utilizadas.", 10, 10, 10, 10, 0
-
 .nomeArquivo:     db 10, "Nome do arquivo de fonte: ", 0    
-
 .nomeFonte:       db "Nome do arquivo: ", 0
-
 .sucesso:         db 10, 10, "Fonte alterada com sucesso.", 10, 10
                   db "Pressione qualquer tecla para continuar...", 10, 10, 0
-
 .falha:           db 10, 10, "O arquivo nao pode ser localizado.", 10, 10
                   db 10, 10, "Pressione qualquer tecla para continuar...", 10, 10, 0
-
 .falhaFormato:    db 10, 10, "O arquivo fornecido nao contem uma fonte no formato Hexagon(R).", 10, 10
                   db "Pressione qualquer tecla para continuar...", 10, 10, 0
-
 .bannerAndromeda: db 10, 10   
                   db "                                   Sistema Operacional Hexagonix(R)", 10, 10, 10, 10
                   db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
-                  db "                                    Todos os direitos reservados", 0
-                
+                  db "                                    Todos os direitos reservados", 0           
 .titulo:          db "Utilitario para troca de fonte padrao do Sistema Operacional Hexagonix(R)", 0
 .rodape:          db "[", VERSAO, "] | Utilize [F1] para cancelar o carregamento de uma nova fonte", 0
 .introducaoTeste: db 10, "Pre-visualizacao da fonte e disposicao dos caracteres: ", 0
