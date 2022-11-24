@@ -1,7 +1,7 @@
 ;;************************************************************************************
 ;;
 ;;    
-;; ┌┐ ┌┐                                 Sistema Operacional Hexagonix®
+;; ┌┐ ┌┐                                 sistema Operacional Hexagonix®
 ;; ││ ││
 ;; │└─┘├──┬┐┌┬──┬──┬──┬─┐┌┬┐┌┐    Copyright © 2016-2022 Felipe Miguel Nery Lunkes
 ;; │┌─┐││─┼┼┼┤┌┐│┌┐│┌┐│┌┐┼┼┼┼┘          Todos os direitos reservados
@@ -74,15 +74,15 @@ include "macros.s"
 
 ;;************************************************************************************
 ;;
-;; Dados, variáveis e constantes utilizadas pelo Shell
+;; Dados, variáveis e constantes utilizadas pelo shell
 ;;
 ;;************************************************************************************
 
-;; A versão do DOSsh é independente da versão do restante do Sistema.
+;; A versão do DOSsh é independente da versão do restante do sistema.
 ;; Ela deve ser utilizada para identificar para qual versão do Andromeda® o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.3.1" 
+versaoDOSsh         equ "0.4.0" 
 compativelHexagonix equ "H2"
                     
 ;;**************************
@@ -256,50 +256,6 @@ carregarImagem:
     push esi
     push edi
     
-    Hexagonix tamanhoString
-    
-    add esi, eax
-
-    sub esi, 4
-    
-    mov edi, DOSsh.extensaoProgramas
-    
-    Hexagonix compararPalavrasString  ;; Checar por extensão .APP
-    
-    jc .carregarPrograma
-    
-    pop edi
-    pop esi
-    
-.semExtensao:
-        
-;; Tentar adicionar extensão
-
-    Hexagonix tamanhoString
-    
-    mov ebx, eax
-
-    mov al, byte[DOSsh.extensaoProgramas+0]
-    
-    mov byte[esi+ebx+0], al
-    
-    mov al, byte[DOSsh.extensaoProgramas+1]
-    
-    mov byte[esi+ebx+1], al
-    
-    mov al, byte[DOSsh.extensaoProgramas+2]
-    
-    mov byte[esi+ebx+2], al
-    
-    mov al, byte[DOSsh.extensaoProgramas+3]
-    
-    mov byte[esi+ebx+3], al
-    
-    mov byte[esi+ebx+4], 0      ;; Fim da string
-    
-    push esi
-    push edi
-    
     jmp .carregarPrograma
     
 .falhaExecutando:
@@ -310,18 +266,27 @@ carregarImagem:
     cmp eax, Hexagon.limiteProcessos ;; Limite de processos em execução atingido
     je .limiteAtingido               ;; Se sim, exibir a mensagem apropriada
     
-    cmp eax, Hexagon.imagemInvalida  ;; Limite de processos em execução atingido
-    je .imagemHAPPInvalida           ;; Se sim, exibir a mensagem apropriada
+    cmp eax, Hexagon.imagemInvalida
+    je .imagemHAPPInvalida
     
-    Hexagonix obterCursor
+    push esi
     
-    mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
-
-    sub dl, 17
+    novaLinha
+    novaLinha
     
-    Hexagonix definirCursor
+    pop esi
+    
+    imprimirString
     
     mov esi, DOSsh.comandoInvalido
+    
+    imprimirString
+    
+    jmp obterComando   
+    
+.limiteAtingido:
+    
+    mov esi, DOSsh.limiteProcessos
     
     imprimirString
     
@@ -330,14 +295,6 @@ carregarImagem:
 .imagemHAPPInvalida:
 
     push esi
-
-    Hexagonix obterCursor
-    
-    mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
-
-    sub dl, 17
-    
-    Hexagonix definirCursor
     
     novaLinha
     novaLinha
@@ -347,24 +304,6 @@ carregarImagem:
     imprimirString
 
     mov esi, DOSsh.imagemInvalida
-    
-    imprimirString
-
-    jmp obterComando   
-
-.limiteAtingido:
-
-    logSistema DOSsh.verboseLimite, 00h, Log.Prioridades.p4
-
-    Hexagonix obterCursor
-    
-    mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
-
-    sub dl, 17
-    
-    Hexagonix definirCursor
-    
-    mov esi, DOSsh.limiteProcessos
     
     imprimirString
     
@@ -575,9 +514,9 @@ erroGeralArquivo:
 
 ;;************************************************************************************
 ;;
-;; Fim dos comandos internos do Shell do Andromeda®
+;; Fim dos comandos internos do shell do Andromeda®
 ;;
-;; Funções úteis para o manipulação de dados no Shell do Andromeda® 
+;; Funções úteis para o manipulação de dados no shell do Andromeda® 
 ;;
 ;;************************************************************************************
 
@@ -655,7 +594,7 @@ obterArgumentos:
 ;;************************************************************************************
 
 ;; Obtem os parâmetros necessários para o funcionamento do programa, diretamente da linha
-;; de comando fornecida pelo Sistema
+;; de comando fornecida pelo sistema
 
 lerListaArquivos:
 
