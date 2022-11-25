@@ -108,7 +108,7 @@ iniciarInterface:
     
     novaLinha
     
-    mov esi, desligar.bannerAndromeda
+    mov esi, desligar.bannerHexagonix
 
     imprimirString
 
@@ -185,7 +185,7 @@ iniciarInterface:
 
     Hexagonix definirCor
 
-    mov esi, desligar.msgAndromeda
+    mov esi, desligar.msgHexagonix
 
     imprimirString
 
@@ -264,44 +264,44 @@ obterTeclas:
     pop eax
     
     cmp al, 'd'
-    je Andromeda_Desligar
+    je Hexagonix_Desligar
     
     cmp al, 'D'
-    je Andromeda_Desligar
+    je Hexagonix_Desligar
     
     cmp al, 'r'
-    je Andromeda_Reiniciar
+    je Hexagonix_Reiniciar
     
     cmp al, 'R'
-    je Andromeda_Reiniciar
+    je Hexagonix_Reiniciar
     
     cmp al, 's'
-    je Andromeda_Sair
+    je Hexagonix_Sair
     
     cmp al, 'S'
-    je Andromeda_Sair
+    je Hexagonix_Sair
 
     jmp obterTeclas 
     
 ;;************************************************************************************  
     
-Andromeda_Desligar:
+Hexagonix_Desligar:
 
     call finalizarSistema
 
     call executarEnergiaDesligamento
 
-    jmp Andromeda_Sair
+    jmp Hexagonix_Sair
 
 ;;************************************************************************************
 
-Andromeda_Reiniciar:
+Hexagonix_Reiniciar:
 
     call finalizarSistema
 
     call executarEnergiaReinicio
 
-    jmp Andromeda_Sair
+    jmp Hexagonix_Sair
 
 ;;************************************************************************************
 
@@ -337,11 +337,11 @@ falhaEnergia:
 
     Hexagonix aguardarTeclado
 
-    jmp Andromeda_Sair
+    jmp Hexagonix_Sair
 
 ;;************************************************************************************
 
-Andromeda_Sair:
+Hexagonix_Sair:
 
     Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 
@@ -358,7 +358,7 @@ align 32
 
 desligar:
 
-.bannerAndromeda:        db 10 
+.bannerHexagonix:        db 10 
                          db "                                   Sistema Operacional Hexagonix(R)", 10, 10, 10, 10
                          db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                          db "                                    Todos os direitos reservados", 0
@@ -367,7 +367,7 @@ desligar:
 .parametroReiniciar:     db "-re", 0 ;; Parâmetro que indica que não deve haver eco
 .msgDesligamento:        db 10, 10, "!> Preparando para desligar seu computador... ", 0
 .msgFinalizando:         db 10, 10, "#> Finalizando todos os processos ainda em execucao...  ", 0
-.msgAndromeda:           db 10, 10, "#> Finalizando o Sistema Operacional Hexagonix(R)...    ", 0
+.msgHexagonix:           db 10, 10, "#> Finalizando o Sistema Operacional Hexagonix(R)...    ", 0
 .msgDiscos:              db 10, 10, "#> Finalizando os discos e desligando seu computador... ", 0
 .msgReinicio:            db "Reiniciando seu computador...", 10, 10, 0
 .msgFinalizar:           db "Pressione [Ctrl-D] para desligar seu computador.", 10, 0

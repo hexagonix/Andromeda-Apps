@@ -79,7 +79,7 @@ include "macros.s"
 ;;************************************************************************************
 
 ;; A versão do DOSsh é independente da versão do restante do sistema.
-;; Ela deve ser utilizada para identificar para qual versão do Andromeda® o DOSsh foi
+;; Ela deve ser utilizada para identificar para qual versão do Hexagonix® o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
 versaoDOSsh         equ "0.4.0" 
@@ -514,9 +514,9 @@ erroGeralArquivo:
 
 ;;************************************************************************************
 ;;
-;; Fim dos comandos internos do shell do Andromeda®
+;; Fim dos comandos internos do DOSsh
 ;;
-;; Funções úteis para o manipulação de dados no shell do Andromeda® 
+;; Funções úteis para o manipulação de dados no shell do DOSsh
 ;;
 ;;************************************************************************************
 

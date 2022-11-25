@@ -98,7 +98,7 @@ inicioAPP:
 
     Andromeda.Estelar.criarInterface fonte.titulo, fonte.rodape, AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
     
-    mov esi, fonte.bannerAndromeda
+    mov esi, fonte.bannerHexagonix
 
     imprimirString
 
@@ -249,7 +249,7 @@ fonte:
                   db 10, 10, "Pressione qualquer tecla para continuar...", 10, 10, 0
 .falhaFormato:    db 10, 10, "O arquivo fornecido nao contem uma fonte no formato Hexagon(R).", 10, 10
                   db "Pressione qualquer tecla para continuar...", 10, 10, 0
-.bannerAndromeda: db 10, 10   
+.bannerHexagonix: db 10, 10   
                   db "                                   Sistema Operacional Hexagonix(R)", 10, 10, 10, 10
                   db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                   db "                                    Todos os direitos reservados", 0           

@@ -62,7 +62,7 @@ use32
 include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
 ;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, AndromedaIDE, 01h
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, LyokoIDE, 01h
 
 ;;************************************************************************************
 
@@ -179,7 +179,7 @@ resolucao:            dd 0  ;; Resolução de vídeo
 
 ;; Função inicial
 
-AndromedaIDE:
+LyokoIDE:
 
     Hexagonix obterInfoTela
     
@@ -1889,7 +1889,7 @@ abrirArquivoEditor:
 
     mov byte[necessarioRedesenhar], 1
 
-    jmp AndromedaIDE.carregarArquivo
+    jmp LyokoIDE.carregarArquivo
 
 .fim:
 
@@ -1976,7 +1976,7 @@ realizarMontagem:
     
     mov byte[necessarioRedesenhar], 1
     
-    jmp AndromedaIDE.proximo1
+    jmp LyokoIDE.proximo1
     
 ;;************************************************************************************
 
@@ -2053,7 +2053,7 @@ exibirBoasVindas:
 
     mov byte[Lyoko.primeiraExecucao], 00h
     
-    jmp AndromedaIDE.proximo1
+    jmp LyokoIDE.proximo1
     
 ;;************************************************************************************
 

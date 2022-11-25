@@ -97,7 +97,7 @@ inicioAPP:
     
     cursorPara 02, 01
     
-    mov esi, serial.bannerAndromeda
+    mov esi, serial.bannerHexagonix
 
     imprimirString
 
@@ -244,7 +244,7 @@ serial:
 
 .erroPorta:       db 10, 10, "Nao foi possivel utilizar a porta serial.", 10, 0
 .erroAbertura:    db 10, 10, "Nao foi possivel abrir o dispositivo para gravacao.", 10, 0
-.bannerAndromeda: db 10, 10   
+.bannerHexagonix: db 10, 10   
                   db "                                   Sistema Operacional Hexagonix(R)", 10, 10, 10, 10
                   db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                   db "                                    Todos os direitos reservados", 0              

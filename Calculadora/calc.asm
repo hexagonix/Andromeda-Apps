@@ -92,7 +92,7 @@ inicioAPP:
     VERDE_ESCURO, VERDE_ESCURO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
     
-    mov esi, calc.bannerAndromeda
+    mov esi, calc.bannerHexagonix
 
     imprimirString
 
@@ -312,7 +312,7 @@ calc:
 .resultado:       db 10, 10, "O resultado e = ", 0
 .solicitarTecla:  db 10, 10, "Pressione qualquer tecla para continuar...", 10, 10, 0
 
-.bannerAndromeda: db 10, 10   
+.bannerHexagonix: db 10, 10   
                   db "                                   Sistema Operacional Hexagonix(R)", 10, 10, 10, 10
                   db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                   db "                                    Todos os direitos reservados", 0              
