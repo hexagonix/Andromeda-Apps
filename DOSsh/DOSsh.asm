@@ -82,7 +82,7 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Hexagonix® o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.4.0" 
+versaoDOSsh         equ "0.4.5" 
 compativelHexagonix equ "H2"
                     
 ;;**************************
@@ -90,51 +90,51 @@ compativelHexagonix equ "H2"
 DOSsh:
 
 .extensaoProgramas:  db ".app", 0 ;; Extensão de aplicativos (executáveis Hexagon®)
-.comandoInvalido:    db 10, "Comando interno ou arquivo nao encontrado.", 10, 0
-.boasVindas:         db "DOSsh, um shell no estilo DOS para o Hexagonix", 10, 10
+.comandoInvalido:    db 10, "Internal command or file not found.", 10, 0
+.boasVindas:         db "DOSsh, a DOS-style shell for Hexagonix", 10, 10
                      db "Copyright (C) 2022-", __stringano, " Felipe Miguel Nery Lunkes", 10
-                     db "Todos os direitos reservados.", 10, 0
+                     db "All rights reserved.", 10, 0
 .direitosAutorais:   db 10, 10, "Copyright (C) 2022-", __stringano, " Felipe Miguel Nery Lunkes", 10   
-                     db "Todos os direitos reservados.", 10, 0
-.limiteProcessos:    db 10, 10, "Nao existe memoria disponivel para executar o aplicativo solicitado.", 10
-                     db "Tente primeiramente finalizar aplicativos ou suas instancias, e tente novamente.", 10, 0                    
+                     db "All rights reserved.", 10, 0
+.limiteProcessos:    db 10, 10, "There is not enough memory available to run the requested application.", 10
+                     db "Try to terminate applications or their instances first, and try again.", 10, 0                    
 .ponto:              db ".", 0
-.imagemInvalida:     db ": nao e possivel carregar a imagem. Formato executavel nao suportado.", 10, 0
+.imagemInvalida:     db ": unable to load image. Unsupported executable format.", 10, 0
 .prompt:             db "C:/> ", 0
-.erroGeralArquivo:   db 10, "Arquivo nao encontrado.", 10, 0
-
+.erroGeralArquivo:   db 10, "File not found.", 10, 0
+.licenca:            db 10, "Licenced under BSD-3-Clause.", 10, 0
 .extensaoCOW:        db ".COW",0
 .extensaoMAN:        db ".MAN",0
 .extensaoOCL:        db ".OCL",0
 
 ;; Verbose 
 
-.verboseEntradaDOSsh: db "[DOSsh]: DOSsh para Hexagonix versao ", compativelHexagonix, " ou superior.", 0
-.verboseVersaoDOSsh:  db "[DOSsh]: DOSsh versao ", versaoDOSsh, ".", 0
+.verboseEntradaDOSsh: db "[DOSsh]: DOSsh for Hexagonix version ", compativelHexagonix, " or superior.", 0
+.verboseVersaoDOSsh:  db "[DOSsh]: DOSsh version ", versaoDOSsh, ".", 0
 .verboseAutor:        db "[DOSsh]: Copyright (C) 2022-", __stringano, " Felipe Miguel Nery Lunkes.", 0
-.verboseDireitos:     db "[DOSsh]: Todos os direitos reservados.", 0
-.verboseSaida:        db "[DOSsh]: Finalizando o DOSsh e retornando o controle ao processo pai...", 0
-.verboseLimite:       db "[DOSsh]: Limite de memoria ou de processos atingido!", 0
+.verboseDireitos:     db "[DOSsh]: All rights reserved.", 0
+.verboseSaida:        db "[DOSsh]: Terminating DOSsh and returning control to the parent process...", 0
+.verboseLimite:       db "[DOSsh]: Memory or process limit reached!", 0
 
 DOSsh.comandos:
 
-.sair:          db "sair",0
+.sair:          db "exit",0
 .versao:        db "ver", 0
-.ajuda:         db "ajuda", 0
+.ajuda:         db "help", 0
 .cls:           db "cls", 0
 .dir:           db "dir", 0
 .type:          db "type", 0
 
 DOSsh.ajuda:
 
-.introducao:    db 10, 10, "DOSsh versao ", versaoDOSsh, 10
-                db "Compativel com Hexagonix(R) ", compativelHexagonix, " ou superior.", 0
-.conteudoAjuda: db 10, 10, "Comandos internos disponiveis:", 10, 10
-                db " DIR  - Exibe os arquivos do volume atual.", 10
-                db " TYPE - Exibe o conteudo de um arquivo fornecido como parametro.", 10
-                db " CLS  - Limpa a tela (no caso do Hexagonix, o terminal aberto em vd0).", 10
-                db " VER  - Exibe informacoes da versao do DOSsh em execucao.", 10
-                db " SAIR - Finalizar essa sessao do DOSsh.", 10, 10, 0
+.introducao:    db 10, 10, "DOSsh version ", versaoDOSsh, 10
+                db "Compatible with Hexagonix(R) ", compativelHexagonix, " or superior.", 0
+.conteudoAjuda: db 10, 10, "Internal commands available:", 10, 10
+                db " DIR  - Displays files on the current volume.", 10
+                db " TYPE - Displays the contents of a file given as a parameter.", 10
+                db " CLS  - Clears the screen (in the case of Hexagonix, the terminal opened at vd0).", 10
+                db " VER  - Displays version information of DOSsh running.", 10
+                db " EXIT - Terminate this DOSsh session.", 10, 10, 0
              
 ;;**************************
  
@@ -477,6 +477,10 @@ comandoVER:
     imprimirString
     
     mov esi, DOSsh.direitosAutorais
+    
+    imprimirString
+
+    mov esi, DOSsh.licenca
     
     imprimirString
 
