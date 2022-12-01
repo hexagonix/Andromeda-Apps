@@ -89,57 +89,58 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.0.0" 
+versaoASH           equ "4.0.1" 
 compativelHexagonix equ "H2-dev"
                     
 ;;**************************
 
 ash:
 
-.comandoInvalido:    db 10, 10, "[!] Comando interno invalido ou aplicativo no formato HAPP nao encontrado.", 10, 0
+.comandoInvalido:    db 10, 10, "[!] Invalid internal command or HAPP format application not found.", 10, 0
 .bannerASH:          db "ASH - Andromeda(R) SHell", 0
-.boasVindas:         db "Seja bem-vindo ao Andromeda(R) SHell - ASH", 10, 10
+.boasVindas:         db "Welcome to Andromeda(R) SHell - ASH", 10, 10
                      db "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
-                     db "Todos os direitos reservados.", 10, 0
-.versaoAndromeda:    db 10, 10, "Sistema Operacional Hexagonix(R)", 10 
-                     db "Versao ", 0
+                     db "All rights reserved.", 10, 0
+.versaoHexagonix:    db 10, 10, "Hexagonix(R) Operating System", 10 
+                     db "Version ", 0
 .direitosAutorais:   db 10, 10, "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10   
-                     db "Todos os direitos reservados.", 10, 0
-.limiteProcessos:    db 10, 10, "[!] Nao existe memoria disponivel para executar o aplicativo solicitado.", 10
-                     db "[!] Tente primeiramente finalizar aplicativos ou suas instancias, e tente novamente.", 10, 0                    
+                     db "All rights reserved.", 10, 0
+.limiteProcessos:    db 10, 10, "[!] There is no memory available to run the requested application.", 10
+                     db "[!] Try to terminate applications or their instances first, and try again.", 10, 0                    
 .ponto:              db ".", 0
-.imagemInvalida:     db ": nao e possivel carregar a imagem. Formato executavel nao suportado.", 10, 0
+.imagemInvalida:     db ": unable to load image. Unsupported executable format.", 10, 0
 .prompt:             db "[/]: ", 0
+.licenca:            db 10, "Licenced under BSD-3-Clause.", 10, 0
 
 ;; Verbose 
 
-.verboseEntradaASH:           db "[ASH]: Iniciando o Andromeda SHell (ASH) para Hexagonix ", compativelHexagonix, " ou superior.", 0
-.verboseVersaoASH:            db "[ASH]: Andromeda SHell versao ", versaoASH, ".", 0
+.verboseEntradaASH:           db "[ASH]: Starting Andromeda SHell (ASH) for Hexagonix ", compativelHexagonix, " or superior.", 0
+.verboseVersaoASH:            db "[ASH]: Andromeda SHell version ", versaoASH, ".", 0
 .verboseAutor:                db "[ASH]: Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes.", 0
-.verboseDireitos:             db "[ASH]: Todos os direitos reservados.", 0
-.verboseSaida:                db "[ASH]: Finalizando o ASH e retornando o controle ao processo pai...", 0
-.verboseLimite:               db "[ASH]: [!] Limite de memoria ou de processos atingido!", 0
-.verboseInterfaceMountAntiga: db "[ASH]: [!!!] Realizando manipulacao de pontos de montagem por funcao obsoleta e que sera removida.", 0
+.verboseDireitos:             db "[ASH]: All rights reserved.", 0
+.verboseSaida:                db "[ASH]: Terminating the ASH and returning control to the parent process...", 0
+.verboseLimite:               db "[ASH]: [!] Memory or process limit reached!", 0
+.verboseInterfaceMountAntiga: db "[ASH]: [!!!] Performing manipulation of mount points by obsolete function that will be removed.", 0
 
 ;;**************************
 
 comandos:
 
 .alterarDisco:  db "ad", 0
-.sair:          db "sair",0
+.sair:          db "exit",0
 .versao:        db "ver", 0
-.ajuda:         db "ajuda", 0
+.ajuda:         db "help", 0
 
 ;;**************************
 
 ajuda:
 
-.introducao:    db 10, 10, "Andromeda SHell versao ", versaoASH, 10
-                db "Compativel com Hexagonix(R) ", compativelHexagonix, " ou superior.", 0
-.conteudoAjuda: db 10, 10, "Comandos internos disponiveis:", 10, 10
-                db " VER  - Exibe informacoes da versao do ASH em execucao.", 10
-                db " SAIR - Finalizar essa sessao do ASH.", 10, 10
-                db "Tente digitar 'ls' para ver outros utilitarios e aplicativos disponiveis!", 10, 0
+.introducao:    db 10, 10, "Andromeda SHell version ", versaoASH, 10
+                db "Compatible with Hexagonix(R) ", compativelHexagonix, " or superior.", 0
+.conteudoAjuda: db 10, 10, "Internal commands available:", 10, 10
+                db " VER  - Displays information about the running ASH version.", 10
+                db " EXIT - Terminate that ASH session.", 10, 10
+                db "Try typing 'ls' to see other utilities and applications available!", 10, 0
              
 ;;**************************
 
@@ -150,14 +151,14 @@ discos:
 .hd2:              db "hd2", 0
 .hd3:              db "hd3", 0
 .info:             db "info", 0
-.discoAtual:       db 10, 10, "Volume atual utilizado pelo sistema: ", 0
-.erroAlterar:      db 10, 10, "Um volume valido ou parametro nao foram fornecidos para este comando.", 10, 10
-                   db "Impossivel alterar o volume Unix padrao.", 10, 10
-                   db "Utilize como argumento um nome de dispositivo ou entao 'info' para informacoes do disco atual.", 10, 0
-.rotuloVolume:     db 10, 10, "Rotulo do volume: ", 0
-.avisoSairdeLinha: db 10, 10, "Aviso! Este e um comando interno obsoleto do Andromeda SHell.", 10
-                   db "Fique ciente que ele pode ser removido em breve. Em substituicao, utilize a ferramenta Unix 'mount'.", 10
-                   db "Voce pode encontrar a documentacao da ferramenta digitando 'man mount' a qualquer momento.", 0
+.discoAtual:       db 10, 10, "Current volume used by the system: ", 0
+.erroAlterar:      db 10, 10, "A valid volume or parameter was not provided for this command.", 10, 10 
+                   db "Cannot change default volume.", 10, 10
+                   db "Use a device name as an argument or 'info' for current disk information.", 10, 0
+.rotuloVolume:     db 10, 10, "Volume label: ", 0
+.avisoSairdeLinha: db 10, 10, "Warning! This is an obsolete built-in Andromeda SHell command.", 10
+                   db "Be aware that it may be removed soon. Use the Unix 'mount' tool instead.", 10
+                   db "You can find the tool's documentation by typing 'man mount' at any time.", 0 
     
 ;;**************************
  
@@ -631,6 +632,10 @@ inicioShell:
     call alterarCor
     
     mov esi, ash.direitosAutorais
+    
+    imprimirString
+
+    mov esi, ash.licenca
     
     imprimirString
 

@@ -299,27 +299,27 @@ VERSAO equ "1.6.1"
 
 calc:
 
-.dividirPorZero:  db "Divisao por zero nao permitida!", 0
-.primeiroNumero:  db "Entre com o primeiro numero (0 para sair): ", 0
-.segundoNumero:   db "Entre com o segundo numero (0 para sair) : ", 0
-.operacao:        db 10, "Entre com o codigo da operacao, de acordo com a lista abaixo:", 10, 10    
-                  db "[0] SOMA (+)", 10
+.dividirPorZero:  db "Division by zero not allowed!", 0
+.primeiroNumero:  db "Enter the first number (0 to exit): ", 0
+.segundoNumero:   db "Enter the second number (0 to exit): ", 0
+.operacao:        db 10, "Enter the operation code, according to the list below:", 10, 10    
+                  db "[0] SUM (+)", 10
                   db "[1] SUB  (-)", 10
                   db "[2] MUL  (*)", 10
                   db "[3] DIV  (/)", 10
-                  db "[4] SAIR", 10
-                  db 10, "Opcao: ", 0 
-.resultado:       db 10, 10, "O resultado e = ", 0
-.solicitarTecla:  db 10, 10, "Pressione qualquer tecla para continuar...", 10, 10, 0
+                  db "[4] EXIT", 10
+                  db 10, "Option: ", 0 
+.resultado:       db 10, 10, "The result is = ", 0
+.solicitarTecla:  db 10, 10, "Press any key to continue...", 10, 10, 0
 
 .bannerHexagonix: db 10, 10   
-                  db "                                   Sistema Operacional Hexagonix(R)", 10, 10, 10, 10
+                  db "                                   Hexagonix(R) Operating System", 10, 10, 10, 10
                   db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
-                  db "                                    Todos os direitos reservados", 0              
+                  db "                                         All rights reserved.", 0              
 .marcaRegistrada: db "tm", 0
 
-.titulo:          db "Calculadora basica do Sistema Operacional Hexagonix(R)",0
-.rodape:          db "[", VERSAO, "] | [F1] Sair",0
+.titulo:          db "Hexagonix(R) Operating System Basic Calculator",0
+.rodape:          db "[", VERSAO, "] | [F1] Exit",0
 
 primeiroNumero:   dd 0
 segundoNumero:    dd 0
