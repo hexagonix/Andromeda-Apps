@@ -242,19 +242,19 @@ VERSAO equ "1.0.1"
 
 serial:
 
-.erroPorta:       db 10, 10, "Nao foi possivel utilizar a porta serial.", 10, 0
-.erroAbertura:    db 10, 10, "Nao foi possivel abrir o dispositivo para gravacao.", 10, 0
-.bannerHexagonix: db 10, 10   
-                  db "                                   Sistema Operacional Hexagonix(R)", 10, 10, 10, 10
+.erroPorta:       db 10, 10, "Unable to use the serial port.", 10, 0
+.erroAbertura:    db 10, 10, "Unable to open device for writing.", 10, 0
+.bannerHexagonix: db 10 
+                  db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
                   db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
-                  db "                                    Todos os direitos reservados", 0              
-.ajuda:           db 10, 10, "Este aplicativo ira te auxiliar a escrever dados via porta serial.", 10, 10, 10, 10, 0
+                  db "                                         All rights reserved.", 0   
+.ajuda:           db 10, 10, "This application will help you to write data via serial port.", 10, 10, 10, 10, 0
 .prompt:          db "[com1]", 0
 .separador:       db ": ", 0 
 .nomePorta:       db "com1", 0    
-.enviado:         db 10, 10, "Dados enviados via porta serial ", 0
-.titulo:          db "Utilitario de envio de dados via porta serial do Sistema Operacional Hexagonix(R)", 0
-.rodape:          db "[", VERSAO, "] | [^N] Nova mensagem  [^S] Sair", 0
+.enviado:         db 10, 10, "Data sent via serial port ", 0
+.titulo:          db "Utility for sending data via the serial port of the Hexagonix(R) Operating System", 0
+.rodape:          db "[", VERSAO, "] | [^N] New message  [^S] Exit", 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
 

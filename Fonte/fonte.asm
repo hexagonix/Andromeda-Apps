@@ -239,24 +239,24 @@ VERSAO equ "2.1"
 
 fonte:
 
-.boasVindas:      db 10, 10, "Use este programa para alterar a fonte padrao de exibicao do sistema.", 10, 10
-                  db "Lembrando que apenas fontes desenhadas para o Hexagonix(R) podem ser utilizadas.", 10, 10, 10, 10, 0
-.nomeArquivo:     db 10, "Nome do arquivo de fonte: ", 0    
-.nomeFonte:       db "Nome do arquivo: ", 0
-.sucesso:         db 10, 10, "Fonte alterada com sucesso.", 10, 10
-                  db "Pressione qualquer tecla para continuar...", 10, 10, 0
-.falha:           db 10, 10, "O arquivo nao pode ser localizado.", 10, 10
-                  db 10, 10, "Pressione qualquer tecla para continuar...", 10, 10, 0
-.falhaFormato:    db 10, 10, "O arquivo fornecido nao contem uma fonte no formato Hexagon(R).", 10, 10
-                  db "Pressione qualquer tecla para continuar...", 10, 10, 0
-.bannerHexagonix: db 10, 10   
-                  db "                                   Sistema Operacional Hexagonix(R)", 10, 10, 10, 10
+.boasVindas:      db 10, 10, "Use this program to change the default system display font.", 10, 10
+                  db "Remember that only fonts designed for Hexagonix(R) can be used.", 10, 10, 10, 10, 0
+.nomeArquivo:     db 10, "Font file name: ", 0    
+.nomeFonte:       db "Filename: ", 0
+.sucesso:         db 10, 10, "Font changed successfully.", 10, 10
+                  db "Press any key to continue...", 10, 10, 0
+.falha:           db 10, 10, "The file cannot be found.", 10, 10
+                  db 10, 10, "Press any key to continue...", 10, 10, 0
+.falhaFormato:    db 10, 10, "The provided file does not contain a font in Hexagon(R) format.", 10, 10
+                  db "Press any key to continue...", 10, 10, 0
+.bannerHexagonix: db 10 
+                  db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
                   db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
-                  db "                                    Todos os direitos reservados", 0           
-.titulo:          db "Utilitario para troca de fonte padrao do Sistema Operacional Hexagonix(R)", 0
-.rodape:          db "[", VERSAO, "] | Utilize [F1] para cancelar o carregamento de uma nova fonte", 0
-.introducaoTeste: db 10, "Pre-visualizacao da fonte e disposicao dos caracteres: ", 0
-.testeFonte:      db "Sistema Operacional Hexagonix(R)", 10, 10
+                  db "                                         All rights reserved.", 0   
+.titulo:          db "Hexagonix(R) Operating System default font changer utility", 0
+.rodape:          db "[", VERSAO, "] | Use [F1] to cancel loading a new font", 0
+.introducaoTeste: db 10, "Font and character layout preview: ", 0
+.testeFonte:      db "Hexagonix(R) Operating System", 10, 10
                   db "1234567890-=", 10
                   db "!@#$%^&*()_+", 10
                   db "QWERTYUIOP{}", 10
@@ -265,9 +265,9 @@ fonte:
                   db "asdfghjkl;'\", 10
                   db "ZXCVBNM<>?", 10
                   db "zxcvbnm,./", 10, 10
-                  db "Sistema Operacional Hexagonix(R)", 10, 0
+                  db "Hexagonix(R) Operating System", 10, 0
 .modoTexto:       db 0
-.tamanhoSuperior: db 10, 10, "Este arquivo de fonte excede o tamanho maximo de 2 Kb.", 10, 0
+.tamanhoSuperior: db 10, 10, "This font file exceeds the maximum size of 2 Kb.", 10, 0
 
 linhaComando:     dd 0
 arquivoFonte:     dd ?

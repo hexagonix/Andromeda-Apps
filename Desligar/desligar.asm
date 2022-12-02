@@ -354,12 +354,10 @@ Hexagonix_Sair:
 ENERGIA equ "energia"   
 VERSAO  equ "1.0.2"
 
-align 32
-
 desligar:
 
 .bannerHexagonix:        db 10 
-                         db "                                   Hexagonix(R) Operating System", 10, 10, 10, 10
+                         db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
                          db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                          db "                                         All rights reserved.", 0              
 .energia:                db ENERGIA, 0
@@ -370,8 +368,8 @@ desligar:
 .msgHexagonix:           db 10, 10, "#> Shutting down the Hexagonix(R) Operating System...    ", 0
 .msgDiscos:              db 10, 10, "#> Stoping disks and shutting down your computer... ", 0
 .msgReinicio:            db "Rebooting your computes...", 10, 10, 0
+.msgReiniciar:           db "Press [Ctrl-R] to restart your computer.", 10, 0
 .msgFinalizar:           db "Press [Ctrl-D] to shut down your computer.", 10, 0
-.msgReiniciar:           db "Press [Ctrl-R] ​​to restart your computer.", 10, 0
 .msgSair:                db "Press [Ctrl-S] or [F1] to return to Hexagonix(R)", 0
 .msgPronto:              db "[Done]", 0
 .msgFalha:               db "[Fail]", 0

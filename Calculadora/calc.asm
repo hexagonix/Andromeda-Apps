@@ -313,7 +313,7 @@ calc:
 .solicitarTecla:  db 10, 10, "Press any key to continue...", 10, 10, 0
 
 .bannerHexagonix: db 10, 10   
-                  db "                                   Hexagonix(R) Operating System", 10, 10, 10, 10
+                  db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
                   db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                   db "                                         All rights reserved.", 0              
 .marcaRegistrada: db "tm", 0
