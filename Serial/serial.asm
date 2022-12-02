@@ -245,7 +245,7 @@ serial:
 .erroPorta:       db 10, 10, "Unable to use the serial port.", 10, 0
 .erroAbertura:    db 10, 10, "Unable to open device for writing.", 10, 0
 .bannerHexagonix: db 10 
-                  db "                                   Hexagonix(R) Operating System", 10, 10, 10, 10
+                  db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
                   db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                   db "                                         All rights reserved.", 0   
 .ajuda:           db 10, 10, "This application will help you to write data via serial port.", 10, 10, 10, 10, 0

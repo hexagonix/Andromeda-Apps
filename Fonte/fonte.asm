@@ -250,7 +250,7 @@ fonte:
 .falhaFormato:    db 10, 10, "The provided file does not contain a font in Hexagon(R) format.", 10, 10
                   db "Press any key to continue...", 10, 10, 0
 .bannerHexagonix: db 10 
-                  db "                                   Hexagonix(R) Operating System", 10, 10, 10, 10
+                  db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
                   db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
                   db "                                         All rights reserved.", 0   
 .titulo:          db "Hexagonix(R) Operating System default font changer utility", 0
