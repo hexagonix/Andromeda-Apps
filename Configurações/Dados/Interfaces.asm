@@ -55,28 +55,28 @@ align 32
 
 msgInicio: ;; Contêm todas as mensagens abaixo
 
-.introducao:           db "Sobre o Sistema Operacional", 0
-.nomeSistema:          db "Nome do Sistema Operacional: ", 0        
-.versaoSistema:        db "Versao do Sistema Operacional: ", 0
+.introducao:           db "About the system", 0
+.nomeSistema:          db "Operating System name: ", 0        
+.versaoSistema:        db "Operating System version: ", 0
 .versao:               db " ", 0
-.tipoSistema:          db "Tipo de Sistema Operacional: Sistema Operacional de 32 bits", 0
+.tipoSistema:          db "Operating System type: 32-bit Operating System", 0
 .copyrightAndromeda:   db "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 0
-.direitosReservados:   db "Todos os direitos reservados.", 0
+.direitosReservados:   db "All rights reserved.", 0
 .separador:            db "++++++++++++++++++++++++++++++++++++++++", 0
-.sobrePC:              db "Sobre o Computador", 0
-.processadorPrincipal: db "Processador instalado (considerando apenas o processador principal):", 0
+.sobrePC:              db "About the device", 0
+.processadorPrincipal: db "Installed processor (considering only the main processor):", 0
 .numProcessador:       db "1) ", 0
-.operacaoProcessador:  db "Processador em modo 32 bits", 0
-.memoriaDisponivel:    db "Memoria total instalada disponivel: ", 0
+.operacaoProcessador:  db "Processor in 32-bit mode", 0
+.memoriaDisponivel:    db "Total installed memory available: ", 0
 .kbytes:               db " megabytes.", 0
 
 ;;************************************************************************************
 
 msgGeral:
 
-.mensagemResolucao: db "Recomenda-se utilizar este aplicativo em resolucao de 1024x768 para melhor aproveitamento da tela.", 0
-.msgErro:           db "Erro ao realizar a operacao solicitada.", 0
-.msgVersao:         db "Voce esta utilizando uma versao do Hexagonix(R) que nao oferece suporte a este recurso.", 0
+.mensagemResolucao: db "It is recommended to use this application in 1024x768 resolution for better use of the screen.", 0
+.msgErro:           db "Error performing the requested operation.", 0
+.msgVersao:         db "You are using a version of Hexagonix(R) that does not support this feature.", 0
 .ponto:             db ".", 0
 .marcaRegistrada:   db "tm", 0
 
@@ -84,75 +84,75 @@ msgGeral:
  
 msgInfo:
 
-.introducao:           db "Informacoes detalhadas do Sistema Operacional Hexagonix(R)", 0
-.nomeSistema:          db "Nome do Sistema Operacional instalado: ", 0
-.versaoSistema:        db "Versao do Sistema Operacional: ", 0
-.buildSistema:         db "Build do Sistema Operacional: ", 0
-.tipoSistema:          db "Tipo de Sistema Operacional instalado:", 0
-.modeloSistema:        db " 32 bits", 10, 0
-.pacoteAtualizacoes:   db "Pacote de atualizacoes instalado: ", 0
+.introducao:           db "Detailed Information of the Hexagonix(R) Operating System", 0
+.nomeSistema:          db "Installed Operating System name: ", 0
+.versaoSistema:        db "Operating System name: ", 0
+.buildSistema:         db "Operating System build: ", 0
+.tipoSistema:          db "Operating System type:", 0
+.modeloSistema:        db " 32-bit", 10, 0
+.pacoteAtualizacoes:   db "Update package installed: ", 0
 .copyrightAndromeda:   db "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 0
-.direitosReservados:   db "Todos os direitos reservados.", 0
-.introducaoHardware:   db "Informacoes do Hardware deste computador", 0
-.processadorPrincipal: db "Processador instalado (considerando apenas o processador principal):", 0
+.direitosReservados:   db "All rights reserved.", 0
+.introducaoHardware:   db "Hardware information for this device", 0
+.processadorPrincipal: db "Installed processor (considering only the main processor):", 0
 .numProcessador:       db "1) ", 0
-.operacaoProcessador:  db "Processador em modo 32 bits compativel com modo protegido", 0
-.memoriaDisponivel:    db "Memoria total instalada disponivel: ", 0
+.operacaoProcessador:  db "Processor in 32-bit mode compatible with protected mode", 0
+.memoriaDisponivel:    db "Total installed memory available: ", 0
 .kbytes:               db " megabytes.", 0
-.Hexagon:              db "Versao do Hexagon (kernel): ", 0
+.Hexagon:              db "Version of Hexagon (kernel): ", 0
 .ponto:                db ".", 0
-.semCPUID:             db "O processador nao suporta a instrucao CPUID e nao pode ser identificado.", 0
-.licenciado:           db "Licenciado sob BSD-3-Clause", 0
+.semCPUID:             db "The processor does not support the CPUID instruction and cannot be identified.", 0
+.licenciado:           db "Licensed under BSD-3-Clause", 0
 
 ;;************************************************************************************
 
 msgConfig:
 
-.introducao:  db "Aqui voce podera alterar algumas configuracoes do Hexagonix(R)", 0
-.introducao2: db "Para comecar, selecione alguma categoria listada a seguir:", 0
-.categoria1:  db "[1] Alterar a resolucao utilizada pelo monitor atual.", 0
-.categoria2:  db "[2] Verificar discos e armazenamento.", 0
-.categoria3:  db "[3] Visualizar e testar portas seriais.", 0
-.categoria4:  db "[4] Visualizar porta paralela e impressora.", 0
-.categoria5:  db "[5] Alterar a fonte padrao do sistema.", 0
+.introducao:  db "Here you can change some settings of Hexagonix(R)", 0
+.introducao2: db "To get started, select any category listed below:", 0
+.categoria1:  db "[1] Change the resolution used by the current monitor.", 0
+.categoria2:  db "[2] Check disks and storage.", 0
+.categoria3:  db "[3] View and test serial ports.", 0
+.categoria4:  db "[4] View parallel port and printer.", 0
+.categoria5:  db "[5] Change the default system font.", 0
 
 ;;************************************************************************************
 
 msgResolucao:
 
-.introducao:        db "Aqui voce podera alterar a resolucao do video de computador, dentre as", 0
-.introducao2:       db "opcoes disponiveis.", 0             
-.inserir:           db "Escolha entre uma das opcoes abaixo, inserindo o numero da mesma:", 0
-.opcao1:            db "[1] Resolucao de 800x600 pixels", 0
-.opcao2:            db "[2] Resolucao de 1024x768 pixels", 0
-.modo1:             db "Resolucao atual do seu video: 800x600 pixels", 0
-.modo2:             db "Resolucao atual do seu video: 1024x768 pixels", 0
-.resolucaoAlterada: db "A resolucao foi alterada recentemente.", 0
-.alterado:          db "A resolucao foi alterada. Caso nao tenha lhe agradado, retorne para a resolucao anterior.", 0
+.introducao:        db "Here you can change the resolution of the computer video, among", 0
+.introducao2:       db "the available options.", 0             
+.inserir:           db "Choose from one of the options below, inserting the number:", 0
+.opcao1:            db "[1] Resolution of 800x600 pixels", 0
+.opcao2:            db "[2] Resolution of 1024x768 pixels", 0
+.modo1:             db "Current resolution: 800x600 pixels", 0
+.modo2:             db "Current resolution: 1024x768 pixels", 0
+.resolucaoAlterada: db "The resolution has recently changed.", 0
+.alterado:          db "The resolution has been changed. If you don't like it, go back to the previous resolution.", 0
 
 ;;************************************************************************************
  
 msgDiscos:
 
-.introducao:   db "Aqui voce podera acompanhar informacoes acerca do armazenamento de seu computador e discos", 0
-.introducao2:  db "presentes para uso.", 0
-.discoAtual:   db "Disco atual montado em [/] utilizado pelo sistema: ", 0
-.rotuloVolume: db "Rotulo do volume montado em [/] utilizado pelo sistema: ", 0
+.introducao:   db "Here you can track information about your computer's storage and disks", 0
+.introducao2:  db "available for use.", 0
+.discoAtual:   db "Current disk mounted at [/] used by system: ", 0
+.rotuloVolume: db "Label of the volume mounted at [/] used by the system: ", 0
 
 ;;************************************************************************************
 
 msgFonte:
 
-.introducao:       db "Aqui voce podera alterar a fonte padrao de exibicao do sistema. Lembrando que a fonte", 0
-.introducao2:      db "devera ser compativel com o Sistema Operacional Hexagonix(R)", 0
-.solicitarArquivo: db "Por favor, insira o nome do arquivo de fonte Hexagonix(R) ([ENTER] para cancelar): ", 0
-.sucesso:          db "Sucesso a alterar a fonte padrao do sistema para: [", 0
+.introducao:       db "Here you can change the default system display font. Remembering that the source", 0
+.introducao2:      db "must be compatible with the Hexagonix(R) Operating System", 0
+.solicitarArquivo: db "Please enter the name of the Hexagonix(R) font file ([ENTER] to cancel): ", 0
+.sucesso:          db "Successfully changing system default font to: [", 0
 .fechamento:       db "]", 0
-.introducaoTeste:  db 10, 10, "Pre-visualizacao da fonte e disposicao dos caracteres: ", 0
-.arquivoAusente:   db "O arquivo solicitado nao foi encontrado no disco.", 0
-.semArquivo:       db "Um nome de arquivo nao foi fornecido. A operacao foi cancelada.", 0
+.introducaoTeste:  db 10, 10, "Font and character layout preview: ", 0
+.arquivoAusente:   db "The requested file was not found on disk.", 0
+.semArquivo:       db "A filename was not provided. The operation was cancelled.", 0
 .ponto:            db ".", 10, 10, 0
-.testeFonte: db "Sistema Operacional Hexagonix(R)", 10, 10
+.testeFonte: db "Hexagonix(R) Operating System", 10, 10
              db "1234567890-=", 10
              db "!@#$%^&*()_+", 10
              db "QWERTYUIOP{}", 10
@@ -161,37 +161,37 @@ msgFonte:
              db "asdfghjkl;'\", 10
              db "ZXCVBNM<>?", 10
              db "zxcvbnm,./", 10, 10
-             db "Sistema Operacional Hexagonix(R)", 10, 10, 0
-.falha:      db "O arquivo solicitado nao foi encontrado ou nao e compativel com o Hexagonix(R).", 0
+             db "Hexagonix(R) Operating System", 10, 10, 0
+.falha:      db "The requested file was not found or is not compatible with Hexagonix(R).", 0
 
 ;;************************************************************************************
  
-nomeSistema: db "Sistema Operacional Hexagonix(R)", 0
+nomeSistema: db "Hexagonix(R) Operating System", 0
 
 ;;************************************************************************************
 
 msgPortaParalela:
 
-.introducao:       db "Aqui voce pode configurar e visualizar as configuracoes de porta paralela (impressora)", 0
-.introducao2:      db "em uso neste computador.", 0
-.impressoraPadrao: db "Impressora padrao neste computador: ", 0
+.introducao:       db "Here you can configure and view the parallel port (printer) settings", 0
+.introducao2:      db "in use on this computer.", 0
+.impressoraPadrao: db "Default printer on this computer: ", 0
 
 ;;************************************************************************************
  
 msgSerial:
 
-.introducao:         db "Aqui e possivel visualizar e realizar acoes com a porta serial.", 0
+.introducao:         db "Here you can view and perform actions with the serial port.", 0
 .introducao2:        db 0
-.portaPadrao:        db "Porta serial padrao para este computador: ", 0
-.opcoes:             db "Voce pode solicitar um teste automatico da porta ou pode enviar uma mensagem.", 0
-.opcoes2:            db "Para isso, selecione [D] para um teste automatico e [E] para um envio manual.", 0
-.opcoes3:            db "Caso nao deseje realizar essas operacoes, basta retornar ao menu anterior.", 0
-.mensagemEnviando:   db "Realizando teste de envio de dados via porta serial... ", 0
-.enviado:            db " [Enviado]", 0
-.erroEnvio:          db "Erro ao realizar o envio para a porta serial.", 0
-.erroAbertura:       db "Erro ao abrir o dispositivo para escrita.", 0
-.mensagemAutomatica: db "Esta e uma mensagem automatica enviada pelo Painel de Controle do Sistema Operacional Hexagonix(R)! ", 10, 0
-.insiraMensagem:     db "Insira sua mensagem para ", 0
+.portaPadrao:        db "Standard serial port for this computer: ", 0
+.opcoes:             db "You can request an automatic port test or you can send a message.", 0
+.opcoes2:            db "To do so, select [D] for an automatic test and [E] for a manual submission.", 0
+.opcoes3:            db "If you do not wish to carry out these operations, simply return to the previous menu.", 0
+.mensagemEnviando:   db "Performing data sending test via serial port... ", 0
+.enviado:            db " [Sent]", 0
+.erroEnvio:          db "Error sending to serial port.", 0
+.erroAbertura:       db "Error opening device for writing.", 0
+.mensagemAutomatica: db "This is an automated message from the Hexagonix(R) Operating System Control Panel! ", 10, 0
+.insiraMensagem:     db "Enter your message to ", 0
 .doisPontos:         db ": ", 0
 .colcheteEsquerdo:   db "[", 0
 .colcheteDireito:    db "]",0
@@ -200,24 +200,24 @@ msgSerial:
  
 TITULO: 
 
-.inicio:        db "Configuracoes do Sistema Operacional Hexagonix(R)", 0
-.info:          db "Sobre o Sistema Operacional Hexagonix(R) e atualizacoes do sistema", 0
-.configuracoes: db "Configuracoes do Sistema Operacional Hexagonix(R)", 0
-.resolucao:     db "Configuracoes de resolucao de video", 0
-.discos:        db "Informacoes de discos e armazenamento do Hexagonix(R)", 0
-.fonte:         db "Alterar a fonte padrao de exibicao do sistema", 0
-.portaParalela: db "Configurar portas paralelas (impressoras)", 0
-.portaSerial:   db "Configuracoes e diagnosticos de porta serial", 0
+.inicio:        db "Hexagonix(R) Operating System Settings", 0
+.info:          db "About the Hexagonix(R) Operating System and system updates", 0
+.configuracoes: db "Hexagonix(R) Operating System Settings", 0
+.resolucao:     db "Video resolution settings", 0
+.discos:        db "Hexagonix(R) disk and storage information", 0
+.fonte:         db "Change the default system display font", 0
+.portaParalela: db "Configure parallel ports (printers)", 0
+.portaSerial:   db "Serial port settings and diagnostics", 0
 
 ;;************************************************************************************
 
 RODAPE: 
 
-.inicio:        db "[Versao ", VERSAOCONFIG, "] | [A] Sobre o Sistema e Atualizacoes [B] Configuracoes do Sistema [C] Sair ", 0
-.info:          db "[Versao ", VERSAOCONFIG, "] | [V] Voltar [B] Configuracoes do Sistema [C] Sair", 0
-.configuracoes: db "[Versao ", VERSAOCONFIG, "] | [V] Voltar [B] Sobre o Sistema e Atualizacoes [C] Sair", 0
-.resolucao:     db "[Versao ", VERSAOCONFIG, "] | [V] Voltar [B] Sobre o Sistema e Atualizacoes [C] Sair", 0
-.discos:        db "[Versao ", VERSAOCONFIG, "] | [V] Voltar [B] Sobre o Sistema e Atualizacoes [C] Sair", 0
-.fonte:         db "[Versao ", VERSAOCONFIG, "] | [V] Voltar [B] Sobre o Sistema e Atualizacoes [C] Sair", 0
-.portaParalela: db "[Versao ", VERSAOCONFIG, "] | [V] Voltar [B] Sobre o Sistema e Atualizacoes [C] Sair", 0
-.portaSerial:   db "[Versao ", VERSAOCONFIG, "] | [V] Voltar [B] Sobre o Sistema e Atualizacoes [C] Sair", 0
+.inicio:        db "[Version ", VERSAOCONFIG, "] | [A] About system and updates [B] System settings [C] Exit", 0
+.info:          db "[Version ", VERSAOCONFIG, "] | [V] Back [B] System settings [C] Exit", 0
+.configuracoes: db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
+.resolucao:     db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
+.discos:        db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
+.fonte:         db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
+.portaParalela: db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
+.portaSerial:   db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
