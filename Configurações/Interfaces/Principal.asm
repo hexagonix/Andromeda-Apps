@@ -91,7 +91,7 @@ mostrarInterfacePrincipal:
 
     call mostrarLogoSistema
     
-    cursorPara 34, 02
+    cursorPara 36, 02
 
     mov esi, msgInicio.introducao
     
@@ -146,7 +146,7 @@ mostrarInterfacePrincipal:
     
     imprimirString
 
-    cursorPara 28, 13
+    cursorPara 24, 13
 
     call definirCorTema
 
@@ -156,7 +156,7 @@ mostrarInterfacePrincipal:
 
     call definirCorPadrao
 
-    cursorPara 39, 15
+    cursorPara 36, 15
 
     mov esi, msgInicio.sobrePC
     
