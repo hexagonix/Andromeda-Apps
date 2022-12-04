@@ -139,8 +139,7 @@ ajuda:
                 db "Compatible with Hexagonix(R) ", compativelHexagonix, " or superior.", 0
 .conteudoAjuda: db 10, 10, "Internal commands available:", 10, 10
                 db " VER  - Displays information about the running ASH version.", 10
-                db " EXIT - Terminate that ASH session.", 10, 10
-                db "Try typing 'ls' to see other utilities and applications available!", 10, 0
+                db " EXIT - Terminate this ASH session.", 10, 0
              
 ;;**************************
 
