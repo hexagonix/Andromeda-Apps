@@ -57,10 +57,10 @@ gerarApps()
 
 #;;************************************************************************************
 
-echo -e "\e[1;94mConstruindo aplicativos do Hexagonix...\e[0m {"
+echo -e "\e[1;94mBuilding Hexagonix Applications...\e[0m {"
 echo
 
-echo "Construindo aplicativos do Hexagonix... {" >> $LOG
+echo "Building Hexagonix Applications... {" >> $LOG
 echo >> $LOG
 
 #;;************************************************************************************
@@ -70,9 +70,9 @@ cd ASH/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo \e[1;94m$(basename $i .asm)\e[0m..."
+	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
 	
-	echo Construindo aplicativo $(basename $i .asm)... >> $LOG
+	echo Building application $(basename $i .asm)... >> $LOG
 	
 	echo >> $LOG
 	
@@ -93,9 +93,9 @@ cd DOSsh/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo \e[1;94m$(basename $i .asm)\e[0m..."
+	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
 	
-	echo Construindo aplicativo $(basename $i .asm)... >> $LOG
+	echo Building application $(basename $i .asm)... >> $LOG
 	
 	echo >> $LOG
 	
@@ -116,9 +116,9 @@ cd Calculadora/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo \e[1;94m$(basename $i .asm)\e[0m..."
+	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
 	
-	echo Construindo aplicativo $(basename $i .asm)... >> $LOG
+	echo Building application $(basename $i .asm)... >> $LOG
 	
 	echo >> $LOG
 	
@@ -139,9 +139,9 @@ cd Desligar/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo \e[1;94m$(basename $i .asm)\e[0m..."
+	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
 	
-	echo Construindo aplicativo $(basename $i .asm)... >> $LOG
+	echo Building application $(basename $i .asm)... >> $LOG
 	
 	echo >> $LOG
 	
@@ -162,9 +162,9 @@ cd Piano/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo \e[1;94m$(basename $i .asm)\e[0m..."
+	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
 	
-	echo Construindo aplicativo $(basename $i .asm)... >> $LOG
+	echo Building application $(basename $i .asm)... >> $LOG
 	
 	echo >> $LOG
 	
@@ -185,9 +185,9 @@ cd Lyoko/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo \e[1;94m$(basename $i .asm)\e[0m..."
+	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
 	
-	echo Construindo aplicativo $(basename $i .asm)... >> $LOG
+	echo Building application $(basename $i .asm)... >> $LOG
 	
 	echo >> $LOG
 	
@@ -208,9 +208,9 @@ cd Quartzo/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo \e[1;94m$(basename $i .asm)\e[0m..."
+	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
 	
-	echo Construindo aplicativo $(basename $i .asm)... >> $LOG
+	echo Building application $(basename $i .asm)... >> $LOG
 	
 	echo >> $LOG
 	
@@ -231,9 +231,9 @@ cd Fonte/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo \e[1;94m$(basename $i .asm)\e[0m..."
+	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
 	
-	echo Construindo aplicativo $(basename $i .asm)... >> $LOG
+	echo Building application $(basename $i .asm)... >> $LOG
 	
 	echo >> $LOG
 	
@@ -254,9 +254,9 @@ cd "Configurações"/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo \e[1;94m$(basename $i .asm)\e[0m..."
+	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
 	
-	echo Construindo aplicativo $(basename $i .asm)... >> $LOG
+	echo Building application $(basename $i .asm)... >> $LOG
 	
 	echo >> $LOG
 	
@@ -278,9 +278,9 @@ cd Serial/
 for i in *.asm
 do
 
-	echo -en "Construindo aplicativo \e[1;94m$(basename $i .asm)\e[0m..."
+	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
 	
-	echo Construindo aplicativo $(basename $i .asm)... >> $LOG
+	echo Building application $(basename $i .asm)... >> $LOG
 	
 	echo >> $LOG
 	
@@ -297,7 +297,7 @@ cd ..
 #;;************************************************************************************
 
 echo
-echo -e "} [\e[32mAplicativos Hexagonix-Andromeda construídos com sucesso\e[0m]."
+echo -e "} [\e[32mSuccessfully built Hexagonix-Andromeda applications\e[0m]."
 
 echo
 
@@ -316,12 +316,12 @@ umount Sistema || exit
 
 umount -a
 
-echo "Um erro ocorreu durante a construção de algum componente do sistema."
-echo 
-echo "Verifique o status dos componentes e utilize as saídas de erro acima para verificar o problema."
-echo 
-echo "Visualize o arquivo de log 'log.log', para mais informações sobre o(s) erro(s)."
-echo 
+echo "An error occurred while building some system component."
+echo
+echo "Check the status of the components and use the above error outputs to verify the problem."
+echo
+echo "View the log file 'log.log', for more information about the error(s)."
+echo
 
 exit	
 	
