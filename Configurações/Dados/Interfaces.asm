@@ -86,7 +86,7 @@ msgInfo:
 
 .introducao:           db "Detailed Information of the Hexagonix(R) Operating System", 0
 .nomeSistema:          db "Installed Operating System name: ", 0
-.versaoSistema:        db "Operating System name: ", 0
+.versaoSistema:        db "Operating System version: ", 0
 .buildSistema:         db "Operating System build: ", 0
 .tipoSistema:          db "Operating System type:", 0
 .modeloSistema:        db " 32-bit", 10, 0
