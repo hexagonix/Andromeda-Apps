@@ -23,9 +23,12 @@
 <details title="Português (Brasil)" align='left'>
 <br>
 <summary align='left'>🇧🇷 Português (Brasil)</summary>
-# Aplicativos e utilitários do Andromeda
 
-Este repositório contém os aplicativos e utilitários exclusivos de ambiente Andromeda.
+<div align="justify">
+
+# Aplicativos e utilitários gráficos do Hexagonix
+
+Este repositório contém os aplicativos e utilitários gráficos do Hexagonix.
 
 ## Andromeda SHell (ASH)
 
@@ -53,11 +56,13 @@ O return Piano; é um teclado eletrônico que permite ao usuário tocar músicas
 
 ## Quartzo
 
-O Quartzo é um editor de propósito geral para o Andromeda.
+O Quartzo é um editor de propósito geral para o Hexagonix.
 
 ## Serial
 
 Este utilitário permite ao usuário enviar dados via porta serial, atuando como terminal.
+
+</div>
 
 </details>
 
@@ -65,9 +70,11 @@ Este utilitário permite ao usuário enviar dados via porta serial, atuando como
 <br>
 <summary align='left'>🇬🇧 English</summary>
 
-# Andromeda apps and utilities
+<div align="justify">
 
-This repository contains the Andromeda environment-only applications and utilities.
+# Hexagonix graphical applications and utilities
+
+This repository contains Hexagonix graphical applications and utilities.
 
 ## Andromeda SHell (ASH)
 
@@ -95,11 +102,13 @@ The return Piano; is an electronic keyboard that allows the user to play music b
 
 ## Quartzo
 
-Quartzo is a general purpose editor for Andromeda.
+Quartzo is a general purpose editor for Hexagonix.
 
 ## Serial
 
 This utility allows the user to send data via the serial port, acting as a terminal.
+
+</div>
 
 </details>
 
