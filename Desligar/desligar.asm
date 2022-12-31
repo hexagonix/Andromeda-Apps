@@ -351,7 +351,7 @@ Hexagonix_Sair:
 ;;
 ;;************************************************************************************
 
-ENERGIA equ "energia"   
+ENERGIA equ "shutdown"   
 VERSAO  equ "1.0.2"
 
 desligar:
@@ -373,7 +373,7 @@ desligar:
 .msgSair:                db "Press [Ctrl-S] or [F1] to return to Hexagonix(R)", 0
 .msgPronto:              db "[Done]", 0
 .msgFalha:               db "[Fail]", 0
-.falhaUtilitarioEnergia: db 10, 10, "Failed to run Unix energia utility. Try again later.", 10
+.falhaUtilitarioEnergia: db 10, 10, "Failed to run Unix shutdown utility. Try again later.", 10
                          db "Press any key to end this application...", 0
 .titulo:                 db "Hexagonix(R) Operating System shutdown options",0
 .rodape:                 db "[", VERSAO, "]",0
