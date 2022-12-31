@@ -85,74 +85,76 @@ include "macros.s"
 CORDESTAQUE = VERMELHO_TIJOLO
 CORLISTRA   = LARANJA
 
+tamanhoParaNomeArquivo = 8
+
 ;; Constantes e estruturas
 
-VERSAO        equ "1.4.1" 
+VERSAO        equ "1.5.0" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
-DIREITOS      equ "Todos os direitos reservados."
+DIREITOS      equ "All rights reserved."
 
 ;; Área de mensagens e variáveis globais
 
 Lyoko:
 
-.rodapeNovoArquivo:   db "Novo arquivo", 0
-.avisoRapido:         db "A IDE do Lyoko utiliza como padrao o montador '", MONTADOR, "' para a construcao de aplicativos.", 10
-                      db "Este montador de codigo livre foi portado e apresenta total compatibilidade com o Hexagonix(R).", 10, 10
-                      db "Voce pode utilizar atalhos de teclado para realizar a interacao com Lyoko.", 10
-                      db "Os atalhos sao acionados pela tecla Ctrl (Control, ^), juntamente com uma tecla indicadora de acao.", 10
-                      db "Essas combinacoes de teclas podem ser (a tecla Ctrl representada por ^):", 10, 10
-                      db "   [^A] - Solicita a abertura de um arquivo previamente salvo no disco.", 10
-                      db "   [^S] - Solicita o salvamento das alteracoes em um arquivo no disco.", 10
-                      db "   [^F] - Fecha Lyoko apos confirmacao de salvamento.", 10
-                      db "   [^M] - Aciona o montador '", MONTADOR, "' para construir a imagem executavel.", 10
-                      db "   [^V] - Informacoes de versao e mais sobre o Lyoko.", 10, 10
-                      db "Apos construir uma imagem, voce recebera o status da operacao diretamente na tela e, se tudo", 10
-                      db "estiver certo, voce encontrara a imagem com a extensao .app no disco, contendo seu aplicativo.", 10
-                      db "Voce pode utilizar a ferramenta 'lshapp' para verificar informacoes da imagem, caso necessario.", 10
-                      db "Para saber mais sobre as informacoes que o utilitario pode oferecer ao analisar uma imagem,", 10
-                      db "consulte o manual ('man lshapp') ou utilize 'lshapp ?'.", 0
+.rodapeNovoArquivo:   db "New file", 0
+.avisoRapido:         db "Lyoko's IDE uses the '", MONTADOR, "' assembler for building applications.", 10
+                      db "This open source assembler has been ported and is fully compatible with Hexagonix(R).", 10, 10
+                      db "You can use keyboard shortcuts to interact with Lyoko.", 10
+                      db "Shortcuts are triggered by the Ctrl (Control, ^) key, along with an action indicator key.", 10
+                      db "These key combinations can be (the Ctrl key represented by ^):", 10, 10
+                      db " [^A] - Requests to open a previously saved file on disk.", 10
+                      db " [^S] - Request to save changes to a file on disk.", 10
+                      db " [^F] - Close Lyoko after saving confirmation.", 10
+                      db " [^M] - Call '", MONTADOR, "' assembler to build the executable image.", 10
+                      db " [^V] - Version information and more about Lyoko.", 10, 10
+                      db "After building an image, you will receive the operation status directly on the screen and, if all", 10
+                      db "is correct, you will find the image with the .app extension on the disk containing your application.", 10
+                      db "You can use the 'lshapp' tool to verify image information if necessary.", 10
+                      db "To learn more about the information the utility can provide when analyzing an image,", 10
+                      db "see manual ('man lshapp') or use 'lshapp ?'.", 0
 .formato:             db "UTF-8", 0
 .formatoFimLinha:     db "LF", 0
 .virgula:             db ", ", 0
 .separador:           db " | ", 0
-.rodapePrograma:      db "[^F] Sair | [^A] Abrir | [^S] Salvar | [^M] Montar", 0
-.linha:               db "Linha: ", 0
-.coluna:              db "Coluna: ", 0
-.arquivoSalvo:        db "Arquivo salvo", 0
-.solicitarArquivo:    db "Nome do arquivo [ENTER para cancelar]: ", 0
-.permissaoNegada:     db "Apenas um usuario administrativo pode alterar este arquivo."
-                      db " Pressione alguma tecla para continuar...", 0
-.erroDeletando:       db "Erro ao atualizar o arquivo.", 0
-.tituloPrograma:      db "Lyoko - Uma IDE para Hexagonix(R) - Versao ", VERSAO, 0
+.rodapePrograma:      db "[^F] Exit | [^A] Open | [^S] Save | [^M] Assemble", 0
+.linha:               db "Line: ", 0
+.coluna:              db "Column: ", 0
+.arquivoSalvo:        db "File saved", 0
+.solicitarArquivo:    db "File name [ENTER to cancel]: ", 0
+.permissaoNegada:     db "Only an administrative user can change this file."
+                      db " Press any key to continue...", 0
+.erroDeletando:       db "Error updating file.", 0
+.tituloPrograma:      db "Lyoko - An IDE for Hexagonix(R) - Version ", VERSAO, 0
 .fasmX:               db MONTADOR, 0
-.semFonte:            db "Nenhum arquivo fonte especificado. Tente primeiramente salvar o seu arquivo no disco.", 10, 10
+.semFonte:            db "No source file specified. Try saving your file to disk first.", 10, 10
                       db 0
-.avisoSalvamento:     db "O conteudo do arquivo foi alterado e nao foi salvo. Isso pode levar a perda de dados.", 10, 10
-                      db "Voce deseja salvar suas alteracoes no arquivo? (S/n)", 10, 0
+.avisoSalvamento:     db "The contents of the file have been changed and not saved. This may lead to data loss.", 10, 10
+                      db "Do you want to save your changes to the file? (Y/n)", 10, 0
 .saida:               db "appX.app", 0
 .tamanhoLinha:        dd 0
-.identificador:       db "| Arquivo:               ", 0
+.identificador:       db "| File:               ", 0
 .nomeMontador:        db "| ", MONTADOR, 0
-.fecharAviso:         db 10, 10, "Pressione [ESC] para fechar este aviso.", 10, 0
-.infoLyoko:           db "O nome Lyoko vem de uma serie que me marcou muito na infancia, chamada Code Lyoko.", 10
-                      db "De certa forma, essa serie fez com que eu me apaixonasse ainda mais pela computacao e nada mais", 10
-                      db "justo que prestar uma simbolica homenagem.", 10, 10
-                      db "Lyoko foi desenvolvido para ser uma IDE simples e facil de utilizar para desenvolver aplicativos", 10
-                      db "nativos para Hexagonix no proprio sistema. Ele tambem vem sendo utilizado para desenvolver", 10
-                      db "varios componentes do proprio sistema operacional.", 10
-                      db "Lyoko vem ganhando cada vez mais funcoes e tambem e constantemente atualizado.", 10, 10
-                      db "Versao desta edicao do Lyoko: ", VERSAO, 10, 10
+.fecharAviso:         db 10, 10, "Press [ESC] to close this warning.", 10, 0
+.infoLyoko:           db "The name Lyoko comes from a series that marked me a lot in childhood, called Code Lyoko.", 10
+                      db "In a way, this series made me fall even more in love with computing and nothing else", 10
+                      db "It's fair to pay a symbolic tribute.", 10, 10
+                      db "Lyoko was designed to be a simple and easy to use IDE for developing applications", 10
+                      db "natives for Hexagonix on the system itself. It is also being used for development", 10
+                      db "various components of the operating system itself.", 10
+                      db "Lyoko is gaining more and more functions and is also constantly updated.", 10, 10
+                      db "Version of this edition of Lyoko: ", VERSAO, 10, 10
                       db AUTOR, 10
                       db DIREITOS, 10, 0
-.boasVindas:          db "Seja bem vindo a Lyoko, a IDE oficial do Hexagonix(R)!", 10, 10
-                      db "Com Lyoko, voce pode escrever e construir rapidamente maravilhosos aplicativos para o Hexagonix(R).", 10
-                      db "Voce pode a qualquer momento pressionar [^X] (Ctrl+X) para obter ajuda.", 10, 10
-                      db "Vamos comecar?", 10, 10
-                      db "Voce pode comecar pressionando Ctrl-A [^A] para abrir um arquivo ou pressionar [ESC] e comecar a", 10
-                      db "codificar o seu projeto agora mesmo!" , 10, 10
-                      db "Pressione [ESC] para fechar as boas vindas e ir diretamente ao editor.", 10, 0
-.solicitandoMontagem: db "Executando o montador (", MONTADOR, ") para gerar seu aplicativo...", 10, 10, 0
+.boasVindas:          db "Welcome to Lyoko, the official IDE for Hexagonix(R)!", 10, 10
+                      db "With Lyoko, you can quickly write and build wonderful applications for Hexagonix(R).", 10
+                      db "You can at any time press [^X] (Ctrl+X) for help.", 10, 10
+                      db "Shall we start?", 10, 10
+                      db "You can start by pressing Ctrl-A [^A] to open a file or press [ESC] and start", 10
+                      db "encode your project right now!" , 10, 10
+                      db "Press [ESC] to close the welcome and go directly to the editor.", 10, 0
+.solicitandoMontagem: db "Running the assembler (", MONTADOR, ") to generate your app...", 10, 10, 0
 .editado:             db " *", 0 ;; O arquivo foi editado?
 .tituloAlterado:      db 0  ;; Título alterado?
 .caixaMaior:          db 0  ;; Tamanho da caixa (relativo à resolução da tela)
@@ -254,7 +256,7 @@ LyokoIDE:
 
 ;; Agora o nome do arquivo aberto será exibido na interface do aplicativo
     
-    mov edi, Lyoko.identificador+11 ;; Posição
+    mov edi, Lyoko.identificador+tamanhoParaNomeArquivo ;; Posição
     mov esi, nomeArquivo
     
     rep movsb
@@ -277,7 +279,7 @@ LyokoIDE:
     mov ecx, 12
     
     mov esi, Lyoko.rodapeNovoArquivo
-    mov edi, Lyoko.identificador+11 ;; Posição
+    mov edi, Lyoko.identificador+tamanhoParaNomeArquivo ;; Posição
     
     rep movsb
     
@@ -1686,7 +1688,7 @@ salvarArquivoEditor:
     inc ecx                 
     
     mov esi, nomeArquivo
-    mov edi, Lyoko.identificador+11
+    mov edi, Lyoko.identificador+tamanhoParaNomeArquivo
     
     rep movsb
     
@@ -1876,7 +1878,7 @@ abrirArquivoEditor:
     inc ecx                 
     
     mov esi, nomeArquivo
-    mov edi, Lyoko.identificador+11
+    mov edi, Lyoko.identificador+tamanhoParaNomeArquivo
     
     rep movsb
     
@@ -1925,7 +1927,7 @@ evidenciarEdicao:
     inc ecx                 
     
     mov esi, Lyoko.editado
-    mov edi, Lyoko.identificador+19
+    mov edi, Lyoko.identificador+tamanhoParaNomeArquivo+8
     
     rep movsb
     
