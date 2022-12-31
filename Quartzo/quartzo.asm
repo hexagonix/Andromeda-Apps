@@ -85,8 +85,8 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "2.0.0" 
-tamanhoRodape = 46
+VERSAO        equ "2.1.0" 
+tamanhoRodape = 44
 
 quartzo:
 
@@ -94,16 +94,16 @@ quartzo:
 .formatoFimLinha:     db "LF", 0
 .virgula:             db ", ", 0
 .separador:           db " | ", 0
-.rodapePrograma:      db "[^F] Sair, [^A] Abrir, [^S] Salvar | Arquivo:               ", 0
-.linha:               db "Linha: ", 0
-.coluna:              db "Coluna: ", 0
-.arquivoSalvo:        db "Arquivo salvo", 0
-.solicitarArquivo:    db "Nome do arquivo [ENTER para cancelar]: ", 0
-.rodapeNovoArquivo:   db "Novo arquivo", 0
-.permissaoNegada:     db "Apenas um usuario administrativo pode alterar este arquivo."
-                      db " Pressione alguma tecla para continuar...", 0
-.erroDeletando:       db "Erro ao atualizar o arquivo.", 0
-.tituloPrograma:      db "Editor de texto Quartzo(R) para Hexagonix(R) - Versao ", VERSAO, 0
+.rodapePrograma:      db "[^F] Exit, [^A] Open, [^S] Save | Filename:               ", 0
+.linha:               db "Line: ", 0
+.coluna:              db "Column: ", 0
+.arquivoSalvo:        db "File saved", 0
+.solicitarArquivo:    db "File name [ENTER to cancel]: ", 0
+.rodapeNovoArquivo:   db "New file", 0
+.permissaoNegada:     db "Only an administrative user can change this file."
+                      db " Press any key to continue...", 0
+.erroDeletando:       db "Error updating file.", 0
+.tituloPrograma:      db "Quartzo(R) Text Editor for Hexagonix(R) - Version ", VERSAO, 0
 .corFonte:            dd 0
 .corFundo:            dd 0
 
