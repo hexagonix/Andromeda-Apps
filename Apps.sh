@@ -12,7 +12,7 @@
 #;; └┘ └┴──┴┘└┴┘└┴─┐├──┴┘└┴┴┘└┘
 #;;              ┌─┘│                 Licenciado sob licença BSD-3-Clause
 #;;              └──┘          
-#;;                                                Versão 1.1
+#;;                                                Versão 1.0
 #;;
 #;;************************************************************************************
 #;;
@@ -52,254 +52,57 @@
 #;;
 #;; $HexagonixOS$
 
-gerarApps()
+gerarBaseGrafica(){
+
+echo
+echo -e "\e[1;94mBuilding Hexagonix® graphical applications...\e[0m {"
+echo
+
+echo "Building Hexagonix® graphical applications... {" >> $LOG
+echo >> $LOG
+	
+# Vamos agora automatizar a construção dos aplicativos
+
+for i in */
+do
+
+	cd $i
+
+	for h in *.asm
+	do
+
+	echo -en "Building Hexagonix® graphical application \e[1;94m$(basename $h .asm)\e[0m..."
+	
+	echo Building Hexagonix® Unix Utility $(basename $h .asm)... >> $LOG
+	
+	echo >> $LOG
+	
+	fasm $h ../../../Andromeda/bin/`basename $h .asm` -d $BANDEIRAS >> $LOG || desmontar
+	
+	echo -e " [\e[32mOk\e[0m]"
+	
+	echo >> $LOG
+
+	done
+
+cd ..
+
+done
+
+echo
+echo -e "} [\e[32mHexagonix applications built successfully\e[0m]."
+echo
+
+
+}
+
+hexagonix()
 {
 
-#;;************************************************************************************
+export DESTINO="../../Hexagonix"
+#export BANDEIRAS="UNIX=SIM -d TIPOLOGIN=UNIX -d VERBOSE=SIM"
 
-echo -e "\e[1;94mBuilding Hexagonix Applications...\e[0m {"
-echo
-
-echo "Building Hexagonix Applications... {" >> $LOG
-echo >> $LOG
-
-#;;************************************************************************************
-
-cd ASH/
-
-for i in *.asm
-do
-
-	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
-	
-	echo Building application $(basename $i .asm)... >> $LOG
-	
-	echo >> $LOG
-	
-	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
-	
-	echo -e " [\e[32mOk\e[0m]"
-	
-	echo >> $LOG
-	
-done
-
-cd ..
-
-#;;************************************************************************************
-
-cd DOSsh/
-
-for i in *.asm
-do
-
-	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
-	
-	echo Building application $(basename $i .asm)... >> $LOG
-	
-	echo >> $LOG
-	
-	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
-	
-	echo -e " [\e[32mOk\e[0m]"
-	
-	echo >> $LOG
-	
-done
-
-cd ..
-
-#;;************************************************************************************
-
-cd Calculadora/
-
-for i in *.asm
-do
-
-	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
-	
-	echo Building application $(basename $i .asm)... >> $LOG
-	
-	echo >> $LOG
-	
-	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
-	
-	echo -e " [\e[32mOk\e[0m]"
-	
-	echo >> $LOG
-	
-done
-
-cd ..
-
-#;;************************************************************************************
-
-cd Desligar/
-
-for i in *.asm
-do
-
-	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
-	
-	echo Building application $(basename $i .asm)... >> $LOG
-	
-	echo >> $LOG
-	
-	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
-	
-	echo -e " [\e[32mOk\e[0m]"
-	
-	echo >> $LOG
-	
-done
-
-cd ..
- 
-#;;************************************************************************************
-
-cd Piano/
-
-for i in *.asm
-do
-
-	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
-	
-	echo Building application $(basename $i .asm)... >> $LOG
-	
-	echo >> $LOG
-	
-	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
-	
-	echo -e " [\e[32mOk\e[0m]"
-	
-	echo >> $LOG
-	
-done
-
-cd ..
-
-#;;************************************************************************************
-
-cd Lyoko/
-
-for i in *.asm
-do
-
-	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
-	
-	echo Building application $(basename $i .asm)... >> $LOG
-	
-	echo >> $LOG
-	
-	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
-	
-	echo -e " [\e[32mOk\e[0m]"
-	
-	echo >> $LOG
-	
-done
-
-cd ..
-
-#;;************************************************************************************
-
-cd Quartzo/
-
-for i in *.asm
-do
-
-	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
-	
-	echo Building application $(basename $i .asm)... >> $LOG
-	
-	echo >> $LOG
-	
-	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
-	
-	echo -e " [\e[32mOk\e[0m]"
-	
-	echo >> $LOG
-	
-done
-
-cd ..
-
-#;;************************************************************************************
-
-cd Fonte/
-
-for i in *.asm
-do
-
-	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
-	
-	echo Building application $(basename $i .asm)... >> $LOG
-	
-	echo >> $LOG
-	
-	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
-	
-	echo -e " [\e[32mOk\e[0m]"
-	
-	echo >> $LOG
-	
-done
-
-cd ..
-
-#;;************************************************************************************
-
-cd "Configurações"/
-
-for i in *.asm
-do
-
-	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
-	
-	echo Building application $(basename $i .asm)... >> $LOG
-	
-	echo >> $LOG
-	
-	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
-	
-	echo -e " [\e[32mOk\e[0m]"
-	
-	echo >> $LOG
-	
-done
-
-
-cd ..
-
-#;;************************************************************************************
-
-cd Serial/
-
-for i in *.asm
-do
-
-	echo -en "Building application \e[1;94m$(basename $i .asm)\e[0m..."
-	
-	echo Building application $(basename $i .asm)... >> $LOG
-	
-	echo >> $LOG
-	
-	fasm $i ../../../Andromeda/bin/`basename $i .asm` -d $BANDEIRAS >> $LOG || desmontar
-	
-	echo -e " [\e[32mOk\e[0m]"
-	
-	echo >> $LOG
-	
-done
-
-cd ..
-
-#;;************************************************************************************
-
-echo
-echo -e "} [\e[32mSuccessfully built Hexagonix-Andromeda applications\e[0m]."
-
-echo
+gerarBaseGrafica
 
 }
 
@@ -312,7 +115,7 @@ cd ..
 
 umount Sistema || exit
 
-# Desmontar tudo!
+# Desmontar tudo"
 
 umount -a
 
@@ -328,5 +131,11 @@ exit
 }
 
 export LOG="/dev/null"
+export DESTINO="../../Andromeda"
 
-gerarApps
+case $1 in
+
+hexagonix) hexagonix; exit;;
+*) gerarBaseGrafica; exit;;
+
+esac 
