@@ -89,8 +89,8 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.0.1" 
-compativelHexagonix equ "H2-dev"
+versaoASH           equ "4.1.0" 
+compativelHexagonix equ "H2-CURRENT"
                     
 ;;**************************
 
@@ -295,12 +295,6 @@ inicioShell:
     
     Hexagonix obterCursor
     
-    mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
-
-    sub dl, 17
-    
-    Hexagonix definirCursor
-    
     push ecx
     
     xor ecx, ecx
@@ -325,14 +319,6 @@ inicioShell:
 .imagemHAPPInvalida:
 
     push esi
-
-    Hexagonix obterCursor
-    
-    mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
-
-    sub dl, 17
-    
-    Hexagonix definirCursor
     
     novaLinha
     novaLinha
@@ -365,14 +351,6 @@ inicioShell:
 .limiteAtingido:
 
     logSistema ash.verboseLimite, 00h, Log.Prioridades.p4
-
-    Hexagonix obterCursor
-    
-    mov dl, byte[Andromeda.Interface.numColunas]    ;; Máximo de caracteres para obter
-
-    sub dl, 17
-    
-    Hexagonix definirCursor
     
     push ecx
     
