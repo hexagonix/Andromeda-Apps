@@ -60,30 +60,30 @@ echo
 
 echo "Building Hexagonix® graphical applications... {" >> $LOG
 echo >> $LOG
-	
+    
 # Vamos agora automatizar a construção dos aplicativos
 
 for i in */
 do
 
-	cd $i
+    cd $i
 
-	for h in *.asm
-	do
+    for h in *.asm
+    do
 
-	echo -en "Building Hexagonix® graphical application \e[1;94m$(basename $h .asm)\e[0m..."
-	
-	echo Building Hexagonix® Unix Utility $(basename $h .asm)... >> $LOG
-	
-	echo >> $LOG
-	
-	fasm $h ../../../Andromeda/bin/`basename $h .asm` -d $BANDEIRAS >> $LOG || desmontar
-	
-	echo -e " [\e[32mOk\e[0m]"
-	
-	echo >> $LOG
+    echo -en "Building Hexagonix® graphical application \e[1;94m$(basename $h .asm)\e[0m..."
+    
+    echo Building Hexagonix® Unix Utility $(basename $h .asm)... >> $LOG
+    
+    echo >> $LOG
+    
+    fasm $h ../../../Andromeda/bin/`basename $h .asm` -d $BANDEIRAS >> $LOG || desmontar
+    
+    echo -e " [\e[32mOk\e[0m]"
+    
+    echo >> $LOG
 
-	done
+    done
 
 cd ..
 
@@ -126,8 +126,8 @@ echo
 echo "View the log file 'log.log', for more information about the error(s)."
 echo
 
-exit	
-	
+exit    
+    
 }
 
 export LOG="/dev/null"
