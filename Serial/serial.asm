@@ -74,14 +74,14 @@ include "macros.s"
 
 inicioAPP:
 
-    Hexagonix obterCor
+    hx.syscall obterCor
 
     mov dword[Andromeda.Interface.corFonte], eax
     mov dword[Andromeda.Interface.corFundo], ebx
 
-    Hexagonix limparTela
+    hx.syscall limparTela
 
-    Hexagonix obterInfoTela
+    hx.syscall obterInfoTela
     
     mov byte[Andromeda.Interface.numColunas], bl
     mov byte[Andromeda.Interface.numLinhas], bh
@@ -93,7 +93,7 @@ inicioAPP:
     AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     cursorPara 02, 01
     
@@ -108,7 +108,7 @@ inicioAPP:
 
     mov esi, serial.nomePorta
     
-    Hexagonix abrir
+    hx.syscall abrir
     
     jc erroAbertura
     
@@ -130,22 +130,22 @@ inicioAPP:
 
     sub al, 20
     
-    Hexagonix obterString
+    hx.syscall obterString
     
-    ;; Hexagonix cortarString           ;; Remover espaços em branco extras
+    ;; hx.syscall cortarString           ;; Remover espaços em branco extras
     
     mov [msg], esi
     
     mov si, [msg]
     
-    Hexagonix escrever
+    hx.syscall escrever
     
     jc erro
     
     mov eax, VERDE_FLORESTA
     mov ebx, dword[Andromeda.Interface.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, serial.enviado
     
@@ -158,7 +158,7 @@ inicioAPP:
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     novaLinha
     novaLinha
@@ -169,11 +169,11 @@ inicioAPP:
 
 obterTeclas:
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     push eax
     
-    Hexagonix obterEstadoTeclas
+    hx.syscall obterEstadoTeclas
     
     bt eax, 0
     jc .teclasControl
@@ -214,11 +214,11 @@ erro:
     
     imprimirString
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
 
-    Hexagonix limparTela
+    hx.syscall limparTela
 
-    Hexagonix encerrarProcesso
+    hx.syscall encerrarProcesso
 
 ;;************************************************************************************
 
@@ -228,7 +228,7 @@ erroAbertura:
     
     imprimirString
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
 
     jmp Andromeda_Sair
 
@@ -238,7 +238,7 @@ erroAbertura:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.0.1"
+VERSAO equ "1.0.2"
 
 serial:
 
