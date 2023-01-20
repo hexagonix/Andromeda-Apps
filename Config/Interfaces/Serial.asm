@@ -58,17 +58,17 @@ match =SIM, VERBOSE
 
 }
 
-    Hexagonix limparTela
+    hx.syscall limparTela
 
 ;; Imprime o título do programa e rodapé
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, corPadraoInterface
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, 0
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, TITULO.portaSerial
     
@@ -78,7 +78,7 @@ match =SIM, VERBOSE
     
     dec al
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, RODAPE.portaSerial
     
@@ -87,14 +87,14 @@ match =SIM, VERBOSE
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     call mostrarAvisoResolucao
     
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     cursorPara 02, 02
     
@@ -117,7 +117,7 @@ match =SIM, VERBOSE
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, portasSeriais.com1
     
@@ -126,7 +126,7 @@ match =SIM, VERBOSE
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     cursorPara 04, 05
     
@@ -149,7 +149,7 @@ match =SIM, VERBOSE
     
 .obterTeclas:
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     cmp al, 'v'
     je mostrarInterfaceConfiguracoes
@@ -197,7 +197,7 @@ match =SIM, VERBOSE
     mov dh, 10
     mov dl, 04
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, msgSerial.mensagemEnviando
     
@@ -205,7 +205,7 @@ match =SIM, VERBOSE
     
     mov esi, portasSeriais.com1
     
-    Hexagonix abrir
+    hx.syscall abrir
     
     jc erroAbertura
     
@@ -215,14 +215,14 @@ match =SIM, VERBOSE
     
     mov si, [Buffers.msg]
     
-    Hexagonix escrever
+    hx.syscall escrever
     
     jc erro
     
     mov eax, VERDE_FLORESTA
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, msgSerial.enviado
     
@@ -231,7 +231,7 @@ match =SIM, VERBOSE
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     jmp mostrarInterfaceSerial.obterTeclas
     
@@ -248,18 +248,18 @@ match =SIM, VERBOSE
 
     mov esi, portasSeriais.com1
     
-    Hexagonix abrir
+    hx.syscall abrir
     
     jc erroAbertura
     
     mov al, 10
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov dh, 10
     mov dl, 04
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, msgSerial.insiraMensagem
     
@@ -272,7 +272,7 @@ match =SIM, VERBOSE
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, portasSeriais.com1
     
@@ -281,7 +281,7 @@ match =SIM, VERBOSE
     mov eax,  Andromeda.Estelar.Tema.Fonte.fontePadrao
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, msgSerial.colcheteDireito
     
@@ -294,22 +294,22 @@ match =SIM, VERBOSE
     mov al, byte[maxColunas]        ;; Máximo de caracteres para obter
     sub al, 20
     
-    Hexagonix obterString
+    hx.syscall obterString
     
-    ;; Hexagonix cortarString       ;; Remover espaços em branco extras (por enquanto isso nao será feito!)
+    ;; hx.syscall cortarString       ;; Remover espaços em branco extras (por enquanto isso nao será feito!)
 
     mov [Buffers.msg], esi
     
     mov si, [Buffers.msg]
     
-    Hexagonix escrever
+    hx.syscall escrever
     
     jc erro
     
     mov eax, VERDE_FLORESTA
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, msgSerial.enviado
     
@@ -318,7 +318,7 @@ match =SIM, VERBOSE
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     jmp mostrarInterfaceSerial.obterTeclas
 

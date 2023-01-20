@@ -56,7 +56,7 @@ exibirProcessadorInstalado:
 
     mov esi, processadores.proc0
     
-    Hexagonix abrir
+    hx.syscall abrir
 
     cmp byte [esi], 0
     je .semCPUID

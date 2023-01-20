@@ -71,9 +71,9 @@ match =SIM, VERBOSE
 
 }
 
-    Hexagonix limparTela
+    hx.syscall limparTela
     
-    Hexagonix encerrarProcesso  
+    hx.syscall encerrarProcesso  
 
 ;;************************************************************************************
 
@@ -82,7 +82,7 @@ definirCorTema:
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     ret 
 
@@ -93,7 +93,7 @@ definirCorPadrao:
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     ret
 

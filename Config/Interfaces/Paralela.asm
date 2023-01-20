@@ -58,17 +58,17 @@ match =SIM, VERBOSE
 
 }
 
-    Hexagonix limparTela
+    hx.syscall limparTela
 
 ;; Imprime o título do programa e rodapé
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, corPadraoInterface
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, 0
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, TITULO.portaParalela
     
@@ -78,7 +78,7 @@ match =SIM, VERBOSE
     
     dec al
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, RODAPE.portaParalela
     
@@ -87,14 +87,14 @@ match =SIM, VERBOSE
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     call mostrarAvisoResolucao
     
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     cursorPara 02, 02
     
@@ -119,7 +119,7 @@ match =SIM, VERBOSE
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, portasParalelas.imp0
     
@@ -128,7 +128,7 @@ match =SIM, VERBOSE
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     cursorPara 04, 07
     
@@ -140,7 +140,7 @@ match =SIM, VERBOSE
     
 .obterTeclas:
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     cmp al, 'v'
     je mostrarInterfaceConfiguracoes

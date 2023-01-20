@@ -51,17 +51,17 @@
 
 mostrarInterfaceConfiguracoes:  
 
-    Hexagonix limparTela
+    hx.syscall limparTela
 
 ;; Imprime o título do programa e rodapé
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, corPadraoInterface
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, 0
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, TITULO.configuracoes
     imprimirString
@@ -70,7 +70,7 @@ mostrarInterfaceConfiguracoes:
     
     dec al
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, RODAPE.configuracoes
     imprimirString
@@ -78,14 +78,14 @@ mostrarInterfaceConfiguracoes:
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     call mostrarAvisoResolucao
     
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     cursorPara 02, 02
     
@@ -131,7 +131,7 @@ mostrarInterfaceConfiguracoes:
     
 .obterTeclas:
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     cmp al, 'v'
     je mostrarInterfacePrincipal

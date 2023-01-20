@@ -140,14 +140,14 @@ match =SIM, VERBOSE
 
 }
 
-    Hexagonix obterInfoTela
+    hx.syscall obterInfoTela
     
     mov byte[maxColunas], bl
     mov byte[maxLinhas], bh
     
     mov byte[alterado], 0
 
-    Hexagonix obterCor
+    hx.syscall obterCor
 
     mov dword[corFonte], eax 
     mov dword[corFundo], ebx

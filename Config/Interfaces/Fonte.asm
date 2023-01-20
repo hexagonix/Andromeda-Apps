@@ -51,17 +51,17 @@
 
 mostrarInterfaceFonte:  
 
-    Hexagonix limparTela
+    hx.syscall limparTela
 
 ;; Imprime o título do programa e rodapé
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, corPadraoInterface
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, 0
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, TITULO.fonte
     
@@ -71,7 +71,7 @@ mostrarInterfaceFonte:
     
     dec al
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, RODAPE.fonte
     
@@ -80,14 +80,14 @@ mostrarInterfaceFonte:
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     call mostrarAvisoResolucao
     
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     cursorPara 02, 02
 
@@ -117,13 +117,13 @@ match =SIM, VERBOSE
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov al, 13
     
-    Hexagonix obterString
+    hx.syscall obterString
     
-    Hexagonix cortarString ;; Remover espaços em branco extras
+    hx.syscall cortarString ;; Remover espaços em branco extras
     
     mov dword[fonte], esi
 
@@ -141,13 +141,13 @@ match =SIM, VERBOSE
     
     clc
 
-    Hexagonix arquivoExiste
+    hx.syscall arquivoExiste
 
     jc .erroArquivo
     
     clc 
 
-    Hexagonix alterarFonte
+    hx.syscall alterarFonte
     
     jc .erroFonte
 
@@ -163,7 +163,7 @@ match =SIM, VERBOSE
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov esi, msgFonte.sucesso
     
@@ -172,7 +172,7 @@ match =SIM, VERBOSE
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, dword[fonte]
     
@@ -181,7 +181,7 @@ match =SIM, VERBOSE
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, msgFonte.fechamento
     
@@ -194,7 +194,7 @@ match =SIM, VERBOSE
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, dword[fonte]
     
@@ -203,7 +203,7 @@ match =SIM, VERBOSE
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, msgFonte.ponto
     
@@ -222,7 +222,7 @@ match =SIM, VERBOSE
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov esi, msgFonte.semArquivo
     
@@ -244,7 +244,7 @@ match =SIM, VERBOSE
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, msgFonte.arquivoAusente
     
@@ -275,7 +275,7 @@ match =SIM, VERBOSE
     
 .obterTeclas:
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     cmp al, 'v'
     je mostrarInterfaceConfiguracoes

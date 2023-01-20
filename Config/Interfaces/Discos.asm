@@ -51,17 +51,17 @@
 
 mostrarInterfaceDiscos: 
 
-    Hexagonix limparTela
+    hx.syscall limparTela
 
 ;; Imprime o título do programa e rodapé
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, corPadraoInterface
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, 0
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, TITULO.discos
     
@@ -71,7 +71,7 @@ mostrarInterfaceDiscos:
     
     dec al
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, RODAPE.discos
     
@@ -80,14 +80,14 @@ mostrarInterfaceDiscos:
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     call mostrarAvisoResolucao
     
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     cursorPara 02, 02
     
@@ -116,7 +116,7 @@ match =SIM, VERBOSE
 
 }
 
-    Hexagonix obterDisco
+    hx.syscall obterDisco
     
     push edi ;; Rótulo do disco
     push esi ;; Nome do dispositivo segundo o sistema
@@ -125,7 +125,7 @@ match =SIM, VERBOSE
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     pop esi
     
@@ -134,7 +134,7 @@ match =SIM, VERBOSE
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     cursorPara 04, 07
     
@@ -145,7 +145,7 @@ match =SIM, VERBOSE
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     pop esi
     
@@ -154,7 +154,7 @@ match =SIM, VERBOSE
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     jmp .novaLinha
     
@@ -164,7 +164,7 @@ match =SIM, VERBOSE
     
 .obterTeclas:
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     cmp al, 'v'
     je mostrarInterfaceConfiguracoes

@@ -51,7 +51,7 @@
 
 mostrarAvisoResolucao:
 
-    Hexagonix obterResolucao
+    hx.syscall obterResolucao
     
     cmp eax, 1
     je .modoGrafico1
@@ -66,7 +66,7 @@ mostrarAvisoResolucao:
     dec al
     dec al
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, msgGeral.mensagemResolucao
     
@@ -90,7 +90,7 @@ mostrarLogoSistema:
     mov edi, 150     ;; Altura
     mov edx, corPadraoInterface ;; Cor
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
  
 .segundaLinha:
 
@@ -100,7 +100,7 @@ mostrarLogoSistema:
     mov edi, 150     ;; Altura
     mov edx, corPadraoInterface ;; Cor
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
 .terceiraLinha:
 
@@ -110,14 +110,14 @@ mostrarLogoSistema:
     mov edi, 30      ;; Altura
     mov edx, corPadraoInterface ;; Cor
     
-    Hexagonix desenharBloco    
+    hx.syscall desenharBloco    
 
     cursorPara 14, 02
     
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov esi, msgGeral.marcaRegistrada
 
@@ -126,6 +126,6 @@ mostrarLogoSistema:
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
 
 ret

@@ -51,17 +51,17 @@
 
 mostrarInterfaceConfigResolucao:    
 
-    Hexagonix limparTela
+    hx.syscall limparTela
 
 ;; Imprime o título do programa e rodapé
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, corPadraoInterface
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, 0
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, TITULO.resolucao
     
@@ -71,7 +71,7 @@ mostrarInterfaceConfigResolucao:
     
     dec al
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, RODAPE.resolucao
     
@@ -80,7 +80,7 @@ mostrarInterfaceConfigResolucao:
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     call mostrarAvisoResolucao
     
@@ -89,7 +89,7 @@ mostrarInterfaceConfigResolucao:
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     cursorPara 02, 02
     
@@ -128,7 +128,7 @@ mostrarInterfaceConfigResolucao:
         
 .obterTeclas:
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     cmp al, 'v'
     je mostrarInterfaceConfiguracoes
@@ -162,12 +162,12 @@ mostrarInterfaceConfigResolucao:
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov dh, 15
     mov dl, 02
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, msgResolucao.resolucaoAlterada
     
@@ -176,7 +176,7 @@ mostrarInterfaceConfigResolucao:
     mov dh, 17
     mov dl, 02
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, msgResolucao.alterado
     
@@ -185,7 +185,7 @@ mostrarInterfaceConfigResolucao:
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     jmp .obterTeclas
     
@@ -199,9 +199,9 @@ match =SIM, VERBOSE
 }
 
     mov eax, 1
-    Hexagonix definirResolucao
+    hx.syscall definirResolucao
     
-    Hexagonix obterInfoTela
+    hx.syscall obterInfoTela
     
     mov byte[maxColunas], bl
     mov byte[maxLinhas], bh
@@ -223,9 +223,9 @@ match =SIM, VERBOSE
 }
 
     mov eax, 2
-    Hexagonix definirResolucao
+    hx.syscall definirResolucao
     
-    Hexagonix obterInfoTela
+    hx.syscall obterInfoTela
     
     mov byte[maxColunas], bl
     mov byte[maxLinhas], bh
@@ -239,9 +239,9 @@ exibirResolucao:
     mov dh, 13
     mov dl, 02
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
-    Hexagonix obterResolucao
+    hx.syscall obterResolucao
 
     cmp eax, 1
     je .modoGrafico1

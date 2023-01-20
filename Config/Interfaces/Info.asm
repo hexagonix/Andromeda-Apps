@@ -51,17 +51,17 @@
 
 mostrarInterfaceInfo:   
 
-    Hexagonix limparTela
+    hx.syscall limparTela
 
 ;; Imprime o título do programa e rodapé
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, corPadraoInterface
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, 0
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, TITULO.info
     
@@ -71,7 +71,7 @@ mostrarInterfaceInfo:
     
     dec al
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, RODAPE.info
     
@@ -121,11 +121,11 @@ mostrarInterfaceInfo:
     
     mov al, ' '
 
-    Hexagonix imprimirCaractere
+    hx.syscall imprimirCaractere
 
     mov al, '['
 
-    Hexagonix imprimirCaractere
+    hx.syscall imprimirCaractere
 
     mov esi, codigoObtido
 
@@ -133,7 +133,7 @@ mostrarInterfaceInfo:
 
     mov al, ']'
 
-    Hexagonix imprimirCaractere
+    hx.syscall imprimirCaractere
 
     call definirCorPadrao
 
@@ -179,7 +179,7 @@ mostrarInterfaceInfo:
     
     mov al, ' '
     
-    Hexagonix imprimirCaractere
+    hx.syscall imprimirCaractere
     
     mov esi, dataHora
 
@@ -197,7 +197,7 @@ mostrarInterfaceInfo:
 
     call definirCorTema
     
-    Hexagonix retornarVersao
+    hx.syscall retornarVersao
     
     push ecx
     push ebx
@@ -227,7 +227,7 @@ mostrarInterfaceInfo:
     
     mov al, ch
     
-    Hexagonix imprimirCaractere
+    hx.syscall imprimirCaractere
 
 .continuar:
 
@@ -307,7 +307,7 @@ mostrarInterfaceInfo:
     
     call definirCorTema
     
-    Hexagonix usoMemoria
+    hx.syscall usoMemoria
     
     mov eax, ecx
     
@@ -321,7 +321,7 @@ mostrarInterfaceInfo:
     
 .obterTeclas:
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     cmp al, 'v'
     je mostrarInterfacePrincipal
