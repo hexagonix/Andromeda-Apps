@@ -74,14 +74,14 @@ include "macros.s"
 
 inicioAPP:
 
-    Hexagonix obterCor
+    hx.syscall obterCor
 
     mov dword[Andromeda.Interface.corFonte], eax
     mov dword[Andromeda.Interface.corFundo], ebx
     
-    Hexagonix limparTela
+    hx.syscall limparTela
 
-    Hexagonix obterInfoTela
+    hx.syscall obterInfoTela
     
     mov byte[Andromeda.Interface.numColunas], bl
     mov byte[Andromeda.Interface.numLinhas], bh
@@ -136,7 +136,7 @@ calcular:
     
     imprimirString
     
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     cmp al, '0'
     je adicionarNumeros
@@ -242,7 +242,7 @@ imprimirResposta:
     
     imprimirString
     
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     jmp inicioAPP
 
@@ -258,11 +258,11 @@ obterNumero:
 
     mov al, 10          ;; Máximo de 10 caracteres
     
-    Hexagonix obterString
+    hx.syscall obterString
     
-    Hexagonix cortarString
+    hx.syscall cortarString
     
-    Hexagonix stringParaInt
+    hx.syscall stringParaInt
     
     push eax
     
@@ -295,7 +295,7 @@ mostrarLogoSistema:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.6.1"
+VERSAO equ "1.6.2"
 
 calc:
 
