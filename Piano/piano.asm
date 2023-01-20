@@ -76,19 +76,19 @@ align 32
    
 exibirInterfaceSobre:
 
-    Hexagonix desligarSom
+    hx.syscall desligarSom
     
-    Hexagonix limparTela
+    hx.syscall limparTela
 
     ;; Imprime o título do programa e rodapé
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, AZUL_METALICO
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, 0
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, piano.titulo
     imprimirString
@@ -97,7 +97,7 @@ exibirInterfaceSobre:
     
     dec al
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, piano.rodapeInfo
     imprimirString
@@ -105,12 +105,12 @@ exibirInterfaceSobre:
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov dh, 02
     mov dl, 02
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.sobreTeclado
     
@@ -119,7 +119,7 @@ exibirInterfaceSobre:
     mov dh, 03
     mov dl, 02
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.versaoTeclado
     
@@ -128,7 +128,7 @@ exibirInterfaceSobre:
     mov dh, 05
     mov dl, 02
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.autor
     
@@ -137,7 +137,7 @@ exibirInterfaceSobre:
     mov dh, 06
     mov dl, 02
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.direitos
     
@@ -146,7 +146,7 @@ exibirInterfaceSobre:
     mov dh, 08
     mov dl, 04
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.ajuda
     
@@ -155,7 +155,7 @@ exibirInterfaceSobre:
     mov dh, 10
     mov dl, 02
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.topico1
     
@@ -164,7 +164,7 @@ exibirInterfaceSobre:
     mov dh, 11
     mov dl, 02
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.topico2
     
@@ -173,7 +173,7 @@ exibirInterfaceSobre:
     mov dh, 12
     mov dl, 02
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.topico3
     
@@ -182,7 +182,7 @@ exibirInterfaceSobre:
     
 .obterTeclas:
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     cmp al, 'v'
     je inicioAPP
@@ -202,14 +202,14 @@ exibirInterfaceSobre:
 
 inicioAPP:
     
-    Hexagonix obterCor
+    hx.syscall obterCor
 
     mov dword[Andromeda.Interface.corFonte], eax
     mov dword[Andromeda.Interface.corFundo], ebx
 
-    Hexagonix limparTela
+    hx.syscall limparTela
 
-    Hexagonix obterInfoTela
+    hx.syscall obterInfoTela
     
     mov byte[Andromeda.Interface.numColunas], bl
     mov byte[Andromeda.Interface.numLinhas], bh
@@ -229,13 +229,13 @@ inicioAPP:
     mov edi, 450 ;; Altura do bloco
     mov edx, LAVANDA_PASTEL ;; Cor do bloco
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
     call montarTeclas
     
 .novamente:
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
 
 .semtecla:              ; Procura as teclas e emite os sons
 
@@ -345,7 +345,7 @@ inicioAPP:
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     jmp exibirInterfaceSobre
 
@@ -368,11 +368,11 @@ inicioAPP:
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
-    Hexagonix desligarSom
+    hx.syscall desligarSom
 
-    Hexagonix limparTela
+    hx.syscall limparTela
     
     Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 
@@ -388,7 +388,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
  
 .segundaTecla:
 
@@ -398,7 +398,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
 
 .terceiraTecla:
 
@@ -408,7 +408,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
 .quartaTecla:
 
@@ -418,7 +418,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
 .quintaTecla:
 
@@ -428,7 +428,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
 .sextaTecla:
 
@@ -438,7 +438,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
 .setimaTecla:
 
@@ -448,7 +448,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
 .oitavaTecla:
    
@@ -458,7 +458,7 @@ montarTeclas:
     mov edi, 250
     mov edx, PRETO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
 .blocoEspaco:
 
@@ -468,21 +468,21 @@ montarTeclas:
     mov edi, 40
     mov edx, PRETO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
 .legenda:
     
     mov eax, PRETO
     mov ebx, LAVANDA_PASTEL
     
-    Hexagonix definirCor
+    hx.syscall definirCor
 
 .teclaQ:
     
     mov dl, 19
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.teclaQ
     
@@ -493,7 +493,7 @@ montarTeclas:
     mov dl, 27 ;; Anterior + 8
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.teclaW
     
@@ -504,7 +504,7 @@ montarTeclas:
     mov dl, 34 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.teclaE
     
@@ -515,7 +515,7 @@ montarTeclas:
     mov dl, 42 ;; Anterior + 8
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.teclaR
     
@@ -526,7 +526,7 @@ montarTeclas:
     mov dl, 49 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.teclaT
     
@@ -537,7 +537,7 @@ montarTeclas:
     mov dl, 57 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.teclaY
     
@@ -548,7 +548,7 @@ montarTeclas:
     mov dl, 64 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.teclaU
     
@@ -559,7 +559,7 @@ montarTeclas:
     mov dl, 72 ;; Anterior + 8
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.teclaI
     
@@ -570,12 +570,12 @@ montarTeclas:
     mov eax, BRANCO_ANDROMEDA
     mov ebx, PRETO
     
-    Hexagonix definirCor
+    hx.syscall definirCor
         
     mov dl, 45 
     mov dh, 29 
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.teclaEspaco
     
@@ -584,7 +584,7 @@ montarTeclas:
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     ret
     
@@ -602,7 +602,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
  
     ret
     
@@ -616,7 +616,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
     ret
 
@@ -630,7 +630,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
     ret
     
@@ -644,7 +644,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
     ret
     
@@ -658,7 +658,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
     ret
     
@@ -672,7 +672,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
     ret
     
@@ -686,7 +686,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
     ret
     
@@ -700,7 +700,7 @@ evidenciarTeclas:
     mov edi, 250
     mov edx, VERMELHO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
     ret
     
@@ -714,17 +714,17 @@ evidenciarTeclas:
     mov edi, 40
     mov edx, VERMELHO
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
     
     mov eax, BRANCO_ANDROMEDA
     mov ebx, VERMELHO
     
-    Hexagonix definirCor
+    hx.syscall definirCor
         
     mov dl, 45 
     mov dh, 29 
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, piano.teclaEspaco
     
@@ -733,7 +733,7 @@ evidenciarTeclas:
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     ret
 
@@ -747,7 +747,7 @@ align 32
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.3"
+VERSAO equ "1.4"
 
 piano:
 
