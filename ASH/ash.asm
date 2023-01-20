@@ -89,7 +89,7 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.1.0" 
+versaoASH           equ "4.1.1" 
 compativelHexagonix equ "H2-CURRENT"
                     
 ;;**************************
@@ -177,14 +177,14 @@ inicioShell:
 
 ;; Iniciar a configuração do terminal
 
-    Hexagonix obterCor
+    hx.syscall obterCor
 
     mov dword[Andromeda.Interface.corFonte], eax
     mov dword[Andromeda.Interface.corFundo], ebx
 
-    Hexagonix limparTela
+    hx.syscall limparTela
     
-    Hexagonix obterInfoTela
+    hx.syscall obterInfoTela
     
     novaLinha
 
@@ -203,9 +203,9 @@ inicioShell:
    
     call exibirBannerASH
    
-    Hexagonix obterCursor
+    hx.syscall obterCursor
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     push ecx
     
@@ -230,9 +230,9 @@ inicioShell:
 
     sub al, 20
     
-    Hexagonix obterString
+    hx.syscall obterString
     
-    Hexagonix cortarString           ;; Remover espaços em branco extras
+    hx.syscall cortarString           ;; Remover espaços em branco extras
         
     cmp byte[esi], 0                 ;; Nenhum comando inserido
     je .obterComando
@@ -243,7 +243,7 @@ inicioShell:
     
     mov edi, comandos.sair  
 
-    Hexagonix compararPalavrasString
+    hx.syscall compararPalavrasString
 
     jc .finalizarShell
 
@@ -251,7 +251,7 @@ inicioShell:
     
     mov edi, comandos.versao    
 
-    Hexagonix compararPalavrasString
+    hx.syscall compararPalavrasString
 
     jc .comandoVER
 
@@ -259,7 +259,7 @@ inicioShell:
     
     mov edi, comandos.ajuda 
 
-    Hexagonix compararPalavrasString
+    hx.syscall compararPalavrasString
 
     jc .comandoAJUDA
     
@@ -267,7 +267,7 @@ inicioShell:
     
     mov edi, comandos.alterarDisco
     
-    Hexagonix compararPalavrasString
+    hx.syscall compararPalavrasString
 
     jc .comandoAD
 
@@ -293,7 +293,7 @@ inicioShell:
     cmp eax, Hexagon.imagemInvalida  ;; Limite de processos em execução atingido
     je .imagemHAPPInvalida           ;; Se sim, exibir a mensagem apropriada
     
-    Hexagonix obterCursor
+    hx.syscall obterCursor
     
     push ecx
     
@@ -379,7 +379,7 @@ inicioShell:
 
     mov esi, edi
     
-    Hexagonix cortarString
+    hx.syscall cortarString
     
     pop esi
     
@@ -387,7 +387,7 @@ inicioShell:
     
     stc
     
-    Hexagonix iniciarProcesso
+    hx.syscall iniciarProcesso
     
     jc .falhaExecutando
     
@@ -434,35 +434,35 @@ inicioShell:
 
     add esi, 02h
     
-    Hexagonix cortarString
+    hx.syscall cortarString
     
     mov edi, discos.hd0 
         
-    Hexagonix compararPalavrasString
+    hx.syscall compararPalavrasString
     
     jc .alterarParaHD0
     
     mov edi, discos.hd1 
         
-    Hexagonix compararPalavrasString    
+    hx.syscall compararPalavrasString    
     
     jc .alterarParaHD1
     
     mov edi, discos.hd2 
     
-    Hexagonix compararPalavrasString
+    hx.syscall compararPalavrasString
     
     jc .alterarParaHD2
     
     mov edi, discos.hd3 
     
-    Hexagonix compararPalavrasString    
+    hx.syscall compararPalavrasString    
     
     jc .alterarParaHD3
     
     mov edi, discos.info    
         
-    Hexagonix compararPalavrasString
+    hx.syscall compararPalavrasString
     
     jc .infoDisco
     
@@ -474,7 +474,7 @@ inicioShell:
 
     mov esi, discos.hd0
     
-    Hexagonix abrir
+    hx.syscall abrir
 
     novaLinha
 
@@ -486,7 +486,7 @@ inicioShell:
 
     mov esi, discos.hd1
     
-    Hexagonix abrir
+    hx.syscall abrir
 
     novaLinha
 
@@ -498,7 +498,7 @@ inicioShell:
     
     mov esi, discos.hd2
     
-    Hexagonix abrir
+    hx.syscall abrir
 
     novaLinha
 
@@ -510,7 +510,7 @@ inicioShell:
 
     mov esi, discos.hd3
     
-    Hexagonix abrir
+    hx.syscall abrir
 
     novaLinha
 
@@ -530,7 +530,7 @@ inicioShell:
   
     imprimirString  
     
-    Hexagonix obterDisco
+    hx.syscall obterDisco
     
     push edi
     push esi
@@ -628,13 +628,13 @@ inicioShell:
 
     mov ebx, 00h
     
-    Hexagonix encerrarProcesso
+    hx.syscall encerrarProcesso
     
     jmp .obterComando
     
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
-    Hexagonix encerrarProcesso
+    hx.syscall encerrarProcesso
 
 ;;************************************************************************************
 
@@ -689,7 +689,7 @@ obterArgumentos:
     mov byte[esi-1], 0
     mov ebx, esi
     
-    Hexagonix tamanhoString
+    hx.syscall tamanhoString
     
     mov ecx, eax
     
@@ -732,7 +732,7 @@ alterarCor:
     cmp ecx, 01h
     je .padrao
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     ret
     
@@ -741,7 +741,7 @@ alterarCor:
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     ret
     
@@ -749,7 +749,7 @@ alterarCor:
 
 exibirBannerASH:
     
-    Hexagonix obterCursor
+    hx.syscall obterCursor
     
     push edx
     
@@ -766,7 +766,7 @@ exibirBannerASH:
     
     mov al, 0
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, ash.bannerASH
     
@@ -782,7 +782,7 @@ exibirBannerASH:
 
     mov dl, 00h
 
-    Hexagonix definirCursor
+    hx.syscall definirCursor
 
     ret 
 
