@@ -82,7 +82,7 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Hexagonix® o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.4.5" 
+versaoDOSsh         equ "0.5" 
 compativelHexagonix equ "H2"
                     
 ;;**************************
@@ -156,14 +156,14 @@ inicioShell:
 
 ;; Iniciar a configuração do terminal
 
-    Hexagonix obterCor
+    hx.syscall obterCor
 
     mov dword[Andromeda.Interface.corFonte], eax
     mov dword[Andromeda.Interface.corFundo], ebx
 
-    Hexagonix limparTela
+    hx.syscall limparTela
     
-    Hexagonix obterInfoTela
+    hx.syscall obterInfoTela
     
     novaLinha
 
@@ -188,9 +188,9 @@ obterComando:
 
     sub al, 20
     
-    Hexagonix obterString
+    hx.syscall obterString
     
-    Hexagonix cortarString           ;; Remover espaços em branco extras
+    hx.syscall cortarString           ;; Remover espaços em branco extras
         
     cmp byte[esi], 0                 ;; Nenhum comando inserido
     je obterComando
@@ -201,7 +201,7 @@ obterComando:
     
     mov edi, DOSsh.comandos.sair  
 
-    Hexagonix compararPalavrasString
+    hx.syscall compararPalavrasString
 
     jc finalizarShell
 
@@ -209,7 +209,7 @@ obterComando:
     
     mov edi, DOSsh.comandos.versao    
 
-    Hexagonix compararPalavrasString
+    hx.syscall compararPalavrasString
 
     jc comandoVER
 
@@ -217,7 +217,7 @@ obterComando:
     
     mov edi, DOSsh.comandos.ajuda 
 
-    Hexagonix compararPalavrasString
+    hx.syscall compararPalavrasString
 
     jc comandoAJUDA
 
@@ -225,7 +225,7 @@ obterComando:
     
     mov edi, DOSsh.comandos.cls
     
-    Hexagonix compararPalavrasString
+    hx.syscall compararPalavrasString
 
     jc comandoCLS
 
@@ -233,7 +233,7 @@ obterComando:
     
     mov edi, DOSsh.comandos.dir
     
-    Hexagonix compararPalavrasString
+    hx.syscall compararPalavrasString
 
     jc comandoDIR
 
@@ -241,7 +241,7 @@ obterComando:
     
     mov edi, DOSsh.comandos.type
     
-    Hexagonix compararPalavrasString
+    hx.syscall compararPalavrasString
 
     jc comandoTYPE
 
@@ -315,7 +315,7 @@ carregarImagem:
 
     mov esi, edi
     
-    Hexagonix cortarString
+    hx.syscall cortarString
     
     pop esi
     
@@ -323,7 +323,7 @@ carregarImagem:
     
     stc
     
-    Hexagonix iniciarProcesso
+    hx.syscall iniciarProcesso
     
     jc .falhaExecutando
     
@@ -343,7 +343,7 @@ comandoAJUDA:
 
 comandoCLS:
 
-    Hexagonix limparTela
+    hx.syscall limparTela
     
     jmp obterComando
 
@@ -351,7 +351,7 @@ comandoCLS:
 
 comandoDIR:
     
-    Hexagonix listarArquivos    ;; Obter arquivos em ESI
+    hx.syscall listarArquivos    ;; Obter arquivos em ESI
     
    ;; jc .erroLista
     
@@ -380,19 +380,19 @@ comandoDIR:
     
     mov edi, DOSsh.extensaoMAN
     
-    Hexagonix compararPalavrasString  ;; Checar por extensão .MAN
+    hx.syscall compararPalavrasString  ;; Checar por extensão .MAN
     
     jc .ocultar
 
     mov edi, DOSsh.extensaoOCL
     
-    Hexagonix compararPalavrasString  ;; Checar por extensão .OCL
+    hx.syscall compararPalavrasString  ;; Checar por extensão .OCL
     
     jc .ocultar
 
     mov edi, DOSsh.extensaoCOW
     
-    Hexagonix compararPalavrasString  ;; Checar por extensão .COW
+    hx.syscall compararPalavrasString  ;; Checar por extensão .COW
     
     jc .ocultar
 
@@ -446,14 +446,14 @@ comandoTYPE:
 
     mov esi, edi
 
-    Hexagonix arquivoExiste
+    hx.syscall arquivoExiste
 
     jc erroGeralArquivo
 
     mov esi, edi
     mov edi, bufferArquivo
 
-    Hexagonix abrir
+    hx.syscall abrir
     
     jc erroGeralArquivo
     
@@ -498,13 +498,13 @@ finalizarShell:
 
     mov ebx, 00h
     
-    Hexagonix encerrarProcesso
+    hx.syscall encerrarProcesso
     
     jmp obterComando
     
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
-    Hexagonix encerrarProcesso
+    hx.syscall encerrarProcesso
 
 ;;************************************************************************************
 
@@ -567,7 +567,7 @@ obterArgumentos:
     mov byte[esi-1], 0
     mov ebx, esi
     
-    Hexagonix tamanhoString
+    hx.syscall tamanhoString
     
     mov ecx, eax
     
@@ -610,7 +610,7 @@ lerListaArquivos:
     
     mov al, ' '
     
-    Hexagonix encontrarCaractere
+    hx.syscall encontrarCaractere
     
     jc .pronto
 
