@@ -89,7 +89,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "1.5.0" 
+VERSAO        equ "1.5.1" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -183,19 +183,19 @@ resolucao:            dd 0  ;; Resolução de vídeo
 
 LyokoIDE:
 
-    Hexagonix obterInfoTela
+    hx.syscall obterInfoTela
     
     mov byte[maxColunas], bl
     mov byte[maxLinhas], bh
     
     mov byte[Lyoko.primeiraExecucao], 01h
 
-    Hexagonix obterCor
+    hx.syscall obterCor
 
     mov dword[Lyoko.corFonte], eax
     mov dword[Lyoko.corFundo], ebx
 
-    Hexagonix obterResolucao
+    hx.syscall obterResolucao
 
     mov dword[resolucao], eax
 
@@ -204,7 +204,7 @@ LyokoIDE:
     
     mov esi, edi                ;; Argumentos do programa
     
-    Hexagonix tamanhoString
+    hx.syscall tamanhoString
     
     cmp eax, 12                 ;; Nome de arquivo inválido
     ja .novoArquivo
@@ -231,7 +231,7 @@ LyokoIDE:
     
     mov esi, nomeArquivo
     
-    Hexagonix arquivoExiste
+    hx.syscall arquivoExiste
     
     jc .novoArquivo             ;; O arquivo não existe
     
@@ -239,11 +239,11 @@ LyokoIDE:
     
     mov edi, bufferArquivo      ;; Endereço para o carregamento
     
-    Hexagonix abrir
+    hx.syscall abrir
     
     mov esi, nomeArquivo
     
-    Hexagonix tamanhoString
+    hx.syscall tamanhoString
     
     mov ecx, eax
 
@@ -291,7 +291,7 @@ LyokoIDE:
     
     mov esi, bufferArquivo
     
-    Hexagonix encontrarCaractere
+    hx.syscall encontrarCaractere
     
     mov dword[totalLinhas], eax
     
@@ -322,9 +322,9 @@ LyokoIDE:
 
     mov esi, video.vd1
     
-    Hexagonix abrir
+    hx.syscall abrir
     
-    Hexagonix limparTela
+    hx.syscall limparTela
     
     mov eax, dword[totalLinhas]
     
@@ -360,11 +360,11 @@ LyokoIDE:
     mov eax, BRANCO_ANDROMEDA
     mov ebx, CORDESTAQUE
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, 0
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, Lyoko.tituloPrograma
     
@@ -374,19 +374,19 @@ LyokoIDE:
     
     dec al
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
     
     mov esi, Lyoko.rodapePrograma
     
     imprimirString
 
-    Hexagonix obterCursor
+    hx.syscall obterCursor
 
     mov dl, byte[maxColunas]
 
     sub dl, 48
 
-    Hexagonix definirCursor
+    hx.syscall definirCursor
 
     mov esi, Lyoko.nomeMontador
 
@@ -396,7 +396,7 @@ LyokoIDE:
 
     sub dl, 41
 
-    Hexagonix definirCursor
+    hx.syscall definirCursor
 
     mov esi, Lyoko.separador
 
@@ -416,7 +416,7 @@ LyokoIDE:
     
     mov dh, 0
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
 
     mov esi, Lyoko.identificador
     
@@ -425,17 +425,17 @@ LyokoIDE:
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
 ;; Atualizar tela
 
 .atualizarBuffer:
 
-    Hexagonix atualizarTela
+    hx.syscall atualizarTela
      
     mov esi, video.vd0
     
-    Hexagonix abrir
+    hx.syscall abrir
     
 .outrasLinhasImpressas:
     
@@ -444,7 +444,7 @@ LyokoIDE:
     mov dl, 0
     mov dh, byte[posicaoLinhaNaTela]
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
         
 ;; Imprimir linha atual
 
@@ -456,14 +456,14 @@ LyokoIDE:
     
     mov al, ' '
 
-    Hexagonix imprimirCaractere
+    hx.syscall imprimirCaractere
     
 ;; Imprimir linha e coluna atuais
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, CORDESTAQUE
     
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov dl, byte[maxColunas]
     
@@ -473,7 +473,7 @@ LyokoIDE:
     
     dec dh
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
 
     mov esi, Lyoko.linha
     
@@ -501,12 +501,12 @@ LyokoIDE:
     
     mov al, ' '
     
-    Hexagonix imprimirCaractere
+    hx.syscall imprimirCaractere
     
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     cmp byte[Lyoko.primeiraExecucao], 01h
     je exibirBoasVindas
@@ -518,17 +518,17 @@ LyokoIDE:
     mov dl, byte[posicaoAtualNaLinha]
     mov dh, byte[posicaoLinhaNaTela]
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
 
 ;; Obter teclas
     
 .prontoParaTecla:
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     push eax
     
-    Hexagonix obterEstadoTeclas
+    hx.syscall obterEstadoTeclas
     
     bt eax, 0
     jc .teclasControl
@@ -600,7 +600,7 @@ LyokoIDE:
     add esi, dword[posicaoLinhaAtual]
     add esi, bufferArquivo
     
-    Hexagonix inserirCaractere          ;; Inserir char na string
+    hx.syscall inserirCaractere          ;; Inserir char na string
     
     inc byte[posicaoAtualNaLinha]       ;; Um caractere foi adicionado
     inc byte[tamanhoLinhaAtual]
@@ -624,7 +624,7 @@ LyokoIDE:
     
     mov al, 10
     
-    Hexagonix inserirCaractere
+    hx.syscall inserirCaractere
     
 ;; Nova linha
 
@@ -656,7 +656,7 @@ LyokoIDE:
     mov al, 10                          ;; Caractere de nova linha
     mov esi, bufferArquivo
     
-    Hexagonix encontrarCaractere
+    hx.syscall encontrarCaractere
     
     mov dword[totalLinhas], eax
     
@@ -761,7 +761,7 @@ LyokoIDE:
 
     mov esi, bufferArquivo
     
-    Hexagonix removerCaractereString
+    hx.syscall removerCaractereString
     
     dec byte[posicaoAtualNaLinha]   ;; Um caractere foi removido
     dec byte[tamanhoLinhaAtual]
@@ -817,7 +817,7 @@ LyokoIDE:
 
     mov esi, bufferArquivo
     
-    Hexagonix removerCaractereString
+    hx.syscall removerCaractereString
     
     dec byte[totalLinhas]           ;; Uma linha foi removida
     dec dword[linha]
@@ -872,7 +872,7 @@ LyokoIDE:
     
     mov esi, bufferArquivo
     
-    Hexagonix removerCaractereString
+    hx.syscall removerCaractereString
     
     dec byte[tamanhoLinhaAtual] ;; Um caractere foi removido
     
@@ -1435,7 +1435,7 @@ fimPrograma:
 
 .loopTeclas:
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     cmp al, 's'
     je .iniciarSalvamento
@@ -1460,13 +1460,13 @@ jmp .loopTeclas
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
 
-    Hexagonix rolarTela
+    hx.syscall rolarTela
     
     mov ebx, 00h
     
-    Hexagonix encerrarProcesso
+    hx.syscall encerrarProcesso
 
 ;;************************************************************************************
 ;;
@@ -1509,7 +1509,7 @@ imprimirLinha:
     
     mov ebx, 01h
     
-    Hexagonix imprimirCaractere     ;; Imprimir caractere em AL
+    hx.syscall imprimirCaractere     ;; Imprimir caractere em AL
     
     popad
     
@@ -1639,20 +1639,20 @@ salvarArquivoEditor:
     mov eax, PRETO
     mov ebx, CINZA_CLARO
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, byte[maxLinhas]
     
     sub al, 2
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
 
     mov dl, 0
     mov dh, byte[maxLinhas]
     
     sub dh, 2
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, Lyoko.solicitarArquivo
     
@@ -1660,9 +1660,9 @@ salvarArquivoEditor:
     
     mov eax, 12             ;; Máximo de caracteres
     
-    Hexagonix obterString
+    hx.syscall obterString
     
-    Hexagonix tamanhoString
+    hx.syscall tamanhoString
     
     cmp eax, 0
     je .fim
@@ -1697,7 +1697,7 @@ salvarArquivoEditor:
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     jmp .continuar
     
@@ -1707,7 +1707,7 @@ salvarArquivoEditor:
 
     mov esi, nomeArquivo
     
-    Hexagonix deletarArquivo
+    hx.syscall deletarArquivo
     
     jc .erroDeletando
 
@@ -1717,34 +1717,34 @@ salvarArquivoEditor:
 
     mov esi, bufferArquivo
     
-    Hexagonix tamanhoString
+    hx.syscall tamanhoString
     
 ;; Salvar arquivo
 
     mov esi, nomeArquivo
     mov edi, bufferArquivo
     
-    Hexagonix salvarArquivo
+    hx.syscall salvarArquivo
 
 ;; Exibir mensagem de salvamento
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, VERDE
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, byte[maxLinhas]
     
     sub al, 2
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
 
     mov dl, 0
     mov dh, byte[maxLinhas]
     
     sub dh, 2
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
 
     mov esi, Lyoko.arquivoSalvo
     
@@ -1757,7 +1757,7 @@ salvarArquivoEditor:
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov byte[necessarioRedesenhar], 1
     
@@ -1771,26 +1771,26 @@ salvarArquivoEditor:
     mov eax, PRETO
     mov ebx, CINZA_CLARO
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, byte[maxLinhas]
     
     sub al, 2
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
 
     mov dl, 0
     mov dh, byte[maxLinhas]
     
     sub dh, 2
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, Lyoko.erroDeletando
     
     imprimirString
     
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     jmp .fim
     
@@ -1799,20 +1799,20 @@ salvarArquivoEditor:
     mov eax, BRANCO_ANDROMEDA
     mov ebx, CORDESTAQUE
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, byte[maxLinhas]
     
     sub al, 2
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
 
     mov dl, 0
     mov dh, byte[maxLinhas]
     
     sub dh, 2
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, Lyoko.permissaoNegada
     
@@ -1829,20 +1829,20 @@ abrirArquivoEditor:
     mov eax, BRANCO_ANDROMEDA
     mov ebx, VERDE
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov al, byte[maxLinhas]
     
     sub al, 2
     
-    Hexagonix limparLinha
+    hx.syscall limparLinha
 
     mov dl, 0
     mov dh, byte[maxLinhas]
     
     sub dh, 2
     
-    Hexagonix definirCursor
+    hx.syscall definirCursor
     
     mov esi, Lyoko.solicitarArquivo
     
@@ -1850,9 +1850,9 @@ abrirArquivoEditor:
     
     mov eax, 12             ;; Máximo de caracteres
     
-    Hexagonix obterString
+    hx.syscall obterString
     
-    Hexagonix tamanhoString
+    hx.syscall tamanhoString
     
     cmp eax, 0
     je .fim
@@ -1887,7 +1887,7 @@ abrirArquivoEditor:
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov byte[necessarioRedesenhar], 1
 
@@ -1898,7 +1898,7 @@ abrirArquivoEditor:
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov byte[necessarioRedesenhar], 1
     
@@ -1955,7 +1955,7 @@ realizarMontagem:
     mov esi, Lyoko.fasmX
     mov edi, nomeArquivo
 
-    Hexagonix iniciarProcesso
+    hx.syscall iniciarProcesso
 
     jmp .fim
 
@@ -1974,7 +1974,7 @@ realizarMontagem:
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov byte[necessarioRedesenhar], 1
     
@@ -2001,7 +2001,7 @@ exibirAjuda:
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov byte[necessarioRedesenhar], 1
     
@@ -2028,7 +2028,7 @@ exibirInfo:
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov byte[necessarioRedesenhar], 1
     
@@ -2049,7 +2049,7 @@ exibirBoasVindas:
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
     
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov byte[necessarioRedesenhar], 1
 
@@ -2092,7 +2092,7 @@ montarAviso:
     mov edi, 200 ;; Altura do bloco
     mov edx, CORDESTAQUE ;; Cor do bloco
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
 
     mov eax, 0   ;; Início do bloco em X
     mov ebx, 340 ;; Início do bloco em Y
@@ -2100,7 +2100,7 @@ montarAviso:
     mov edi, 10  ;; Altura do bloco
     mov edx, CORLISTRA ;; Cor do bloco
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
 
     mov eax, 0   ;; Início do bloco em X
     mov ebx, 550 ;; Início do bloco em Y
@@ -2108,17 +2108,17 @@ montarAviso:
     mov edi, 10  ;; Altura do bloco
     mov edx, CORLISTRA ;; Cor do bloco
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, CORDESTAQUE
     
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov dl, 0h
     mov dh, 22
 
-    Hexagonix definirCursor
+    hx.syscall definirCursor
 
     jmp .fim
 
@@ -2130,7 +2130,7 @@ montarAviso:
     mov edi, 250  ;; Altura do bloco
     mov edx, CORDESTAQUE ;; Cor do bloco
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
 
     mov eax, 0    ;; Início do bloco em X
     mov ebx, 460  ;; Início do bloco em Y
@@ -2138,7 +2138,7 @@ montarAviso:
     mov edi, 10   ;; Altura do bloco
     mov edx, CORLISTRA ;; Cor do bloco
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
 
     mov eax, 0    ;; Início do bloco em X
     mov ebx, 710  ;; Início do bloco em Y
@@ -2146,17 +2146,17 @@ montarAviso:
     mov edi, 10   ;; Altura do bloco
     mov edx, CORLISTRA ;; Cor do bloco
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, CORDESTAQUE
     
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov dl, 0h
     mov dh, 30
 
-    Hexagonix definirCursor
+    hx.syscall definirCursor
 
     jmp .fim
 
@@ -2168,7 +2168,7 @@ montarAviso:
     mov edi, 360 ;; Altura do bloco
     mov edx, CORDESTAQUE ;; Cor do bloco
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
 
     mov eax, 0   ;; Início do bloco em X
     mov ebx, 190 ;; Início do bloco em Y
@@ -2176,7 +2176,7 @@ montarAviso:
     mov edi, 10  ;; Altura do bloco
     mov edx, CORLISTRA ;; Cor do bloco
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
 
     mov eax, 0   ;; Início do bloco em X
     mov ebx, 550 ;; Início do bloco em Y
@@ -2184,17 +2184,17 @@ montarAviso:
     mov edi, 10  ;; Altura do bloco
     mov edx, CORLISTRA ;; Cor do bloco
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, CORDESTAQUE
     
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov dl, 0h
     mov dh, 14
 
-    Hexagonix definirCursor
+    hx.syscall definirCursor
 
     jmp .fim
 
@@ -2206,7 +2206,7 @@ montarAviso:
     mov edi, 510  ;; Altura do bloco
     mov edx, CORDESTAQUE ;; Cor do bloco
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
 
     mov eax, 0    ;; Início do bloco em X
     mov ebx, 190  ;; Início do bloco em Y
@@ -2214,7 +2214,7 @@ montarAviso:
     mov edi, 10   ;; Altura do bloco
     mov edx, CORLISTRA ;; Cor do bloco
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
 
     mov eax, 0    ;; Início do bloco em X
     mov ebx, 710  ;; Início do bloco em Y
@@ -2222,17 +2222,17 @@ montarAviso:
     mov edi, 10   ;; Altura do bloco
     mov edx, CORLISTRA ;; Cor do bloco
     
-    Hexagonix desenharBloco
+    hx.syscall desenharBloco
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, CORDESTAQUE
     
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov dl, 0h
     mov dh, 14
 
-    Hexagonix definirCursor
+    hx.syscall definirCursor
 
     jmp .fim
 
