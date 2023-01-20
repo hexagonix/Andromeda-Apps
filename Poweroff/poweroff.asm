@@ -88,14 +88,14 @@ inicioAPP:
     
 iniciarInterface:
 
-    Hexagonix obterCor
+    hx.syscall obterCor
 
     mov dword[Andromeda.Interface.corFonte], eax
     mov dword[Andromeda.Interface.corFundo], ebx
 
-    Hexagonix limparTela
+    hx.syscall limparTela
 
-    Hexagonix obterInfoTela
+    hx.syscall obterInfoTela
     
     mov byte[Andromeda.Interface.numColunas], bl
     mov byte[Andromeda.Interface.numLinhas], bh
@@ -147,12 +147,12 @@ iniciarInterface:
 
     mov ecx, 500
     
-    Hexagonix causarAtraso
+    hx.syscall causarAtraso
 
     mov eax, VERDE_FLORESTA
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, desligar.msgPronto
 
@@ -161,7 +161,7 @@ iniciarInterface:
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov esi, desligar.msgFinalizando
 
@@ -169,12 +169,12 @@ iniciarInterface:
 
     mov ecx, 500
     
-    Hexagonix causarAtraso
+    hx.syscall causarAtraso
 
     mov eax, VERDE_FLORESTA
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, desligar.msgPronto
 
@@ -183,7 +183,7 @@ iniciarInterface:
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov esi, desligar.msgHexagonix
 
@@ -191,12 +191,12 @@ iniciarInterface:
 
     mov ecx, 500
     
-    Hexagonix causarAtraso
+    hx.syscall causarAtraso
 
     mov eax, VERDE_FLORESTA
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, desligar.msgPronto
 
@@ -205,7 +205,7 @@ iniciarInterface:
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov esi, desligar.msgDiscos
 
@@ -213,12 +213,12 @@ iniciarInterface:
 
     mov ecx, 500
     
-    Hexagonix causarAtraso
+    hx.syscall causarAtraso
 
     mov eax, VERDE_FLORESTA
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
     
     mov esi, desligar.msgPronto
 
@@ -227,18 +227,18 @@ iniciarInterface:
     mov eax, VERMELHO
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    Hexagonix definirCor
+    hx.syscall definirCor
 
     novaLinha
 
     mov ecx, 500
     
-    Hexagonix causarAtraso
+    hx.syscall causarAtraso
 
     ret
 
@@ -246,11 +246,11 @@ iniciarInterface:
 
 obterTeclas:
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
     
     push eax
     
-    Hexagonix obterEstadoTeclas
+    hx.syscall obterEstadoTeclas
     
     bt eax, 0
     jc .teclasControl
@@ -311,7 +311,7 @@ executarEnergiaDesligamento:
     mov edi, desligar.parametroDesligar
     mov eax, 01h
 
-    Hexagonix iniciarProcesso
+    hx.syscall iniciarProcesso
 
     jc falhaEnergia
 
@@ -323,7 +323,7 @@ executarEnergiaReinicio:
     mov edi, desligar.parametroReiniciar
     mov eax, 01h
 
-    Hexagonix iniciarProcesso
+    hx.syscall iniciarProcesso
 
     jc falhaEnergia
 
@@ -335,7 +335,7 @@ falhaEnergia:
 
     imprimirString
 
-    Hexagonix aguardarTeclado
+    hx.syscall aguardarTeclado
 
     jmp Hexagonix_Sair
 
@@ -352,7 +352,7 @@ Hexagonix_Sair:
 ;;************************************************************************************
 
 ENERGIA equ "shutdown"   
-VERSAO  equ "1.0.2"
+VERSAO  equ "1.0.3"
 
 desligar:
 
