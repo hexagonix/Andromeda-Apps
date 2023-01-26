@@ -89,7 +89,7 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.1.1" 
+versaoASH           equ "4.1.2" 
 compativelHexagonix equ "H2-CURRENT"
                     
 ;;**************************
@@ -193,9 +193,7 @@ inicioShell:
 
     call exibirBannerASH
 
-    mov esi, ash.boasVindas
-    
-    imprimirString
+    fputs ash.boasVindas
 
 ;;************************************************************************************
 
@@ -218,10 +216,8 @@ inicioShell:
     
     pop ecx
     
-    mov esi, ash.prompt
-    
-    imprimirString
-    
+    fputs ash.prompt
+        
     mov ecx, 01h
     
     call alterarCor
@@ -306,10 +302,8 @@ inicioShell:
     
     pop ecx
     
-    mov esi, ash.comandoInvalido
-    
-    imprimirString
-    
+    fputs ash.comandoInvalido
+        
     mov ecx, 01h
     
     call alterarCor
@@ -338,10 +332,8 @@ inicioShell:
     
     pop ecx
 
-    mov esi, ash.imagemInvalida
-    
-    imprimirString
-    
+    fputs ash.imagemInvalida
+        
     mov ecx, 01h
     
     call alterarCor
@@ -363,10 +355,8 @@ inicioShell:
     
     pop ecx
     
-    mov esi, ash.limiteProcessos
-    
-    imprimirString
-    
+    fputs ash.limiteProcessos
+        
     mov ecx, 01h
     
     call alterarCor
@@ -397,10 +387,8 @@ inicioShell:
     
 .comandoAJUDA:
 
-    mov esi, ajuda.conteudoAjuda
-    
-    imprimirString
-    
+    fputs ajuda.conteudoAjuda
+        
     jmp .obterComando
 
 ;;************************************************************************************
@@ -421,9 +409,7 @@ inicioShell:
     
     pop ecx
     
-    mov esi, discos.avisoSairdeLinha
-
-    imprimirString
+    fputs discos.avisoSairdeLinha
 
     mov ecx, 01h
     
@@ -518,17 +504,13 @@ inicioShell:
     
 .erroAlterar:
 
-    mov esi, discos.erroAlterar
-
-    imprimirString
+    fputs discos.erroAlterar
 
     jmp .obterComando   
     
 .infoDisco:
 
-    mov esi, discos.discoAtual
-  
-    imprimirString  
+    fputs discos.discoAtual  
     
     hx.syscall obterDisco
     
@@ -554,10 +536,8 @@ inicioShell:
     
     call alterarCor
     
-    mov esi, discos.rotuloVolume
-    
-    imprimirString
-    
+    fputs discos.rotuloVolume
+        
     push ecx
     
     xor ecx, ecx
@@ -571,10 +551,8 @@ inicioShell:
     
     pop edi
     
-    mov esi, edi
-    
-    imprimirString
-    
+    fputs edi
+        
     mov ecx, 01h
     
     call alterarCor
@@ -600,22 +578,16 @@ inicioShell:
     
     pop ecx
     
-    mov esi, ajuda.introducao
-    
-    imprimirString
-    
+    fputs ajuda.introducao
+        
     mov ecx, 01h
     
     call alterarCor
     
-    mov esi, ash.direitosAutorais
-    
-    imprimirString
+    fputs ash.direitosAutorais
 
-    mov esi, ash.licenca
+    fputs ash.licenca
     
-    imprimirString
-
     jmp .obterComando
 
 ;;************************************************************************************
@@ -768,9 +740,7 @@ exibirBannerASH:
     
     hx.syscall limparLinha
     
-    mov esi, ash.bannerASH
-    
-    imprimirString
+    fputs ash.bannerASH
     
     mov ecx, 01h
     
