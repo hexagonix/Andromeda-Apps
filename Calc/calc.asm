@@ -49,8 +49,6 @@
 ;;
 ;; $HexagonixOS$
 
-;; Atualizar a partir desse
-
 use32
 
 ;; Agora vamos criar um cabeçalho para a imagem HAPP final do aplicativo. Anteriormente,
