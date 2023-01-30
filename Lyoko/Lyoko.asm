@@ -89,7 +89,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "1.5.1" 
+VERSAO        equ "1.5.2" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -366,20 +366,16 @@ LyokoIDE:
     
     hx.syscall limparLinha
     
-    mov esi, Lyoko.tituloPrograma
-    
-    imprimirString
-    
+    fputs Lyoko.tituloPrograma
+        
     mov al, byte[maxLinhas]     ;; Última linha
     
     dec al
     
     hx.syscall limparLinha
     
-    mov esi, Lyoko.rodapePrograma
+    fputs Lyoko.rodapePrograma
     
-    imprimirString
-
     hx.syscall obterCursor
 
     mov dl, byte[maxColunas]
@@ -388,9 +384,7 @@ LyokoIDE:
 
     hx.syscall definirCursor
 
-    mov esi, Lyoko.nomeMontador
-
-    imprimirString
+    fputs Lyoko.nomeMontador
 
     mov dl, byte[maxColunas]
 
@@ -398,17 +392,11 @@ LyokoIDE:
 
     hx.syscall definirCursor
 
-    mov esi, Lyoko.separador
+    fputs Lyoko.separador
 
-    imprimirString
+    fputs Lyoko.formato
 
-    mov esi, Lyoko.formato
-
-    imprimirString
-
-    mov esi, Lyoko.separador
-
-    imprimirString
+    fputs Lyoko.separador
 
     mov dl, byte[maxColunas]
     
@@ -418,10 +406,8 @@ LyokoIDE:
     
     hx.syscall definirCursor
 
-    mov esi, Lyoko.identificador
+    fputs Lyoko.identificador
     
-    imprimirString
-
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
     
@@ -475,24 +461,18 @@ LyokoIDE:
     
     hx.syscall definirCursor
 
-    mov esi, Lyoko.linha
-    
-    imprimirString
-    
+    fputs Lyoko.linha
+        
     mov eax, dword[linha]
     
     inc eax                 ;; Contando de 1
     
     imprimirInteiro
     
-    mov esi, Lyoko.virgula
+    fputs Lyoko.virgula
 
-    imprimirString
-
-    mov esi, Lyoko.coluna
-    
-    imprimirString
-    
+    fputs Lyoko.coluna
+        
     movzx eax, byte[posicaoAtualNaLinha]
     
     inc eax                 ;; Contando de 1
@@ -1429,9 +1409,7 @@ fimPrograma:
 
     call montarAviso
 
-    mov esi, Lyoko.avisoSalvamento
-
-    imprimirString
+    fputs Lyoko.avisoSalvamento
 
 .loopTeclas:
 
@@ -1654,10 +1632,8 @@ salvarArquivoEditor:
     
     hx.syscall definirCursor
     
-    mov esi, Lyoko.solicitarArquivo
-    
-    imprimirString
-    
+    fputs Lyoko.solicitarArquivo
+        
     mov eax, 12             ;; Máximo de caracteres
     
     hx.syscall obterString
@@ -1746,10 +1722,8 @@ salvarArquivoEditor:
     
     hx.syscall definirCursor
 
-    mov esi, Lyoko.arquivoSalvo
+    fputs Lyoko.arquivoSalvo
     
-    imprimirString
-
     mov byte [Lyoko.alterado], 0 ;; Limpar o status de alterado
 
 .fim:
@@ -1786,10 +1760,8 @@ salvarArquivoEditor:
     
     hx.syscall definirCursor
     
-    mov esi, Lyoko.erroDeletando
-    
-    imprimirString
-    
+    fputs Lyoko.erroDeletando
+        
     hx.syscall aguardarTeclado
     
     jmp .fim
@@ -1814,10 +1786,8 @@ salvarArquivoEditor:
     
     hx.syscall definirCursor
     
-    mov esi, Lyoko.permissaoNegada
-    
-    imprimirString
-    
+    fputs Lyoko.permissaoNegada
+        
     jmp .fim
     
 ;;************************************************************************************
@@ -1844,10 +1814,8 @@ abrirArquivoEditor:
     
     hx.syscall definirCursor
     
-    mov esi, Lyoko.solicitarArquivo
-    
-    imprimirString
-    
+    fputs Lyoko.solicitarArquivo
+        
     mov eax, 12             ;; Máximo de caracteres
     
     hx.syscall obterString
@@ -1943,9 +1911,7 @@ realizarMontagem:
 
     call montarAviso
 
-    mov esi, Lyoko.solicitandoMontagem
-
-    imprimirString
+    fputs Lyoko.solicitandoMontagem
 
     mov esi, nomeArquivo
 
@@ -1961,15 +1927,11 @@ realizarMontagem:
 
 .semFonte:
 
-    mov esi, Lyoko.semFonte
-
-    imprimirString
+    fputs Lyoko.semFonte
 
 .fim:
 
-    mov esi, Lyoko.fecharAviso
-
-    imprimirString
+    fputs Lyoko.fecharAviso
 
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
@@ -1988,15 +1950,11 @@ exibirAjuda:
 
     call montarAviso
 
-    mov esi, Lyoko.avisoRapido
-
-    imprimirString
+    fputs Lyoko.avisoRapido
 
 .fim:
 
-    mov esi, Lyoko.fecharAviso
-
-    imprimirString
+    fputs Lyoko.fecharAviso
 
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
@@ -2015,15 +1973,11 @@ exibirInfo:
 
     call montarAviso
 
-    mov esi, Lyoko.infoLyoko
-
-    imprimirString
+    fputs Lyoko.infoLyoko
 
 .fim:
 
-    mov esi, Lyoko.fecharAviso
-
-    imprimirString
+    fputs Lyoko.fecharAviso
 
     mov eax, dword[Lyoko.corFonte]
     mov ebx, dword[Lyoko.corFundo]
@@ -2040,9 +1994,7 @@ exibirBoasVindas:
 
     call montarAviso
 
-    mov esi, Lyoko.boasVindas
-
-    imprimirString
+    fputs Lyoko.boasVindas
 
 .fim:
 
