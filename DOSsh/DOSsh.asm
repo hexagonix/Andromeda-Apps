@@ -82,7 +82,7 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Hexagonix® o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.5" 
+versaoDOSsh         equ "0.5.1" 
 compativelHexagonix equ "H2"
                     
 ;;**************************
@@ -170,20 +170,16 @@ inicioShell:
     mov byte[Andromeda.Interface.numColunas], bl
     mov byte[Andromeda.Interface.numLinhas], bh
 
-    mov esi, DOSsh.boasVindas
+    fputs DOSsh.boasVindas
     
-    imprimirString
-
     novaLinha
 
 ;;************************************************************************************
 
 obterComando:  
     
-    mov esi, DOSsh.prompt
-    
-    imprimirString
-    
+    fputs DOSsh.prompt
+        
     mov al, byte[Andromeda.Interface.numColunas]         ;; Máximo de caracteres para obter
 
     sub al, 20
@@ -278,18 +274,14 @@ carregarImagem:
     
     imprimirString
     
-    mov esi, DOSsh.comandoInvalido
-    
-    imprimirString
-    
+    fputs DOSsh.comandoInvalido
+        
     jmp obterComando   
     
 .limiteAtingido:
     
-    mov esi, DOSsh.limiteProcessos
-    
-    imprimirString
-    
+    fputs DOSsh.limiteProcessos
+        
     jmp obterComando   
 
 .imagemHAPPInvalida:
@@ -303,10 +295,8 @@ carregarImagem:
     
     imprimirString
 
-    mov esi, DOSsh.imagemInvalida
-    
-    imprimirString
-    
+    fputs DOSsh.imagemInvalida
+        
     jmp obterComando   
 
 .carregarPrograma:
@@ -333,10 +323,8 @@ carregarImagem:
     
 comandoAJUDA:
 
-    mov esi, DOSsh.ajuda.conteudoAjuda
-    
-    imprimirString
-    
+    fputs DOSsh.ajuda.conteudoAjuda
+        
     jmp obterComando
 
 ;;************************************************************************************
@@ -398,10 +386,8 @@ comandoDIR:
 
     pop esi 
 
-    mov esi, [arquivoAtual]
+    fputs [arquivoAtual]
     
-    imprimirString
-
     push ecx
     push ebx
     push eax
@@ -460,9 +446,7 @@ comandoTYPE:
     novaLinha
     novaLinha
     
-    mov esi, bufferArquivo
-    
-    imprimirString
+    fputs bufferArquivo
 
     novaLinha
 
@@ -472,18 +456,12 @@ comandoTYPE:
 
 comandoVER:
     
-    mov esi, DOSsh.ajuda.introducao
+    fputs DOSsh.ajuda.introducao
+        
+    fputs DOSsh.direitosAutorais
     
-    imprimirString
+    fputs DOSsh.licenca
     
-    mov esi, DOSsh.direitosAutorais
-    
-    imprimirString
-
-    mov esi, DOSsh.licenca
-    
-    imprimirString
-
     novaLinha
 
     jmp obterComando
@@ -510,9 +488,7 @@ finalizarShell:
 
 erroGeralArquivo:
 
-    mov esi, DOSsh.erroGeralArquivo
-
-    imprimirString
+    fputs DOSsh.erroGeralArquivo
 
     jmp obterComando
 
