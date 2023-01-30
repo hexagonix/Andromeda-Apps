@@ -83,7 +83,7 @@ include "macros.s"
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
 versaoDOSsh         equ "0.5.1" 
-compativelHexagonix equ "H2"
+compativelHexagonix equ "H2-CURRENT"
                     
 ;;**************************
 
