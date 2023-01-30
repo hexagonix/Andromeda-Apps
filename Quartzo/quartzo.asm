@@ -85,7 +85,7 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "2.1.1" 
+VERSAO        equ "2.1.2" 
 tamanhoRodape = 44
 
 quartzo:
@@ -303,20 +303,16 @@ Quartzo:
     
     hx.syscall limparLinha
     
-    mov esi, quartzo.tituloPrograma
-    
-    imprimirString
-    
+    fputs quartzo.tituloPrograma
+        
     mov al, byte[maxLinhas]     ;; Última linha
     
     dec al
     
     hx.syscall limparLinha
     
-    mov esi, quartzo.rodapePrograma
-    
-    imprimirString
-    
+    fputs quartzo.rodapePrograma
+        
     hx.syscall obterCursor
 
     mov dl, byte[maxColunas]
@@ -325,17 +321,11 @@ Quartzo:
 
     hx.syscall definirCursor
 
-    mov esi, quartzo.separador
+    fputs quartzo.separador
 
-    imprimirString
+    fputs quartzo.formato
 
-    mov esi, quartzo.formato
-
-    imprimirString
-
-    mov esi, quartzo.separador
-
-    imprimirString
+    fputs quartzo.separador
 
     mov eax, dword[quartzo.corFonte]
     mov ebx, dword[quartzo.corFundo]
@@ -390,24 +380,18 @@ Quartzo:
     
     hx.syscall definirCursor
 
-    mov esi, quartzo.linha
-    
-    imprimirString
-    
+    fputs quartzo.linha
+        
     mov eax, dword[linha]
     
     inc eax                 ;; Contando de 1
     
     imprimirInteiro
     
-    mov esi, quartzo.virgula
+    fputs quartzo.virgula
 
-    imprimirString
-
-    mov esi, quartzo.coluna
-    
-    imprimirString
-    
+    fputs quartzo.coluna
+        
     movzx eax, byte[posicaoAtualNaLinha]
     
     inc eax                 ;; Contando de 1
@@ -1491,10 +1475,8 @@ salvarArquivoEditor:
     
     hx.syscall definirCursor
     
-    mov esi, quartzo.solicitarArquivo
-    
-    imprimirString
-    
+    fputs quartzo.solicitarArquivo
+        
     mov eax, 12             ;; Máximo de caracteres
     
     hx.syscall obterString
@@ -1583,10 +1565,8 @@ salvarArquivoEditor:
     
     hx.syscall definirCursor
 
-    mov esi, quartzo.arquivoSalvo
+    fputs quartzo.arquivoSalvo
     
-    imprimirString
-
 .fim:
 
     mov eax, dword[quartzo.corFonte]
@@ -1621,10 +1601,8 @@ salvarArquivoEditor:
     
     hx.syscall definirCursor
     
-    mov esi, quartzo.erroDeletando
-    
-    imprimirString
-    
+    fputs quartzo.erroDeletando
+        
     hx.syscall aguardarTeclado
     
     jmp .fim
@@ -1649,9 +1627,7 @@ salvarArquivoEditor:
     
     hx.syscall definirCursor
     
-    mov esi, quartzo.permissaoNegada
-    
-    imprimirString
+    fputs quartzo.permissaoNegada
     
     jmp .fim
     
@@ -1679,9 +1655,7 @@ abrirArquivoEditor:
     
     hx.syscall definirCursor
     
-    mov esi, quartzo.solicitarArquivo
-    
-    imprimirString
+    fputs quartzo.solicitarArquivo
     
     mov eax, 12             ;; Máximo de caracteres
     
