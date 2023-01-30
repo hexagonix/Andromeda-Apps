@@ -88,10 +88,10 @@ exibirInterfaceSobre:
     hx.syscall definirCor
     
     mov al, 0
+
     hx.syscall limparLinha
     
-    mov esi, piano.titulo
-    imprimirString
+    fputs piano.titulo
     
     mov al, byte[Andromeda.Interface.numLinhas]     ;; Última linha
     
@@ -99,8 +99,7 @@ exibirInterfaceSobre:
     
     hx.syscall limparLinha
     
-    mov esi, piano.rodapeInfo
-    imprimirString
+    fputs piano.rodapeInfo
     
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
@@ -112,73 +111,56 @@ exibirInterfaceSobre:
     
     hx.syscall definirCursor
     
-    mov esi, piano.sobreTeclado
-    
-    imprimirString
-    
+    fputs piano.sobreTeclado
+        
     mov dh, 03
     mov dl, 02
     
     hx.syscall definirCursor
     
-    mov esi, piano.versaoTeclado
-    
-    imprimirString
-    
+    fputs piano.versaoTeclado
+        
     mov dh, 05
     mov dl, 02
     
     hx.syscall definirCursor
     
-    mov esi, piano.autor
-    
-    imprimirString
-    
+    fputs piano.autor
+        
     mov dh, 06
     mov dl, 02
     
     hx.syscall definirCursor
     
-    mov esi, piano.direitos
-    
-    imprimirString
-    
+    fputs piano.direitos
+        
     mov dh, 08
     mov dl, 04
     
     hx.syscall definirCursor
     
-    mov esi, piano.ajuda
-    
-    imprimirString
-    
+    fputs piano.ajuda
+        
     mov dh, 10
     mov dl, 02
     
     hx.syscall definirCursor
     
-    mov esi, piano.topico1
-    
-    imprimirString
-    
+    fputs piano.topico1
+        
     mov dh, 11
     mov dl, 02
     
     hx.syscall definirCursor
     
-    mov esi, piano.topico2
-    
-    imprimirString
-    
+    fputs piano.topico2
+        
     mov dh, 12
     mov dl, 02
     
     hx.syscall definirCursor
     
-    mov esi, piano.topico3
-    
-    imprimirString
-    
+    fputs piano.topico3    
     
 .obterTeclas:
 
@@ -484,10 +466,8 @@ montarTeclas:
     
     hx.syscall definirCursor
     
-    mov esi, piano.teclaQ
+    fputs piano.teclaQ
     
-    imprimirString
-
 .teclaW:
     
     mov dl, 27 ;; Anterior + 8
@@ -495,10 +475,8 @@ montarTeclas:
     
     hx.syscall definirCursor
     
-    mov esi, piano.teclaW
+    fputs piano.teclaW
     
-    imprimirString
-
 .teclaE:
     
     mov dl, 34 ;; Anterior + 7
@@ -506,10 +484,8 @@ montarTeclas:
     
     hx.syscall definirCursor
     
-    mov esi, piano.teclaE
-    
-    imprimirString
-    
+    fputs piano.teclaE
+        
 .teclaR:
 
     mov dl, 42 ;; Anterior + 8
@@ -517,10 +493,8 @@ montarTeclas:
     
     hx.syscall definirCursor
     
-    mov esi, piano.teclaR
+    fputs piano.teclaR
     
-    imprimirString
-
 .teclaT:
 
     mov dl, 49 ;; Anterior + 7
@@ -528,10 +502,8 @@ montarTeclas:
     
     hx.syscall definirCursor
     
-    mov esi, piano.teclaT
-    
-    imprimirString
-    
+    fputs piano.teclaT
+        
 .teclaY:
 
     mov dl, 57 ;; Anterior + 7
@@ -539,10 +511,8 @@ montarTeclas:
     
     hx.syscall definirCursor
     
-    mov esi, piano.teclaY
-    
-    imprimirString   
-    
+    fputs piano.teclaY
+        
 .teclaU:
 
     mov dl, 64 ;; Anterior + 7
@@ -550,10 +520,8 @@ montarTeclas:
     
     hx.syscall definirCursor
     
-    mov esi, piano.teclaU
-    
-    imprimirString          
-    
+    fputs piano.teclaU
+        
 .teclaI:
 
     mov dl, 72 ;; Anterior + 8
@@ -561,10 +529,8 @@ montarTeclas:
     
     hx.syscall definirCursor
     
-    mov esi, piano.teclaI
-    
-    imprimirString  
-  
+    fputs piano.teclaI
+      
 .teclaEspaco:
         
     mov eax, BRANCO_ANDROMEDA
@@ -577,10 +543,8 @@ montarTeclas:
     
     hx.syscall definirCursor
     
-    mov esi, piano.teclaEspaco
-    
-    imprimirString 
-    
+    fputs piano.teclaEspaco
+        
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
     
@@ -747,7 +711,7 @@ align 32
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.4"
+VERSAO equ "1.4.1"
 
 piano:
 
