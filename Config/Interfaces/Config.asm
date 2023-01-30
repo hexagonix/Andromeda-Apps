@@ -63,8 +63,7 @@ mostrarInterfaceConfiguracoes:
     mov al, 0
     hx.syscall limparLinha
     
-    mov esi, TITULO.configuracoes
-    imprimirString
+    fputs TITULO.configuracoes
     
     mov al, byte[maxLinhas]     ;; Última linha
     
@@ -72,8 +71,7 @@ mostrarInterfaceConfiguracoes:
     
     hx.syscall limparLinha
     
-    mov esi, RODAPE.configuracoes
-    imprimirString
+    fputs RODAPE.configuracoes
     
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
@@ -89,46 +87,32 @@ mostrarInterfaceConfiguracoes:
     
     cursorPara 02, 02
     
-    mov esi, msgConfig.introducao
-    
-    imprimirString
+    fputs msgConfig.introducao
     
     cursorPara 02, 05
     
-    mov esi, msgConfig.introducao2
-    
-    imprimirString
-    
+    fputs msgConfig.introducao2
+        
     cursorPara 04, 07 
     
-    mov esi, msgConfig.categoria1
-    
-    imprimirString
-    
+    fputs msgConfig.categoria1
+        
     cursorPara 04, 08
     
-    mov esi, msgConfig.categoria2
-    
-    imprimirString
-    
+    fputs msgConfig.categoria2
+        
     cursorPara 04, 09 
     
-    mov esi, msgConfig.categoria3
-    
-    imprimirString
-    
+    fputs msgConfig.categoria3
+        
     cursorPara 04, 10
     
-    mov esi, msgConfig.categoria4
-    
-    imprimirString
-    
+    fputs msgConfig.categoria4
+        
     cursorPara 04, 11
     
-    mov esi, msgConfig.categoria5
-    
-    imprimirString
-    
+    fputs msgConfig.categoria5
+        
 .obterTeclas:
 
     hx.syscall aguardarTeclado
@@ -165,6 +149,5 @@ mostrarInterfaceConfiguracoes:
     
     cmp al, '5'
     je mostrarInterfaceFonte
-
 
     jmp .obterTeclas        

@@ -63,20 +63,16 @@ mostrarInterfaceDiscos:
     mov al, 0
     hx.syscall limparLinha
     
-    mov esi, TITULO.discos
-    
-    imprimirString
-    
+    fputs TITULO.discos
+        
     mov al, byte[maxLinhas]     ;; Última linha
     
     dec al
     
     hx.syscall limparLinha
     
-    mov esi, RODAPE.discos
-    
-    imprimirString
-    
+    fputs RODAPE.discos
+        
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
@@ -91,24 +87,18 @@ mostrarInterfaceDiscos:
     
     cursorPara 02, 02
     
-    mov esi, msgDiscos.introducao
-    
-    imprimirString
-    
+    fputs msgDiscos.introducao
+        
     cursorPara 02, 03
     
-    mov esi, msgDiscos.introducao2
-    
-    imprimirString
-    
+    fputs msgDiscos.introducao2
+        
 .infoDisco:
 
     cursorPara 04, 06
     
-    mov esi, msgDiscos.discoAtual
+    fputs msgDiscos.discoAtual
   
-    imprimirString  
-
 match =SIM, VERBOSE
 {
 
@@ -138,10 +128,8 @@ match =SIM, VERBOSE
     
     cursorPara 04, 07
     
-    mov esi, msgDiscos.rotuloVolume
-    
-    imprimirString
-    
+    fputs msgDiscos.rotuloVolume
+        
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
     

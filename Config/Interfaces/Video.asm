@@ -68,10 +68,8 @@ mostrarAvisoResolucao:
     
     hx.syscall limparLinha
     
-    mov esi, msgGeral.mensagemResolucao
-    
-    imprimirString
-    
+    fputs msgGeral.mensagemResolucao
+        
     ret 
 
 ;;************************************************************************************
@@ -119,9 +117,7 @@ mostrarLogoSistema:
 
     hx.syscall definirCor
 
-    mov esi, msgGeral.marcaRegistrada
-
-    imprimirString
+    fputs msgGeral.marcaRegistrada
     
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]

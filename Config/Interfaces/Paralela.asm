@@ -68,22 +68,19 @@ match =SIM, VERBOSE
     hx.syscall definirCor
     
     mov al, 0
+
     hx.syscall limparLinha
     
-    mov esi, TITULO.portaParalela
-    
-    imprimirString
-    
+    fputs TITULO.portaParalela
+        
     mov al, byte[maxLinhas]     ;; Última linha
     
     dec al
     
     hx.syscall limparLinha
     
-    mov esi, RODAPE.portaParalela
-    
-    imprimirString
-    
+    fputs RODAPE.portaParalela
+        
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
@@ -98,33 +95,25 @@ match =SIM, VERBOSE
     
     cursorPara 02, 02
     
-    mov esi, msgPortaParalela.introducao
-    
-    imprimirString
-    
+    fputs msgPortaParalela.introducao
+        
     cursorPara 02, 03
     
-    mov esi, msgPortaParalela.introducao2
-    
-    imprimirString
-    
+    fputs msgPortaParalela.introducao2
+        
 .infoParalela:
 
     cursorPara 04, 06
     
-    mov esi, msgPortaParalela.impressoraPadrao
+    fputs msgPortaParalela.impressoraPadrao
   
-    imprimirString  
-
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
     
     hx.syscall definirCor
     
-    mov esi, portasParalelas.imp0
-    
-    imprimirString
-    
+    fputs portasParalelas.imp0
+        
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
     

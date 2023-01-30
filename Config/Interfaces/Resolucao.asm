@@ -61,21 +61,18 @@ mostrarInterfaceConfigResolucao:
     hx.syscall definirCor
     
     mov al, 0
+
     hx.syscall limparLinha
     
-    mov esi, TITULO.resolucao
-    
-    imprimirString
-    
+    fputs TITULO.resolucao
+        
     mov al, byte[maxLinhas]     ;; Última linha
     
     dec al
     
     hx.syscall limparLinha
     
-    mov esi, RODAPE.resolucao
-    
-    imprimirString
+    fputs RODAPE.resolucao
     
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
@@ -93,34 +90,24 @@ mostrarInterfaceConfigResolucao:
     
     cursorPara 02, 02
     
-    mov esi, msgResolucao.introducao
-    
-    imprimirString
-    
+    fputs msgResolucao.introducao
+        
     cursorPara 02, 03
     
-    mov esi, msgResolucao.introducao2
-    
-    imprimirString
-    
+    fputs msgResolucao.introducao2
+        
     cursorPara 02, 06
     
-    mov esi, msgResolucao.inserir
-    
-    imprimirString
-    
+    fputs msgResolucao.inserir
+        
     cursorPara 04, 08
     
-    mov esi, msgResolucao.opcao1
-    
-    imprimirString
-    
+    fputs msgResolucao.opcao1
+        
     cursorPara 04, 09
     
-    mov esi, msgResolucao.opcao2
-    
-    imprimirString
-    
+    fputs msgResolucao.opcao2
+        
     mov ah, byte[alterado]
     
     cmp byte ah, 1
@@ -169,19 +156,15 @@ mostrarInterfaceConfigResolucao:
     
     hx.syscall definirCursor
     
-    mov esi, msgResolucao.resolucaoAlterada
-    
-    imprimirString
-    
+    fputs msgResolucao.resolucaoAlterada
+        
     mov dh, 17
     mov dl, 02
     
     hx.syscall definirCursor
     
-    mov esi, msgResolucao.alterado
-    
-    imprimirString
-    
+    fputs msgResolucao.alterado
+        
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
@@ -199,6 +182,7 @@ match =SIM, VERBOSE
 }
 
     mov eax, 1
+
     hx.syscall definirResolucao
     
     hx.syscall obterInfoTela
@@ -253,18 +237,14 @@ exibirResolucao:
     
 .modoGrafico1:
 
-    mov esi, msgResolucao.modo1
+    fputs msgResolucao.modo1
     
-    imprimirString
-
     ret
     
 .modoGrafico2:
 
-    mov esi, msgResolucao.modo2
+    fputs msgResolucao.modo2
     
-    imprimirString
-
    ret  
     
 alterado: dd 0  

@@ -63,20 +63,16 @@ mostrarInterfaceInfo:
     mov al, 0
     hx.syscall limparLinha
     
-    mov esi, TITULO.info
-    
-    imprimirString
-    
+    fputs TITULO.info
+        
     mov al, byte[maxLinhas]     ;; Última linha
     
     dec al
     
     hx.syscall limparLinha
     
-    mov esi, RODAPE.info
-    
-    imprimirString
-    
+    fputs RODAPE.info
+        
     call definirCorTema
     
     call mostrarAvisoResolucao
@@ -89,32 +85,24 @@ mostrarInterfaceInfo:
 
     call definirCorTema
     
-    mov esi, msgInfo.introducao
+    fputs msgInfo.introducao
     
-    imprimirString  
-
     call definirCorPadrao
     
     cursorPara 18, 04
     
-    mov esi, msgInfo.nomeSistema
-    
-    imprimirString
-    
+    fputs msgInfo.nomeSistema
+        
     call definirCorTema
     
-    mov esi, nomeSistema
-    
-    imprimirString
-    
+    fputs nomeSistema
+        
     call definirCorPadrao
 
     cursorPara 18, 05
     
-    mov esi, msgInfo.versaoSistema
-    
-    imprimirString
-    
+    fputs msgInfo.versaoSistema
+        
     call definirCorTema
     
     call imprimirVersao
@@ -127,9 +115,7 @@ mostrarInterfaceInfo:
 
     hx.syscall imprimirCaractere
 
-    mov esi, codigoObtido
-
-    imprimirString
+    fputs codigoObtido
 
     mov al, ']'
 
@@ -139,51 +125,37 @@ mostrarInterfaceInfo:
 
     cursorPara 18, 06
     
-    mov esi, msgInfo.buildSistema
-    
-    imprimirString
-    
+    fputs msgInfo.buildSistema
+        
     call definirCorTema
     
-    mov esi, buildObtida
-    
-    imprimirString
-    
+    fputs buildObtida
+        
     call definirCorPadrao
 
     cursorPara 18, 07
     
-    mov esi, msgInfo.tipoSistema
-    
-    imprimirString
-    
+    fputs msgInfo.tipoSistema
+        
     call definirCorTema
 
-    mov esi, msgInfo.modeloSistema
-    
-    imprimirString
-    
+    fputs msgInfo.modeloSistema
+        
     call definirCorPadrao
 
     cursorPara 18, 08
  
-    mov esi, msgInfo.pacoteAtualizacoes
-    
-    imprimirString
-    
+    fputs msgInfo.pacoteAtualizacoes
+        
     call definirCorTema
     
-    mov esi, pacoteAtualizacoes
-    
-    imprimirString
-    
+    fputs pacoteAtualizacoes
+        
     mov al, ' '
     
     hx.syscall imprimirCaractere
     
-    mov esi, dataHora
-
-    imprimirString
+    fputs dataHora
 
     call definirCorPadrao
 
@@ -191,10 +163,8 @@ mostrarInterfaceInfo:
 
     cursorPara 18, 09
  
-    mov esi, msgInfo.Hexagon
+    fputs msgInfo.Hexagon
     
-    imprimirString
-
     call definirCorTema
     
     hx.syscall retornarVersao
@@ -204,10 +174,8 @@ mostrarInterfaceInfo:
     
     imprimirInteiro
     
-    mov esi, msgInfo.ponto
-    
-    imprimirString
-    
+    fputs msgInfo.ponto
+        
     pop eax
     
     imprimirInteiro
@@ -219,10 +187,8 @@ mostrarInterfaceInfo:
 
     push ecx
 
-    mov esi, msgInfo.ponto
-    
-    imprimirString
-    
+    fputs msgInfo.ponto
+        
     pop ecx 
     
     mov al, ch
@@ -237,56 +203,42 @@ mostrarInterfaceInfo:
 
     cursorPara 18, 11
     
-    mov esi, nomeSistema
-    
-    imprimirString
- 
+    fputs nomeSistema
+     
     call definirCorTema
 
 ;; Exibir licenciamento
 
     cursorPara 18, 13
     
-    mov esi, msgInfo.licenciado
-
-    imprimirString
+    fputs msgInfo.licenciado
 
     call definirCorPadrao
     
     cursorPara 18, 15
 
-    mov esi, msgInfo.copyrightAndromeda
-    
-    imprimirString
-    
+    fputs msgInfo.copyrightAndromeda
+        
     cursorPara 18, 16
     
-    mov esi, msgInfo.direitosReservados
-    
-    imprimirString
-    
+    fputs msgInfo.direitosReservados
+        
     cursorPara 28, 18
     
     call definirCorTema
     
-    mov esi, msgInfo.introducaoHardware
-    
-    imprimirString
-    
+    fputs msgInfo.introducaoHardware
+        
     call definirCorPadrao
     
     cursorPara 02, 20
     
-    mov esi, msgInfo.processadorPrincipal
+    fputs msgInfo.processadorPrincipal
     
-    imprimirString
-
     cursorPara 04, 22
 
-    mov esi, msgInfo.numProcessador
+    fputs msgInfo.numProcessador
     
-    imprimirString
-
     call definirCorTema
 
     call exibirProcessadorInstalado
@@ -295,16 +247,12 @@ mostrarInterfaceInfo:
 
     cursorPara 08, 23
 
-    mov esi, msgInfo.operacaoProcessador
-    
-    imprimirString
+    fputs msgInfo.operacaoProcessador
     
     cursorPara 02, 25
 
-    mov esi, msgInfo.memoriaDisponivel
-    
-    imprimirString
-    
+    fputs msgInfo.memoriaDisponivel
+        
     call definirCorTema
     
     hx.syscall usoMemoria
@@ -315,10 +263,8 @@ mostrarInterfaceInfo:
     
     call definirCorPadrao
     
-    mov esi, msgInfo.kbytes
-    
-    imprimirString
-    
+    fputs msgInfo.kbytes
+        
 .obterTeclas:
 
     hx.syscall aguardarTeclado

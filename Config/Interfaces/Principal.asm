@@ -61,11 +61,10 @@ mostrarInterfacePrincipal:
     hx.syscall definirCor
     
     mov al, 0
+
     hx.syscall limparLinha
     
-    mov esi, TITULO.inicio
-    
-    imprimirString
+    fputs TITULO.inicio
     
     mov al, byte[maxLinhas]     ;; Última linha
     
@@ -73,10 +72,8 @@ mostrarInterfacePrincipal:
     
     hx.syscall limparLinha
     
-    mov esi, RODAPE.inicio
-    
-    imprimirString
-    
+    fputs RODAPE.inicio
+        
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
@@ -93,87 +90,62 @@ mostrarInterfacePrincipal:
     
     cursorPara 36, 02
 
-    mov esi, msgInicio.introducao
+    fputs msgInicio.introducao
     
-    imprimirString  
-
     cursorPara 18, 04
 
-    mov esi, msgInicio.nomeSistema
+    fputs msgInicio.nomeSistema
+        
+    fputs nomeSistema
     
-    imprimirString
-    
-    mov esi, nomeSistema
-    
-    imprimirString
-
     cursorPara 18, 05
 
-    mov esi, msgInicio.versaoSistema
-    
-    imprimirString
-    
+    fputs msgInicio.versaoSistema
+        
     call imprimirVersao
     
-    mov esi, msgInicio.versao
-    imprimirString
+    fputs msgInicio.versao
 
     cursorPara 18, 06
 
-    mov esi, msgInicio.tipoSistema
+    fputs msgInicio.tipoSistema
     
-    imprimirString
-
     cursorPara 18, 08
 
     call definirCorTema
 
-    mov esi, msgInfo.licenciado
-
-    imprimirString
+    fputs msgInfo.licenciado
 
     call definirCorPadrao
 
     cursorPara 18, 10
 
-    mov esi, msgInicio.copyrightAndromeda
+    fputs msgInicio.copyrightAndromeda
     
-    imprimirString
-
     cursorPara 18, 11
 
-    mov esi, msgInicio.direitosReservados
+    fputs msgInicio.direitosReservados
     
-    imprimirString
-
     cursorPara 24, 13
 
     call definirCorTema
 
-    mov esi, msgInicio.separador
-
-    imprimirString
+    fputs msgInicio.separador
 
     call definirCorPadrao
 
     cursorPara 36, 15
 
-    mov esi, msgInicio.sobrePC
+    fputs msgInicio.sobrePC
     
-    imprimirString
-
     cursorPara 02, 17
 
-    mov esi, msgInicio.processadorPrincipal
+    fputs msgInicio.processadorPrincipal
     
-    imprimirString
-
     cursorPara 04, 19
 
-    mov esi, msgInicio.numProcessador
+    fputs msgInicio.numProcessador
     
-    imprimirString
-
     call definirCorTema
 
     call exibirProcessadorInstalado
@@ -182,16 +154,12 @@ mostrarInterfacePrincipal:
 
     cursorPara 08, 20
 
-    mov esi, msgInicio.operacaoProcessador
-    
-    imprimirString
-    
+    fputs msgInicio.operacaoProcessador
+        
     cursorPara 02, 22
 
-    mov esi, msgInfo.memoriaDisponivel
-    
-    imprimirString
-    
+    fputs msgInfo.memoriaDisponivel
+        
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
@@ -208,10 +176,8 @@ mostrarInterfacePrincipal:
 
     hx.syscall definirCor
     
-    mov esi, msgInfo.kbytes
-    
-    imprimirString
-    
+    fputs msgInfo.kbytes
+        
 .obterTeclas:
 
     hx.syscall aguardarTeclado

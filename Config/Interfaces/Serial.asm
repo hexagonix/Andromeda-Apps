@@ -68,22 +68,19 @@ match =SIM, VERBOSE
     hx.syscall definirCor
     
     mov al, 0
+
     hx.syscall limparLinha
     
-    mov esi, TITULO.portaSerial
-    
-    imprimirString
-    
+    fputs TITULO.portaSerial
+        
     mov al, byte[maxLinhas]     ;; Última linha
     
     dec al
     
     hx.syscall limparLinha
     
-    mov esi, RODAPE.portaSerial
-    
-    imprimirString
-    
+    fputs RODAPE.portaSerial
+        
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
@@ -98,31 +95,23 @@ match =SIM, VERBOSE
     
     cursorPara 02, 02
     
-    mov esi, msgSerial.introducao
-    
-    imprimirString
-    
+    fputs msgSerial.introducao
+        
     cursorPara 02, 03
     
-    mov esi, msgSerial.introducao2
-    
-    imprimirString
-    
+    fputs msgSerial.introducao2
+        
     cursorPara 04, 04
     
-    mov esi, msgSerial.portaPadrao
-    
-    imprimirString
-    
+    fputs msgSerial.portaPadrao
+        
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
     
     hx.syscall definirCor
     
-    mov esi, portasSeriais.com1
-    
-    imprimirString
-    
+    fputs portasSeriais.com1
+        
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
     
@@ -130,22 +119,16 @@ match =SIM, VERBOSE
     
     cursorPara 04, 05
     
-    mov esi, msgSerial.opcoes
-    
-    imprimirString
-    
+    fputs msgSerial.opcoes
+        
     cursorPara 04, 08
     
-    mov esi, msgSerial.opcoes2
-    
-    imprimirString
-    
+    fputs msgSerial.opcoes2
+        
     cursorPara 04, 09
     
-    mov esi, msgSerial.opcoes3
-    
-    imprimirString
-    
+    fputs msgSerial.opcoes3
+        
     
 .obterTeclas:
 
@@ -199,10 +182,8 @@ match =SIM, VERBOSE
     
     hx.syscall definirCursor
     
-    mov esi, msgSerial.mensagemEnviando
-    
-    imprimirString
-    
+    fputs msgSerial.mensagemEnviando
+        
     mov esi, portasSeriais.com1
     
     hx.syscall abrir
@@ -224,10 +205,8 @@ match =SIM, VERBOSE
     
     hx.syscall definirCor
     
-    mov esi, msgSerial.enviado
-    
-    imprimirString
-    
+    fputs msgSerial.enviado
+        
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
     
@@ -261,36 +240,26 @@ match =SIM, VERBOSE
     
     hx.syscall definirCursor
     
-    mov esi, msgSerial.insiraMensagem
-    
-    imprimirString
-    
-    mov esi, msgSerial.colcheteEsquerdo
-    
-    imprimirString
-    
+    fputs msgSerial.insiraMensagem
+        
+    fputs msgSerial.colcheteEsquerdo
+        
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
     
     hx.syscall definirCor
     
-    mov esi, portasSeriais.com1
-    
-    imprimirString
+    fputs portasSeriais.com1
             
     mov eax,  Andromeda.Estelar.Tema.Fonte.fontePadrao
     mov ebx, dword[corFundo]
     
     hx.syscall definirCor
     
-    mov esi, msgSerial.colcheteDireito
+    fputs msgSerial.colcheteDireito
+        
+    fputs msgSerial.doisPontos
     
-    imprimirString
-    
-    mov esi, msgSerial.doisPontos
-    
-    imprimirString
-
     mov al, byte[maxColunas]        ;; Máximo de caracteres para obter
     sub al, 20
     
@@ -311,10 +280,8 @@ match =SIM, VERBOSE
     
     hx.syscall definirCor
     
-    mov esi, msgSerial.enviado
-    
-    imprimirString
-    
+    fputs msgSerial.enviado
+        
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
     
@@ -335,9 +302,7 @@ match =SIM, VERBOSE
 
 }
 
-    mov esi, msgSerial.erroEnvio
-    
-    imprimirString
+    fputs msgSerial.erroEnvio
 
     jmp mostrarInterfaceSerial.obterTeclas
 
@@ -350,8 +315,6 @@ match =SIM, VERBOSE
 
 }
 
-    mov esi, msgSerial.erroAbertura
+    fputs msgSerial.erroAbertura
     
-    imprimirString
-
     jmp mostrarInterfaceSerial.obterTeclas      

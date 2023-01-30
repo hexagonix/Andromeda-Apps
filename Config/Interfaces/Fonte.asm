@@ -63,20 +63,16 @@ mostrarInterfaceFonte:
     mov al, 0
     hx.syscall limparLinha
     
-    mov esi, TITULO.fonte
-    
-    imprimirString
-    
+    fputs TITULO.fonte
+        
     mov al, byte[maxLinhas]     ;; Última linha
     
     dec al
     
     hx.syscall limparLinha
     
-    mov esi, RODAPE.fonte
-    
-    imprimirString
-    
+    fputs RODAPE.fonte
+        
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
@@ -91,21 +87,15 @@ mostrarInterfaceFonte:
     
     cursorPara 02, 02
 
-    mov esi, msgFonte.introducao
-    
-    imprimirString
-    
+    fputs msgFonte.introducao
+        
     cursorPara 02, 03
     
-    mov esi, msgFonte.introducao2
+    fputs msgFonte.introducao2
     
-    imprimirString
-
     cursorPara 02, 06
     
-    mov esi, msgFonte.solicitarArquivo
-    
-    imprimirString
+    fputs msgFonte.solicitarArquivo
 
 match =SIM, VERBOSE
 {
@@ -165,54 +155,40 @@ match =SIM, VERBOSE
 
     hx.syscall definirCor
 
-    mov esi, msgFonte.sucesso
-    
-    imprimirString
-    
+    fputs msgFonte.sucesso
+        
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
     hx.syscall definirCor
     
-    mov esi, dword[fonte]
-    
-    imprimirString
-    
+    fputs dword[fonte]
+        
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
     hx.syscall definirCor
     
-    mov esi, msgFonte.fechamento
-    
-    imprimirString
-    
-    mov esi, msgFonte.introducaoTeste
-    
-    imprimirString
-    
+    fputs msgFonte.fechamento
+        
+    fputs msgFonte.introducaoTeste
+        
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
 
     hx.syscall definirCor
     
-    mov esi, dword[fonte]
-    
-    imprimirString
-    
+    fputs dword[fonte]
+        
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
     hx.syscall definirCor
     
-    mov esi, msgFonte.ponto
-    
-    imprimirString
-    
-    mov esi, msgFonte.testeFonte
-    
-    imprimirString
-    
+    fputs msgFonte.ponto
+        
+    fputs msgFonte.testeFonte
+        
     jmp .novaLinha
 
 .semArquivo:
@@ -224,9 +200,7 @@ match =SIM, VERBOSE
 
     hx.syscall definirCor
 
-    mov esi, msgFonte.semArquivo
-    
-    imprimirString
+    fputs msgFonte.semArquivo
     
     jmp .novaLinha
 
@@ -246,10 +220,8 @@ match =SIM, VERBOSE
 
     hx.syscall definirCor
     
-    mov esi, msgFonte.arquivoAusente
-    
-    imprimirString
-    
+    fputs msgFonte.arquivoAusente
+        
     jmp .novaLinha
 
 .erroFonte:
@@ -263,10 +235,8 @@ match =SIM, VERBOSE
 
     cursorPara 04, 08
     
-    mov esi, msgFonte.falha
-    
-    imprimirString
-    
+    fputs msgFonte.falha
+        
     jmp .novaLinha
     
 .novaLinha:
