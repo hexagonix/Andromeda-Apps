@@ -98,22 +98,16 @@ inicioAPP:
 
     Andromeda.Estelar.criarInterface fonte.titulo, fonte.rodape, AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
     
-    mov esi, fonte.bannerHexagonix
-
-    imprimirString
+    fputs fonte.bannerHexagonix
 
     Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
     cursorPara 02, 10
     
-    mov esi, fonte.boasVindas
-    
-    imprimirString
-    
-    mov esi, fonte.nomeFonte
-    
-    imprimirString
-    
+    fputs fonte.boasVindas
+        
+    fputs fonte.nomeFonte
+        
     mov al, byte[Andromeda.Interface.numColunas]        ;; Máximo de caracteres para obter
     
     sub al, 20
@@ -132,26 +126,20 @@ inicioAPP:
     
     jc erroFonte
     
-    mov esi, fonte.sucesso
+    fputs fonte.sucesso
     
-    imprimirString
-
     jmp finalizarAPP
     
 erroFonte:
 
-    mov esi, fonte.falha
-        
-    imprimirString
-    
+    fputs fonte.falha
+            
     jmp finalizarAPP
 
 erroFormato:
 
-    mov esi, fonte.falhaFormato
-        
-    imprimirString
-    
+    fputs fonte.falhaFormato
+            
     jmp finalizarAPP
 
 ;;************************************************************************************
@@ -209,10 +197,8 @@ validarFonte:
 
 .erroSemFonte:
     
-    mov esi, fonte.falha
+    fputs fonte.falha
     
-    imprimirString
-
     jmp finalizarAPP
 
 .naoHFNT:
@@ -223,10 +209,8 @@ validarFonte:
 
 .tamanhoSuperior:
 
-    mov esi, fonte.tamanhoSuperior
+    fputs fonte.tamanhoSuperior
     
-    imprimirString
-
     jmp finalizarAPP
 
 ;;************************************************************************************
@@ -235,7 +219,7 @@ validarFonte:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "2.2"
+VERSAO equ "2.2.1"
 
 fonte:
 
