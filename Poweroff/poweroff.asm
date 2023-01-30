@@ -108,30 +108,22 @@ iniciarInterface:
     
     novaLinha
     
-    mov esi, desligar.bannerHexagonix
-
-    imprimirString
+    fputs desligar.bannerHexagonix
 
     Andromeda.Estelar.criarLogotipo INDIGO, BRANCO_ANDROMEDA,\
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
     cursorPara 02, 14
     
-    mov esi, desligar.msgFinalizar
-
-    imprimirString
+    fputs desligar.msgFinalizar
 
     cursorPara 02, 15
 
-    mov esi, desligar.msgReiniciar
-
-    imprimirString
+    fputs desligar.msgReiniciar
     
     cursorPara 02, 17
 
-    mov esi, desligar.msgSair
-
-    imprimirString
+    fputs desligar.msgSair
 
     call obterTeclas
 
@@ -141,9 +133,7 @@ iniciarInterface:
 
     cursorPara 02, 18
 
-    mov esi, desligar.msgDesligamento
-
-    imprimirString
+    fputs desligar.msgDesligamento
 
     mov ecx, 500
     
@@ -154,18 +144,14 @@ iniciarInterface:
 
     hx.syscall definirCor
     
-    mov esi, desligar.msgPronto
-
-    imprimirString
+    fputs desligar.msgPronto
 
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
 
     hx.syscall definirCor
 
-    mov esi, desligar.msgFinalizando
-
-    imprimirString
+    fputs desligar.msgFinalizando
 
     mov ecx, 500
     
@@ -176,18 +162,14 @@ iniciarInterface:
 
     hx.syscall definirCor
     
-    mov esi, desligar.msgPronto
-
-    imprimirString
+    fputs desligar.msgPronto
 
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
 
     hx.syscall definirCor
 
-    mov esi, desligar.msgHexagonix
-
-    imprimirString
+    fputs desligar.msgHexagonix
 
     mov ecx, 500
     
@@ -198,18 +180,14 @@ iniciarInterface:
 
     hx.syscall definirCor
     
-    mov esi, desligar.msgPronto
-
-    imprimirString
+    fputs desligar.msgPronto
 
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
 
     hx.syscall definirCor
 
-    mov esi, desligar.msgDiscos
-
-    imprimirString
+    fputs desligar.msgDiscos
 
     mov ecx, 500
     
@@ -220,9 +198,7 @@ iniciarInterface:
 
     hx.syscall definirCor
     
-    mov esi, desligar.msgPronto
-
-    imprimirString
+    fputs desligar.msgPronto
 
     mov eax, VERMELHO
     mov ebx, dword[Andromeda.Interface.corFundo]
@@ -331,9 +307,7 @@ executarEnergiaReinicio:
 
 falhaEnergia:
 
-    mov esi, desligar.falhaUtilitarioEnergia
-
-    imprimirString
+    fputs desligar.falhaUtilitarioEnergia
 
     hx.syscall aguardarTeclado
 
@@ -352,7 +326,7 @@ Hexagonix_Sair:
 ;;************************************************************************************
 
 ENERGIA equ "shutdown"   
-VERSAO  equ "1.0.3"
+VERSAO  equ "1.0.4"
 
 desligar:
 
