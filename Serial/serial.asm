@@ -97,9 +97,7 @@ inicioAPP:
     
     cursorPara 02, 01
     
-    mov esi, serial.bannerHexagonix
-
-    imprimirString
+    fputs serial.bannerHexagonix
 
     Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
@@ -114,18 +112,12 @@ inicioAPP:
     
     novaLinha
 
-    mov esi, serial.ajuda
+    fputs serial.ajuda
+        
+    fputs serial.prompt
+        
+    fputs serial.separador
     
-    imprimirString
-    
-    mov esi, serial.prompt
-    
-    imprimirString
-    
-    mov esi, serial.separador
-    
-    imprimirString
-
     mov al, byte[Andromeda.Interface.numColunas]        ;; Máximo de caracteres para obter
 
     sub al, 20
@@ -147,14 +139,10 @@ inicioAPP:
     
     hx.syscall definirCor
     
-    mov esi, serial.enviado
-    
-    imprimirString
-    
-    mov esi, serial.prompt
-    
-    imprimirString
-    
+    fputs serial.enviado
+        
+    fputs serial.prompt
+        
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
     
@@ -210,10 +198,8 @@ Andromeda_Sair:
 
 erro:
 
-    mov esi, serial.erroPorta
+    fputs serial.erroPorta
     
-    imprimirString
-
     hx.syscall aguardarTeclado
 
     hx.syscall limparTela
@@ -224,10 +210,8 @@ erro:
 
 erroAbertura:
 
-    mov esi, serial.erroAbertura
+    fputs serial.erroAbertura
     
-    imprimirString
-
     hx.syscall aguardarTeclado
 
     jmp Andromeda_Sair
@@ -238,7 +222,7 @@ erroAbertura:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.0.2"
+VERSAO equ "1.0.3"
 
 serial:
 
