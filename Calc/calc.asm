@@ -92,9 +92,7 @@ inicioAPP:
     VERDE_ESCURO, VERDE_ESCURO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
     
-    mov esi, calc.bannerHexagonix
-
-    imprimirString
+    fputs calc.bannerHexagonix
 
     call mostrarLogoSistema
 
@@ -106,9 +104,7 @@ calcular:
 
 ;; Obter primeiro número
 
-    mov esi, calc.primeiroNumero
-    
-    imprimirString
+    fputs calc.primeiroNumero
     
     call obterNumero
     
@@ -119,9 +115,7 @@ calcular:
 
 ;; Obter segundo número
     
-    mov esi, calc.segundoNumero
-    
-    imprimirString
+    fputs calc.segundoNumero
     
     call obterNumero
     
@@ -132,9 +126,7 @@ calcular:
     
 ;; Perguntar qual operação executar
 
-    mov esi, calc.operacao
-    
-    imprimirString
+    fputs calc.operacao
     
     hx.syscall aguardarTeclado
     
@@ -213,9 +205,7 @@ dividir:
     
 .dividirPorZero:
 
-    mov esi, calc.dividirPorZero
-    
-    imprimirString
+    fputs calc.dividirPorZero
     
     jmp imprimirResposta.proximo
 
@@ -225,10 +215,8 @@ imprimirResposta:
 
     novaLinha
     
-    mov esi, calc.resultado
-    
-    imprimirString
-    
+    fputs calc.resultado
+        
     mov eax, dword[resposta]
     
     imprimirInteiro
@@ -238,9 +226,7 @@ imprimirResposta:
     novaLinha
     novaLinha
 
-    mov esi, calc.solicitarTecla
-    
-    imprimirString
+    fputs calc.solicitarTecla
     
     hx.syscall aguardarTeclado
     
@@ -295,7 +281,7 @@ mostrarLogoSistema:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.6.2"
+VERSAO equ "1.6.3"
 
 calc:
 
