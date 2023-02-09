@@ -82,7 +82,7 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Hexagonix® o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.5.1" 
+versaoDOSsh         equ "0.6.0" 
 compativelHexagonix equ "H2-CURRENT"
                     
 ;;**************************
@@ -90,7 +90,7 @@ compativelHexagonix equ "H2-CURRENT"
 DOSsh:
 
 .extensaoProgramas:  db ".app", 0 ;; Extensão de aplicativos (executáveis Hexagon®)
-.comandoInvalido:    db 10, "Internal command or file not found.", 10, 0
+.comandoInvalido:    db "Internal command or file not found.", 10, 0
 .boasVindas:         db "DOSsh, a DOS-style shell for Hexagonix", 10, 10
                      db "Copyright (C) 2022-", __stringano, " Felipe Miguel Nery Lunkes", 10
                      db "All rights reserved.", 10, 0
@@ -268,11 +268,8 @@ carregarImagem:
     push esi
     
     novaLinha
-    novaLinha
     
     pop esi
-    
-    imprimirString
     
     fputs DOSsh.comandoInvalido
         
