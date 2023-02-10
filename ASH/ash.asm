@@ -89,28 +89,27 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.1.2" 
+versaoASH           equ "4.2.0" 
 compativelHexagonix equ "H2-CURRENT"
                     
 ;;**************************
 
 ash:
 
-.comandoInvalido:    db 10, 10, "[!] Invalid internal command or HAPP format application not found.", 10, 0
-.bannerASH:          db "ASH - Andromeda(R) SHell", 0
-.boasVindas:         db "Welcome to Andromeda(R) SHell - ASH", 10, 10
-                     db "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
-                     db "All rights reserved.", 10, 0
-.versaoHexagonix:    db 10, 10, "Hexagonix(R) Operating System", 10 
-                     db "Version ", 0
-.direitosAutorais:   db 10, 10, "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10   
-                     db "All rights reserved.", 10, 0
-.limiteProcessos:    db 10, 10, "[!] There is no memory available to run the requested application.", 10
-                     db "[!] Try to terminate applications or their instances first, and try again.", 10, 0                    
-.ponto:              db ".", 0
-.imagemInvalida:     db ": unable to load image. Unsupported executable format.", 10, 0
-.prompt:             db "[/]: ", 0
-.licenca:            db 10, "Licenced under BSD-3-Clause.", 10, 0
+.comandoInvalido:  db 10, 10, "[!] Invalid internal command or HAPP format application not found.", 10, 0
+.bannerASH:        db "ASH - Andromeda(R) SHell", 0
+.boasVindas:       db "Welcome to Andromeda(R) SHell - ASH", 10, 10
+                   db "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
+                   db "All rights reserved.", 10, 0
+.versaoHexagonix:  db 10, 10, "Hexagonix(R) Operating System", 10 
+                   db "Version ", 0
+.direitosAutorais: db 10, 10, "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10   
+                   db "All rights reserved.", 10, 0
+.limiteProcessos:  db 10, 10, "[!] There is no memory available to run the requested application.", 10
+                   db "[!] Try to terminate applications or their instances first, and try again.", 10, 0                    
+.imagemInvalida:   db ": unable to load image. Unsupported executable format.", 10, 0
+.prompt:           db "[/]: ", 0
+.licenca:          db 10, "Licenced under BSD-3-Clause.", 10, 0
 
 ;; Verbose 
 
@@ -157,7 +156,7 @@ discos:
 .rotuloVolume:     db 10, 10, "Volume label: ", 0
 .avisoSairdeLinha: db 10, 10, "Warning! This is an obsolete built-in Andromeda SHell command.", 10
                    db "Be aware that it may be removed soon. Use the Unix 'mount' tool instead.", 10
-                   db "You can find the tool's documentation by typing 'man mount' at any time.", 0 
+                   db "You can find documentation for mount using 'man mount' anytime.", 0 
     
 ;;**************************
  
