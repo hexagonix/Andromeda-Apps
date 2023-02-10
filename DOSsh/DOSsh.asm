@@ -82,27 +82,25 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Hexagonix® o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.6.1" 
+versaoDOSsh         equ "0.7.0" 
 compativelHexagonix equ "H2-CURRENT"
                     
 ;;**************************
 
 DOSsh:
 
-.extensaoProgramas:  db ".app", 0 ;; Extensão de aplicativos (executáveis Hexagon®)
-.comandoInvalido:    db "Bad command or filename.", 10, 0
-.boasVindas:         db "DOSsh, a DOS-style shell for Hexagonix", 10, 10
-                     db "Copyright (C) 2022-", __stringano, " Felipe Miguel Nery Lunkes", 10
-                     db "All rights reserved.", 10, 0
+.iniciando:          db 10, "Starting HX-DOS...", 10, 10
+                     db "HX-DOS is testing extended memory... done", 10, 0
+.comandoInvalido:    db "Bad command or filename.", 0
 .direitosAutorais:   db 10, 10, "Copyright (C) 2022-", __stringano, " Felipe Miguel Nery Lunkes", 10   
                      db "All rights reserved.", 10, 0
 .limiteProcessos:    db 10, 10, "There is not enough memory available to run the requested application.", 10
-                     db "Try to terminate applications or their instances first, and try again.", 10, 0                    
+                     db "Try to terminate applications or their instances first, and try again.", 0                    
 .ponto:              db ".", 0
 .imagemInvalida:     db ": unable to load image. Unsupported executable format.", 10, 0
 .prompt:             db "C:/> ", 0
 .erroGeralArquivo:   db 10, "File not found.", 10, 0
-.licenca:            db 10, "Licenced under BSD-3-Clause.", 10, 0
+.licenca:            db 10, "Licenced under BSD-3-Clause.", 0
 .extensaoCOW:        db ".COW",0
 .extensaoMAN:        db ".MAN",0
 .extensaoOCL:        db ".OCL",0
@@ -115,6 +113,12 @@ DOSsh:
 .verboseDireitos:     db "[DOSsh]: All rights reserved.", 0
 .verboseSaida:        db "[DOSsh]: Terminating DOSsh and returning control to the parent process...", 0
 .verboseLimite:       db "[DOSsh]: Memory or process limit reached!", 0
+
+DOSsh.dir:
+
+.dirLinha1:          db 10, 10, "Volume in drive C is ", 0
+.dirLinha2:          db 10, "Volume Serial Number is HXHX-HXHX", 0
+.dirLinha3:          db 10, "Directory of C:\", 10, 10, 0
 
 DOSsh.comandos:
 
@@ -134,7 +138,7 @@ DOSsh.ajuda:
                 db " TYPE - Displays the contents of a file given as a parameter.", 10
                 db " CLS  - Clears the screen (in the case of Hexagonix, the terminal opened at vd0).", 10
                 db " VER  - Displays version information of DOSsh running.", 10
-                db " EXIT - Terminate this DOSsh session.", 10, 10, 0
+                db " EXIT - Terminate this DOSsh session.", 10, 0
              
 ;;**************************
  
@@ -164,20 +168,20 @@ inicioShell:
     hx.syscall limparTela
     
     hx.syscall obterInfoTela
-    
-    novaLinha
 
     mov byte[Andromeda.Interface.numColunas], bl
     mov byte[Andromeda.Interface.numLinhas], bh
 
-    fputs DOSsh.boasVindas
-    
-    novaLinha
+    fputs DOSsh.iniciando
 
 ;;************************************************************************************
 
 obterComando:  
     
+    novaLinha
+
+.semNovaLinha:
+
     fputs DOSsh.prompt
         
     mov al, byte[Andromeda.Interface.numColunas]         ;; Máximo de caracteres para obter
@@ -336,6 +340,20 @@ comandoCLS:
 
 comandoDIR:
     
+    fputs DOSsh.dir.dirLinha1
+
+    hx.syscall obterDisco
+
+    mov esi, edi 
+
+    imprimirString
+
+    fputs DOSsh.dir.dirLinha2
+
+    fputs DOSsh.dir.dirLinha3
+
+.obterListaArquivos:
+
     hx.syscall listarArquivos    ;; Obter arquivos em ESI
     
    ;; jc .erroLista
@@ -417,7 +435,7 @@ comandoDIR:
 
 .terminado:
 
-    jmp obterComando
+    jmp obterComando.semNovaLinha
 
 ;;************************************************************************************
 
@@ -444,8 +462,6 @@ comandoTYPE:
     novaLinha
     
     fputs bufferArquivo
-
-    novaLinha
 
     jmp obterComando
 
