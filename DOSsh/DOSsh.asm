@@ -82,28 +82,27 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Hexagonix® o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.7.0" 
+versaoDOSsh         equ "0.7.1" 
 compativelHexagonix equ "H2-CURRENT"
                     
 ;;**************************
 
 DOSsh:
 
-.iniciando:          db 10, "Starting HX-DOS...", 10, 10
-                     db "HX-DOS is testing extended memory... done", 10, 0
-.comandoInvalido:    db "Bad command or filename.", 0
-.direitosAutorais:   db 10, 10, "Copyright (C) 2022-", __stringano, " Felipe Miguel Nery Lunkes", 10   
-                     db "All rights reserved.", 10, 0
-.limiteProcessos:    db 10, 10, "There is not enough memory available to run the requested application.", 10
-                     db "Try to terminate applications or their instances first, and try again.", 0                    
-.ponto:              db ".", 0
-.imagemInvalida:     db ": unable to load image. Unsupported executable format.", 10, 0
-.prompt:             db "C:/> ", 0
-.erroGeralArquivo:   db 10, "File not found.", 10, 0
-.licenca:            db 10, "Licenced under BSD-3-Clause.", 0
-.extensaoCOW:        db ".COW",0
-.extensaoMAN:        db ".MAN",0
-.extensaoOCL:        db ".OCL",0
+.iniciando:        db 10, "Starting HX-DOS...", 10, 10
+                   db "HX-DOS is testing extended memory... done", 10, 0
+.comandoInvalido:  db "Bad command or filename.", 0
+.direitosAutorais: db 10, 10, "Copyright (C) 2022-", __stringano, " Felipe Miguel Nery Lunkes", 10   
+                   db "All rights reserved.", 10, 0
+.limiteProcessos:  db 10, 10, "There is not enough memory available to run the requested application.", 10
+                   db "Try to terminate applications or their instances first, and try again.", 0                    
+.imagemInvalida:   db ": unable to load image. Unsupported executable format.", 10, 0
+.prompt:           db "C:/> ", 0
+.erroGeralArquivo: db 10, "File not found.", 10, 0
+.licenca:          db 10, "Licenced under BSD-3-Clause.", 0
+.extensaoCOW:      db ".COW",0
+.extensaoMAN:      db ".MAN",0
+.extensaoOCL:      db ".OCL",0
 
 ;; Verbose 
 
@@ -114,25 +113,29 @@ DOSsh:
 .verboseSaida:        db "[DOSsh]: Terminating DOSsh and returning control to the parent process...", 0
 .verboseLimite:       db "[DOSsh]: Memory or process limit reached!", 0
 
+;; Relativo ao comando dir
+
 DOSsh.dir:
 
-.dirLinha1:          db 10, 10, "Volume in drive C is ", 0
-.dirLinha2:          db 10, "Volume Serial Number is HXHX-HXHX", 0
-.dirLinha3:          db 10, "Directory of C:\", 10, 10, 0
+.dirLinha1: db 10, 10, "Volume in drive C is ", 0
+.dirLinha2: db 10, "Volume Serial Number is HXHX-HXHX", 0
+.dirLinha3: db 10, "Directory of C:\", 10, 10, 0
 
 DOSsh.comandos:
 
-.sair:          db "exit",0
-.versao:        db "ver", 0
-.ajuda:         db "help", 0
-.cls:           db "cls", 0
-.dir:           db "dir", 0
-.type:          db "type", 0
+.sair:   db "exit",0
+.versao: db "ver", 0
+.ajuda:  db "help", 0
+.cls:    db "cls", 0
+.dir:    db "dir", 0
+.type:   db "type", 0
+
+;; Relativo aos comandos help e ver
 
 DOSsh.ajuda:
 
-.introducao:    db 10, 10, "DOSsh version ", versaoDOSsh, 10
-                db "Compatible with Hexagonix(R) ", compativelHexagonix, " or superior.", 0
+.introducao:    db 10, 10, "HX-DOS version 6.22", 10
+                db "DOSsh version ", versaoDOSsh, 0
 .conteudoAjuda: db 10, 10, "Internal commands available:", 10, 10
                 db " DIR  - Displays files on the current volume.", 10
                 db " TYPE - Displays the contents of a file given as a parameter.", 10
