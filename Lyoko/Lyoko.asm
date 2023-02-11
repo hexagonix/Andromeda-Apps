@@ -89,7 +89,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "1.5.2" 
+VERSAO        equ "1.5.2.1" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -99,7 +99,7 @@ DIREITOS      equ "All rights reserved."
 Lyoko:
 
 .rodapeNovoArquivo:   db "New file", 0
-.avisoRapido:         db "Lyoko's IDE uses the '", MONTADOR, "' assembler for building applications.", 10
+.avisoRapido:         db "The Lyoko IDE uses the '", MONTADOR, "' assembler for building applications.", 10
                       db "This open source assembler has been ported and is fully compatible with Hexagonix(R).", 10, 10
                       db "You can use keyboard shortcuts to interact with Lyoko.", 10
                       db "Shortcuts are triggered by the Ctrl (Control, ^) key, along with an action indicator key.", 10
