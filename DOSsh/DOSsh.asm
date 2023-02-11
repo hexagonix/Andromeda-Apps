@@ -1,9 +1,9 @@
 ;;************************************************************************************
 ;;
 ;;    
-;; ┌┐ ┌┐                                 sistema Operacional Hexagonix®
+;; ┌┐ ┌┐                                 Sistema Operacional Hexagonix®
 ;; ││ ││
-;; │└─┘├──┬┐┌┬──┬──┬──┬─┐┌┬┐┌┐    Copyright © 2016-2023 Felipe Miguel Nery Lunkes
+;; │└─┘├──┬┐┌┬──┬──┬──┬─┐┌┬┐┌┐    Copyright © 2015-2023 Felipe Miguel Nery Lunkes
 ;; │┌─┐││─┼┼┼┤┌┐│┌┐│┌┐│┌┐┼┼┼┼┘          Todos os direitos reservados
 ;; ││ │││─┼┼┼┤┌┐│└┘│└┘││││├┼┼┐
 ;; └┘ └┴──┴┘└┴┘└┴─┐├──┴┘└┴┴┘└┘
