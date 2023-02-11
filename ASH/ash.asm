@@ -89,14 +89,14 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.2.0" 
+versaoASH           equ "4.2.1" 
 compativelHexagonix equ "H2-CURRENT"
                     
 ;;**************************
 
 ash:
 
-.comandoInvalido:  db 10, 10, "[!] Invalid internal command or HAPP format application not found.", 10, 0
+.comandoInvalido:  db 10, 10, "[!] Invalid internal command or application not found.", 10, 0
 .bannerASH:        db "ASH - Andromeda(R) SHell", 0
 .boasVindas:       db "Welcome to Andromeda(R) SHell - ASH", 10, 10
                    db "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
