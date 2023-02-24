@@ -88,43 +88,46 @@ include "macros.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.0"
+versaoOOBE = "1.1"
 
 OOBE:
 
+.divisoria:
+
+db "****************************************************************************************************", 10, 10, 0
+
 .banner: 
 
-db "88                                                                                88", 10
-db "88                                                                                ''", 10
-db "88", 10
-db "88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8", 10
-db "88P'    '88 a8P     88  `P8, ,8P'  ''     `P8 a8'    `P88 a8'     '8a 88P'   `'88 88  `P8, ,8P'", 10
-db "88       88 8PP'''''''    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(", 10
-db "88       88 '8b,   ,aa  ,d8' '8b,  88,    ,88 '8a,   ,d88 '8a,   ,a8' 88       88 88  ,d8' '8b,", 10
-db "88       88  `'Pbbd8'' 8P'     `P8 `'8bbdP'P8  `'PbbdP'P8  `'PbbdP''  88       88 88 8P'     `P8", 10
-db "                                              aa,    ,88", 10
-db "                                               'P8bbdP'", 10, 10, 0
+db "  88                                                                                88", 10
+db "  88                                                                                ''", 10
+db "  88", 10
+db "  88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8", 10
+db "  88P'    '88 a8P     88  `P8, ,8P'  ''     `P8 a8'    `P88 a8'     '8a 88P'   `'88 88  `P8, ,8P'", 10
+db "  88       88 8PP'''''''    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(", 10
+db "  88       88 '8b,   ,aa  ,d8' '8b,  88,    ,88 '8a,   ,d88 '8a,   ,a8' 88       88 88  ,d8' '8b,", 10
+db "  88       88  `'Pbbd8'' 8P'     `P8 `'8bbdP'P8  `'PbbdP'P8  `'PbbdP''  88       88 88 8P'     `P8", 10
+db "                                                 aa,    ,88", 10
+db "                                                  'P8bbdP'", 10, 10, 0
 
 .mensagemInicial:
 
 db "Welcome to Hexagonix Operating System!", 10, 10
-db "This is the first time we see you around here!", 10, 10
-db "Hexagonix is a Unix-like system built from scratch in x86 Assembly, designed to be light, simple", 10
-db "and fast.", 10, 10
-db "You must be familiar to Unix-like utilities, right? If not, enter the command 'ls' to see the", 10
-db "files and other utilities. Then use 'man utility' to get help on each of the other utilities ", 10
-db "available on the system volume.", 10, 10
-db "It's a pleasure to have you here!", 10
-db "Now let's take you to the login prompt.", 10, 10, 0
-
+db "This is the first time we see you here!", 10, 10
+db "Hexagonix is a Unix-like system built from scratch in x86 Assembly, designed to be light, simple and", 10
+db "fast.", 10, 10
+db "You must be familiar to Unix-like utilities, right? If not, enter the command 'ls' to see the files", 10
+db "and other utilities. Then use 'man utility' to get help on each of the other utilities available on ", 10
+db "the system volume.", 10, 10
+db "It's a pleasure to have you here!", 10, 10, 0
 
 .mensagemFinal:
 
-db "You will no longer see this message on the next restart.", 10, 0
+db "You will no longer see this message on the next restart.", 10, 10
+db "Now let's take you to the login prompt. Press any key to log in.", 10, 10, 0
 
 .deletarManual:
 
-db 10, "An error occurred while removing the OOBE. Remove it manually. For this, enter 'rm oobe'.", 10, 0
+db 10, "An error occurred while removing the OOBE. Remove it manually. For this, enter 'rm oobe'.", 10, 10, 0
 
 .arquivoOOBE: db "oobe", 0
 .root:        db "root", 0
@@ -138,7 +141,11 @@ inicioAPP:
 
     novaLinha
 
+    fputs OOBE.divisoria
+
     fputs OOBE.banner 
+
+    fputs OOBE.divisoria
 
     fputs OOBE.mensagemInicial
 
@@ -161,17 +168,23 @@ inicioAPP:
 
     fputs OOBE.mensagemFinal
 
+    fputs OOBE.divisoria
+
     mov eax, 555 ;; Código de um usuário comum
 
     mov esi, OOBE.jack
     
     hx.syscall definirUsuario
 
+    hx.syscall aguardarTeclado
+
     jmp .terminar
 
 .erroDeletando:
 
     fputs OOBE.deletarManual
+
+    fputs OOBE.divisoria
 
 .terminar:
 
