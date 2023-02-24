@@ -111,9 +111,9 @@ db "Welcome to Hexagonix Operating System!", 10, 10
 db "This is the first time we see you around here!", 10, 10
 db "Hexagonix is a Unix-like system built from scratch in x86 Assembly, designed to be light, simple", 10
 db "and fast.", 10, 10
-db "You must be used to Unix-like utilities, right? If not, enter the command 'ls' to see the files and", 10
-db "other utilities. Then use 'man utility' to get help on each of the other utilities available on the", 10
-db "system volume.", 10, 10
+db "You must be familiar to Unix-like utilities, right? If not, enter the command 'ls' to see the", 10
+db "files and other utilities. Then use 'man utility' to get help on each of the other utilities ", 10
+db "available on the system volume.", 10, 10
 db "It's a pleasure to have you here!", 10
 db "Now let's take you to the login prompt.", 10, 10, 0
 
