@@ -88,7 +88,7 @@ include "macros.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.1"
+versaoOOBE = "1.1.1"
 
 OOBE:
 
@@ -122,7 +122,7 @@ db "It's a pleasure to have you here!", 10, 10, 0
 
 .mensagemFinal:
 
-db "You will no longer see this message on the next restart.", 10, 10
+db "You will no longer see this message on the next boot.", 10, 10
 db "Now let's take you to the login prompt. Press any key to log in.", 10, 10, 0
 
 .deletarManual:
