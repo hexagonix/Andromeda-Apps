@@ -116,8 +116,8 @@ db "This is the first time we see you here!", 10, 10
 db "Hexagonix is a Unix-like system built from scratch in x86 Assembly, designed to be light, simple and", 10
 db "fast.", 10, 10
 db "You must be familiar to Unix-like utilities, right? If not, enter the command 'ls' to see the files", 10
-db "and other utilities. Then use 'man utility' to get help on each of the other utilities available on ", 10
-db "the system volume.", 10, 10
+db "and other utilities. Use 'man utility' to get help on each of the other utilities available on the", 10
+db "system volume.", 10, 10
 db "It's a pleasure to have you here!", 10, 10, 0
 
 .mensagemFinal:
