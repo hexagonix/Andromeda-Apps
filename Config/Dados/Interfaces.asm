@@ -11,10 +11,10 @@
 ;;                                               aa,    ,88                                         
 ;;                                                "P8bbdP"       
 ;;
-;;            Sistema Operacional Hexagonix® - Hexagonix® Operating System            
+;;                    Sistema Operacional Hexagonix® - Hexagonix® Operating System
 ;;
-;;                  Copyright © 2015-2023 Felipe Miguel Nery Lunkes
-;;                Todos os direitos reservados - All rights reserved.
+;;                          Copyright © 2015-2023 Felipe Miguel Nery Lunkes
+;;                        Todos os direitos reservados - All rights reserved.
 ;;
 ;;*************************************************************************************************
 ;;
@@ -77,7 +77,7 @@ msgInicio: ;; Contêm todas as mensagens abaixo
 .versaoSistema:        db "Operating System version: ", 0
 .versao:               db " ", 0
 .tipoSistema:          db "Operating System type: 32-bit Operating System", 0
-.copyrightAndromeda:   db "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 0
+.copyrightAndromeda:   db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
 .direitosReservados:   db "All rights reserved.", 0
 .separador:            db "++++++++++++++++++++++++++++++++++++++++", 0
 .sobrePC:              db "About the device", 0
@@ -108,7 +108,7 @@ msgInfo:
 .tipoSistema:          db "Operating System type:", 0
 .modeloSistema:        db " 32-bit", 10, 0
 .pacoteAtualizacoes:   db "Update package installed: ", 0
-.copyrightAndromeda:   db "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 0
+.copyrightAndromeda:   db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
 .direitosReservados:   db "All rights reserved.", 0
 .introducaoHardware:   db "Hardware information for this device", 0
 .processadorPrincipal: db "Installed processor (considering only the main processor):", 0

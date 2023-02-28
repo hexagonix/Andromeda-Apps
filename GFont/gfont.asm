@@ -11,10 +11,10 @@
 ;;                                               aa,    ,88                                         
 ;;                                                "P8bbdP"       
 ;;
-;;            Sistema Operacional Hexagonix® - Hexagonix® Operating System            
+;;                    Sistema Operacional Hexagonix® - Hexagonix® Operating System
 ;;
-;;                  Copyright © 2015-2023 Felipe Miguel Nery Lunkes
-;;                Todos os direitos reservados - All rights reserved.
+;;                          Copyright © 2015-2023 Felipe Miguel Nery Lunkes
+;;                        Todos os direitos reservados - All rights reserved.
 ;;
 ;;*************************************************************************************************
 ;;
@@ -252,7 +252,7 @@ fonte:
                   db "Press any key to continue...", 10, 10, 0
 .bannerHexagonix: db 10 
                   db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
-                  db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
+                  db "                           Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
                   db "                                         All rights reserved.", 0   
 .titulo:          db "Hexagonix(R) Operating System default font changer utility", 0
 .rodape:          db "[", VERSAO, "] | Use [F1] to cancel loading a new font", 0

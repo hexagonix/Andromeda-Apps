@@ -11,10 +11,10 @@
 ;;                                               aa,    ,88                                         
 ;;                                                "P8bbdP"       
 ;;
-;;            Sistema Operacional Hexagonix® - Hexagonix® Operating System            
+;;                    Sistema Operacional Hexagonix® - Hexagonix® Operating System
 ;;
-;;                  Copyright © 2015-2023 Felipe Miguel Nery Lunkes
-;;                Todos os direitos reservados - All rights reserved.
+;;                          Copyright © 2015-2023 Felipe Miguel Nery Lunkes
+;;                        Todos os direitos reservados - All rights reserved.
 ;;
 ;;*************************************************************************************************
 ;;
@@ -116,11 +116,11 @@ ash:
 .comandoInvalido:  db 10, 10, "[!] Invalid internal command or application not found.", 10, 0
 .bannerASH:        db "ASH - Andromeda(R) SHell", 0
 .boasVindas:       db "Welcome to Andromeda(R) SHell - ASH", 10, 10
-                   db "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
+                   db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
                    db "All rights reserved.", 10, 0
 .versaoHexagonix:  db 10, 10, "Hexagonix(R) Operating System", 10 
                    db "Version ", 0
-.direitosAutorais: db 10, 10, "Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10   
+.direitosAutorais: db 10, 10, "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10   
                    db "All rights reserved.", 10, 0
 .limiteProcessos:  db 10, 10, "[!] There is no memory available to run the requested application.", 10
                    db "[!] Try to terminate applications or their instances first, and try again.", 10, 0                    
@@ -132,7 +132,7 @@ ash:
 
 .verboseEntradaASH:           db "[ASH]: Starting Andromeda SHell (ASH) for Hexagonix ", compativelHexagonix, " or superior.", 0
 .verboseVersaoASH:            db "[ASH]: Andromeda SHell version ", versaoASH, ".", 0
-.verboseAutor:                db "[ASH]: Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes.", 0
+.verboseAutor:                db "[ASH]: Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes.", 0
 .verboseDireitos:             db "[ASH]: All rights reserved.", 0
 .verboseSaida:                db "[ASH]: Terminating the ASH and returning control to the parent process...", 0
 .verboseLimite:               db "[ASH]: [!] Memory or process limit reached!", 0

@@ -11,10 +11,10 @@
 ;;                                               aa,    ,88                                         
 ;;                                                "P8bbdP"       
 ;;
-;;            Sistema Operacional Hexagonix® - Hexagonix® Operating System            
+;;                    Sistema Operacional Hexagonix® - Hexagonix® Operating System
 ;;
-;;                  Copyright © 2015-2023 Felipe Miguel Nery Lunkes
-;;                Todos os direitos reservados - All rights reserved.
+;;                          Copyright © 2015-2023 Felipe Miguel Nery Lunkes
+;;                        Todos os direitos reservados - All rights reserved.
 ;;
 ;;*************************************************************************************************
 ;;
@@ -247,7 +247,7 @@ serial:
 .erroAbertura:    db 10, 10, "Unable to open device for writing.", 10, 0
 .bannerHexagonix: db 10 
                   db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
-                  db "                           Copyright (C) 2016-", __stringano, " Felipe Miguel Nery Lunkes", 10
+                  db "                           Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
                   db "                                         All rights reserved.", 0   
 .ajuda:           db 10, 10, "This application will help you to write data via serial port.", 10, 10, 10, 10, 0
 .prompt:          db "[com1]", 0
