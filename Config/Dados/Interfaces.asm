@@ -95,7 +95,26 @@ msgGeral:
 .msgErro:           db "Error performing the requested operation.", 0
 .msgVersao:         db "You are using a version of Hexagonix(R) that does not support this feature.", 0
 .ponto:             db ".", 0
-.marcaRegistrada:   db "tm", 0
+.logo: 
+db "88                                                                                88", 10
+db "88                                                                                ''", 10
+db "88", 10
+db "88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8", 10
+db "88P'    '88 a8P     88  `P8, ,8P'  ''     `P8 a8'    `P88 a8'     '8a 88P'   `'88 88  `P8, ,8P'", 10
+db "88       88 8PP'''''''    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(", 10
+db "88       88 '8b,   ,aa  ,d8' '8b,  88,    ,88 '8a,   ,d88 '8a,   ,a8' 88       88 88  ,d8' '8b,", 10
+db "88       88  `'Pbbd8'' 8P'     `P8 `'8bbdP'P8  `'PbbdP'P8  `'PbbdP''  88       88 88 8P'     `P8", 10
+db "                                               aa,    ,88", 10
+db "                                                'P8bbdP'", 0
+.logoResumido:
+db "88", 10
+db "88", 10
+db "88", 10
+db "88,dPPPba,", 10
+db "88P'    '88", 10
+db "88       88", 10
+db "88       88", 10
+db "88       88", 0
 
 ;;************************************************************************************
  

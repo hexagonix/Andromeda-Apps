@@ -91,6 +91,26 @@ mostrarAvisoResolucao:
 
 ;;************************************************************************************
 
+mostrarLogoResumido:
+
+    mov eax, corPadraoInterface
+    mov ebx, dword[corFundo]
+
+    hx.syscall definirCor
+    
+    cursorPara 02, 02
+
+    fputs msgGeral.logoResumido
+
+    mov eax, dword[corFonte]
+    mov ebx, dword[corFundo]
+
+    hx.syscall definirCor
+
+    ret 
+
+;;************************************************************************************
+
 mostrarLogoSistema:
 
 ;; Desenhar um bloco de cor específica
@@ -126,15 +146,6 @@ mostrarLogoSistema:
     mov edx, corPadraoInterface ;; Cor
     
     hx.syscall desenharBloco    
-
-    cursorPara 14, 02
-    
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    fputs msgGeral.marcaRegistrada
     
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
