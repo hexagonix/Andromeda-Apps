@@ -85,19 +85,21 @@ cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioAPP, 01h
 
 include "hexagon.s"
 include "macros.s"
+include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.1.1"
+versaoOOBE = "1.2.0"
 
 OOBE:
 
 .divisoria:
 
-db "****************************************************************************************************", 10, 10, 0
+db "****************************************************************************************************", 10, 0
 
 .banner: 
 
+db 10
 db "  88                                                                                88", 10
 db "  88                                                                                ''", 10
 db "  88", 10
@@ -111,7 +113,7 @@ db "                                                  'P8bbdP'", 10, 10, 0
 
 .mensagemInicial:
 
-db "Welcome to Hexagonix Operating System!", 10, 10
+db 10, "Welcome to Hexagonix Operating System!", 10, 10
 db "This is the first time we see you here!", 10, 10
 db "Hexagonix is a Unix-like system built from scratch in x86 Assembly, designed to be light, simple and", 10
 db "fast.", 10, 10
@@ -137,15 +139,25 @@ db 10, "An error occurred while removing the OOBE. Remove it manually. For this,
 
 inicioAPP:
 
+    salvarConsole
+
     hx.syscall limparTela
 
     novaLinha
 
+    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
+
     fputs OOBE.divisoria
+
+    definirCorConsole VERDE_ANDROMEDA, [Lib.Console.corFundo]
 
     fputs OOBE.banner 
 
+    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
+
     fputs OOBE.divisoria
+
+    restaurarCorConsole
 
     fputs OOBE.mensagemInicial
 
@@ -168,7 +180,11 @@ inicioAPP:
 
     fputs OOBE.mensagemFinal
 
+    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
+
     fputs OOBE.divisoria
+
+    restaurarCorConsole
 
     mov eax, 555 ;; Código de um usuário comum
 
@@ -182,9 +198,15 @@ inicioAPP:
 
 .erroDeletando:
 
+    definirCorConsole ROXO_ESCURO, [Lib.Console.corFundo]
+
     fputs OOBE.deletarManual
 
+    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
+
     fputs OOBE.divisoria
+
+    restaurarCorConsole
 
 .terminar:
 
