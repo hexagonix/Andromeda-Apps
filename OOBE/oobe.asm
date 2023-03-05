@@ -89,7 +89,7 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.2.0"
+versaoOOBE = "1.2.5"
 
 OOBE:
 
@@ -114,7 +114,7 @@ db "                                                  'P8bbdP'", 10, 10, 0
 .mensagemInicial:
 
 db 10, "Welcome to Hexagonix Operating System!", 10, 10
-db "This is the first time we see you here!", 10, 10
+db "This must be your first contact with Hexagonix, right?", 10, 10
 db "Hexagonix is a Unix-like system built from scratch in x86 Assembly, designed to be light, simple and", 10
 db "fast.", 10, 10
 db "You must be familiar to Unix-like utilities, right? If not, enter the command 'ls' to see the files", 10
@@ -129,7 +129,7 @@ db "Now let's take you to the login prompt. Press any key to log in.", 10, 10, 0
 
 .deletarManual:
 
-db 10, "An error occurred while removing the OOBE. Remove it manually. For this, enter 'rm oobe'.", 10, 10, 0
+db 10, "An error occurred while removing OOBE. Remove it manually. For this, enter 'rm oobe'.", 10, 10, 0
 
 .arquivoOOBE: db "oobe", 0
 .root:        db "root", 0
@@ -202,12 +202,18 @@ inicioAPP:
 
     fputs OOBE.deletarManual
 
+    fputs OOBE.mensagemFinal
+
     definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
 
     fputs OOBE.divisoria
 
     restaurarCorConsole
 
+    hx.syscall aguardarTeclado
+
 .terminar:
+
+    restaurarConsoleLimpar ;; Macro que restaura o comportamento do console e limpa o terminal
 
     hx.syscall encerrarProcesso
