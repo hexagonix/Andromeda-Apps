@@ -169,7 +169,7 @@ db "to use 'man utility_name' and obtain a manual for using this utility.", 0
 db "In addition to the utilities common to the Unix environment, Hexagonix also comes with a number of", 10
 db "unique applications. These applications present a visual environment different from the traditional", 10
 db "Unix environment. Here you can find a calculator, a settings application, a virtual piano, graphical", 10
-db "shutdown utilities, a powerful text editor and a development environment so you can develop new", 10
+db "shutdown utilities, a powerful text editor and a development environment where you can develop new", 10
 db "utilities for the system.", 10, 10
 db "This environment is referred to in the Hexagonix documentation as the Hexagonix-Andromeda", 10
 db "environment, in case you need this information later or are reading the system documentation.", 0
@@ -187,7 +187,7 @@ db "system repository on GitHub.", 0
 .pagina5:
 
 db "Feel free to contact us to learn more about the system. To do so, use the email", 10
-db "hexagonixdeev@gmail.com, send a message to @HexagonixOS on Twitter or open an Issue in the Hexagonix", 10
+db "hexagonixdev@gmail.com, send a message to @HexagonixOS on Twitter or open an Issue in the Hexagonix", 10
 db "repository at https://github.com/hexagonix/hexagonix. Also, if you are an Assembly developer (or", 10
 db "want to become one), C (to help develop a libc) or even fluent in another language, you can", 10
 db "contribute to Hexagonix! You can also contribute by helping to test the system and report bugs. For", 10
