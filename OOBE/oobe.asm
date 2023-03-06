@@ -89,13 +89,13 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.2.5"
+versaoOOBE = "1.3.0"
 
 OOBE:
 
 .divisoria:
 
-db "****************************************************************************************************", 10, 0
+db "****************************************************************************************************", 0
 
 .banner: 
 
@@ -109,23 +109,107 @@ db "  88       88 8PP'''''''    )888(    ,adPPPPP88 8b       88 8b       d8 88  
 db "  88       88 '8b,   ,aa  ,d8' '8b,  88,    ,88 '8a,   ,d88 '8a,   ,a8' 88       88 88  ,d8' '8b,", 10
 db "  88       88  `'Pbbd8'' 8P'     `P8 `'8bbdP'P8  `'PbbdP'P8  `'PbbdP''  88       88 88 8P'     `P8", 10
 db "                                                 aa,    ,88", 10
-db "                                                  'P8bbdP'", 10, 10, 0
+db "                                                  'P8bbdP'", 10, 0
 
-.mensagemInicial:
+.pag1:
 
-db 10, "Welcome to Hexagonix Operating System!", 10, 10
+db 10
+db "Page 1/6", 10, 10, 0
+
+.pag2:
+
+db 10
+db "Page 2/6", 10, 10, 0
+
+.pag3:
+
+db 10
+db "Page 3/6", 10, 10, 0
+
+.pag4:
+
+db 10
+db "Page 4/6", 10, 10, 0
+
+.pag5:
+
+db 10
+db "Page 5/6", 10, 10, 0
+
+.pag6:
+
+db 10
+db "Page 6/6", 10, 10, 0
+
+.pagina1:
+
+db "Welcome to Hexagonix Operating System!", 10, 10
 db "This must be your first contact with Hexagonix, right?", 10, 10
-db "Hexagonix is a Unix-like system built from scratch in x86 Assembly, designed to be light, simple and", 10
-db "fast.", 10, 10
-db "You must be familiar to Unix-like utilities, right? If not, enter the command 'ls' to see the files", 10
-db "and other utilities. Use 'man utility' to get help on each of the other utilities available on the", 10
-db "system volume.", 10, 10
-db "It's a pleasure to have you here!", 10, 10, 0
+db "Now let's take a quick tour of Hexagonix, its components and utilities.", 10, 10 ;; '
+db "Hexagonix is a system built from scratch, Unix-like and completely developed in x86 Assembly, with", 10
+db "a focus on speed and simplicity. The system aims to be easy to use, fully customizable and simple", 10
+db "to understand and extend. In addition, it is fully documented and lean, which makes it an excellent", 10
+db "choice as a learning tool in operating system development.", 10, 10
+db "Furthermore, Hexagonix and all of its components are free and open source software licensed under", 10
+db "the BSD-3-Clause License. This allows the code to be reused (with due credit and accompanied by", 10
+db "copyright) in other projects, commercial or not, in addition to allowing a wide range of derivative", 10
+db "projects. The license also allows the software to be customized and rebuilt. Feel free to build", 10
+db "your Hexagonix!", 0
+
+.pagina2:
+
+db "As a Unix-like system, you will find in Hexagonix a number of utilities common to this type of", 10
+db "system. Utilities such as sh, ps, top, clear, init, login, cat, cowsay, mount, free and man, among", 10
+db "others, are available in a standard system installation. Its usage syntax is based on the syntax of", 10
+db "FreeBSD utilities. Whenever you are in doubt about the syntax or function of a utility, feel free", 10
+db "to use 'man utility_name' and obtain a manual for using this utility.", 0
+
+.pagina3:
+
+db "In addition to the utilities common to the Unix environment, Hexagonix also comes with a number of", 10
+db "unique applications. These applications present a visual environment different from the traditional", 10
+db "Unix environment. Here you can find a calculator, a settings application, a virtual piano, graphical", 10
+db "shutdown utilities, a powerful text editor and a development environment so you can develop new", 10
+db "utilities for the system.", 10, 10
+db "This environment is referred to in the Hexagonix documentation as the Hexagonix-Andromeda", 10
+db "environment, in case you need this information later or are reading the system documentation.", 0
+
+.pagina4:
+
+db "In addition, Hexagonix comes with a port of the flat assembler (fasm), here called fasm Hexagonix", 10
+db "Edition, or simply fasmx. This assembler is the same one used to build all of Hexagonix, and is used", 10
+db "by the Hexagonix IDE (Lyoko) to generate the executable images of the utilities written by it. In", 10
+db "the root directory of the system, you can find two sample files, gapp.asm and tapp.asm. Feel free to", 10
+db "use fasmx to generate your respective binaries, using 'fasmx gapp.asm' or 'fasmx tapp.asm'. fasm is", 10
+db "available under a free license and its sources (and adaptations for Hexagonix) can be found in the", 10
+db "system repository on GitHub.", 0
+
+.pagina5:
+
+db "Feel free to contact us to learn more about the system. To do so, use the email", 10
+db "hexagonixdeev@gmail.com, send a message to @HexagonixOS on Twitter or open an Issue in the Hexagonix", 10
+db "repository at https://github.com/hexagonix/hexagonix. Also, if you are an Assembly developer (or", 10
+db "want to become one), C (to help develop a libc) or even fluent in another language, you can", 10
+db "contribute to Hexagonix! You can also contribute by helping to test the system and report bugs. For", 10
+db "all this, use the contact channels already mentioned. It will be a pleasure to have more people on", 10
+db "the project!", 0
+
+.pagina6:
+
+db "Tuor is running out :(. When finished, enter an 'ls' in the shell to start exploring the available", 10
+db "utilities. Remember: at any time, you can use 'man utility' to learn more about it. Hope you like", 10
+db "your experience with the system!", 0
+
+.proximaPagina:
+
+db 10, 10
+db "Press any key to go to the next page...", 0
 
 .mensagemFinal:
 
+db 10, 10
 db "You will no longer see this message on the next boot.", 10, 10
-db "Now let's take you to the login prompt. Press any key to log in.", 10, 10, 0
+db "Now let's take you to the login prompt. Press any key to log in.", 10, 10, 0 ;;'
 
 .deletarManual:
 
@@ -141,25 +225,118 @@ inicioAPP:
 
     salvarConsole
 
-    hx.syscall limparTela
+.pagina1:
 
-    novaLinha
+    call exibirBanner
 
-    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
+    definirCorConsole AMARELO_ESCURO, [Lib.Console.corFundo]
 
-    fputs OOBE.divisoria
-
-    definirCorConsole VERDE_ANDROMEDA, [Lib.Console.corFundo]
-
-    fputs OOBE.banner 
-
-    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
-
-    fputs OOBE.divisoria
+    fputs OOBE.pag1
 
     restaurarCorConsole
 
-    fputs OOBE.mensagemInicial
+    fputs OOBE.pagina1
+
+    fputs OOBE.proximaPagina
+
+    call exibirDivisoria
+
+    hx.syscall aguardarTeclado
+
+
+.pagina2:
+
+    call exibirBanner
+
+    definirCorConsole AMARELO_ESCURO, [Lib.Console.corFundo]
+
+    fputs OOBE.pag2
+
+    restaurarCorConsole
+
+    fputs OOBE.pagina2
+
+    fputs OOBE.proximaPagina
+
+    call exibirDivisoria
+
+    hx.syscall aguardarTeclado
+
+.pagina3:
+
+    call exibirBanner
+
+    definirCorConsole AMARELO_ESCURO, [Lib.Console.corFundo]
+
+    fputs OOBE.pag3
+
+    restaurarCorConsole
+
+    fputs OOBE.pagina3
+
+    fputs OOBE.proximaPagina
+
+    call exibirDivisoria
+
+    hx.syscall aguardarTeclado
+
+.pagina4:
+
+    call exibirBanner
+
+    definirCorConsole AMARELO_ESCURO, [Lib.Console.corFundo]
+
+    fputs OOBE.pag4
+
+    restaurarCorConsole
+
+    fputs OOBE.pagina4
+
+    fputs OOBE.proximaPagina
+
+    call exibirDivisoria
+
+    hx.syscall aguardarTeclado
+
+.pagina5:
+
+    call exibirBanner
+
+    definirCorConsole AMARELO_ESCURO, [Lib.Console.corFundo]
+
+    fputs OOBE.pag5
+
+    restaurarCorConsole
+
+    fputs OOBE.pagina5
+    
+    fputs OOBE.proximaPagina
+
+    call exibirDivisoria
+
+    hx.syscall aguardarTeclado
+
+.pagina6:
+
+    call exibirBanner
+
+    definirCorConsole AMARELO_ESCURO, [Lib.Console.corFundo]
+
+    fputs OOBE.pag6
+
+    restaurarCorConsole
+
+    fputs OOBE.pagina6
+    
+    fputs OOBE.proximaPagina
+
+    call exibirDivisoria
+
+    hx.syscall aguardarTeclado
+
+;;************************************************************************************
+
+.removerOOBE:
 
 ;; Vamos logar automaticamente como root para escluir o oobe. Depois, vamos logar
 ;; como um usuário normal, "jack".
@@ -194,7 +371,7 @@ inicioAPP:
 
     hx.syscall aguardarTeclado
 
-    jmp .terminar
+    jmp terminar
 
 .erroDeletando:
 
@@ -212,8 +389,47 @@ inicioAPP:
 
     hx.syscall aguardarTeclado
 
-.terminar:
+;;************************************************************************************
+
+terminar:
 
     restaurarConsoleLimpar ;; Macro que restaura o comportamento do console e limpa o terminal
 
     hx.syscall encerrarProcesso
+
+;;************************************************************************************
+
+exibirBanner:
+
+    hx.syscall limparTela
+
+    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
+
+    fputs OOBE.divisoria
+
+    definirCorConsole VERDE_ANDROMEDA, [Lib.Console.corFundo]
+
+    fputs OOBE.banner 
+
+    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
+
+    fputs OOBE.divisoria
+
+    restaurarCorConsole
+
+    ret
+
+;;************************************************************************************
+
+exibirDivisoria:
+
+    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
+
+    novaLinha
+    novaLinha
+
+    fputs OOBE.divisoria
+
+    restaurarCorConsole
+
+    ret
