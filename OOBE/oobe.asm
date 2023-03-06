@@ -89,7 +89,7 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.3.0"
+versaoOOBE = "1.3.1"
 
 OOBE:
 
@@ -177,12 +177,12 @@ db "environment, in case you need this information later or are reading the syst
 .pagina4:
 
 db "In addition, Hexagonix comes with a port of the flat assembler (fasm), here called fasm Hexagonix", 10
-db "Edition, or simply fasmx. This assembler is the same one used to build all of Hexagonix, and is used", 10
+db "Edition, or simply fasmX. This assembler is the same one used to build all of Hexagonix, and is used", 10
 db "by the Hexagonix IDE (Lyoko) to generate the executable images of the utilities written by it. In", 10
 db "the root directory of the system, you can find two sample files, gapp.asm and tapp.asm. Feel free to", 10
-db "use fasmx to generate your respective binaries, using 'fasmx gapp.asm' or 'fasmx tapp.asm'. fasm is", 10
+db "use fasmX to generate your respective binaries, using 'fasmx gapp.asm' or 'fasmx tapp.asm'. fasm is", 10
 db "available under a free license and its sources (and adaptations for Hexagonix) can be found in the", 10
-db "system repository on GitHub.", 0
+db "system repository on GitHub (https://github.com/hexagonix/fasmX).", 0
 
 .pagina5:
 
