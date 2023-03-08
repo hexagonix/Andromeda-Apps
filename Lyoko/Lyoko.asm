@@ -106,7 +106,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "1.5.2.2" 
+VERSAO        equ "1.5.2.3" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -156,7 +156,7 @@ Lyoko:
 .fecharAviso:         db 10, 10, "Press [ESC] to close this warning.", 10, 0
 .infoLyoko:           db "The name Lyoko comes from a series that marked me a lot in childhood, called Code Lyoko.", 10
                       db "In a way, this series made me fall even more in love with computing and nothing else", 10
-                      db "It's fair to pay a symbolic tribute.", 10, 10
+                      db "It is fair to pay a symbolic tribute.", 10, 10 
                       db "Lyoko was designed to be a simple and easy to use IDE for developing applications", 10
                       db "natives for Hexagonix on the system itself. It is also being used for development", 10
                       db "various components of the operating system itself.", 10
