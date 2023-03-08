@@ -66,6 +66,6 @@
 ;;
 ;; $HexagonixOS$
 
-VERSAOCONFIG             equ "2.4"
-VERSAOFERRAMENTAS        equ "1.4"
+VERSAOCONFIG             equ "2.5"
+VERSAOFERRAMENTAS        equ "1.4.1"
 VERSAODESIGNADAHEXAGONIX equ "H2-CURRENT"
