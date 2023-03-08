@@ -76,7 +76,7 @@ msgInicio: ;; Contêm todas as mensagens abaixo
 .nomeSistema:          db "Operating System name: ", 0        
 .versaoSistema:        db "Operating System version: ", 0
 .versao:               db " ", 0
-.tipoSistema:          db "Operating System type: 32-bit Operating System", 0
+.tipoSistema:          db "Operating System type: 32-bit", 0
 .copyrightAndromeda:   db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
 .direitosReservados:   db "All rights reserved.", 0
 .separador:            db "++++++++++++++++++++++++++++++++++++++++", 0
@@ -132,7 +132,7 @@ msgInfo:
 .introducaoHardware:   db "Hardware information for this device", 0
 .processadorPrincipal: db "Installed processor (considering only the main processor):", 0
 .numProcessador:       db "1) ", 0
-.operacaoProcessador:  db "Processor in 32-bit mode compatible with protected mode", 0
+.operacaoProcessador:  db "Processor in 32-bit protected mode", 0
 .memoriaDisponivel:    db "Total installed memory available: ", 0
 .kbytes:               db " megabytes.", 0
 .Hexagon:              db "Version of Hexagon (kernel): ", 0
@@ -188,17 +188,17 @@ msgFonte:
 .arquivoAusente:   db "The requested file was not found on disk.", 0
 .semArquivo:       db "A filename was not provided. The operation was cancelled.", 0
 .ponto:            db ".", 10, 10, 0
-.testeFonte: db "Hexagonix(R) Operating System", 10, 10
-             db "1234567890-=", 10
-             db "!@#$%^&*()_+", 10
-             db "QWERTYUIOP{}", 10
-             db "qwertyuiop[]", 10
-             db 'ASDFGHJKL:"|', 10
-             db "asdfghjkl;'\", 10
-             db "ZXCVBNM<>?", 10
-             db "zxcvbnm,./", 10, 10
-             db "Hexagonix(R) Operating System", 10, 10, 0
-.falha:      db "The requested file was not found or is not compatible with Hexagonix(R).", 0
+.testeFonte:       db "Hexagonix(R) Operating System", 10, 10
+                   db "1234567890-=", 10
+                   db "!@#$%^&*()_+", 10
+                   db "QWERTYUIOP{}", 10
+                   db "qwertyuiop[]", 10
+                   db 'ASDFGHJKL:"|', 10
+                   db "asdfghjkl;'\", 10
+                   db "ZXCVBNM<>?", 10
+                   db "zxcvbnm,./", 10, 10
+                   db "Hexagonix(R) Operating System", 10, 10, 0
+.falha:            db "The requested file was not found or is not compatible with Hexagonix(R).", 0
 
 ;;************************************************************************************
  
