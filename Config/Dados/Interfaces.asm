@@ -83,7 +83,7 @@ msgInicio: ;; Contêm todas as mensagens abaixo
 .sobrePC:              db "About the device", 0
 .processadorPrincipal: db "Installed processor (considering only the main processor):", 0
 .numProcessador:       db "1) ", 0
-.operacaoProcessador:  db "Processor in 32-bit mode", 0
+.operacaoProcessador:  db "Processor in 32-bit protected mode", 0
 .memoriaDisponivel:    db "Total installed memory available: ", 0
 .kbytes:               db " megabytes.", 0
 
