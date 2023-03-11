@@ -142,7 +142,7 @@ include "Interfaces\Serial.asm"
 
 include "Dados\Interfaces.asm"
 
-corPadraoInterface = AZUL_CADET
+corPadraoInterface = MARROM_PERU
 
 ;;************************************************************************************
 
