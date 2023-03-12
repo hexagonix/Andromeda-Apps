@@ -89,7 +89,7 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.3.1"
+versaoOOBE = "1.3.2"
 
 OOBE:
 
@@ -332,8 +332,6 @@ inicioAPP:
 
     call exibirDivisoria
 
-    hx.syscall aguardarTeclado
-
 ;;************************************************************************************
 
 .removerOOBE:
@@ -389,6 +387,8 @@ inicioAPP:
 
     hx.syscall aguardarTeclado
 
+    jmp terminar 
+    
 ;;************************************************************************************
 
 terminar:
