@@ -240,7 +240,7 @@ mostrarInterfaceInfo:
     
     fputs msgInfo.direitosReservados
         
-    cursorPara 28, 18
+    cursorPara 30, 18
     
     call definirCorTema
     

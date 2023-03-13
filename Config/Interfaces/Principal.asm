@@ -105,7 +105,7 @@ mostrarInterfacePrincipal:
 
     call mostrarLogoSistema
     
-    cursorPara 36, 02
+    cursorPara 39, 02
 
     fputs msgInicio.introducao
     
@@ -151,7 +151,7 @@ mostrarInterfacePrincipal:
 
     call definirCorPadrao
 
-    cursorPara 36, 15
+    cursorPara 39, 15
 
     fputs msgInicio.sobrePC
     
