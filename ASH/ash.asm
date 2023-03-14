@@ -106,74 +106,72 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.2.1" 
+versaoASH           equ "4.3.0" 
 compativelHexagonix equ "H2-CURRENT"
                     
 ;;**************************
 
-ash:
+ASH:
 
-.comandoInvalido:  db 10, 10, "[!] Invalid internal command or application not found.", 10, 0
-.bannerASH:        db "ASH - Andromeda(R) SHell", 0
-.boasVindas:       db "Welcome to Andromeda(R) SHell - ASH", 10, 10
-                   db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
-                   db "All rights reserved.", 10, 0
-.versaoHexagonix:  db 10, 10, "Hexagonix(R) Operating System", 10 
-                   db "Version ", 0
-.direitosAutorais: db 10, 10, "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10   
-                   db "All rights reserved.", 10, 0
-.limiteProcessos:  db 10, 10, "[!] There is no memory available to run the requested application.", 10
-                   db "[!] Try to terminate applications or their instances first, and try again.", 10, 0                    
-.imagemInvalida:   db ": unable to load image. Unsupported executable format.", 10, 0
-.prompt:           db "[/]: ", 0
-.licenca:          db 10, "Licenced under BSD-3-Clause.", 10, 0
+.comandoInvalido:   db 10, 10, "[!] Invalid internal command or application not found.", 10, 0
+.bannerASH:         db "ASH - Andromeda(R) SHell", 0
+.boasVindas:        db "Welcome to Andromeda(R) SHell - ASH", 10, 10
+                    db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
+                    db "All rights reserved.", 10, 0
+.versaoHexagonix:   db 10, 10, "Hexagonix(R) Operating System", 10 
+                    db "Version ", 0
+.direitosAutorais:  db 10, 10, "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10   
+                    db "All rights reserved.", 10, 0
+.limiteProcessos:   db 10, 10, "[!] There is no memory available to run the requested application.", 10
+                    db "[!] Try to terminate applications or their instances first, and try again.", 10, 0                    
+.imagemInvalida:    db ": unable to load image. Unsupported executable format.", 10, 0
+.prompt:            db "[/]: ", 0
+.licenca:           db 10, "Licenced under BSD-3-Clause.", 10, 0
 
-;; Verbose 
-
-.verboseEntradaASH:           db "[ASH]: Starting Andromeda SHell (ASH) for Hexagonix ", compativelHexagonix, " or superior.", 0
-.verboseVersaoASH:            db "[ASH]: Andromeda SHell version ", versaoASH, ".", 0
-.verboseAutor:                db "[ASH]: Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes.", 0
-.verboseDireitos:             db "[ASH]: All rights reserved.", 0
-.verboseSaida:                db "[ASH]: Terminating the ASH and returning control to the parent process...", 0
-.verboseLimite:               db "[ASH]: [!] Memory or process limit reached!", 0
-.verboseInterfaceMountAntiga: db "[ASH]: [!!!] Performing manipulation of mount points by obsolete function that will be removed.", 0
+.verboseEntradaASH: db "[ASH]: Starting Andromeda SHell (ASH) for Hexagonix ", compativelHexagonix, " or superior.", 0
+.verboseVersaoASH:  db "[ASH]: Andromeda SHell version ", versaoASH, ".", 0
+.verboseAutor:      db "[ASH]: Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes.", 0
+.verboseDireitos:   db "[ASH]: All rights reserved.", 0
+.verboseSaida:      db "[ASH]: Terminating the ASH and returning control to the parent process...", 0
+.verboseLimite:     db "[ASH]: [!] Memory or process limit reached!", 0
+.verboseInterface:  db "[ASH]: [!!!] Performing manipulation of mount points by obsolete function that will be removed.", 0
 
 ;;**************************
 
-comandos:
+ASH.comandos:
 
-.alterarDisco:  db "ad", 0
-.sair:          db "exit",0
-.versao:        db "ver", 0
-.ajuda:         db "help", 0
+.alterarDisco:      db "ad", 0
+.sair:              db "exit",0
+.versao:            db "ver", 0
+.ajuda:             db "help", 0
 
 ;;**************************
 
-ajuda:
+ASH.ajuda:
 
-.introducao:    db 10, 10, "Andromeda SHell version ", versaoASH, 10
-                db "Compatible with Hexagonix(R) ", compativelHexagonix, " or superior.", 0
-.conteudoAjuda: db 10, 10, "Internal commands available:", 10, 10
-                db " VER  - Displays information about the running ASH version.", 10
-                db " EXIT - Terminate this ASH session.", 10, 0
+.introducao:        db 10, 10, "Andromeda SHell version ", versaoASH, 10
+                    db "Compatible with Hexagonix(R) ", compativelHexagonix, " or superior.", 0
+.conteudoAjuda:     db 10, 10, "Internal commands available:", 10, 10
+                    db " VER  - Displays information about the running ASH version.", 10
+                    db " EXIT - Terminate this ASH session.", 10, 0
              
 ;;**************************
 
-discos:
+ASH.discos:
 
-.hd0:              db "hd0", 0
-.hd1:              db "hd1", 0
-.hd2:              db "hd2", 0
-.hd3:              db "hd3", 0
-.info:             db "info", 0
-.discoAtual:       db 10, 10, "Current volume used by the system: ", 0
-.erroAlterar:      db 10, 10, "A valid volume or parameter was not provided for this command.", 10, 10 
-                   db "Cannot change default volume.", 10, 10
-                   db "Use a device name as an argument or 'info' for current disk information.", 10, 0
-.rotuloVolume:     db 10, 10, "Volume label: ", 0
-.avisoSairdeLinha: db 10, 10, "Warning! This is an obsolete built-in Andromeda SHell command.", 10
-                   db "Be aware that it may be removed soon. Use the Unix 'mount' tool instead.", 10
-                   db "You can find documentation for mount using 'man mount' anytime.", 0 
+.hd0:               db "hd0", 0
+.hd1:               db "hd1", 0
+.hd2:               db "hd2", 0
+.hd3:               db "hd3", 0
+.info:              db "info", 0
+.discoAtual:        db 10, 10, "Current volume used by the system: ", 0
+.erroAlterar:       db 10, 10, "A valid volume or parameter was not provided for this command.", 10, 10 
+                    db "Cannot change default volume.", 10, 10
+                    db "Use a device name as an argument or 'info' for current disk information.", 10, 0
+.rotuloVolume:      db 10, 10, "Volume label: ", 0
+.avisoSairdeLinha:  db 10, 10, "Warning! This is an obsolete built-in Andromeda SHell command.", 10
+                    db "Be aware that it may be removed soon. Use the Unix 'mount' tool instead.", 10
+                    db "You can find documentation for mount using 'man mount' anytime.", 0 
     
 ;;**************************
  
@@ -186,10 +184,10 @@ Andromeda.Interface Andromeda.Estelar.Interface
 
 inicioShell:    
 
-    logSistema ash.verboseEntradaASH, 00h, Log.Prioridades.p4
-    logSistema ash.verboseVersaoASH, 00h, Log.Prioridades.p4
-    logSistema ash.verboseAutor, 00h, Log.Prioridades.p4
-    logSistema ash.verboseDireitos, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseEntradaASH, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseVersaoASH, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseAutor, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseDireitos, 00h, Log.Prioridades.p4
 
 ;; Iniciar a configuração do terminal
 
@@ -209,7 +207,7 @@ inicioShell:
 
     call exibirBannerASH
 
-    fputs ash.boasVindas
+    fputs ASH.boasVindas
 
 ;;************************************************************************************
 
@@ -232,7 +230,7 @@ inicioShell:
     
     pop ecx
     
-    fputs ash.prompt
+    fputs ASH.prompt
         
     mov ecx, 01h
     
@@ -253,7 +251,7 @@ inicioShell:
 
     ;; Comando SAIR
     
-    mov edi, comandos.sair  
+    mov edi, ASH.comandos.sair  
 
     hx.syscall compararPalavrasString
 
@@ -261,7 +259,7 @@ inicioShell:
 
     ;; Comando VER
     
-    mov edi, comandos.versao    
+    mov edi, ASH.comandos.versao    
 
     hx.syscall compararPalavrasString
 
@@ -269,7 +267,7 @@ inicioShell:
 
     ;; Comando AJUDA
     
-    mov edi, comandos.ajuda 
+    mov edi, ASH.comandos.ajuda 
 
     hx.syscall compararPalavrasString
 
@@ -277,7 +275,7 @@ inicioShell:
     
     ;; Comando AD
     
-    mov edi, comandos.alterarDisco
+    mov edi, ASH.comandos.alterarDisco
     
     hx.syscall compararPalavrasString
 
@@ -318,7 +316,7 @@ inicioShell:
     
     pop ecx
     
-    fputs ash.comandoInvalido
+    fputs ASH.comandoInvalido
         
     mov ecx, 01h
     
@@ -348,7 +346,7 @@ inicioShell:
     
     pop ecx
 
-    fputs ash.imagemInvalida
+    fputs ASH.imagemInvalida
         
     mov ecx, 01h
     
@@ -358,7 +356,7 @@ inicioShell:
 
 .limiteAtingido:
 
-    logSistema ash.verboseLimite, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseLimite, 00h, Log.Prioridades.p4
     
     push ecx
     
@@ -371,7 +369,7 @@ inicioShell:
     
     pop ecx
     
-    fputs ash.limiteProcessos
+    fputs ASH.limiteProcessos
         
     mov ecx, 01h
     
@@ -403,7 +401,7 @@ inicioShell:
     
 .comandoAJUDA:
 
-    fputs ajuda.conteudoAjuda
+    fputs ASH.ajuda.conteudoAjuda
         
     jmp .obterComando
 
@@ -425,7 +423,7 @@ inicioShell:
     
     pop ecx
     
-    fputs discos.avisoSairdeLinha
+    fputs ASH.discos.avisoSairdeLinha
 
     mov ecx, 01h
     
@@ -438,31 +436,31 @@ inicioShell:
     
     hx.syscall cortarString
     
-    mov edi, discos.hd0 
+    mov edi, ASH.discos.hd0 
         
     hx.syscall compararPalavrasString
     
     jc .alterarParaHD0
     
-    mov edi, discos.hd1 
+    mov edi, ASH.discos.hd1 
         
     hx.syscall compararPalavrasString    
     
     jc .alterarParaHD1
     
-    mov edi, discos.hd2 
+    mov edi, ASH.discos.hd2 
     
     hx.syscall compararPalavrasString
     
     jc .alterarParaHD2
     
-    mov edi, discos.hd3 
+    mov edi, ASH.discos.hd3 
     
     hx.syscall compararPalavrasString    
     
     jc .alterarParaHD3
     
-    mov edi, discos.info    
+    mov edi, ASH.discos.info    
         
     hx.syscall compararPalavrasString
     
@@ -472,9 +470,9 @@ inicioShell:
 
 .alterarParaHD0:
 
-    logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseInterface, 00h, Log.Prioridades.p4
 
-    mov esi, discos.hd0
+    mov esi, ASH.discos.hd0
     
     hx.syscall abrir
 
@@ -484,9 +482,9 @@ inicioShell:
     
 .alterarParaHD1:
 
-    logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseInterface, 00h, Log.Prioridades.p4
 
-    mov esi, discos.hd1
+    mov esi, ASH.discos.hd1
     
     hx.syscall abrir
 
@@ -496,9 +494,9 @@ inicioShell:
 
 .alterarParaHD2:
 
-    logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseInterface, 00h, Log.Prioridades.p4
     
-    mov esi, discos.hd2
+    mov esi, ASH.discos.hd2
     
     hx.syscall abrir
 
@@ -508,9 +506,9 @@ inicioShell:
 
 .alterarParaHD3:
 
-    logSistema ash.verboseInterfaceMountAntiga, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseInterface, 00h, Log.Prioridades.p4
 
-    mov esi, discos.hd3
+    mov esi, ASH.discos.hd3
     
     hx.syscall abrir
 
@@ -520,13 +518,13 @@ inicioShell:
     
 .erroAlterar:
 
-    fputs discos.erroAlterar
+    fputs ASH.discos.erroAlterar
 
     jmp .obterComando   
     
 .infoDisco:
 
-    fputs discos.discoAtual  
+    fputs ASH.discos.discoAtual  
     
     hx.syscall obterDisco
     
@@ -552,7 +550,7 @@ inicioShell:
     
     call alterarCor
     
-    fputs discos.rotuloVolume
+    fputs ASH.discos.rotuloVolume
         
     push ecx
     
@@ -594,15 +592,15 @@ inicioShell:
     
     pop ecx
     
-    fputs ajuda.introducao
+    fputs ASH.ajuda.introducao
         
     mov ecx, 01h
     
     call alterarCor
     
-    fputs ash.direitosAutorais
+    fputs ASH.direitosAutorais
 
-    fputs ash.licenca
+    fputs ASH.licenca
     
     jmp .obterComando
 
@@ -610,7 +608,7 @@ inicioShell:
     
 .finalizarShell:
 
-    logSistema ash.verboseSaida, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseSaida, 00h, Log.Prioridades.p4
 
     novaLinha
 
@@ -756,7 +754,7 @@ exibirBannerASH:
     
     hx.syscall limparLinha
     
-    fputs ash.bannerASH
+    fputs ASH.bannerASH
     
     mov ecx, 01h
     
