@@ -257,44 +257,44 @@ obterTeclas:
     pop eax
     
     cmp al, 'd'
-    je Hexagonix_Desligar
+    je HexagonixDesligar
     
     cmp al, 'D'
-    je Hexagonix_Desligar
+    je HexagonixDesligar
     
     cmp al, 'r'
-    je Hexagonix_Reiniciar
+    je HexagonixReiniciar
     
     cmp al, 'R'
-    je Hexagonix_Reiniciar
+    je HexagonixReiniciar
     
     cmp al, 's'
-    je Hexagonix_Sair
+    je terminar
     
     cmp al, 'S'
-    je Hexagonix_Sair
+    je terminar
 
     jmp obterTeclas 
     
 ;;************************************************************************************  
     
-Hexagonix_Desligar:
+HexagonixDesligar:
 
     call finalizarSistema
 
     call executarEnergiaDesligamento
 
-    jmp Hexagonix_Sair
+    jmp terminar
 
 ;;************************************************************************************
 
-Hexagonix_Reiniciar:
+HexagonixReiniciar:
 
     call finalizarSistema
 
     call executarEnergiaReinicio
 
-    jmp Hexagonix_Sair
+    jmp terminar
 
 ;;************************************************************************************
 
@@ -328,11 +328,11 @@ falhaEnergia:
 
     hx.syscall aguardarTeclado
 
-    jmp Hexagonix_Sair
+    jmp terminar
 
 ;;************************************************************************************
 
-Hexagonix_Sair:
+terminar:
 
     Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 
@@ -343,7 +343,7 @@ Hexagonix_Sair:
 ;;************************************************************************************
 
 ENERGIA equ "shutdown"   
-VERSAO  equ "1.0.4"
+VERSAO  equ "1.1.0"
 
 desligar:
 
@@ -354,13 +354,13 @@ desligar:
 .energia:                db ENERGIA, 0
 .parametroDesligar:      db "-de", 0 ;; Parâmetro que indica que não deve haver eco
 .parametroReiniciar:     db "-re", 0 ;; Parâmetro que indica que não deve haver eco
-.msgDesligamento:        db 10, 10, "!> Preparing to shut down your computer...  ", 0
+.msgDesligamento:        db 10, 10, "!> Preparing to shutdown your computer...  ", 0
 .msgFinalizando:         db 10, 10, "#> Terminating all processes still running...  ", 0
 .msgHexagonix:           db 10, 10, "#> Shutting down the Hexagonix(R) Operating System...    ", 0
 .msgDiscos:              db 10, 10, "#> Stoping disks and shutting down your computer... ", 0
 .msgReinicio:            db "Rebooting your computes...", 10, 10, 0
 .msgReiniciar:           db "Press [Ctrl-R] to restart your computer.", 10, 0
-.msgFinalizar:           db "Press [Ctrl-D] to shut down your computer.", 10, 0
+.msgFinalizar:           db "Press [Ctrl-D] to shutdown your computer.", 10, 0
 .msgSair:                db "Press [Ctrl-S] or [F1] to return to Hexagonix(R)", 0
 .msgPronto:              db "[Done]", 0
 .msgFalha:               db "[Fail]", 0
