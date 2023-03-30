@@ -68,6 +68,8 @@
 #
 # $HexagonixOS$
 
+# Versão 2.0
+
 gerarBaseGrafica(){
 
 echo
@@ -89,15 +91,13 @@ do
 
     echo -en "Building Hexagonix® graphical application \e[1;94m$(basename $h .asm)\e[0m..."
     
-    echo Building Hexagonix® Unix Utility $(basename $h .asm)... >> $LOG
+    echo " > Building Hexagonix® graphical application $(basename $h .asm)..." >> ../$LOG
     
-    echo >> $LOG
-    
-    fasm $h ../../../Andromeda/bin/`basename $h .asm` -d $BANDEIRAS >> $LOG || desmontar
+    fasm $h ../../../Andromeda/bin/`basename $h .asm` -d $BANDEIRAS >> ../$LOG || desmontar
     
     echo -e " [\e[32mOk\e[0m]"
     
-    echo >> $LOG
+    echo >> ../$LOG
 
     done
 
@@ -106,19 +106,14 @@ cd ..
 done
 
 echo
-echo -e "} [\e[32mHexagonix applications built successfully\e[0m]."
+echo -e "} [\e[32mHexagonix graphical applications built successfully\e[0m]."
 echo
 
-
-}
-
-hexagonix()
-{
-
-export DESTINO="../../Hexagonix"
-#export BANDEIRAS="UNIX=SIM -d TIPOLOGIN=UNIX -d VERBOSE=SIM"
-
-gerarBaseGrafica
+echo >> $LOG
+echo -e "} Hexagonix graphical applications built successfully." >> $LOG
+echo >> $LOG
+echo "----------------------------------------------------------------------" >> $LOG
+echo >> $LOG
 
 }
 
@@ -146,8 +141,8 @@ exit
     
 }
 
-export LOG="/dev/null"
-export DESTINO="../../Andromeda"
+export LOG="../../log.log"
+export DESTINO="../../$1"
 
 case $1 in
 
