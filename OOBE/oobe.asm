@@ -83,7 +83,7 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.3.2"
+versaoOOBE = "1.4.0"
 
 OOBE:
 
@@ -203,7 +203,7 @@ db "Press any key to go to the next page...", 0
 
 db 10, 10
 db "You will no longer see this message on the next boot.", 10, 10
-db "Now let's take you to the login prompt. Press any key to log in.", 10, 10, 0 ;;'
+db "Now we need to restart the device. Press any key to restart...", 10, 10, 0 ;;'
 
 .deletarManual:
 
@@ -363,7 +363,7 @@ inicioAPP:
 
     hx.syscall aguardarTeclado
 
-    jmp terminar
+    jmp reiniciar
 
 .erroDeletando:
 
@@ -381,7 +381,7 @@ inicioAPP:
 
     hx.syscall aguardarTeclado
 
-    jmp terminar 
+    jmp reiniciar 
     
 ;;************************************************************************************
 
@@ -390,6 +390,14 @@ terminar:
     restaurarConsoleLimpar ;; Macro que restaura o comportamento do console e limpa o terminal
 
     hx.syscall encerrarProcesso
+
+;;************************************************************************************
+
+reiniciar:
+
+    restaurarConsoleLimpar ;; Macro que restaura o comportamento do console e limpa o terminal
+
+    hx.syscall reiniciarPC
 
 ;;************************************************************************************
 
