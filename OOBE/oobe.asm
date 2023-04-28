@@ -330,7 +330,7 @@ inicioAPP:
 
 .removerOOBE:
 
-;; Vamos logar automaticamente como root para escluir o oobe. Depois, vamos logar
+;; Vamos logar automaticamente como root para excluir o oobe. Depois, vamos logar
 ;; como um usuário normal, "jack".
 
 .root:
