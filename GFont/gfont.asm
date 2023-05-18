@@ -230,39 +230,52 @@ validarFonte:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "2.2.1"
+VERSAO equ "2.2.2"
 
 fonte:
 
-.boasVindas:      db 10, 10, "Use this program to change the default system display font.", 10, 10
-                  db "Remember that only fonts designed for Hexagonix(R) can be used.", 10, 10, 10, 10, 0
-.nomeArquivo:     db 10, "Font file name: ", 0    
-.nomeFonte:       db "Filename: ", 0
-.sucesso:         db 10, 10, "Font changed successfully.", 10, 10
-                  db "Press any key to continue...", 10, 10, 0
-.falha:           db 10, 10, "The file cannot be found.", 10, 10
-                  db 10, 10, "Press any key to continue...", 10, 10, 0
-.falhaFormato:    db 10, 10, "The provided file does not contain a font in Hexagon(R) format.", 10, 10
-                  db "Press any key to continue...", 10, 10, 0
-.bannerHexagonix: db 10 
-                  db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
-                  db "                           Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
-                  db "                                         All rights reserved.", 0   
-.titulo:          db "Hexagonix(R) Operating System default font changer utility", 0
-.rodape:          db "[", VERSAO, "] | Use [F1] to cancel loading a new font", 0
-.introducaoTeste: db 10, "Font and character layout preview: ", 0
-.testeFonte:      db "Hexagonix(R) Operating System", 10, 10
-                  db "1234567890-=", 10
-                  db "!@#$%^&*()_+", 10
-                  db "QWERTYUIOP{}", 10
-                  db "qwertyuiop[]", 10
-                  db 'ASDFGHJKL:"|', 10
-                  db "asdfghjkl;'\", 10
-                  db "ZXCVBNM<>?", 10
-                  db "zxcvbnm,./", 10, 10
-                  db "Hexagonix(R) Operating System", 10, 0
-.modoTexto:       db 0
-.tamanhoSuperior: db 10, 10, "This font file exceeds the maximum size of 2 Kb.", 10, 0
+.boasVindas:
+db 10, 10, "Use this program to change the default system display font.", 10, 10
+db "Remember that only fonts designed for Hexagonix(R) can be used.", 10, 10, 10, 10, 0
+.nomeArquivo:
+db 10, "Font file name: ", 0    
+.nomeFonte:
+db "Filename: ", 0
+.sucesso:
+db 10, 10, "Font changed successfully.", 10, 10
+db "Press any key to continue...", 10, 10, 0
+.falha:
+db 10, 10, "The file cannot be found.", 10, 10
+db 10, 10, "Press any key to continue...", 10, 10, 0
+.falhaFormato:
+db 10, 10, "The provided file does not contain a font in Hexagon(R) format.", 10, 10
+db "Press any key to continue...", 10, 10, 0
+.bannerHexagonix:
+db 10 
+db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
+db "                           Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
+db "                                         All rights reserved.", 0   
+.titulo:
+db "Hexagonix(R) Operating System default font changer utility", 0
+.rodape:
+db "[", VERSAO, "] | Use [F1] to cancel loading a new font", 0
+.introducaoTeste:
+db 10, "Font and character layout preview: ", 0
+.testeFonte:
+db "Hexagonix(R) Operating System", 10, 10
+db "1234567890-=", 10
+db "!@#$%^&*()_+", 10
+db "QWERTYUIOP{}", 10
+db "qwertyuiop[]", 10
+db 'ASDFGHJKL:"|', 10
+db "asdfghjkl;'\", 10
+db "ZXCVBNM<>?", 10
+db "zxcvbnm,./", 10, 10
+db "Hexagonix(R) Operating System", 10, 0
+.modoTexto:
+db 0
+.tamanhoSuperior:
+db 10, 10, "This font file exceeds the maximum size of 2 Kb.", 10, 0
 
 linhaComando:     dd 0
 arquivoFonte:     dd ?
