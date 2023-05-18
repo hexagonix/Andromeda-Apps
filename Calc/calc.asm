@@ -292,31 +292,41 @@ mostrarLogoSistema:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.6.3"
+VERSAO equ "1.6.4"
 
 calc:
 
-.dividirPorZero:  db "Division by zero not allowed!", 0
-.primeiroNumero:  db "Enter the first number (0 to exit): ", 0
-.segundoNumero:   db "Enter the second number (0 to exit): ", 0
-.operacao:        db 10, "Enter the operation code, according to the list below:", 10, 10    
-                  db "[0] SUM (+)", 10
-                  db "[1] SUB  (-)", 10
-                  db "[2] MUL  (*)", 10
-                  db "[3] DIV  (/)", 10
-                  db "[4] EXIT", 10
-                  db 10, "Option: ", 0 
-.resultado:       db 10, 10, "The result is = ", 0
-.solicitarTecla:  db 10, 10, "Press any key to continue...", 10, 10, 0
+.dividirPorZero:
+db "Division by zero not allowed!", 0
+.primeiroNumero:
+db "Enter the first number (0 to exit): ", 0
+.segundoNumero:
+db "Enter the second number (0 to exit): ", 0
+.operacao:
+db 10, "Enter the operation code, according to the list below:", 10, 10    
+db "[0] SUM (+)", 10
+db "[1] SUB  (-)", 10
+db "[2] MUL  (*)", 10
+db "[3] DIV  (/)", 10
+db "[4] EXIT", 10
+db 10, "Option: ", 0 
+.resultado:
+db 10, 10, "The result is = ", 0
+.solicitarTecla:
+db 10, 10, "Press any key to continue...", 10, 10, 0
 
-.bannerHexagonix: db 10, 10   
-                  db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
-                  db "                           Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
-                  db "                                         All rights reserved.", 0              
-.marcaRegistrada: db "tm", 0
+.bannerHexagonix:
+db 10, 10   
+db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
+db "                           Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
+db "                                         All rights reserved.", 0              
+.marcaRegistrada:
+db "tm", 0
 
-.titulo:          db "Hexagonix(R) Operating System Basic Calculator",0
-.rodape:          db "[", VERSAO, "] | [F1] Exit",0
+.titulo:
+db "Hexagonix(R) Operating System Basic Calculator",0
+.rodape:
+db "[", VERSAO, "] | [F1] Exit",0
 
 primeiroNumero:   dd 0
 segundoNumero:    dd 0
