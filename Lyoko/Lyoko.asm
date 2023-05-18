@@ -100,7 +100,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "1.5.2.3" 
+VERSAO        equ "1.5.2.4" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -109,64 +109,89 @@ DIREITOS      equ "All rights reserved."
 
 Lyoko:
 
-.rodapeNovoArquivo:   db "New file", 0
-.avisoRapido:         db "Lyoko uses the '", MONTADOR, "' assembler for building applications.", 10
-                      db "This open source assembler has been ported and is fully compatible with Hexagonix(R).", 10, 10
-                      db "You can use keyboard shortcuts to interact with Lyoko.", 10
-                      db "Shortcuts are triggered by the Ctrl (Control, ^) key, along with an action indicator key.", 10
-                      db "These key combinations can be (the Ctrl key represented by ^):", 10, 10
-                      db " [^A] - Requests to open a previously saved file on disk.", 10
-                      db " [^S] - Request to save changes to a file on disk.", 10
-                      db " [^F] - Close Lyoko after saving confirmation.", 10
-                      db " [^M] - Call '", MONTADOR, "' assembler to build the executable image.", 10
-                      db " [^V] - Version information and more about Lyoko.", 10, 10
-                      db "After building an image, you will receive the operation status directly on the screen and, if all", 10
-                      db "is correct, you will find the image with the .app extension on the disk containing your application.", 10
-                      db "You can use the 'lshapp' tool to verify image information if necessary.", 10
-                      db "To learn more about the information the utility can provide when analyzing an image,", 10
-                      db "see manual ('man lshapp') or use 'lshapp ?'.", 0
-.formato:             db "UTF-8", 0
-.formatoFimLinha:     db "LF", 0
-.virgula:             db ", ", 0
-.separador:           db " | ", 0
-.rodapePrograma:      db "[^F] Exit | [^A] Open | [^S] Save | [^M] Assemble", 0
-.linha:               db "Line: ", 0
-.coluna:              db "Column: ", 0
-.arquivoSalvo:        db "File saved", 0
-.solicitarArquivo:    db "File name [ENTER to cancel]: ", 0
-.permissaoNegada:     db "Only an administrative user can change this file."
-                      db " Press any key to continue...", 0
-.erroDeletando:       db "Error updating file.", 0
-.tituloPrograma:      db "Lyoko - An IDE for Hexagonix(R) - Version ", VERSAO, 0
-.fasmX:               db MONTADOR, 0
-.semFonte:            db "No source file specified. Try saving your file to disk first.", 10, 10
-                      db 0
-.avisoSalvamento:     db "The contents of the file have been changed and not saved. This may lead to data loss.", 10, 10
-                      db "Do you want to save your changes to the file? (Y/n)", 10, 0
-.saida:               db "appX.app", 0
-.tamanhoLinha:        dd 0
-.identificador:       db "| File:               ", 0
-.nomeMontador:        db "| ", MONTADOR, 0
-.fecharAviso:         db 10, 10, "Press [ESC] to close this warning.", 10, 0
-.infoLyoko:           db "The name Lyoko comes from a series that marked me a lot in childhood, called Code Lyoko.", 10
-                      db "In a way, this series made me fall even more in love with computing and nothing else", 10
-                      db "It is fair to pay a symbolic tribute.", 10, 10 
-                      db "Lyoko was designed to be a simple and easy to use IDE for developing applications", 10
-                      db "natives for Hexagonix on the system itself. It is also being used for development", 10
-                      db "various components of the operating system itself.", 10
-                      db "Lyoko is gaining more and more functions and is also constantly updated.", 10, 10
-                      db "Version of this edition of Lyoko: ", VERSAO, 10, 10
-                      db AUTOR, 10
-                      db DIREITOS, 10, 0
-.boasVindas:          db "Welcome to Lyoko, the official IDE for Hexagonix(R)!", 10, 10
-                      db "With Lyoko, you can quickly write and build wonderful applications for Hexagonix(R).", 10
-                      db "You can at any time press [^X] (Ctrl+X) for help.", 10, 10
-                      db "Shall we start?", 10, 10
-                      db "You can start by pressing Ctrl-A [^A] to open a file or press [ESC] and start", 10
-                      db "encode your project right now!" , 10, 10
-                      db "Press [ESC] to close the welcome and go directly to the editor.", 10, 0
-.solicitandoMontagem: db "Running the assembler (", MONTADOR, ") to generate your app...", 10, 10, 0
-.editado:             db " *", 0 ;; O arquivo foi editado?
+.rodapeNovoArquivo:
+db "New file", 0
+.avisoRapido:
+db "Lyoko uses the '", MONTADOR, "' assembler for building applications.", 10
+db "This open source assembler has been ported and is fully compatible with Hexagonix(R).", 10, 10
+db "You can use keyboard shortcuts to interact with Lyoko.", 10
+db "Shortcuts are triggered by the Ctrl (Control, ^) key, along with an action indicator key.", 10
+db "These key combinations can be (the Ctrl key represented by ^):", 10, 10
+db " [^A] - Requests to open a previously saved file on disk.", 10
+db " [^S] - Request to save changes to a file on disk.", 10
+db " [^F] - Close Lyoko after saving confirmation.", 10
+db " [^M] - Call '", MONTADOR, "' assembler to build the executable image.", 10
+db " [^V] - Version information and more about Lyoko.", 10, 10
+db "After building an image, you will receive the operation status directly on the screen and, if all", 10
+db "is correct, you will find the image with the .app extension on the disk containing your application.", 10
+db "You can use the 'lshapp' tool to verify image information if necessary.", 10
+db "To learn more about the information the utility can provide when analyzing an image,", 10
+db "see manual ('man lshapp') or use 'lshapp ?'.", 0
+.formato:
+db "UTF-8", 0
+.formatoFimLinha:
+db "LF", 0
+.virgula:
+db ", ", 0
+.separador:
+db " | ", 0
+.rodapePrograma:
+db "[^F] Exit | [^A] Open | [^S] Save | [^M] Assemble", 0
+.linha:
+db "Line: ", 0
+.coluna:
+db "Column: ", 0
+.arquivoSalvo:
+db "File saved", 0
+.solicitarArquivo:
+db "File name [ENTER to cancel]: ", 0
+.permissaoNegada:
+db "Only an administrative user can change this file."
+db " Press any key to continue...", 0
+.erroDeletando:
+db "Error updating file.", 0
+.tituloPrograma:
+db "Lyoko - An IDE for Hexagonix(R) - Version ", VERSAO, 0
+.fasmX: db MONTADOR, 0
+.semFonte:
+db "No source file specified. Try saving your file to disk first.", 10, 10
+db 0
+.avisoSalvamento:
+db "The contents of the file have been changed and not saved. This may lead to data loss.", 10, 10
+db "Do you want to save your changes to the file? (Y/n)", 10, 0
+.saida:
+db "appX.app", 0
+.tamanhoLinha:
+dd 0
+.identificador:
+db "| File:               ", 0
+.nomeMontador:
+db "| ", MONTADOR, 0
+.fecharAviso:
+db 10, 10, "Press [ESC] to close this warning.", 10, 0
+.infoLyoko:
+db "The name Lyoko comes from a series that marked me a lot in childhood, called Code Lyoko.", 10
+db "In a way, this series made me fall even more in love with computing and nothing else", 10
+db "It is fair to pay a symbolic tribute.", 10, 10 
+db "Lyoko was designed to be a simple and easy to use IDE for developing applications", 10
+db "natives for Hexagonix on the system itself. It is also being used for development", 10
+db "various components of the operating system itself.", 10
+db "Lyoko is gaining more and more functions and is also constantly updated.", 10, 10
+db "Version of this edition of Lyoko: ", VERSAO, 10, 10
+db AUTOR, 10
+db DIREITOS, 10, 0
+.boasVindas:
+db "Welcome to Lyoko, the official IDE for Hexagonix(R)!", 10, 10
+db "With Lyoko, you can quickly write and build wonderful applications for Hexagonix(R).", 10
+db "You can at any time press [^X] (Ctrl+X) for help.", 10, 10
+db "Shall we start?", 10, 10
+db "You can start by pressing Ctrl-A [^A] to open a file or press [ESC] and start", 10
+db "encode your project right now!" , 10, 10
+db "Press [ESC] to close the welcome and go directly to the editor.", 10, 0
+.solicitandoMontagem:
+db "Running the assembler (", MONTADOR, ") to generate your app...", 10, 10, 0
+.editado:
+db " *", 0 ;; O arquivo foi editado?
 .tituloAlterado:      db 0  ;; Título alterado?
 .caixaMaior:          db 0  ;; Tamanho da caixa (relativo à resolução da tela)
 .corFonte:            dd 0  ;; Cor a ser utilizada na fonte
