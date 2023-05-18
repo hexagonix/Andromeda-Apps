@@ -96,27 +96,40 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "2.1.2" 
+VERSAO        equ "2.1.3" 
 tamanhoRodape = 44
 
 quartzo:
 
-.formato:             db "UTF-8", 0
-.formatoFimLinha:     db "LF", 0
-.virgula:             db ", ", 0
-.separador:           db " | ", 0
-.rodapePrograma:      db "[^F] Exit, [^A] Open, [^S] Save | Filename:               ", 0
-.linha:               db "Line: ", 0
-.coluna:              db "Column: ", 0
-.arquivoSalvo:        db "File saved", 0
-.solicitarArquivo:    db "File name [ENTER to cancel]: ", 0
-.rodapeNovoArquivo:   db "New file", 0
-.permissaoNegada:     db "Only an administrative user can change this file."
-                      db " Press any key to continue...", 0
-.erroDeletando:       db "Error updating file.", 0
-.tituloPrograma:      db "Quartzo(R) Text Editor for Hexagonix(R) - Version ", VERSAO, 0
-.corFonte:            dd 0
-.corFundo:            dd 0
+.formato:
+db "UTF-8", 0
+.formatoFimLinha:
+db "LF", 0
+.virgula:
+db ", ", 0
+.separador:
+db " | ", 0
+.rodapePrograma:
+db "[^F] Exit, [^A] Open, [^S] Save | Filename:               ", 0
+.linha:
+db "Line: ", 0
+.coluna:
+db "Column: ", 0
+.arquivoSalvo:
+db "File saved", 0
+.solicitarArquivo:
+db "File name [ENTER to cancel]: ", 0
+.rodapeNovoArquivo:
+db "New file", 0
+.permissaoNegada:
+db "Only an administrative user can change this file."
+db " Press any key to continue...", 0
+.erroDeletando:
+db "Error updating file.", 0
+.tituloPrograma:
+db "Quartzo(R) Text Editor for Hexagonix(R) - Version ", VERSAO, 0
+.corFonte: dd 0
+.corFundo: dd 0
 
 totalLinhas:          dd 0  ;; Contador de linhas no arquivo
 linha:                dd 0  ;; Linha atual no arquivo
