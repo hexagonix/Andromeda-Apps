@@ -233,23 +233,33 @@ erroAbertura:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.0.3"
+VERSAO equ "1.0.4"
 
 serial:
 
-.erroPorta:       db 10, 10, "Unable to use the serial port.", 10, 0
-.erroAbertura:    db 10, 10, "Unable to open device for writing.", 10, 0
-.bannerHexagonix: db 10 
-                  db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
-                  db "                           Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
-                  db "                                         All rights reserved.", 0   
-.ajuda:           db 10, 10, "This application will help you to write data via serial port.", 10, 10, 10, 10, 0
-.prompt:          db "[com1]", 0
-.separador:       db ": ", 0 
-.nomePorta:       db "com1", 0    
-.enviado:         db 10, 10, "Data sent via serial port ", 0
-.titulo:          db "Utility for sending data via the serial port of the Hexagonix(R) Operating System", 0
-.rodape:          db "[", VERSAO, "] | [^N] New message  [^S] Exit", 0
+.erroPorta:
+db 10, 10, "Unable to use the serial port.", 10, 0
+.erroAbertura:
+db 10, 10, "Unable to open device for writing.", 10, 0
+.bannerHexagonix:
+db 10 
+db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
+db "                           Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
+db "                                         All rights reserved.", 0   
+.ajuda:
+db 10, 10, "This application will help you to write data via serial port.", 10, 10, 10, 10, 0
+.prompt:
+db "[com1]", 0
+.separador:
+db ": ", 0 
+.nomePorta:
+db "com1", 0    
+.enviado:
+db 10, 10, "Data sent via serial port ", 0
+.titulo:
+db "Utility for sending data via the serial port of the Hexagonix(R) Operating System", 0
+.rodape:
+db "[", VERSAO, "] | [^N] New message  [^S] Exit", 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
 
