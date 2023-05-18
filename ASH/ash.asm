@@ -100,72 +100,103 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.3.0" 
-compativelHexagonix equ "H2-CURRENT"
+versaoASH           equ "4.3.1" 
+compativelHexagonix equ "Raava-CURRENT"
                     
 ;;**************************
 
 ASH:
 
-.comandoInvalido:   db 10, 10, "[!] Invalid internal command or application not found.", 10, 0
-.bannerASH:         db "ASH - Andromeda(R) SHell", 0
-.boasVindas:        db "Welcome to Andromeda(R) SHell - ASH", 10, 10
-                    db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
-                    db "All rights reserved.", 10, 0
-.versaoHexagonix:   db 10, 10, "Hexagonix(R) Operating System", 10 
-                    db "Version ", 0
-.direitosAutorais:  db 10, 10, "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10   
-                    db "All rights reserved.", 10, 0
-.limiteProcessos:   db 10, 10, "[!] There is no memory available to run the requested application.", 10
-                    db "[!] Try to terminate applications or their instances first, and try again.", 10, 0                    
-.imagemInvalida:    db ": unable to load image. Unsupported executable format.", 10, 0
-.prompt:            db "[/]: ", 0
-.licenca:           db 10, "Licenced under BSD-3-Clause.", 10, 0
+.comandoInvalido:
+db 10, 10, "[!] Invalid internal command or application not found.", 10, 0
+.bannerASH:
+db "ASH - Andromeda(R) SHell", 0
+.boasVindas:
+db "Welcome to Andromeda(R) SHell - ASH", 10, 10
+db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
+db "All rights reserved.", 10, 0
+.versaoHexagonix:
+db 10, 10, "Hexagonix(R) Operating System", 10 
+db "Version ", 0
+.direitosAutorais:
+db 10, 10, "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10   
+db "All rights reserved.", 10, 0
+.limiteProcessos:
+db 10, 10, "[!] There is no memory available to run the requested application.", 10
+db "[!] Try to terminate applications or their instances first, and try again.", 10, 0                    
+.imagemInvalida:
+db ": unable to load image. Unsupported executable format.", 10, 0
+.prompt:
+db "[/]: ", 0
+.licenca:
+db 10, "Licenced under BSD-3-Clause.", 10, 0
 
-.verboseEntradaASH: db "[ASH]: Starting Andromeda SHell (ASH) for Hexagonix ", compativelHexagonix, " or superior.", 0
-.verboseVersaoASH:  db "[ASH]: Andromeda SHell version ", versaoASH, ".", 0
-.verboseAutor:      db "[ASH]: Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes.", 0
-.verboseDireitos:   db "[ASH]: All rights reserved.", 0
-.verboseSaida:      db "[ASH]: Terminating the ASH and returning control to the parent process...", 0
-.verboseLimite:     db "[ASH]: [!] Memory or process limit reached!", 0
-.verboseInterface:  db "[ASH]: [!!!] Performing manipulation of mount points by obsolete function that will be removed.", 0
+.verboseEntradaASH:
+db "[ASH]: Starting Andromeda SHell (ASH) for Hexagonix ", compativelHexagonix, " or superior.", 0
+.verboseVersaoASH:
+db "[ASH]: Andromeda SHell version ", versaoASH, ".", 0
+.verboseAutor:
+db "[ASH]: Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes.", 0
+.verboseDireitos:
+db "[ASH]: All rights reserved.", 0
+.verboseSaida:
+db "[ASH]: Terminating the ASH and returning control to the parent process...", 0
+.verboseLimite:
+db "[ASH]: [!] Memory or process limit reached!", 0
+.verboseInterface:
+db "[ASH]: [!!!] Performing manipulation of mount points by obsolete function that will be removed.", 0
 
 ;;**************************
 
 ASH.comandos:
 
-.alterarDisco:      db "ad", 0
-.sair:              db "exit",0
-.versao:            db "ver", 0
-.ajuda:             db "help", 0
+.alterarDisco:
+db "ad", 0
+.sair:
+db "exit",0
+.versao:
+db "ver", 0
+.ajuda:
+db "help", 0
 
 ;;**************************
 
 ASH.ajuda:
 
-.introducao:        db 10, 10, "Andromeda SHell version ", versaoASH, 10
-                    db "Compatible with Hexagonix(R) ", compativelHexagonix, " or superior.", 0
-.conteudoAjuda:     db 10, 10, "Internal commands available:", 10, 10
-                    db " VER  - Displays information about the running ASH version.", 10
-                    db " EXIT - Terminate this ASH session.", 10, 0
+.introducao:
+db 10, 10, "Andromeda SHell version ", versaoASH, 10
+db "Compatible with Hexagonix(R) ", compativelHexagonix, " or superior.", 0
+.conteudoAjuda:
+db 10, 10, "Internal commands available:", 10, 10
+db " VER  - Displays information about the running ASH version.", 10
+db " EXIT - Terminate this ASH session.", 10, 0
              
 ;;**************************
 
 ASH.discos:
 
-.hd0:               db "hd0", 0
-.hd1:               db "hd1", 0
-.hd2:               db "hd2", 0
-.hd3:               db "hd3", 0
-.info:              db "info", 0
-.discoAtual:        db 10, 10, "Current volume used by the system: ", 0
-.erroAlterar:       db 10, 10, "A valid volume or parameter was not provided for this command.", 10, 10 
-                    db "Cannot change default volume.", 10, 10
-                    db "Use a device name as an argument or 'info' for current disk information.", 10, 0
-.rotuloVolume:      db 10, 10, "Volume label: ", 0
-.avisoSairdeLinha:  db 10, 10, "Warning! This is an obsolete built-in Andromeda SHell command.", 10
-                    db "Be aware that it may be removed soon. Use the Unix 'mount' tool instead.", 10
-                    db "You can find documentation for mount using 'man mount' anytime.", 0 
+.hd0:
+db "hd0", 0
+.hd1:
+db "hd1", 0
+.hd2:
+db "hd2", 0
+.hd3:
+db "hd3", 0
+.info:
+db "info", 0
+.discoAtual:
+db 10, 10, "Current volume used by the system: ", 0
+.erroAlterar:
+db 10, 10, "A valid volume or parameter was not provided for this command.", 10, 10 
+db "Cannot change default volume.", 10, 10
+db "Use a device name as an argument or 'info' for current disk information.", 10, 0
+.rotuloVolume:
+db 10, 10, "Volume label: ", 0
+.avisoSairdeLinha:
+db 10, 10, "Warning! This is an obsolete built-in Andromeda SHell command.", 10
+db "Be aware that it may be removed soon. Use the Unix 'mount' tool instead.", 10
+db "You can find documentation for mount using 'man mount' anytime.", 0 
     
 ;;**************************
  
