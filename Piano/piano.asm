@@ -722,31 +722,52 @@ align 32
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.4.1"
+VERSAO equ "1.4.2"
 
 piano:
 
-.sobreTeclado:  db "Virtual Piano 'return PIANO;'(R) for Hexagonix(R)", 0
-.versaoTeclado: db "Version ", VERSAO, 0
-.autor:         db "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes", 0
-.direitos:      db "All rights reserved.", 0
-.ajuda:         db "A small help topic for this program:", 0
-.topico1:       db "+ Use the [QWERTYUI] keys to issue notes.", 0
-.topico2:       db "+ Use the [SPACE] key to mute notes when necessary.", 0
-.topico3:       db "+ Finally, use the [Z] key to terminate this application at any time.", 0
-.titulo:        db "Virtual Piano 'return PIANO;'(R) for Hexagonix(R)", 0
-.rodape:        db "[", VERSAO, "] Press [Z] to exit and [SPACE] to mute. Use [A] for more information", 0
-.rodapeInfo:    db "[", VERSAO, "] Press [V] to return or [Z] to end this application", 0
+.sobreTeclado:
+db "Virtual Piano 'return PIANO;'(R) for Hexagonix(R)", 0
+.versaoTeclado:
+db "Version ", VERSAO, 0
+.autor:
+db "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes", 0
+.direitos:
+db "All rights reserved.", 0
+.ajuda:
+db "A small help topic for this program:", 0
+.topico1:
+db "+ Use the [QWERTYUI] keys to issue notes.", 0
+.topico2:
+db "+ Use the [SPACE] key to mute notes when necessary.", 0
+.topico3:
+db "+ Finally, use the [Z] key to terminate this application at any time.", 0
+.titulo:
+db "Virtual Piano 'return PIANO;'(R) for Hexagonix(R)", 0
+.rodape:
+db "[", VERSAO, "] Press [Z] to exit and [SPACE] to mute. Use [A] for more information", 0
+.rodapeInfo:
+db "[", VERSAO, "] Press [V] to return or [Z] to end this application", 0
 
-.teclaQ:        db "Q", 0
-.teclaW:        db "W", 0
-.teclaE:        db "E", 0
-.teclaR:        db "R", 0
-.teclaT:        db "T", 0
-.teclaY:        db "Y", 0
-.teclaU:        db "U", 0
-.teclaI:        db "I", 0
-.teclaEspaco:   db "[SPACE]", 0
-.teclaZ:        db "Z", 0
+.teclaQ:
+db "Q", 0
+.teclaW:
+db "W", 0
+.teclaE:
+db "E", 0
+.teclaR:
+db "R", 0
+.teclaT:
+db "T", 0
+.teclaY:
+db "Y", 0
+.teclaU:
+db "U", 0
+.teclaI:
+db "I", 0
+.teclaEspaco:
+db "[SPACE]", 0
+.teclaZ:
+db "Z", 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
