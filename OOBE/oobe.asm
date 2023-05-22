@@ -83,7 +83,7 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.4.0"
+versaoOOBE = "1.0.0"
 
 OOBE:
 
@@ -106,37 +106,24 @@ db "                                                 aa,    ,88", 10
 db "                                                  'P8bbdP'", 10, 0
 
 .pag1:
-
 db 10
 db "Page 1/6", 10, 10, 0
-
 .pag2:
-
 db 10
 db "Page 2/6", 10, 10, 0
-
 .pag3:
-
 db 10
 db "Page 3/6", 10, 10, 0
-
 .pag4:
-
 db 10
 db "Page 4/6", 10, 10, 0
-
 .pag5:
-
 db 10
 db "Page 5/6", 10, 10, 0
-
 .pag6:
-
 db 10
 db "Page 6/6", 10, 10, 0
-
 .pagina1:
-
 db "Welcome to Hexagonix Operating System!", 10, 10
 db "This must be your first contact with Hexagonix, right?", 10, 10
 db "Now let's take a quick tour of Hexagonix, its components and utilities.", 10, 10 ;; '
@@ -148,18 +135,15 @@ db "Furthermore, Hexagonix and all of its components are free and open source so
 db "the BSD-3-Clause License. This allows the code to be reused (with due credit and accompanied by", 10
 db "copyright) in other projects, commercial or not, in addition to allowing a wide range of derivative", 10
 db "projects. The license also allows the software to be customized and rebuilt. Feel free to build", 10
-db "your Hexagonix!", 0
-
+db "your Hexagonix!", 10, 10
+db "See the complete documentation at: https://github.com/hexagonix/Doc.", 0
 .pagina2:
-
 db "As a Unix-like system, you will find in Hexagonix a number of utilities common to this type of", 10
 db "system. Utilities such as sh, ps, top, clear, init, login, cat, cowsay, mount, free and man, among", 10
 db "others, are available in a standard system installation. Its usage syntax is based on the syntax of", 10
 db "FreeBSD utilities. Whenever you are in doubt about the syntax or function of a utility, feel free", 10
 db "to use 'man utility_name' and obtain a manual for using this utility.", 0
-
 .pagina3:
-
 db "In addition to the utilities common to the Unix environment, Hexagonix also comes with a number of", 10
 db "unique applications. These applications present a visual environment different from the traditional", 10
 db "Unix environment. Here you can find a calculator, a settings application, a virtual piano, graphical", 10
@@ -167,9 +151,7 @@ db "shutdown utilities, a powerful text editor and a development environment whe
 db "utilities for the system.", 10, 10
 db "This environment is referred to in the Hexagonix documentation as the Hexagonix-Andromeda", 10
 db "environment, in case you need this information later or are reading the system documentation.", 0
-
 .pagina4:
-
 db "In addition, Hexagonix comes with a port of the flat assembler (fasm), here called fasm Hexagonix", 10
 db "Edition, or simply fasmX. This assembler is the same one used to build all of Hexagonix, and is used", 10
 db "by the Hexagonix IDE (Lyoko) to generate the executable images of the utilities written by it. In", 10
@@ -177,41 +159,33 @@ db "the root directory of the system, you can find two sample files, gapp.asm an
 db "use fasmX to generate your respective binaries, using 'fasmx gapp.asm' or 'fasmx tapp.asm'. fasm is", 10
 db "available under a free license and its sources (and adaptations for Hexagonix) can be found in the", 10
 db "system repository on GitHub (https://github.com/hexagonix/fasmX).", 0
-
 .pagina5:
-
 db "Feel free to contact us to learn more about the system. To do so, use the email", 10
-db "hexagonixdev@gmail.com, send a message to @HexagonixOS on Twitter or open an Issue in the Hexagonix", 10
+db "hexagonixdev@gmail.com, send a message to @HexagonixOS on Twitter or open an issue in the Hexagonix", 10
 db "repository at https://github.com/hexagonix/hexagonix. Also, if you are an Assembly developer (or", 10
 db "want to become one), C (to help develop a libc) or even fluent in another language, you can", 10
 db "contribute to Hexagonix! You can also contribute by helping to test the system and report bugs. For", 10
 db "all this, use the contact channels already mentioned. It will be a pleasure to have more people on", 10
 db "the project!", 0
-
 .pagina6:
-
 db "Tuor is running out :(. When finished, enter an 'ls' in the shell to start exploring the available", 10
 db "utilities. Remember: at any time, you can use 'man utility' to learn more about it. Hope you like", 10
 db "your experience with the system!", 0
-
 .proximaPagina:
-
 db 10, 10
 db "Press any key to go to the next page...", 0
-
 .mensagemFinal:
-
 db 10, 10
 db "You will no longer see this message on the next boot.", 10, 10
 db "Now we need to restart the device. Press any key to restart...", 10, 10, 0 ;;'
-
 .deletarManual:
-
 db 10, "An error occurred while removing OOBE. Remove it manually. For this, enter 'rm oobe'.", 10, 10, 0
-
-.arquivoOOBE: db "oobe", 0
-.root:        db "root", 0
-.jack:        db "jack", 0
+.arquivoOOBE:
+db "oobe", 0
+.root:
+db "root", 0
+.jack:
+db "jack", 0
 
 ;;************************************************************************************
 
