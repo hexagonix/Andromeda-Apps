@@ -100,7 +100,7 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.3.1" 
+versaoASH           equ "4.3.2" 
 compativelHexagonix equ "Raava-CURRENT"
                     
 ;;**************************
@@ -115,9 +115,6 @@ db "ASH - Andromeda(R) SHell", 0
 db "Welcome to Andromeda(R) SHell - ASH", 10, 10
 db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
 db "All rights reserved.", 10, 0
-.versaoHexagonix:
-db 10, 10, "Hexagonix(R) Operating System", 10 
-db "Version ", 0
 .direitosAutorais:
 db 10, 10, "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10   
 db "All rights reserved.", 10, 0
