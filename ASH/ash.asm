@@ -100,7 +100,7 @@ ASHErro            = VERMELHO_TIJOLO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.3.2" 
+versaoASH           equ "4.3.3" 
 compativelHexagonix equ "Raava-CURRENT"
                     
 ;;**************************
@@ -137,11 +137,11 @@ db "[ASH]: Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes.", 0
 .verboseDireitos:
 db "[ASH]: All rights reserved.", 0
 .verboseSaida:
-db "[ASH]: Terminating the ASH and returning control to the parent process...", 0
+db "[ASH]: Terminating the ASH...", 0
 .verboseLimite:
-db "[ASH]: [!] Memory or process limit reached!", 0
+db "[ASH]: [!] Memory full or process limit reached!", 0
 .verboseInterface:
-db "[ASH]: [!!!] Performing manipulation of mount points by obsolete function that will be removed.", 0
+db "[ASH]: [!!!] Performing mount point manipulation using deprecated functions that will be removed.", 0
 
 ;;**************************
 
