@@ -94,13 +94,13 @@ include "macros.s"
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
 ASHPadrao          = VERDE_MAR
-ASHTerminal        = VERDE_MAR
+ASHTerminal        = ASHPadrao
 ASHAviso           = TOMATE
-ASHErro            = VERMELHO_TIJOLO
+ASHErro            = VERMELHO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.3.3" 
+versaoASH           equ "4.3.4" 
 compativelHexagonix equ "Raava-CURRENT"
                     
 ;;**************************
