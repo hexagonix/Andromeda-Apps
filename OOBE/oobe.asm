@@ -83,7 +83,7 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.0.0"
+versaoOOBE = "1.0.1"
 
 OOBE:
 
@@ -383,7 +383,7 @@ exibirBanner:
 
     fputs OOBE.divisoria
 
-    definirCorConsole VERDE_ANDROMEDA, [Lib.Console.corFundo]
+    definirCorConsole VERDE_40, [Lib.Console.corFundo]
 
     fputs OOBE.banner 
 
