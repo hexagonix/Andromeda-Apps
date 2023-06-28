@@ -136,7 +136,7 @@ include "Interfaces\Serial.asm"
 
 include "Dados\Interfaces.asm"
 
-corPadraoInterface = AMBAR
+corPadraoInterface = OURO_HEXAGONIX
 
 ;;************************************************************************************
 
