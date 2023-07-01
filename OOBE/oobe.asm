@@ -83,7 +83,11 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.0.1"
+versaoOOBE = "1.0.2"
+
+COR_LOGO      = VERDE_40
+COR_SEPARADOR = TOMATE
+COR_ERRO      = ROXO_ESCURO
 
 OOBE:
 
@@ -323,7 +327,7 @@ inicioAPP:
 
     fputs OOBE.mensagemFinal
 
-    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
+    definirCorConsole COR_SEPARADOR, [Lib.Console.corFundo]
 
     fputs OOBE.divisoria
 
@@ -341,13 +345,13 @@ inicioAPP:
 
 .erroDeletando:
 
-    definirCorConsole ROXO_ESCURO, [Lib.Console.corFundo]
+    definirCorConsole COR_ERRO, [Lib.Console.corFundo]
 
     fputs OOBE.deletarManual
 
     fputs OOBE.mensagemFinal
 
-    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
+    definirCorConsole COR_SEPARADOR, [Lib.Console.corFundo]
 
     fputs OOBE.divisoria
 
@@ -379,15 +383,15 @@ exibirBanner:
 
     hx.syscall limparTela
 
-    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
+    definirCorConsole COR_SEPARADOR, [Lib.Console.corFundo]
 
     fputs OOBE.divisoria
 
-    definirCorConsole VERDE_40, [Lib.Console.corFundo]
+    definirCorConsole COR_LOGO, [Lib.Console.corFundo]
 
     fputs OOBE.banner 
 
-    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
+    definirCorConsole COR_SEPARADOR, [Lib.Console.corFundo]
 
     fputs OOBE.divisoria
 
@@ -399,7 +403,7 @@ exibirBanner:
 
 exibirDivisoria:
 
-    definirCorConsole VERMELHO_TIJOLO, [Lib.Console.corFundo]
+    definirCorConsole COR_SEPARADOR, [Lib.Console.corFundo]
 
     novaLinha
     novaLinha
