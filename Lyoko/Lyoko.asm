@@ -100,7 +100,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "1.5.2.4" 
+VERSAO        equ "1.5.2.5" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -142,7 +142,7 @@ db "Line: ", 0
 .coluna:
 db "Column: ", 0
 .arquivoSalvo:
-db "File saved", 0
+db "File saved.", 0
 .solicitarArquivo:
 db "File name [ENTER to cancel]: ", 0
 .permissaoNegada:
