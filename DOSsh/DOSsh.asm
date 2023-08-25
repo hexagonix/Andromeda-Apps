@@ -93,7 +93,7 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Hexagonix® o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.7.2" 
+versaoDOSsh         equ "0.7.3" 
 compativelHexagonix equ "Raava-CURRENT"
                     
 ;;**************************
@@ -102,7 +102,7 @@ DOSsh:
 
 .iniciando:
 db 10, "Starting HX-DOS...", 10, 10
-db "HX-DOS is testing extended memory... done", 10, 0
+db "HIMEM is testing extended memory... done.", 10, 0
 .comandoInvalido:
 db "Bad command or filename.", 0
 .direitosAutorais:
@@ -114,7 +114,7 @@ db "Try to terminate applications or their instances first, and try again.", 0
 .imagemInvalida:
 db ": unable to load image. Unsupported executable format.", 10, 0
 .prompt:
-db "C:/> ", 0
+db "C:\> ", 0
 .erroGeralArquivo:
 db 10, "File not found.", 10, 0
 .licenca:
