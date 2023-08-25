@@ -91,7 +91,7 @@ include "macros.s"
 
 ;; A versão do ASH é independente da versão do restante do sistema.
 ;; Ela deve ser utilizada para identificar para qual versão do Hexagonix® o ASH foi
-;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
+;; desenvolvido. Essa informação pode ser fornecida com o comando 'help'.
 
 ASHPadrao          = VERDE_MAR
 ASHTerminal        = ASHPadrao
@@ -100,7 +100,7 @@ ASHErro            = VERMELHO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.3.4" 
+versaoASH           equ "4.4.0" 
 compativelHexagonix equ "Raava-CURRENT"
                     
 ;;**************************
@@ -147,8 +147,8 @@ db "[ASH]: [!!!] Performing mount point manipulation using deprecated functions 
 
 ASH.comandos:
 
-.alterarDisco:
-db "ad", 0
+.alterarVolume:
+db "cvol", 0
 .sair:
 db "exit",0
 .versao:
@@ -271,7 +271,7 @@ inicioShell:
     
 ;; Comparar com comandos internos disponíveis
 
-    ;; Comando SAIR
+    ;; Comando EXIT
     
     mov edi, ASH.comandos.sair  
 
@@ -287,7 +287,7 @@ inicioShell:
 
     jc .comandoVER
 
-    ;; Comando AJUDA
+    ;; Comando HELP
     
     mov edi, ASH.comandos.ajuda 
 
@@ -295,9 +295,9 @@ inicioShell:
 
     jc .comandoAJUDA
     
-    ;; Comando AD
+    ;; Comando CVOL
     
-    mov edi, ASH.comandos.alterarDisco
+    mov edi, ASH.comandos.alterarVolume
     
     hx.syscall compararPalavrasString
 
