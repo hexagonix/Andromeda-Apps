@@ -140,8 +140,8 @@ posicaoLinhaNaTela:   dd 1  ;; Posição da linha no display
 posicaoPaginaAtual:   dd 0  ;; Posição da página atual no arquivo (uma tela)
 necessarioRedesenhar: db 1  ;; Se não zero, é necessário redesenhar toda a tela
 nomeArquivo: times 13 db 0
-maxColunas:           db 0 ;; Total de colunas disponíveis no vídeo na resolução atual
-maxLinhas:            db 0 ;; Total de linhas disponíveis no vídeo na resolução atual
+maxColunas:           db 0  ;; Total de colunas disponíveis no vídeo na resolução atual
+maxLinhas:            db 0  ;; Total de linhas disponíveis no vídeo na resolução atual
 
 ;;************************************************************************************
 
