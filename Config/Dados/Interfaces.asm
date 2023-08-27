@@ -110,7 +110,7 @@ db "It is recommended to use this application in 1024x768 resolution for better 
 .msgErro:
 db "Error performing the requested operation.", 0
 .msgVersao:
-db "You are using a version of Hexagonix(R) that does not support this feature.", 0
+db "You are using a version of Hexagonix that does not support this feature.", 0
 .ponto:
 db ".", 0
 .logo: 
@@ -139,7 +139,7 @@ db "88       88", 0
 msgInfo:
 
 .introducao:
-db "Detailed Information of the Hexagonix(R) Operating System", 0
+db "Detailed Information of the Hexagonix Operating System", 0
 .nomeSistema:
 db "Installed Operating System name: ", 0
 .versaoSistema:
@@ -182,7 +182,7 @@ db "Licensed under BSD-3-Clause", 0
 msgConfig:
 
 .introducao:
-db "Here you can change some settings of Hexagonix(R)", 0
+db "Here you can change some settings of Hexagonix", 0
 .introducao2:
 db "To get started, select any category listed below:", 0
 .categoria1:
@@ -237,11 +237,11 @@ db "Label of the volume mounted at [/] used by the system: ", 0
 msgFonte:
 
 .introducao:
-db "Here you can change the default system display font. Remembering that the source", 0
+db "Here you can change the default system display font. Remembering that the font", 0
 .introducao2:
-db "must be compatible with the Hexagonix(R) Operating System", 0
+db "must be compatible with the Hexagonix Operating System", 0
 .solicitarArquivo:
-db "Please enter the name of the Hexagonix(R) font file ([ENTER] to cancel): ", 0
+db "Please enter the name of the Hexagonix font file ([ENTER] to cancel): ", 0
 .sucesso:
 db "Successfully changing system default font to: [", 0
 .fechamento:
@@ -255,7 +255,7 @@ db "A filename was not provided. The operation was cancelled.", 0
 .ponto:
 db ".", 10, 10, 0
 .testeFonte:
-db "Hexagonix(R) Operating System", 10, 10
+db "Hexagonix Operating System", 10, 10
 db "1234567890-=", 10
 db "!@#$%^&*()_+", 10
 db "QWERTYUIOP{}", 10
@@ -264,14 +264,14 @@ db 'ASDFGHJKL:"|', 10
 db "asdfghjkl;'\", 10
 db "ZXCVBNM<>?", 10
 db "zxcvbnm,./", 10, 10
-db "Hexagonix(R) Operating System", 10, 10, 0
+db "Hexagonix Operating System", 10, 10, 0
 .falha:
-db "The requested file was not found or is not compatible with Hexagonix(R).", 0
+db "The requested file was not found or is not compatible with Hexagonix.", 0
 
 ;;************************************************************************************
  
 nomeSistema:
-db "Hexagonix(R) Operating System", 0
+db "Hexagonix Operating System", 0
 
 ;;************************************************************************************
 
@@ -308,7 +308,7 @@ db "Error sending to serial port.", 0
 .erroAbertura:
 db "Error opening device for writing.", 0
 .mensagemAutomatica:
-db "This is an automated message from the Hexagonix(R) Operating System Control Panel! ", 10, 0
+db "This is an automated message from the Hexagonix Operating System Control Panel! ", 10, 0
 .insiraMensagem:
 db "Enter your message to ", 0
 .doisPontos:
@@ -323,15 +323,15 @@ db "]",0
 TITULO: 
 
 .inicio:
-db "Hexagonix(R) Operating System Settings", 0
+db "Hexagonix Operating System Settings", 0
 .info:
-db "About the Hexagonix(R) Operating System and system updates", 0
+db "About the Hexagonix Operating System and system updates", 0
 .configuracoes:
-db "Hexagonix(R) Operating System Settings", 0
+db "Hexagonix Operating System Settings", 0
 .resolucao:
 db "Video resolution settings", 0
 .discos:
-db "Hexagonix(R) disk and storage information", 0
+db "Hexagonix disk and storage information", 0
 .fonte:
 db "Change the default system display font", 0
 .portaParalela:
