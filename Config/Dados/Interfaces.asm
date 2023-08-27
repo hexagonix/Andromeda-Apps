@@ -271,7 +271,7 @@ db "The requested file was not found or is not compatible with Hexagonix.", 0
 ;;************************************************************************************
  
 nomeSistema:
-db "Hexagonix Operating System", 0
+db "Hexagonix", 0
 
 ;;************************************************************************************
 
@@ -323,11 +323,11 @@ db "]",0
 TITULO: 
 
 .inicio:
-db "Hexagonix Operating System Settings", 0
+db "Hexagonix Settings", 0
 .info:
 db "About the Hexagonix Operating System and system updates", 0
 .configuracoes:
-db "Hexagonix Operating System Settings", 0
+db "Hexagonix Settings", 0
 .resolucao:
 db "Video resolution settings", 0
 .discos:
