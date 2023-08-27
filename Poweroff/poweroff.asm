@@ -337,13 +337,13 @@ terminar:
 ;;************************************************************************************
 
 ENERGIA equ "shutdown"   
-VERSAO  equ "1.1.1"
+VERSAO  equ "1.1.2"
 
 desligar:
 
 .bannerHexagonix:
 db 10 
-db "                                     Hexagonix(R) Operating System", 10, 10, 10, 10
+db "                                       Hexagonix Operating System", 10, 10, 10, 10
 db "                           Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
 db "                                         All rights reserved.", 0              
 .energia:
@@ -357,7 +357,7 @@ db 10, 10, "!> Preparing to shutdown your computer...  ", 0
 .msgFinalizando:
 db 10, 10, "#> Terminating all processes still running...  ", 0
 .msgHexagonix:
-db 10, 10, "#> Shutting down the Hexagonix(R) Operating System...    ", 0
+db 10, 10, "#> Shutting down the Hexagonix Operating System...    ", 0
 .msgDiscos:
 db 10, 10, "#> Stoping disks and shutting down your computer... ", 0
 .msgReinicio:
@@ -367,7 +367,7 @@ db "Press [Ctrl-R] to restart your computer.", 10, 0
 .msgFinalizar:
 db "Press [Ctrl-D] to shutdown your computer.", 10, 0
 .msgSair:
-db "Press [Ctrl-S] or [F1] to return to Hexagonix(R)", 0
+db "Press [Ctrl-S] or [F1] to return to Hexagonix", 0
 .msgPronto:
 db "[Done]", 0
 .msgFalha:
@@ -376,7 +376,7 @@ db "[Fail]", 0
 db 10, 10, "Failed to run Unix shutdown utility. Try again later.", 10
 db "Press any key to end this application...", 0
 .titulo:
-db "Hexagonix(R) Operating System shutdown options",0
+db "Hexagonix Operating System shutdown options",0
 .rodape:
 db "[", VERSAO, "]",0
 
