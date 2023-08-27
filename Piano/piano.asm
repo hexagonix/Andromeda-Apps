@@ -722,12 +722,12 @@ align 32
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.4.2"
+VERSAO equ "1.4.3"
 
 piano:
 
 .sobreTeclado:
-db "Virtual Piano 'return PIANO;'(R) for Hexagonix(R)", 0
+db "Virtual Piano 'return PIANO;'(R) for Hexagonix", 0
 .versaoTeclado:
 db "Version ", VERSAO, 0
 .autor:
@@ -743,7 +743,7 @@ db "+ Use the [SPACE] key to mute notes when necessary.", 0
 .topico3:
 db "+ Finally, use the [Z] key to terminate this application at any time.", 0
 .titulo:
-db "Virtual Piano 'return PIANO;'(R) for Hexagonix(R)", 0
+db "Virtual Piano 'return PIANO;'(R) for Hexagonix", 0
 .rodape:
 db "[", VERSAO, "] Press [Z] to exit and [SPACE] to mute. Use [A] for more information", 0
 .rodapeInfo:
