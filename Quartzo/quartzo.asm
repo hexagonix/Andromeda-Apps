@@ -96,7 +96,7 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "2.1.3" 
+VERSAO        equ "2.1.4" 
 tamanhoRodape = 44
 
 quartzo:
@@ -127,7 +127,7 @@ db " Press any key to continue...", 0
 .erroDeletando:
 db "Error updating file.", 0
 .tituloPrograma:
-db "Quartzo(R) Text Editor for Hexagonix(R) - Version ", VERSAO, 0
+db "Quartzo Text Editor for Hexagonix - Version ", VERSAO, 0
 .corFonte: dd 0
 .corFundo: dd 0
 
