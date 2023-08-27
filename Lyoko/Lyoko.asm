@@ -100,7 +100,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "1.5.2.5" 
+VERSAO        equ "1.5.2.6" 
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -113,7 +113,7 @@ Lyoko:
 db "New file", 0
 .avisoRapido:
 db "Lyoko uses the '", MONTADOR, "' assembler for building applications.", 10
-db "This open source assembler has been ported and is fully compatible with Hexagonix(R).", 10, 10
+db "This open source assembler has been ported and is fully compatible with Hexagonix.", 10, 10
 db "You can use keyboard shortcuts to interact with Lyoko.", 10
 db "Shortcuts are triggered by the Ctrl (Control, ^) key, along with an action indicator key.", 10
 db "These key combinations can be (the Ctrl key represented by ^):", 10, 10
@@ -151,7 +151,7 @@ db " Press any key to continue...", 0
 .erroDeletando:
 db "Error updating file.", 0
 .tituloPrograma:
-db "Lyoko - An IDE for Hexagonix(R) - Version ", VERSAO, 0
+db "Lyoko - An IDE for Hexagonix - Version ", VERSAO, 0
 .fasmX: db MONTADOR, 0
 .semFonte:
 db "No source file specified. Try saving your file to disk first.", 10, 10
@@ -181,8 +181,8 @@ db "Version of this edition of Lyoko: ", VERSAO, 10, 10
 db AUTOR, 10
 db DIREITOS, 10, 0
 .boasVindas:
-db "Welcome to Lyoko, the official IDE for Hexagonix(R)!", 10, 10
-db "With Lyoko, you can quickly write and build wonderful applications for Hexagonix(R).", 10
+db "Welcome to Lyoko, the official IDE for Hexagonix!", 10, 10
+db "With Lyoko, you can quickly write and build wonderful applications for Hexagonix.", 10
 db "You can at any time press [^X] (Ctrl+X) for help.", 10, 10
 db "Shall we start?", 10, 10
 db "You can start by pressing Ctrl-A [^A] to open a file or press [ESC] and start", 10
