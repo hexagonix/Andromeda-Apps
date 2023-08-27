@@ -100,7 +100,7 @@ ASHErro            = VERMELHO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.4.0" 
+versaoASH           equ "4.4.1" 
 compativelHexagonix equ "Raava-CURRENT"
                     
 ;;**************************
@@ -110,9 +110,9 @@ ASH:
 .comandoInvalido:
 db 10, 10, "[!] Invalid internal command or application not found.", 10, 0
 .bannerASH:
-db "ASH - Andromeda(R) SHell", 0
+db "ASH - Andromeda SHell", 0
 .boasVindas:
-db "Welcome to Andromeda(R) SHell - ASH", 10, 10
+db "Welcome to Andromeda SHell - ASH", 10, 10
 db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
 db "All rights reserved.", 10, 0
 .direitosAutorais:
@@ -162,7 +162,7 @@ ASH.ajuda:
 
 .introducao:
 db 10, 10, "Andromeda SHell version ", versaoASH, 10
-db "Compatible with Hexagonix(R) ", compativelHexagonix, " or superior.", 0
+db "Compatible with Hexagonix ", compativelHexagonix, " or superior.", 0
 .conteudoAjuda:
 db 10, 10, "Internal commands available:", 10, 10
 db " VER  - Displays information about the running ASH version.", 10
