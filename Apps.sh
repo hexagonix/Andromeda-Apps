@@ -68,15 +68,15 @@
 #
 # $HexagonixOS$
 
-# Versão 2.0
+# Versão 2.1
 
 gerarBaseGrafica(){
 
 echo
-echo -e "\e[1;94mBuilding Hexagonix® graphical applications...\e[0m {"
+echo -e "\e[1;94mBuilding Hexagonix graphical applications...\e[0m {"
 echo
 
-echo "Building Hexagonix® graphical applications... {" >> $LOG
+echo "Building Hexagonix graphical applications... {" >> $LOG
 echo >> $LOG
     
 # Vamos agora automatizar a construção dos aplicativos
@@ -89,9 +89,9 @@ do
     for h in *.asm
     do
 
-    echo -en "Building Hexagonix® graphical application \e[1;94m$(basename $h .asm)\e[0m..."
+    echo -en "Building Hexagonix graphical application \e[1;94m$(basename $h .asm)\e[0m..."
     
-    echo " > Building Hexagonix® graphical application $(basename $h .asm)..." >> ../$LOG
+    echo " > Building Hexagonix graphical application $(basename $h .asm)..." >> ../$LOG
     
     fasm $h ../../../Andromeda/bin/`basename $h .asm` -d $FLAGS_COMUM >> ../$LOG || desmontar
     
