@@ -102,8 +102,10 @@ inicioAPP:
     Andromeda.Estelar.criarInterface calc.titulo, calc.rodape, \
     VERDE_ESCURO, VERDE_ESCURO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
-    
-    fputs calc.bannerHexagonix
+
+    xyfputs 39, 4, calc.bannerHexagonix
+    xyfputs 27, 5, calc.copyright
+    xyfputs 41, 6, calc.marcaRegistrada
 
     call mostrarLogoSistema
 
@@ -292,7 +294,7 @@ mostrarLogoSistema:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.6.5"
+VERSAO equ "1.7.0"
 
 calc:
 
@@ -315,13 +317,12 @@ db 10, 10, "The result is = ", 0
 .solicitarTecla:
 db 10, 10, "Press any key to continue...", 10, 10, 0
 
-.bannerHexagonix:
-db 10, 10   
-db "                                       Hexagonix Operating System", 10, 10, 10, 10
-db "                           Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
-db "                                         All rights reserved.", 0              
+.bannerHexagonix: 
+db "Hexagonix Operating System", 0 
+.copyright:
+db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
 .marcaRegistrada:
-db "tm", 0
+db "All rights reserved.", 0         
 
 .titulo:
 db "Hexagonix Operating System Basic Calculator",0
