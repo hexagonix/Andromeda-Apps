@@ -108,7 +108,9 @@ inicioAPP:
     
     cursorPara 02, 01
     
-    fputs serial.bannerHexagonix
+    xyfputs 39, 4, serial.bannerHexagonix
+    xyfputs 27, 5, serial.copyright
+    xyfputs 41, 6, serial.marcaRegistrada
 
     Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
@@ -233,7 +235,7 @@ erroAbertura:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.0.5"
+VERSAO equ "1.1.0"
 
 serial:
 
@@ -242,10 +244,11 @@ db 10, 10, "Unable to use the serial port.", 10, 0
 .erroAbertura:
 db 10, 10, "Unable to open device for writing.", 10, 0
 .bannerHexagonix:
-db 10 
-db "                                       Hexagonix Operating System", 10, 10, 10, 10
-db "                           Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
-db "                                         All rights reserved.", 0   
+db "Hexagonix Operating System", 0
+.copyright:
+db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
+.marcaRegistrada:
+db "All rights reserved.", 0   
 .ajuda:
 db 10, 10, "This application will help you to write data via serial port.", 10, 10, 10, 10, 0
 .prompt:
