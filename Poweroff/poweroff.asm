@@ -119,7 +119,9 @@ iniciarInterface:
     
     novaLinha
     
-    fputs desligar.bannerHexagonix
+    xyfputs 39, 4, desligar.bannerHexagonix
+    xyfputs 27, 5, desligar.copyright
+    xyfputs 41, 6, desligar.marcaRegistrada
 
     Andromeda.Estelar.criarLogotipo INDIGO, BRANCO_ANDROMEDA,\
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
@@ -337,15 +339,16 @@ terminar:
 ;;************************************************************************************
 
 ENERGIA equ "shutdown"   
-VERSAO  equ "1.1.2"
+VERSAO  equ "1.2.0"
 
 desligar:
 
 .bannerHexagonix:
-db 10 
-db "                                       Hexagonix Operating System", 10, 10, 10, 10
-db "                           Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
-db "                                         All rights reserved.", 0              
+db "Hexagonix Operating System", 0
+.copyright:
+db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
+.marcaRegistrada:
+db "All rights reserved.", 0              
 .energia:
 db ENERGIA, 0
 .parametroDesligar:
