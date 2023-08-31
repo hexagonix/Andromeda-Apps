@@ -109,7 +109,9 @@ inicioAPP:
 
     Andromeda.Estelar.criarInterface fonte.titulo, fonte.rodape, AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
     
-    fputs fonte.bannerHexagonix
+    xyfputs 39, 4, fonte.bannerHexagonix
+    xyfputs 27, 5, fonte.copyright
+    xyfputs 41, 6, fonte.marcaRegistrada
 
     Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
@@ -230,7 +232,7 @@ validarFonte:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "2.2.3"
+VERSAO equ "2.3.0"
 
 fonte:
 
@@ -251,10 +253,11 @@ db 10, 10, "Press any key to continue...", 10, 10, 0
 db 10, 10, "The provided file does not contain a font in Hexagon format.", 10, 10
 db "Press any key to continue...", 10, 10, 0
 .bannerHexagonix:
-db 10 
-db "                                       Hexagonix Operating System", 10, 10, 10, 10
-db "                           Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
-db "                                         All rights reserved.", 0   
+db "Hexagonix Operating System", 0
+.copyright:
+db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
+.marcaRegistrada:
+db "All rights reserved.", 0   
 .titulo:
 db "Hexagonix Operating System default font changer utility", 0
 .rodape:
