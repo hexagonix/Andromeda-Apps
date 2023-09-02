@@ -105,17 +105,17 @@ mostrarInterfacePrincipal:
 
     call mostrarLogoSistema
     
-    cursorPara 39, 02
+    gotoxy 39, 02
 
     fputs msgInicio.introducao
     
-    cursorPara 18, 04
+    gotoxy 18, 04
 
     fputs msgInicio.nomeSistema
         
     fputs nomeSistema
     
-    cursorPara 18, 05
+    gotoxy 18, 05
 
     fputs msgInicio.versaoSistema
         
@@ -123,11 +123,11 @@ mostrarInterfacePrincipal:
     
     fputs msgInicio.versao
 
-    cursorPara 18, 06
+    gotoxy 18, 06
 
     fputs msgInicio.tipoSistema
     
-    cursorPara 18, 08
+    gotoxy 18, 08
 
     call definirCorTema
 
@@ -135,15 +135,15 @@ mostrarInterfacePrincipal:
 
     call definirCorPadrao
 
-    cursorPara 18, 10
+    gotoxy 18, 10
 
     fputs msgInicio.copyrightAndromeda
     
-    cursorPara 18, 11
+    gotoxy 18, 11
 
     fputs msgInicio.direitosReservados
     
-    cursorPara 24, 13
+    gotoxy 24, 13
 
     call definirCorTema
 
@@ -151,15 +151,15 @@ mostrarInterfacePrincipal:
 
     call definirCorPadrao
 
-    cursorPara 39, 15
+    gotoxy 39, 15
 
     fputs msgInicio.sobrePC
     
-    cursorPara 02, 17
+    gotoxy 02, 17
 
     fputs msgInicio.processadorPrincipal
     
-    cursorPara 04, 19
+    gotoxy 04, 19
 
     fputs msgInicio.numProcessador
     
@@ -169,11 +169,11 @@ mostrarInterfacePrincipal:
 
     call definirCorPadrao
 
-    cursorPara 08, 20
+    gotoxy 08, 20
 
     fputs msgInicio.operacaoProcessador
         
-    cursorPara 02, 22
+    gotoxy 02, 22
 
     fputs msgInfo.memoriaDisponivel
         

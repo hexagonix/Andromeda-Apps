@@ -110,17 +110,17 @@ match =SIM, VERBOSE
 
     hx.syscall definirCor
     
-    cursorPara 02, 02
+    gotoxy 02, 02
     
     fputs msgPortaParalela.introducao
         
-    cursorPara 02, 03
+    gotoxy 02, 03
     
     fputs msgPortaParalela.introducao2
         
 .infoParalela:
 
-    cursorPara 04, 06
+    gotoxy 04, 06
     
     fputs msgPortaParalela.impressoraPadrao
   
@@ -136,7 +136,7 @@ match =SIM, VERBOSE
     
     hx.syscall definirCor
     
-    cursorPara 04, 07
+    gotoxy 04, 07
     
     jmp .novaLinha
     

@@ -110,15 +110,15 @@ match =SIM, VERBOSE
 
     hx.syscall definirCor
     
-    cursorPara 02, 02
+    gotoxy 02, 02
     
     fputs msgSerial.introducao
         
-    cursorPara 02, 03
+    gotoxy 02, 03
     
     fputs msgSerial.introducao2
         
-    cursorPara 04, 04
+    gotoxy 04, 04
     
     fputs msgSerial.portaPadrao
         
@@ -134,15 +134,15 @@ match =SIM, VERBOSE
     
     hx.syscall definirCor
     
-    cursorPara 04, 05
+    gotoxy 04, 05
     
     fputs msgSerial.opcoes
         
-    cursorPara 04, 08
+    gotoxy 04, 08
     
     fputs msgSerial.opcoes2
         
-    cursorPara 04, 09
+    gotoxy 04, 09
     
     fputs msgSerial.opcoes3
         

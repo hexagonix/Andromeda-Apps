@@ -98,7 +98,7 @@ mostrarInterfaceInfo:
     
     call mostrarLogoSistema
     
-    cursorPara 20, 02
+    gotoxy 20, 02
 
     call definirCorTema
     
@@ -106,7 +106,7 @@ mostrarInterfaceInfo:
     
     call definirCorPadrao
     
-    cursorPara 18, 04
+    gotoxy 18, 04
     
     fputs msgInfo.nomeSistema
         
@@ -116,7 +116,7 @@ mostrarInterfaceInfo:
         
     call definirCorPadrao
 
-    cursorPara 18, 05
+    gotoxy 18, 05
     
     fputs msgInfo.versaoSistema
         
@@ -140,7 +140,7 @@ mostrarInterfaceInfo:
 
     call definirCorPadrao
 
-    cursorPara 18, 06
+    gotoxy 18, 06
     
     fputs msgInfo.buildSistema
         
@@ -150,7 +150,7 @@ mostrarInterfaceInfo:
         
     call definirCorPadrao
 
-    cursorPara 18, 07
+    gotoxy 18, 07
     
     fputs msgInfo.tipoSistema
         
@@ -160,7 +160,7 @@ mostrarInterfaceInfo:
         
     call definirCorPadrao
 
-    cursorPara 18, 08
+    gotoxy 18, 08
  
     fputs msgInfo.pacoteAtualizacoes
         
@@ -178,7 +178,7 @@ mostrarInterfaceInfo:
 
 ;; Agora vamos exibir informações sobre o Hexagon
 
-    cursorPara 18, 09
+    gotoxy 18, 09
  
     fputs msgInfo.Hexagon
     
@@ -218,7 +218,7 @@ mostrarInterfaceInfo:
 
 ;; Voltamos à programação normal
 
-    cursorPara 18, 11
+    gotoxy 18, 11
     
     fputs nomeSistema
      
@@ -226,21 +226,21 @@ mostrarInterfaceInfo:
 
 ;; Exibir licenciamento
 
-    cursorPara 18, 13
+    gotoxy 18, 13
     
     fputs msgInfo.licenciado
 
     call definirCorPadrao
     
-    cursorPara 18, 15
+    gotoxy 18, 15
 
     fputs msgInfo.copyrightAndromeda
         
-    cursorPara 18, 16
+    gotoxy 18, 16
     
     fputs msgInfo.direitosReservados
         
-    cursorPara 30, 18
+    gotoxy 30, 18
     
     call definirCorTema
     
@@ -248,11 +248,11 @@ mostrarInterfaceInfo:
         
     call definirCorPadrao
     
-    cursorPara 02, 20
+    gotoxy 02, 20
     
     fputs msgInfo.processadorPrincipal
     
-    cursorPara 04, 22
+    gotoxy 04, 22
 
     fputs msgInfo.numProcessador
     
@@ -262,11 +262,11 @@ mostrarInterfaceInfo:
     
     call definirCorPadrao
 
-    cursorPara 08, 23
+    gotoxy 08, 23
 
     fputs msgInfo.operacaoProcessador
     
-    cursorPara 02, 25
+    gotoxy 02, 25
 
     fputs msgInfo.memoriaDisponivel
         

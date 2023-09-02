@@ -102,15 +102,15 @@ mostrarInterfaceFonte:
 
     hx.syscall definirCor
     
-    cursorPara 02, 02
+    gotoxy 02, 02
 
     fputs msgFonte.introducao
         
-    cursorPara 02, 03
+    gotoxy 02, 03
     
     fputs msgFonte.introducao2
     
-    cursorPara 02, 06
+    gotoxy 02, 06
     
     fputs msgFonte.solicitarArquivo
 
@@ -165,7 +165,7 @@ match =SIM, VERBOSE
 
 }
 
-    cursorPara 04, 08
+    gotoxy 04, 08
     
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
@@ -210,7 +210,7 @@ match =SIM, VERBOSE
 
 .semArquivo:
 
-    cursorPara 04, 08
+    gotoxy 04, 08
     
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
@@ -230,7 +230,7 @@ match =SIM, VERBOSE
 
 }
 
-    cursorPara 04, 08
+    gotoxy 04, 08
     
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
@@ -250,7 +250,7 @@ match =SIM, VERBOSE
 
 }
 
-    cursorPara 04, 08
+    gotoxy 04, 08
     
     fputs msgFonte.falha
         

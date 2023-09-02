@@ -98,7 +98,7 @@ mostrarLogoResumido:
 
     hx.syscall definirCor
     
-    cursorPara 02, 02
+    gotoxy 02, 02
 
     fputs msgGeral.logoResumido
 
