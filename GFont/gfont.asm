@@ -115,7 +115,7 @@ inicioAPP:
 
     Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-    cursorPara 02, 10
+    gotoxy 02, 10
     
     fputs fonte.boasVindas
         
@@ -232,7 +232,7 @@ validarFonte:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "2.3.0"
+VERSAO equ "2.3.1"
 
 fonte:
 
