@@ -126,17 +126,11 @@ iniciarInterface:
     Andromeda.Estelar.criarLogotipo INDIGO, BRANCO_ANDROMEDA,\
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-    cursorPara 02, 14
+    xyfputs 02, 14, desligar.msgFinalizar
     
-    fputs desligar.msgFinalizar
-
-    cursorPara 02, 15
-
-    fputs desligar.msgReiniciar
+    xyfputs 02, 15, desligar.msgReiniciar
     
-    cursorPara 02, 17
-
-    fputs desligar.msgSair
+    xyfputs 02, 17, desligar.msgSair
 
     call obterTeclas
 
@@ -144,9 +138,7 @@ iniciarInterface:
 
  finalizarSistema:
 
-    cursorPara 02, 18
-
-    fputs desligar.msgDesligamento
+    xyfputs 02, 18, desligar.msgDesligamento
 
     mov ecx, 500
     
@@ -339,7 +331,7 @@ terminar:
 ;;************************************************************************************
 
 ENERGIA equ "shutdown"   
-VERSAO  equ "1.2.1"
+VERSAO  equ "1.3.0"
 
 desligar:
 
