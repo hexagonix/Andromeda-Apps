@@ -106,7 +106,7 @@ inicioAPP:
 
     hx.syscall definirCor
     
-    cursorPara 02, 01
+    gotoxy 02, 01
     
     xyfputs 39, 4, serial.bannerHexagonix
     xyfputs 27, 5, serial.copyright
@@ -115,7 +115,7 @@ inicioAPP:
     Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-    cursorPara 02, 10
+    gotoxy 02, 10
 
     mov esi, serial.nomePorta
     
@@ -235,7 +235,7 @@ erroAbertura:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.1.0"
+VERSAO equ "1.1.1"
 
 serial:
 
