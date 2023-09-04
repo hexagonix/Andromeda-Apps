@@ -11,9 +11,9 @@
 ;;                                               aa,    ,88                                         
 ;;                                                "P8bbdP"       
 ;;
-;;                    Sistema Operacional Hexagonix® - Hexagonix® Operating System
+;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
 ;;
-;;                          Copyright © 2015-2023 Felipe Miguel Nery Lunkes
+;;                         Copyright (c) 2015-2023 Felipe Miguel Nery Lunkes
 ;;                        Todos os direitos reservados - All rights reserved.
 ;;
 ;;*************************************************************************************************
@@ -90,7 +90,7 @@ include "macros.s"
 ;;************************************************************************************
 
 ;; A versão do ASH é independente da versão do restante do sistema.
-;; Ela deve ser utilizada para identificar para qual versão do Hexagonix® o ASH foi
+;; Ela deve ser utilizada para identificar para qual versão do Hexagonix o ASH foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'help'.
 
 ASHPadrao          = VERDE_MAR
