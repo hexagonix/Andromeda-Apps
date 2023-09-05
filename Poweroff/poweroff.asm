@@ -262,7 +262,7 @@ terminar:
 ;;************************************************************************************
 
 ENERGIA equ "shutdown"   
-VERSAO  equ "1.4.0"
+VERSAO  equ "1.4.1"
 
 desligar:
 
@@ -283,7 +283,7 @@ db 10, 10, "The system is coming down. Please wait... ", 0
 .msgReinicio:
 db "Rebooting the computer...", 10, 10, 0
 .msgReiniciar:
-db "Press [Ctrl-R] to restart the computer.", 10, 0
+db "Press [Ctrl-R] to reboot the computer.", 10, 0
 .msgFinalizar:
 db "Press [Ctrl-D] to shutdown the computer.", 10, 0
 .msgSair:
