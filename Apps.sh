@@ -68,7 +68,7 @@
 #
 # $HexagonixOS$
 
-# Versão 2.1
+# Versão 2.2
 
 gerarBaseGrafica(){
 
@@ -93,7 +93,7 @@ do
     
     echo " > Building Hexagonix graphical application $(basename $h .asm)..." >> ../$LOG
     
-    fasm $h ../../../Andromeda/bin/`basename $h .asm` -d $FLAGS_COMUM >> ../$LOG || desmontar
+    fasm $h ../$DIRETORIO/bin/`basename $h .asm` -d $FLAGS_COMUM >> ../$LOG || desmontar
     
     echo -e " [\e[32mOk\e[0m]"
     
@@ -142,7 +142,7 @@ exit
 }
 
 export LOG="../../log.log"
-export DESTINO="../../$1"
+export DIRETORIO="../../$1"
 
 case $1 in
 
