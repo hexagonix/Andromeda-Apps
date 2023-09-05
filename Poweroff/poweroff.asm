@@ -285,7 +285,7 @@ db "Rebooting the computer...", 10, 10, 0
 .msgReiniciar:
 db "Press [Ctrl-R] to reboot the computer.", 10, 0
 .msgFinalizar:
-db "Press [Ctrl-D] to shutdown the computer.", 10, 0
+db "Press [Ctrl-D] to power off the computer.", 10, 0
 .msgSair:
 db "Press [Ctrl-S] or [F1] to return to Hexagonix.", 0
 .msgPronto:
