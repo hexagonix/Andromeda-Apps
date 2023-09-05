@@ -140,10 +140,6 @@ iniciarInterface:
 
     xyfputs 02, 18, desligar.msgDesligamento
 
-    mov ecx, 500
-    
-    hx.syscall causarAtraso
-
     mov eax, VERDE_FLORESTA
     mov ebx, dword[Andromeda.Interface.corFundo]
 
@@ -155,71 +151,6 @@ iniciarInterface:
     mov ebx, dword[Andromeda.Interface.corFundo]
 
     hx.syscall definirCor
-
-    fputs desligar.msgFinalizando
-
-    mov ecx, 500
-    
-    hx.syscall causarAtraso
-
-    mov eax, VERDE_FLORESTA
-    mov ebx, dword[Andromeda.Interface.corFundo]
-
-    hx.syscall definirCor
-    
-    fputs desligar.msgPronto
-
-    mov eax, dword[Andromeda.Interface.corFonte]
-    mov ebx, dword[Andromeda.Interface.corFundo]
-
-    hx.syscall definirCor
-
-    fputs desligar.msgHexagonix
-
-    mov ecx, 500
-    
-    hx.syscall causarAtraso
-
-    mov eax, VERDE_FLORESTA
-    mov ebx, dword[Andromeda.Interface.corFundo]
-
-    hx.syscall definirCor
-    
-    fputs desligar.msgPronto
-
-    mov eax, dword[Andromeda.Interface.corFonte]
-    mov ebx, dword[Andromeda.Interface.corFundo]
-
-    hx.syscall definirCor
-
-    fputs desligar.msgDiscos
-
-    mov ecx, 500
-    
-    hx.syscall causarAtraso
-
-    mov eax, VERDE_FLORESTA
-    mov ebx, dword[Andromeda.Interface.corFundo]
-
-    hx.syscall definirCor
-    
-    fputs desligar.msgPronto
-
-    mov eax, VERMELHO
-    mov ebx, dword[Andromeda.Interface.corFundo]
-
-    hx.syscall definirCor
-
-    mov eax, dword[Andromeda.Interface.corFonte]
-    mov ebx, dword[Andromeda.Interface.corFundo]
-
-    hx.syscall definirCor
-
-    novaLinha
-
-    mov ecx, 500
-    
-    hx.syscall causarAtraso
 
     ret
 
@@ -331,7 +262,7 @@ terminar:
 ;;************************************************************************************
 
 ENERGIA equ "shutdown"   
-VERSAO  equ "1.3.0"
+VERSAO  equ "1.4.0"
 
 desligar:
 
@@ -348,13 +279,7 @@ db "-de", 0 ;; Parâmetro que indica que não deve haver eco
 .parametroReiniciar:
 db "-re", 0 ;; Parâmetro que indica que não deve haver eco
 .msgDesligamento:
-db 10, 10, "!> Preparing to shutdown the computer...  ", 0
-.msgFinalizando:
-db 10, 10, "#> Terminating all processes still running...  ", 0
-.msgHexagonix:
-db 10, 10, "#> The system is coming down. Please wait...    ", 0
-.msgDiscos:
-db 10, 10, "#> Stoping disks and shutting down the computer... ", 0
+db 10, 10, "The system is coming down. Please wait... ", 0
 .msgReinicio:
 db "Rebooting the computer...", 10, 10, 0
 .msgReiniciar:
@@ -362,7 +287,7 @@ db "Press [Ctrl-R] to restart the computer.", 10, 0
 .msgFinalizar:
 db "Press [Ctrl-D] to shutdown the computer.", 10, 0
 .msgSair:
-db "Press [Ctrl-S] or [F1] to return to Hexagonix", 0
+db "Press [Ctrl-S] or [F1] to return to Hexagonix.", 0
 .msgPronto:
 db "[Done]", 0
 .msgFalha:
