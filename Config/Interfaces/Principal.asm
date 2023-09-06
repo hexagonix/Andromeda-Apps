@@ -83,7 +83,7 @@ mostrarInterfacePrincipal:
 
     fputs TITULO.inicio
 
-    mov al, byte[maxLinhas]     ;; Última linha
+    mov al, byte[maxLinhas] ;; Última linha
 
     dec al
 
@@ -218,5 +218,3 @@ mostrarInterfacePrincipal:
     je finalizarAPP
 
     jmp .obterTeclas
-
-

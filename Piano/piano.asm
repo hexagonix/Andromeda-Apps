@@ -104,7 +104,7 @@ exibirInterfaceSobre:
 
     fputs piano.titulo
 
-    mov al, byte[Andromeda.Interface.numLinhas]     ;; Última linha
+    mov al, byte[Andromeda.Interface.numLinhas] ;; Última linha
 
     dec al
 
@@ -230,7 +230,7 @@ inicioAPP:
 
     hx.syscall aguardarTeclado
 
-.semtecla:              ; Procura as teclas e emite os sons
+.semtecla: ; Procura as teclas e emite os sons
 
     cmp al, 'q'
     jne .w
@@ -376,7 +376,7 @@ montarTeclas:
 .primeiraTecla:
 
     mov eax, 144
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
@@ -386,7 +386,7 @@ montarTeclas:
 .segundaTecla:
 
     mov eax, 204
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
@@ -396,7 +396,7 @@ montarTeclas:
 .terceiraTecla:
 
     mov eax, 264
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
@@ -406,7 +406,7 @@ montarTeclas:
 .quartaTecla:
 
     mov eax, 324
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
@@ -416,7 +416,7 @@ montarTeclas:
 .quintaTecla:
 
     mov eax, 384
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
@@ -426,7 +426,7 @@ montarTeclas:
 .sextaTecla:
 
     mov eax, 444
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
@@ -436,7 +436,7 @@ montarTeclas:
 .setimaTecla:
 
     mov eax, 504
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
@@ -446,7 +446,7 @@ montarTeclas:
 .oitavaTecla:
 
     mov eax, 564
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
@@ -572,7 +572,7 @@ evidenciarTeclas:
     call montarTeclas
 
     mov eax, 144
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
@@ -586,7 +586,7 @@ evidenciarTeclas:
     call montarTeclas
 
     mov eax, 204
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
@@ -600,7 +600,7 @@ evidenciarTeclas:
     call montarTeclas
 
     mov eax, 264
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
@@ -614,7 +614,7 @@ evidenciarTeclas:
     call montarTeclas
 
     mov eax, 324
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
@@ -628,7 +628,7 @@ evidenciarTeclas:
     call montarTeclas
 
     mov eax, 384
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
@@ -642,7 +642,7 @@ evidenciarTeclas:
     call montarTeclas
 
     mov eax, 444
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
@@ -656,7 +656,7 @@ evidenciarTeclas:
     call montarTeclas
 
     mov eax, 504
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
@@ -670,7 +670,7 @@ evidenciarTeclas:
     call montarTeclas
 
     mov eax, 564
-    mov ebx, 84  ;; Não deve ser alterado
+    mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO

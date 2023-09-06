@@ -131,13 +131,13 @@ inicioAPP:
 
     fputs serial.separador
 
-    mov al, byte[Andromeda.Interface.numColunas]        ;; Máximo de caracteres para obter
+    mov al, byte[Andromeda.Interface.numColunas] ;; Máximo de caracteres para obter
 
     sub al, 20
 
     hx.syscall obterString
 
-    ;; hx.syscall cortarString           ;; Remover espaços em branco extras
+    ;; hx.syscall cortarString ;; Remover espaços em branco extras
 
     mov [msg], esi
 
@@ -266,4 +266,4 @@ db "[", VERSAO, "] | [^N] New message  [^S] Exit", 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
 
-msg:              db 0
+msg: db 0

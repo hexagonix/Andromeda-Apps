@@ -121,13 +121,13 @@ inicioAPP:
 
     fputs fonte.nomeFonte
 
-    mov al, byte[Andromeda.Interface.numColunas]        ;; Máximo de caracteres para obter
+    mov al, byte[Andromeda.Interface.numColunas] ;; Máximo de caracteres para obter
 
     sub al, 20
 
     hx.syscall obterString
 
-    hx.syscall cortarString          ;; Remover espaços em branco extras
+    hx.syscall cortarString ;; Remover espaços em branco extras
 
     mov [arquivoFonte], esi
 

@@ -90,7 +90,7 @@ match =SIM, VERBOSE
 
     fputs TITULO.portaSerial
 
-    mov al, byte[maxLinhas]     ;; Última linha
+    mov al, byte[maxLinhas] ;; Última linha
 
     dec al
 
@@ -277,12 +277,12 @@ match =SIM, VERBOSE
 
     fputs msgSerial.doisPontos
 
-    mov al, byte[maxColunas]        ;; Máximo de caracteres para obter
+    mov al, byte[maxColunas] ;; Máximo de caracteres para obter
     sub al, 20
 
     hx.syscall obterString
 
-    ;; hx.syscall cortarString       ;; Remover espaços em branco extras (por enquanto isso nao será feito!)
+    ;; hx.syscall cortarString ;; Remover espaços em branco extras (por enquanto isso nao será feito!)
 
     mov [Buffers.msg], esi
 

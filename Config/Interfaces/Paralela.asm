@@ -90,7 +90,7 @@ match =SIM, VERBOSE
 
     fputs TITULO.portaParalela
 
-    mov al, byte[maxLinhas]     ;; Última linha
+    mov al, byte[maxLinhas] ;; Última linha
 
     dec al
 
@@ -167,5 +167,3 @@ match =SIM, VERBOSE
     je finalizarAPP
 
     jmp .obterTeclas
-
-

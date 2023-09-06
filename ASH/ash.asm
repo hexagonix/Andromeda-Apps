@@ -258,15 +258,15 @@ inicioShell:
 
     call alterarCor
 
-    mov al, byte[Andromeda.Interface.numColunas]         ;; Máximo de caracteres para obter
+    mov al, byte[Andromeda.Interface.numColunas] ;; Máximo de caracteres para obter
 
     sub al, 20
 
     hx.syscall obterString
 
-    hx.syscall cortarString           ;; Remover espaços em branco extras
+    hx.syscall cortarString ;; Remover espaços em branco extras
 
-    cmp byte[esi], 0                 ;; Nenhum comando inserido
+    cmp byte[esi], 0 ;; Nenhum comando inserido
     je .obterComando
 
 ;; Comparar com comandos internos disponíveis
@@ -307,7 +307,7 @@ inicioShell:
 
 ;; Tentar carregar um programa
 
-    call obterArgumentos              ;; Separar comando e argumentos
+    call obterArgumentos ;; Separar comando e argumentos
 
     push esi
     push edi
@@ -672,7 +672,7 @@ obterArgumentos:
 
 .loop:
 
-    lodsb           ;; mov AL, byte[ESI] & inc ESI
+    lodsb ;; mov AL, byte[ESI] & inc ESI
 
     cmp al, 0
     je .naoencontrado
@@ -701,7 +701,7 @@ obterArgumentos:
 
     mov ecx, eax
 
-    inc ecx         ;; Incluindo o último caractere (NULL)
+    inc ecx ;; Incluindo o último caractere (NULL)
 
     push es
 
@@ -711,7 +711,7 @@ obterArgumentos:
     mov esi, ebx
     mov edi, bufferArquivo
 
-    rep movsb       ;; Copiar (ECX) caracteres da string de ESI para EDI
+    rep movsb ;; Copiar (ECX) caracteres da string de ESI para EDI
 
     pop es
 
@@ -794,4 +794,4 @@ exibirBannerASH:
 
 ;;************************************************************************************
 
-bufferArquivo:  ;; Endereço para carregamento de arquivos
+bufferArquivo: ;; Endereço para carregamento de arquivos

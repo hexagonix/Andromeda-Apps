@@ -139,7 +139,7 @@ tamanhoLinhaAtual:    dd 0  ;; Tamanho da linha atual
 posicaoLinhaNaTela:   dd 1  ;; Posição da linha no display
 posicaoPaginaAtual:   dd 0  ;; Posição da página atual no arquivo (uma tela)
 necessarioRedesenhar: db 1  ;; Se não zero, é necessário redesenhar toda a tela
-nomeArquivo: times 13 db 0
+nomeArquivo: times 13 db 0  ;; Nome do arquivo
 maxColunas:           db 0  ;; Total de colunas disponíveis no vídeo na resolução atual
 maxLinhas:            db 0  ;; Total de linhas disponíveis no vídeo na resolução atual
 
@@ -159,14 +159,14 @@ Quartzo:
     mov dword[quartzo.corFonte], eax
     mov dword[quartzo.corFundo], ebx
 
-    cmp byte[edi], 0            ;; Em caso de falta de argumentos
+    cmp byte[edi], 0 ;; Em caso de falta de argumentos
     je .novoArquivo
 
-    mov esi, edi                ;; Argumentos do programa
+    mov esi, edi ;; Argumentos do programa
 
     hx.syscall tamanhoString
 
-    cmp eax, 12                 ;; Nome de arquivo inválido
+    cmp eax, 12 ;; Nome de arquivo inválido
     ja .novoArquivo
 
 ;; Salvar nome do arquivo
@@ -174,12 +174,12 @@ Quartzo:
     push es
 
     push ds
-    pop es                  ;; DS = ES
+    pop es ;; DS = ES
 
     mov edi, nomeArquivo
-    mov ecx, eax            ;; Caracteres no nome do arquivo
+    mov ecx, eax ;; Caracteres no nome do arquivo
 
-    inc ecx                 ;; Incluindo o caractere NULL
+    inc ecx ;; Incluindo o caractere NULL
 
     rep movsb
 
@@ -193,11 +193,11 @@ Quartzo:
 
     hx.syscall arquivoExiste
 
-    jc .novoArquivo             ;; O arquivo não existe
+    jc .novoArquivo ;; O arquivo não existe
 
     mov esi, nomeArquivo
 
-    mov edi, bufferArquivo      ;; Endereço para o carregamento
+    mov edi, bufferArquivo ;; Endereço para o carregamento
 
     hx.syscall abrir
 
@@ -212,7 +212,7 @@ Quartzo:
     push es
 
     push ds
-    pop es                     ;; ES = DS
+    pop es ;; ES = DS
 
 ;; Agora o nome do arquivo aberto será exibido na interface do aplicativo
 
@@ -247,7 +247,7 @@ Quartzo:
 
 .inicio:
 
-    mov al, 10              ;; Caractere de nova linha
+    mov al, 10 ;; Caractere de nova linha
 
     mov esi, bufferArquivo
 
@@ -262,10 +262,10 @@ Quartzo:
 
     add esi, dword[posicaoLinhaAtual]
 
-    call tamanhoLinha                   ;; Encontrar tamanho da linha atual
+    call tamanhoLinha ;; Encontrar tamanho da linha atual
 
-    mov byte[posicaoAtualNaLinha], dl   ;; Cursor no final da linha
-    mov byte[tamanhoLinhaAtual], dl     ;; Salvar tamanho da linha atual
+    mov byte[posicaoAtualNaLinha], dl ;; Cursor no final da linha
+    mov byte[tamanhoLinhaAtual], dl   ;; Salvar tamanho da linha atual
 
     mov dword[posicaoPaginaAtual], 0
 
@@ -276,7 +276,7 @@ Quartzo:
 .obterTecla:
 
     cmp byte[necessarioRedesenhar], 0
-    je .outrasLinhasImpressas           ;; Não é necessário imprimir outras linhas
+    je .outrasLinhasImpressas ;; Não é necessário imprimir outras linhas
 
 ;; Imprimir outras linhas
 
@@ -329,7 +329,7 @@ Quartzo:
 
     fputs quartzo.tituloPrograma
 
-    mov al, byte[maxLinhas]     ;; Última linha
+    mov al, byte[maxLinhas] ;; Última linha
 
     dec al
 
@@ -408,7 +408,7 @@ Quartzo:
 
     mov eax, dword[linha]
 
-    inc eax                 ;; Contando de 1
+    inc eax ;; Contando de 1
 
     imprimirInteiro
 
@@ -418,7 +418,7 @@ Quartzo:
 
     movzx eax, byte[posicaoAtualNaLinha]
 
-    inc eax                 ;; Contando de 1
+    inc eax ;; Contando de 1
 
     imprimirInteiro
 
@@ -513,14 +513,14 @@ Quartzo:
     jae .obterTecla
 
     mov edx, 0
-    movzx esi, byte[posicaoAtualNaLinha]    ;; Posição para inserir caracteres
+    movzx esi, byte[posicaoAtualNaLinha] ;; Posição para inserir caracteres
 
     add esi, dword[posicaoLinhaAtual]
     add esi, bufferArquivo
 
-    hx.syscall inserirCaractere          ;; Inserir char na string
+    hx.syscall inserirCaractere ;; Inserir char na string
 
-    inc byte[posicaoAtualNaLinha]       ;; Um caractere foi adicionado
+    inc byte[posicaoAtualNaLinha] ;; Um caractere foi adicionado
     inc byte[tamanhoLinhaAtual]
 
 ;; Mais teclas
@@ -566,12 +566,12 @@ Quartzo:
 
     add esi, dword[posicaoLinhaAtual]
 
-    call tamanhoLinha                   ;; Encontrar tamanho para essa linha
+    call tamanhoLinha ;; Encontrar tamanho para essa linha
 
-    mov byte[posicaoAtualNaLinha], 0    ;; Cursor no fim da linha
-    mov byte[tamanhoLinhaAtual], dl     ;; Salvar o tamanho atual da linha
+    mov byte[posicaoAtualNaLinha], 0 ;; Cursor no fim da linha
+    mov byte[tamanhoLinhaAtual], dl  ;; Salvar o tamanho atual da linha
 
-    mov al, 10                          ;; Caractere de nova linha
+    mov al, 10 ;; Caractere de nova linha
     mov esi, bufferArquivo
 
     hx.syscall encontrarCaractere
@@ -663,7 +663,7 @@ Quartzo:
 
     hx.syscall removerCaractereString
 
-    dec byte[posicaoAtualNaLinha]   ;; Um caractere foi removido
+    dec byte[posicaoAtualNaLinha] ;; Um caractere foi removido
     dec byte[tamanhoLinhaAtual]
 
     jmp .obterTecla
@@ -678,7 +678,7 @@ Quartzo:
     mov esi, bufferArquivo
     mov eax, dword[linha]
 
-    dec eax                         ;; Linha anterior
+    dec eax ;; Linha anterior
 
     call posicaoLinha
 
@@ -690,9 +690,9 @@ Quartzo:
 
     add esi, bufferArquivo
 
-    call tamanhoLinha               ;; Encontrar tamanho
+    call tamanhoLinha ;; Encontrar tamanho
 
-    push edx                        ;; Salvar tamanho da linha
+    push edx ;; Salvar tamanho da linha
 
     add dl, byte[tamanhoLinhaAtual]
 
@@ -702,7 +702,7 @@ Quartzo:
 
     dec bl
 
-    cmp dl, bl                      ;; Contando de 0
+    cmp dl, bl ;; Contando de 0
     jae .obterTecla
 
 ;; Remover caractere de nova linha
@@ -719,7 +719,7 @@ Quartzo:
 
     hx.syscall removerCaractereString
 
-    dec byte[totalLinhas]           ;; Uma linha foi removida
+    dec byte[totalLinhas] ;; Uma linha foi removida
     dec dword[linha]
 
 ;; Linha anterior
@@ -745,9 +745,9 @@ Quartzo:
 
     add esi, bufferArquivo
 
-    call tamanhoLinha                   ;; Encontrar tamanho da linha atual
+    call tamanhoLinha ;; Encontrar tamanho da linha atual
 
-    mov byte[tamanhoLinhaAtual], dl     ;; Salvar tamanho da linha
+    mov byte[tamanhoLinhaAtual], dl ;; Salvar tamanho da linha
 
     pop dword[posicaoLinhaAtual]
 
@@ -843,8 +843,8 @@ Quartzo:
 
     call tamanhoLinha
 
-    mov byte[posicaoAtualNaLinha], 0    ;; Cursor no fim da linha
-    mov byte[tamanhoLinhaAtual], dl     ;; Salvar tamanho da linha
+    mov byte[posicaoAtualNaLinha], 0 ;; Cursor no fim da linha
+    mov byte[tamanhoLinhaAtual], dl  ;; Salvar tamanho da linha
 
     jmp .teclaBaixo.proximo
 
@@ -890,11 +890,11 @@ Quartzo:
     cmp dl, byte[posicaoAtualNaLinha]
     jb .teclaCima.moverCursorAteOFim
 
-    jmp .teclaCima.cursorMovido         ;; Não alterar a coluna do cursor
+    jmp .teclaCima.cursorMovido ;; Não alterar a coluna do cursor
 
 .teclaCima.moverCursorAteOFim:
 
-    mov byte[posicaoAtualNaLinha], dl   ;; Cursor ao fim da linha
+    mov byte[posicaoAtualNaLinha], dl ;; Cursor ao fim da linha
 
 .teclaCima.cursorMovido:
 
@@ -959,11 +959,11 @@ Quartzo:
     cmp dl, byte[posicaoAtualNaLinha]
     jb .teclaBaixo.moverCursorAteOFim
 
-    jmp .teclaBaixo.cursorMovido            ;; Não alterar a coluna
+    jmp .teclaBaixo.cursorMovido ;; Não alterar a coluna
 
 .teclaBaixo.moverCursorAteOFim:
 
-    mov byte[posicaoAtualNaLinha], dl   ;; Cursor ao fim da linha
+    mov byte[posicaoAtualNaLinha], dl ;; Cursor ao fim da linha
 
 .teclaBaixo.cursorMovido:
 
@@ -1085,7 +1085,7 @@ Quartzo:
 
     call tamanhoLinha
 
-    mov byte[posicaoAtualNaLinha], dl   ;; Cursor no fim da linha
+    mov byte[posicaoAtualNaLinha], dl ;; Cursor no fim da linha
     mov byte[tamanhoLinhaAtual], dl
 
 .teclaPageUp.fim:
@@ -1124,7 +1124,7 @@ Quartzo:
 
     call tamanhoLinha
 
-    mov byte[posicaoAtualNaLinha], dl   ;; Cursor no fim da linha
+    mov byte[posicaoAtualNaLinha], dl ;; Cursor no fim da linha
     mov byte[tamanhoLinhaAtual], dl
 
     jmp .teclaPageUp.fim
@@ -1221,11 +1221,11 @@ Quartzo:
 
 ;; Próxima linha
 
-    mov eax, dword[totalLinhas]     ;; Última linha é o total de linhas - 1
+    mov eax, dword[totalLinhas] ;; Última linha é o total de linhas - 1
 
     dec eax
 
-    mov dword[linha], eax       ;; Fazer da última linha a linha atual
+    mov dword[linha], eax ;; Fazer da última linha a linha atual
 
     mov esi, bufferArquivo
     mov eax, dword[linha]
@@ -1254,7 +1254,7 @@ Quartzo:
 
     sub ebx, 3
 
-    cmp dword[totalLinhas], ebx     ;; Checar por arquivos pequenos ou grandes
+    cmp dword[totalLinhas], ebx ;; Checar por arquivos pequenos ou grandes
     jae .maisQueUmaPagina
 
 ;; Se arquivo pequeno
@@ -1332,16 +1332,16 @@ fimPrograma:
 
 imprimirLinha:
 
-    mov edx, 0      ;; Contador de caracteres
+    mov edx, 0 ;; Contador de caracteres
 
 .loopImprimir:
 
     lodsb
 
-    cmp al, 10      ;; Fim da linha
+    cmp al, 10 ;; Fim da linha
     je .fim
 
-    cmp al, 0       ;; Fim da String
+    cmp al, 0 ;; Fim da String
     je .fimArquivo
 
     movzx ebx, byte[maxColunas]
@@ -1354,13 +1354,13 @@ imprimirLinha:
 
     mov ebx, 01h
 
-    hx.syscall imprimirCaractere     ;; Imprimir caractere em AL
+    hx.syscall imprimirCaractere ;; Imprimir caractere em AL
 
     popad
 
     inc edx
 
-    jmp .loopImprimir       ;; Mais caracteres
+    jmp .loopImprimir ;; Mais caracteres
 
 .tamanhoMaximoLinha:
 
@@ -1393,15 +1393,15 @@ tamanhoLinha:
 
     inc esi
 
-    cmp al, 10      ;; Fim da linha
+    cmp al, 10 ;; Fim da linha
     je .fim
 
-    cmp al, 0       ;; Fim da string
+    cmp al, 0 ;; Fim da string
     je .fim
 
     inc edx
 
-    jmp tamanhoLinha        ;; Mais caracteres
+    jmp tamanhoLinha ;; Mais caracteres
 
 .fim:
 
@@ -1428,8 +1428,8 @@ posicaoLinha:
     cmp eax, 0
     je .linhaDesejadaEncontrada ;; Já na primeira linha
 
-    mov edx, 0      ;; Contador de linhas
-    mov ebx, eax    ;; Salvar linha
+    mov edx, 0   ;; Contador de linhas
+    mov ebx, eax ;; Salvar linha
 
     dec ebx
 
@@ -1439,10 +1439,10 @@ posicaoLinha:
 
     inc esi
 
-    cmp al, 10      ;; Caractere de nova linha
+    cmp al, 10 ;; Caractere de nova linha
     je .linhaEncontrada
 
-    cmp al, 0       ;; Fim da string
+    cmp al, 0 ;; Fim da string
     je .linhaNaoEncontrada
 
     jmp .proximoCaractere
@@ -1452,7 +1452,7 @@ posicaoLinha:
     cmp edx, ebx
     je .linhaDesejadaEncontrada
 
-    inc edx         ;; Contador de linhas
+    inc edx ;; Contador de linhas
 
     jmp .proximoCaractere
 
@@ -1501,7 +1501,7 @@ salvarArquivoEditor:
 
     fputs quartzo.solicitarArquivo
 
-    mov eax, 12             ;; Máximo de caracteres
+    mov eax, 12 ;; Máximo de caracteres
 
     hx.syscall obterString
 
@@ -1515,18 +1515,18 @@ salvarArquivoEditor:
     push es
 
     push ds
-    pop es                  ;; ES = DS
+    pop es ;; ES = DS
 
     mov edi, nomeArquivo
-    mov ecx, eax                ;; Caracteres no nome de arquivo
+    mov ecx, eax ;; Caracteres no nome de arquivo
 
-    inc ecx                     ;; Incluindo NULL
+    inc ecx ;; Incluindo NULL
 
     rep movsb
 
 ;; Adicionar ao rodapé
 
-    mov ecx, eax            ;; Caracteres do nome do arquivo
+    mov ecx, eax ;; Caracteres do nome do arquivo
 
     inc ecx
 
@@ -1681,7 +1681,7 @@ abrirArquivoEditor:
 
     fputs quartzo.solicitarArquivo
 
-    mov eax, 12             ;; Máximo de caracteres
+    mov eax, 12 ;; Máximo de caracteres
 
     hx.syscall obterString
 
@@ -1695,18 +1695,18 @@ abrirArquivoEditor:
     push es
 
     push ds
-    pop es                  ;; ES = DS
+    pop es ;; ES = DS
 
     mov edi, nomeArquivo
-    mov ecx, eax                ;; Caracteres no nome de arquivo
+    mov ecx, eax ;; Caracteres no nome de arquivo
 
-    inc ecx                     ;; Incluindo NULL
+    inc ecx ;; Incluindo NULL
 
     rep movsb
 
 ;; Adicionar ao rodapé
 
-    mov ecx, eax            ;; Caracteres do nome do arquivo
+    mov ecx, eax ;; Caracteres do nome do arquivo
 
     inc ecx
 

@@ -82,7 +82,7 @@ mostrarInterfaceConfiguracoes:
 
     fputs TITULO.configuracoes
 
-    mov al, byte[maxLinhas]     ;; Última linha
+    mov al, byte[maxLinhas] ;; Última linha
 
     dec al
 

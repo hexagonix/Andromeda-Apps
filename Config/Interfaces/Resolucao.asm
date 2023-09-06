@@ -83,7 +83,7 @@ mostrarInterfaceConfigResolucao:
 
     fputs TITULO.resolucao
 
-    mov al, byte[maxLinhas]     ;; Última linha
+    mov al, byte[maxLinhas] ;; Última linha
 
     dec al
 

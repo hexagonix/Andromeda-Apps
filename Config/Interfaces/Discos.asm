@@ -82,7 +82,7 @@ mostrarInterfaceDiscos:
 
     fputs TITULO.discos
 
-    mov al, byte[maxLinhas]     ;; Última linha
+    mov al, byte[maxLinhas] ;; Última linha
 
     dec al
 
@@ -190,5 +190,3 @@ match =SIM, VERBOSE
     je finalizarAPP
 
     jmp .obterTeclas
-
-

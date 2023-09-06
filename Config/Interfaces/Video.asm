@@ -77,7 +77,7 @@ mostrarAvisoResolucao:
 
 .modoGrafico1:
 
-    mov al, byte[maxLinhas]     ;; Última linha
+    mov al, byte[maxLinhas] ;; Última linha
 
     dec al
     dec al

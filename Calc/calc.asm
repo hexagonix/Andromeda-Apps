@@ -121,7 +121,7 @@ calcular:
 
     call obterNumero
 
-    mov dword[primeiroNumero], eax      ;; Salvar primeiro número
+    mov dword[primeiroNumero], eax ;; Salvar primeiro número
 
     cmp eax, 0
     je fim
@@ -132,7 +132,7 @@ calcular:
 
     call obterNumero
 
-    mov dword[segundoNumero], eax       ;; Salvar segundo número
+    mov dword[segundoNumero], eax ;; Salvar segundo número
 
     cmp eax, 0
     je fim
@@ -165,7 +165,7 @@ adicionarNumeros:
     mov eax, dword[primeiroNumero]
     mov ebx, dword[segundoNumero]
 
-    add eax, ebx        ;; EAX = EAX + EBX
+    add eax, ebx ;; EAX = EAX + EBX
 
     mov dword[resposta], eax
 
@@ -178,7 +178,7 @@ subtrair:
     mov eax, dword[primeiroNumero]
     mov ebx, dword[segundoNumero]
 
-    sub eax, ebx        ;; EAX = EAX - EBX
+    sub eax, ebx ;; EAX = EAX - EBX
 
     mov dword[resposta], eax
 
@@ -191,7 +191,7 @@ multiplicar:
     mov eax, dword[primeiroNumero]
     mov ebx, dword[segundoNumero]
 
-    mul ebx             ;; EAX = EAX * EBX
+    mul ebx ;; EAX = EAX * EBX
 
     mov dword[resposta], eax
 
@@ -208,7 +208,7 @@ dividir:
     mov ebx, dword[segundoNumero]
     mov edx, 0
 
-    div ebx             ;; EAX = EAX / EBX
+    div ebx ;; EAX = EAX / EBX
 
     mov dword[resposta], eax
 
@@ -255,7 +255,7 @@ imprimirResposta:
 
 obterNumero:
 
-    mov al, 10          ;; Máximo de 10 caracteres
+    mov al, 10 ;; Máximo de 10 caracteres
 
     hx.syscall obterString
 
