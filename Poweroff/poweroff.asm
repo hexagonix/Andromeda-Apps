@@ -1,15 +1,15 @@
 ;;*************************************************************************************************
 ;;
-;; 88                                                                                88              
-;; 88                                                                                ""              
-;; 88                                                                                                
-;; 88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8  
-;; 88P'    "88 a8P     88  `P8, ,8P'  ""     `P8 a8"    `P88 a8"     "8a 88P'   `"88 88  `P8, ,8P'   
-;; 88       88 8PP"""""""    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(     
-;; 88       88 "8b,   ,aa  ,d8" "8b,  88,    ,88 "8a,   ,d88 "8a,   ,a8" 88       88 88  ,d8" "8b,   
-;; 88       88  `"Pbbd8"' 8P'     `P8 `"8bbdP"P8  `"PbbdP"P8  `"PbbdP"'  88       88 88 8P'     `P8  
-;;                                               aa,    ,88                                         
-;;                                                "P8bbdP"       
+;; 88                                                                                88
+;; 88                                                                                ""
+;; 88
+;; 88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8
+;; 88P'    "88 a8P     88  `P8, ,8P'  ""     `P8 a8"    `P88 a8"     "8a 88P'   `"88 88  `P8, ,8P'
+;; 88       88 8PP"""""""    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(
+;; 88       88 "8b,   ,aa  ,d8" "8b,  88,    ,88 "8a,   ,d88 "8a,   ,a8" 88       88 88  ,d8" "8b,
+;; 88       88  `"Pbbd8"' 8P'     `P8 `"8bbdP"P8  `"PbbdP"P8  `"PbbdP"'  88       88 88 8P'     `P8
+;;                                               aa,    ,88
+;;                                                "P8bbdP"
 ;;
 ;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
 ;;
@@ -19,7 +19,7 @@
 ;;*************************************************************************************************
 ;;
 ;; Português:
-;; 
+;;
 ;; O Hexagonix e seus componentes são licenciados sob licença BSD-3-Clause. Leia abaixo
 ;; a licença que governa este arquivo e verifique a licença de cada repositório para
 ;; obter mais informações sobre seus direitos e obrigações ao utilizar e reutilizar
@@ -38,10 +38,10 @@
 ;;
 ;; Copyright (c) 2015-2023, Felipe Miguel Nery Lunkes
 ;; All rights reserved.
-;; 
+;;
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright notice, this
 ;;    list of conditions and the following disclaimer.
 ;;
@@ -52,7 +52,7 @@
 ;; 3. Neither the name of the copyright holder nor the names of its
 ;;    contributors may be used to endorse or promote products derived from
 ;;    this software without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 ;; IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -72,7 +72,7 @@ use32
 
 include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
-;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
+;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo
 cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioAPP, 01h
 
 ;;************************************************************************************
@@ -84,19 +84,19 @@ include "log.s"
 
 ;;************************************************************************************
 
-inicioAPP:  
+inicioAPP:
 
     push ds
-    pop es          
-    
+    pop es
+
     mov [parametro], edi ;; Salvar os parâmetros da linha de comando para uso futuro
-    
+
     mov esi, [parametro]
 
     jmp iniciarInterface
 
 ;;************************************************************************************
-    
+
 iniciarInterface:
 
     hx.syscall obterCor
@@ -107,18 +107,18 @@ iniciarInterface:
     hx.syscall limparTela
 
     hx.syscall obterInfoTela
-    
+
     mov byte[Andromeda.Interface.numColunas], bl
     mov byte[Andromeda.Interface.numLinhas], bh
-    
+
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
 
     Andromeda.Estelar.criarInterface desligar.titulo, desligar.rodape, \
     INDIGO, INDIGO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
-    
+
     novaLinha
-    
+
     xyfputs 39, 4, desligar.bannerHexagonix
     xyfputs 27, 5, desligar.copyright
     xyfputs 41, 6, desligar.marcaRegistrada
@@ -127,9 +127,9 @@ iniciarInterface:
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
     xyfputs 02, 14, desligar.msgFinalizar
-    
+
     xyfputs 02, 15, desligar.msgReiniciar
-    
+
     xyfputs 02, 17, desligar.msgSair
 
     call obterTeclas
@@ -144,7 +144,7 @@ iniciarInterface:
     mov ebx, dword[Andromeda.Interface.corFundo]
 
     hx.syscall definirCor
-    
+
     fputs desligar.msgPronto
 
     mov eax, dword[Andromeda.Interface.corFonte]
@@ -159,44 +159,44 @@ iniciarInterface:
 obterTeclas:
 
     hx.syscall aguardarTeclado
-    
+
     push eax
-    
+
     hx.syscall obterEstadoTeclas
-    
+
     bt eax, 0
     jc .teclasControl
-    
+
     pop eax
-    
+
     jmp obterTeclas
-    
+
 .teclasControl:
 
     pop eax
-    
+
     cmp al, 'd'
     je HexagonixDesligar
-    
+
     cmp al, 'D'
     je HexagonixDesligar
-    
+
     cmp al, 'r'
     je HexagonixReiniciar
-    
+
     cmp al, 'R'
     je HexagonixReiniciar
-    
+
     cmp al, 's'
     je terminar
-    
+
     cmp al, 'S'
     je terminar
 
-    jmp obterTeclas 
-    
-;;************************************************************************************  
-    
+    jmp obterTeclas
+
+;;************************************************************************************
+
 HexagonixDesligar:
 
     call finalizarSistema
@@ -261,7 +261,7 @@ terminar:
 ;;
 ;;************************************************************************************
 
-ENERGIA equ "shutdown"   
+ENERGIA equ "shutdown"
 VERSAO  equ "1.4.1"
 
 desligar:
@@ -271,7 +271,7 @@ db "Hexagonix Operating System", 0
 .copyright:
 db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
 .marcaRegistrada:
-db "All rights reserved.", 0              
+db "All rights reserved.", 0
 .energia:
 db ENERGIA, 0
 .parametroDesligar:

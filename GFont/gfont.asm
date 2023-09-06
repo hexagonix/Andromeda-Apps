@@ -1,15 +1,15 @@
 ;;*************************************************************************************************
 ;;
-;; 88                                                                                88              
-;; 88                                                                                ""              
-;; 88                                                                                                
-;; 88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8  
-;; 88P'    "88 a8P     88  `P8, ,8P'  ""     `P8 a8"    `P88 a8"     "8a 88P'   `"88 88  `P8, ,8P'   
-;; 88       88 8PP"""""""    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(     
-;; 88       88 "8b,   ,aa  ,d8" "8b,  88,    ,88 "8a,   ,d88 "8a,   ,a8" 88       88 88  ,d8" "8b,   
-;; 88       88  `"Pbbd8"' 8P'     `P8 `"8bbdP"P8  `"PbbdP"P8  `"PbbdP"'  88       88 88 8P'     `P8  
-;;                                               aa,    ,88                                         
-;;                                                "P8bbdP"       
+;; 88                                                                                88
+;; 88                                                                                ""
+;; 88
+;; 88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8
+;; 88P'    "88 a8P     88  `P8, ,8P'  ""     `P8 a8"    `P88 a8"     "8a 88P'   `"88 88  `P8, ,8P'
+;; 88       88 8PP"""""""    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(
+;; 88       88 "8b,   ,aa  ,d8" "8b,  88,    ,88 "8a,   ,d88 "8a,   ,a8" 88       88 88  ,d8" "8b,
+;; 88       88  `"Pbbd8"' 8P'     `P8 `"8bbdP"P8  `"PbbdP"P8  `"PbbdP"'  88       88 88 8P'     `P8
+;;                                               aa,    ,88
+;;                                                "P8bbdP"
 ;;
 ;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
 ;;
@@ -19,7 +19,7 @@
 ;;*************************************************************************************************
 ;;
 ;; Português:
-;; 
+;;
 ;; O Hexagonix e seus componentes são licenciados sob licença BSD-3-Clause. Leia abaixo
 ;; a licença que governa este arquivo e verifique a licença de cada repositório para
 ;; obter mais informações sobre seus direitos e obrigações ao utilizar e reutilizar
@@ -38,10 +38,10 @@
 ;;
 ;; Copyright (c) 2015-2023, Felipe Miguel Nery Lunkes
 ;; All rights reserved.
-;; 
+;;
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright notice, this
 ;;    list of conditions and the following disclaimer.
 ;;
@@ -52,7 +52,7 @@
 ;; 3. Neither the name of the copyright holder nor the names of its
 ;;    contributors may be used to endorse or promote products derived from
 ;;    this software without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 ;; IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -72,7 +72,7 @@ use32
 
 include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
-;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
+;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo
 cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioAPP, 01h
 
 ;;************************************************************************************
@@ -86,29 +86,29 @@ include "macros.s"
 inicioAPP:
 
     mov [regES], es
-    
+
     push ds
-    pop es          
-    
+    pop es
+
     hx.syscall obterCor
 
     mov dword[Andromeda.Interface.corFonte], eax
     mov dword[Andromeda.Interface.corFundo], ebx
 
-        
+
 .executarInterface:
 
     hx.syscall limparTela
 
     hx.syscall obterInfoTela
-    
+
     mov byte[Andromeda.Interface.numColunas], bl
     mov byte[Andromeda.Interface.numLinhas], bh
-    
+
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
 
     Andromeda.Estelar.criarInterface fonte.titulo, fonte.rodape, AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
-    
+
     xyfputs 39, 4, fonte.bannerHexagonix
     xyfputs 27, 5, fonte.copyright
     xyfputs 41, 6, fonte.marcaRegistrada
@@ -116,19 +116,19 @@ inicioAPP:
     Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
     gotoxy 02, 10
-    
+
     fputs fonte.boasVindas
-        
+
     fputs fonte.nomeFonte
-        
+
     mov al, byte[Andromeda.Interface.numColunas]        ;; Máximo de caracteres para obter
-    
+
     sub al, 20
-    
+
     hx.syscall obterString
-    
+
     hx.syscall cortarString          ;; Remover espaços em branco extras
-    
+
     mov [arquivoFonte], esi
 
     call validarFonte
@@ -136,23 +136,23 @@ inicioAPP:
     jc erroFormato
 
     hx.syscall alterarFonte
-    
+
     jc erroFonte
-    
+
     fputs fonte.sucesso
-    
+
     jmp finalizarAPP
-    
+
 erroFonte:
 
     fputs fonte.falha
-            
+
     jmp finalizarAPP
 
 erroFormato:
 
     fputs fonte.falhaFormato
-            
+
     jmp finalizarAPP
 
 ;;************************************************************************************
@@ -162,7 +162,7 @@ finalizarAPP:
     hx.syscall aguardarTeclado
 
     Andromeda.Estelar.finalizarProcessoGrafico 0, 0
-    
+
 ;;************************************************************************************
 
 validarFonte:
@@ -204,14 +204,14 @@ validarFonte:
 
 .continuar:
 
-    clc 
-    
+    clc
+
     ret
 
 .erroSemFonte:
-    
+
     fputs fonte.falha
-    
+
     jmp finalizarAPP
 
 .naoHFNT:
@@ -223,7 +223,7 @@ validarFonte:
 .tamanhoSuperior:
 
     fputs fonte.tamanhoSuperior
-    
+
     jmp finalizarAPP
 
 ;;************************************************************************************
@@ -240,7 +240,7 @@ fonte:
 db 10, 10, "Use this program to change the default system display font.", 10, 10
 db "Remember that only fonts designed for Hexagonix can be used.", 10, 10, 10, 10, 0
 .nomeArquivo:
-db 10, "Font file name: ", 0    
+db 10, "Font file name: ", 0
 .nomeFonte:
 db "Filename: ", 0
 .sucesso:
@@ -257,7 +257,7 @@ db "Hexagonix Operating System", 0
 .copyright:
 db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
 .marcaRegistrada:
-db "All rights reserved.", 0   
+db "All rights reserved.", 0
 .titulo:
 db "Hexagonix Operating System default font changer utility", 0
 .rodape:

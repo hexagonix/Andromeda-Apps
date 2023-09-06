@@ -1,15 +1,15 @@
 ;;*************************************************************************************************
 ;;
-;; 88                                                                                88              
-;; 88                                                                                ""              
-;; 88                                                                                                
-;; 88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8  
-;; 88P'    "88 a8P     88  `P8, ,8P'  ""     `P8 a8"    `P88 a8"     "8a 88P'   `"88 88  `P8, ,8P'   
-;; 88       88 8PP"""""""    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(     
-;; 88       88 "8b,   ,aa  ,d8" "8b,  88,    ,88 "8a,   ,d88 "8a,   ,a8" 88       88 88  ,d8" "8b,   
-;; 88       88  `"Pbbd8"' 8P'     `P8 `"8bbdP"P8  `"PbbdP"P8  `"PbbdP"'  88       88 88 8P'     `P8  
-;;                                               aa,    ,88                                         
-;;                                                "P8bbdP"       
+;; 88                                                                                88
+;; 88                                                                                ""
+;; 88
+;; 88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8
+;; 88P'    "88 a8P     88  `P8, ,8P'  ""     `P8 a8"    `P88 a8"     "8a 88P'   `"88 88  `P8, ,8P'
+;; 88       88 8PP"""""""    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(
+;; 88       88 "8b,   ,aa  ,d8" "8b,  88,    ,88 "8a,   ,d88 "8a,   ,a8" 88       88 88  ,d8" "8b,
+;; 88       88  `"Pbbd8"' 8P'     `P8 `"8bbdP"P8  `"PbbdP"P8  `"PbbdP"'  88       88 88 8P'     `P8
+;;                                               aa,    ,88
+;;                                                "P8bbdP"
 ;;
 ;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
 ;;
@@ -19,7 +19,7 @@
 ;;*************************************************************************************************
 ;;
 ;; Português:
-;; 
+;;
 ;; O Hexagonix e seus componentes são licenciados sob licença BSD-3-Clause. Leia abaixo
 ;; a licença que governa este arquivo e verifique a licença de cada repositório para
 ;; obter mais informações sobre seus direitos e obrigações ao utilizar e reutilizar
@@ -38,10 +38,10 @@
 ;;
 ;; Copyright (c) 2015-2023, Felipe Miguel Nery Lunkes
 ;; All rights reserved.
-;; 
+;;
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright notice, this
 ;;    list of conditions and the following disclaimer.
 ;;
@@ -52,7 +52,7 @@
 ;; 3. Neither the name of the copyright holder nor the names of its
 ;;    contributors may be used to endorse or promote products derived from
 ;;    this software without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 ;; IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -72,7 +72,7 @@ use32
 
 include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
-;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
+;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo
 cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioAPP, 01h
 
 ;;************************************************************************************
@@ -89,14 +89,14 @@ inicioAPP:
 
     mov dword[Andromeda.Interface.corFonte], eax
     mov dword[Andromeda.Interface.corFundo], ebx
-    
+
     hx.syscall limparTela
 
     hx.syscall obterInfoTela
-    
+
     mov byte[Andromeda.Interface.numColunas], bl
     mov byte[Andromeda.Interface.numLinhas], bh
-    
+
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
 
     Andromeda.Estelar.criarInterface calc.titulo, calc.rodape, \
@@ -118,43 +118,43 @@ calcular:
 ;; Obter primeiro número
 
     fputs calc.primeiroNumero
-    
+
     call obterNumero
-    
+
     mov dword[primeiroNumero], eax      ;; Salvar primeiro número
-    
+
     cmp eax, 0
     je fim
 
 ;; Obter segundo número
-    
+
     fputs calc.segundoNumero
-    
+
     call obterNumero
-    
+
     mov dword[segundoNumero], eax       ;; Salvar segundo número
-    
+
     cmp eax, 0
     je fim
-    
+
 ;; Perguntar qual operação executar
 
     fputs calc.operacao
-    
+
     hx.syscall aguardarTeclado
-    
+
     cmp al, '0'
     je adicionarNumeros
-    
+
     cmp al, '1'
     je subtrair
-    
+
     cmp al, '2'
     je multiplicar
-    
+
     cmp al, '3'
     je dividir
-    
+
     cmp al, '4'
     je fim
 
@@ -164,89 +164,89 @@ adicionarNumeros:
 
     mov eax, dword[primeiroNumero]
     mov ebx, dword[segundoNumero]
-    
+
     add eax, ebx        ;; EAX = EAX + EBX
-    
+
     mov dword[resposta], eax
-    
+
     jmp imprimirResposta
 
 ;;************************************************************************************
-    
+
 subtrair:
 
     mov eax, dword[primeiroNumero]
     mov ebx, dword[segundoNumero]
-    
+
     sub eax, ebx        ;; EAX = EAX - EBX
-    
+
     mov dword[resposta], eax
-    
+
     jmp imprimirResposta
 
 ;;************************************************************************************
-    
+
 multiplicar:
 
     mov eax, dword[primeiroNumero]
     mov ebx, dword[segundoNumero]
-    
+
     mul ebx             ;; EAX = EAX * EBX
-    
+
     mov dword[resposta], eax
-    
+
     jmp imprimirResposta
 
 ;;************************************************************************************
-    
+
 dividir:
 
     cmp ebx, 0
     je .dividirPorZero
-        
+
     mov eax, dword[primeiroNumero]
     mov ebx, dword[segundoNumero]
     mov edx, 0
-    
+
     div ebx             ;; EAX = EAX / EBX
-    
+
     mov dword[resposta], eax
 
     jmp imprimirResposta
 
 ;;************************************************************************************
-    
+
 .dividirPorZero:
 
     fputs calc.dividirPorZero
-    
+
     jmp imprimirResposta.proximo
 
 ;;************************************************************************************
-    
+
 imprimirResposta:
 
     novaLinha
-    
+
     fputs calc.resultado
-        
+
     mov eax, dword[resposta]
-    
+
     imprimirInteiro
-    
+
 .proximo:
 
     novaLinha
     novaLinha
 
     fputs calc.solicitarTecla
-    
+
     hx.syscall aguardarTeclado
-    
+
     jmp inicioAPP
 
 ;;************************************************************************************
-    
+
 ;; Obter um número do teclado
 ;;
 ;; Saída:
@@ -256,23 +256,23 @@ imprimirResposta:
 obterNumero:
 
     mov al, 10          ;; Máximo de 10 caracteres
-    
+
     hx.syscall obterString
-    
+
     hx.syscall cortarString
-    
+
     hx.syscall stringParaInt
-    
+
     push eax
-    
+
     novaLinha
-    
+
     pop eax
-    
+
     ret
 
 ;;************************************************************************************
-    
+
 fim:
 
     Andromeda.Estelar.finalizarProcessoGrafico 0, 0
@@ -280,10 +280,10 @@ fim:
 ;;************************************************************************************
 
 mostrarLogoSistema:
-    
+
     Andromeda.Estelar.criarLogotipo VERDE_ESCURO, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
-    
+
     ret
 
 ;;************************************************************************************
@@ -305,24 +305,24 @@ db "Enter the first number (0 to exit): ", 0
 .segundoNumero:
 db "Enter the second number (0 to exit): ", 0
 .operacao:
-db 10, "Enter the operation code, according to the list below:", 10, 10    
+db 10, "Enter the operation code, according to the list below:", 10, 10
 db "[0] SUM (+)", 10
 db "[1] SUB  (-)", 10
 db "[2] MUL  (*)", 10
 db "[3] DIV  (/)", 10
 db "[4] EXIT", 10
-db 10, "Option: ", 0 
+db 10, "Option: ", 0
 .resultado:
 db 10, 10, "The result is = ", 0
 .solicitarTecla:
 db 10, 10, "Press any key to continue...", 10, 10, 0
 
-.bannerHexagonix: 
-db "Hexagonix Operating System", 0 
+.bannerHexagonix:
+db "Hexagonix Operating System", 0
 .copyright:
 db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
 .marcaRegistrada:
-db "All rights reserved.", 0         
+db "All rights reserved.", 0
 
 .titulo:
 db "Hexagonix Operating System Basic Calculator",0
@@ -333,5 +333,5 @@ primeiroNumero:   dd 0
 segundoNumero:    dd 0
 resposta:         dd 0
 
-Andromeda.Interface Andromeda.Estelar.Interface 
+Andromeda.Interface Andromeda.Estelar.Interface
 

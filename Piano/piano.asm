@@ -1,15 +1,15 @@
 ;;*************************************************************************************************
 ;;
-;; 88                                                                                88              
-;; 88                                                                                ""              
-;; 88                                                                                                
-;; 88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8  
-;; 88P'    "88 a8P     88  `P8, ,8P'  ""     `P8 a8"    `P88 a8"     "8a 88P'   `"88 88  `P8, ,8P'   
-;; 88       88 8PP"""""""    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(     
-;; 88       88 "8b,   ,aa  ,d8" "8b,  88,    ,88 "8a,   ,d88 "8a,   ,a8" 88       88 88  ,d8" "8b,   
-;; 88       88  `"Pbbd8"' 8P'     `P8 `"8bbdP"P8  `"PbbdP"P8  `"PbbdP"'  88       88 88 8P'     `P8  
-;;                                               aa,    ,88                                         
-;;                                                "P8bbdP"       
+;; 88                                                                                88
+;; 88                                                                                ""
+;; 88
+;; 88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8
+;; 88P'    "88 a8P     88  `P8, ,8P'  ""     `P8 a8"    `P88 a8"     "8a 88P'   `"88 88  `P8, ,8P'
+;; 88       88 8PP"""""""    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(
+;; 88       88 "8b,   ,aa  ,d8" "8b,  88,    ,88 "8a,   ,d88 "8a,   ,a8" 88       88 88  ,d8" "8b,
+;; 88       88  `"Pbbd8"' 8P'     `P8 `"8bbdP"P8  `"PbbdP"P8  `"PbbdP"'  88       88 88 8P'     `P8
+;;                                               aa,    ,88
+;;                                                "P8bbdP"
 ;;
 ;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
 ;;
@@ -19,7 +19,7 @@
 ;;*************************************************************************************************
 ;;
 ;; Português:
-;; 
+;;
 ;; O Hexagonix e seus componentes são licenciados sob licença BSD-3-Clause. Leia abaixo
 ;; a licença que governa este arquivo e verifique a licença de cada repositório para
 ;; obter mais informações sobre seus direitos e obrigações ao utilizar e reutilizar
@@ -38,10 +38,10 @@
 ;;
 ;; Copyright (c) 2015-2023, Felipe Miguel Nery Lunkes
 ;; All rights reserved.
-;; 
+;;
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions are met:
-;; 
+;;
 ;; 1. Redistributions of source code must retain the above copyright notice, this
 ;;    list of conditions and the following disclaimer.
 ;;
@@ -52,7 +52,7 @@
 ;; 3. Neither the name of the copyright holder nor the names of its
 ;;    contributors may be used to endorse or promote products derived from
 ;;    this software without specific prior written permission.
-;; 
+;;
 ;; THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 ;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 ;; IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -72,7 +72,7 @@ use32
 
 include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
 
-;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo  
+;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo
 cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioAPP, 01h
 
 ;;************************************************************************************
@@ -84,117 +84,117 @@ include "macros.s"
 ;;************************************************************************************
 
 align 32
-   
+
 exibirInterfaceSobre:
 
     hx.syscall desligarSom
-    
+
     hx.syscall limparTela
 
     ;; Imprime o título do programa e rodapé
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, AZUL_METALICO
-    
+
     hx.syscall definirCor
-    
+
     mov al, 0
 
     hx.syscall limparLinha
-    
+
     fputs piano.titulo
-    
+
     mov al, byte[Andromeda.Interface.numLinhas]     ;; Última linha
-    
+
     dec al
-    
+
     hx.syscall limparLinha
-    
+
     fputs piano.rodapeInfo
-    
+
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
 
     hx.syscall definirCor
-    
+
     mov dh, 02
     mov dl, 02
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.sobreTeclado
-        
+
     mov dh, 03
     mov dl, 02
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.versaoTeclado
-        
+
     mov dh, 05
     mov dl, 02
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.autor
-        
+
     mov dh, 06
     mov dl, 02
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.direitos
-        
+
     mov dh, 08
     mov dl, 04
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.ajuda
-        
+
     mov dh, 10
     mov dl, 02
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.topico1
-        
+
     mov dh, 11
     mov dl, 02
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.topico2
-        
+
     mov dh, 12
     mov dl, 02
-    
+
     hx.syscall definirCursor
-    
-    fputs piano.topico3    
-    
+
+    fputs piano.topico3
+
 .obterTeclas:
 
     hx.syscall aguardarTeclado
-    
+
     cmp al, 'v'
     je inicioAPP
-    
+
     cmp al, 'V'
     je inicioAPP
-    
+
     cmp al, 'z'
     je inicioAPP.fim
-    
+
     cmp al, 'Z'
     je inicioAPP.fim
 
-    jmp .obterTeclas        
+    jmp .obterTeclas
 
-;;************************************************************  
+;;************************************************************
 
 inicioAPP:
-    
+
     hx.syscall obterCor
 
     mov dword[Andromeda.Interface.corFonte], eax
@@ -203,7 +203,7 @@ inicioAPP:
     hx.syscall limparTela
 
     hx.syscall obterInfoTela
-    
+
     mov byte[Andromeda.Interface.numColunas], bl
     mov byte[Andromeda.Interface.numLinhas], bh
 
@@ -215,17 +215,17 @@ inicioAPP:
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
 .blocoTeclado:
-        
+
     mov eax, 80  ;; Início do bloco em X
     mov ebx, 80  ;; Início do bloco em Y
     mov esi, 635 ;; Comprimento do bloco
     mov edi, 450 ;; Altura do bloco
     mov edx, LAVANDA_PASTEL ;; Cor do bloco
-    
+
     hx.syscall desenharBloco
-    
+
     call montarTeclas
-    
+
 .novamente:
 
     hx.syscall aguardarTeclado
@@ -234,33 +234,33 @@ inicioAPP:
 
     cmp al, 'q'
     jne .w
-    
+
     call evidenciarTeclas.evidenciarQ
-    
+
     tocarNota 4000
-    
+
     jmp .novamente
 
 .w:
 
     cmp al, 'w'
     jne .e
-    
+
     call evidenciarTeclas.evidenciarW
-    
+
     tocarNota 3600
-    
+
     jmp .novamente
 
 .e:
 
     cmp al, 'e'
     jne .r
-    
+
     call evidenciarTeclas.evidenciarE
-    
+
     tocarNota 3200
-    
+
     jmp .novamente
 
 
@@ -268,88 +268,88 @@ inicioAPP:
 
     cmp al, 'r'
     jne .t
-    
+
     call evidenciarTeclas.evidenciarR
-    
+
     tocarNota 3000
-    
+
     jmp .novamente
 
 .t:
 
     cmp al, 't'
     jne .y
-    
+
     call evidenciarTeclas.evidenciarT
-    
+
     tocarNota 2700
-    
+
     jmp .novamente
 
 .y:
 
     cmp al, 'y'
     jne .u
-    
+
     call evidenciarTeclas.evidenciarY
-    
+
     tocarNota 2400
-    
+
     jmp .novamente
 
 .u:
 
     cmp al, 'u'
     jne .i
-    
+
     call evidenciarTeclas.evidenciarU
-    
+
     tocarNota 2100
-    
+
     jmp .novamente
 
 .i:
 
     cmp al, 'i'
     jne .espaco
-    
+
     call evidenciarTeclas.evidenciarI
-    
+
     tocarNota 2000
-    
+
     jmp .novamente
 
 .espaco:
 
     cmp al, ' '
     jne .informacoes
-    
+
     call evidenciarTeclas.evidenciarEspaco
-    
+
     finalizarNota
-    
+
     jmp .novamente
-    
+
 .informacoes:
 
     cmp al, 'a'
     jne .sair
-    
+
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
-    
+
     hx.syscall definirCor
-    
+
     jmp exibirInterfaceSobre
 
 .sair:
 
     cmp al, 'z'
     je .fim
-    
+
     cmp al, 'Z'
     je .fim
-    
+
     jmp .agora
 
 .agora:
@@ -360,13 +360,13 @@ inicioAPP:
 
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
-    
+
     hx.syscall definirCor
-    
+
     hx.syscall desligarSom
 
     hx.syscall limparTela
-    
+
     Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 
 ;;************************************************************
@@ -374,15 +374,15 @@ inicioAPP:
 montarTeclas:
 
 .primeiraTecla:
-    
+
     mov eax, 144
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
-    
+
     hx.syscall desenharBloco
- 
+
 .segundaTecla:
 
     mov eax, 204
@@ -390,7 +390,7 @@ montarTeclas:
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
-    
+
     hx.syscall desenharBloco
 
 .terceiraTecla:
@@ -400,9 +400,9 @@ montarTeclas:
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
-    
+
     hx.syscall desenharBloco
-    
+
 .quartaTecla:
 
     mov eax, 324
@@ -410,9 +410,9 @@ montarTeclas:
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
-    
+
     hx.syscall desenharBloco
-    
+
 .quintaTecla:
 
     mov eax, 384
@@ -420,9 +420,9 @@ montarTeclas:
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
-    
+
     hx.syscall desenharBloco
-    
+
 .sextaTecla:
 
     mov eax, 444
@@ -430,9 +430,9 @@ montarTeclas:
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
-    
+
     hx.syscall desenharBloco
-    
+
 .setimaTecla:
 
     mov eax, 504
@@ -440,19 +440,19 @@ montarTeclas:
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
-    
+
     hx.syscall desenharBloco
-    
+
 .oitavaTecla:
-   
+
     mov eax, 564
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, PRETO
-    
+
     hx.syscall desenharBloco
-    
+
 .blocoEspaco:
 
     mov eax, 145
@@ -460,254 +460,254 @@ montarTeclas:
     mov esi, 500
     mov edi, 40
     mov edx, PRETO
-    
+
     hx.syscall desenharBloco
-    
+
 .legenda:
-    
+
     mov eax, PRETO
     mov ebx, LAVANDA_PASTEL
-    
+
     hx.syscall definirCor
 
 .teclaQ:
-    
+
     mov dl, 19
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.teclaQ
-    
+
 .teclaW:
-    
+
     mov dl, 27 ;; Anterior + 8
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.teclaW
-    
+
 .teclaE:
-    
+
     mov dl, 34 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.teclaE
-        
+
 .teclaR:
 
     mov dl, 42 ;; Anterior + 8
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.teclaR
-    
+
 .teclaT:
 
     mov dl, 49 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.teclaT
-        
+
 .teclaY:
 
     mov dl, 57 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.teclaY
-        
+
 .teclaU:
 
     mov dl, 64 ;; Anterior + 7
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.teclaU
-        
+
 .teclaI:
 
     mov dl, 72 ;; Anterior + 8
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
-    
+
     hx.syscall definirCursor
-    
+
     fputs piano.teclaI
-      
+
 .teclaEspaco:
-        
+
     mov eax, BRANCO_ANDROMEDA
     mov ebx, PRETO
-    
+
     hx.syscall definirCor
-        
-    mov dl, 45 
-    mov dh, 29 
-    
+
+    mov dl, 45
+    mov dh, 29
+
     hx.syscall definirCursor
-    
+
     fputs piano.teclaEspaco
-        
+
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
-    
+
     hx.syscall definirCor
 
     ret
-    
+
 ;;************************************************************
- 
+
 evidenciarTeclas:
 
 .evidenciarQ:
-    
+
     call montarTeclas
-    
+
     mov eax, 144
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
-    
+
     hx.syscall desenharBloco
- 
+
     ret
-    
+
 .evidenciarW:
 
     call montarTeclas
-    
+
     mov eax, 204
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
-    
+
     hx.syscall desenharBloco
-    
+
     ret
 
 .evidenciarE:
 
     call montarTeclas
-    
+
     mov eax, 264
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
-    
+
     hx.syscall desenharBloco
-    
+
     ret
-    
+
 .evidenciarR:
 
     call montarTeclas
-    
+
     mov eax, 324
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
-    
+
     hx.syscall desenharBloco
-    
+
     ret
-    
+
 .evidenciarT:
 
     call montarTeclas
-    
+
     mov eax, 384
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
-    
+
     hx.syscall desenharBloco
-    
+
     ret
-    
+
 .evidenciarY:
 
     call montarTeclas
-    
+
     mov eax, 444
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
-    
+
     hx.syscall desenharBloco
-    
+
     ret
-    
+
 .evidenciarU:
 
     call montarTeclas
-    
+
     mov eax, 504
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
-    
+
     hx.syscall desenharBloco
-    
+
     ret
-    
+
 .evidenciarI:
-   
+
     call montarTeclas
-    
+
     mov eax, 564
     mov ebx, 84  ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
     mov edx, VERMELHO
-    
+
     hx.syscall desenharBloco
-    
+
     ret
-    
+
 .evidenciarEspaco:
 
     call montarTeclas
-    
+
     mov eax, 145
     mov ebx, 460
     mov esi, 500
     mov edi, 40
     mov edx, VERMELHO
-    
+
     hx.syscall desenharBloco
-    
+
     mov eax, BRANCO_ANDROMEDA
     mov ebx, VERMELHO
-    
+
     hx.syscall definirCor
-        
-    mov dl, 45 
-    mov dh, 29 
-    
+
+    mov dl, 45
+    mov dh, 29
+
     hx.syscall definirCursor
-    
+
     mov esi, piano.teclaEspaco
-    
-    imprimirString 
-    
+
+    imprimirString
+
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
-    
+
     hx.syscall definirCor
 
     ret
