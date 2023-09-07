@@ -272,6 +272,8 @@ db "The requested file was not found or is not compatible with Hexagonix.", 0
 
 nomeSistema:
 db "Hexagonix", 0
+nomeCompletoSistema:
+db "Hexagonix Operating System", 0
 
 ;;************************************************************************************
 

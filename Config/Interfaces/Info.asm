@@ -220,7 +220,7 @@ mostrarInterfaceInfo:
 
     gotoxy 18, 11
 
-    fputs nomeSistema
+    fputs nomeCompletoSistema
 
     call definirCorTema
 
