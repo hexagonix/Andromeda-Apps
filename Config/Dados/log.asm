@@ -71,44 +71,44 @@ use32
 Log.Config:
 
 .logInicio:
-db "[Config]: Iniciando o Configuracoes do Hexagonix...", 0
+db "[Config]: Starting Config...", 0
 .logInicioResolucaoCores:
-db "[Config]: Obtendo a resolucao atual inicial do video...", 0
+db "[Config]: Getting the current video resolution...", 0
 .logVersaoDistro:
-db "[Config]: Obtendo versao do sistema...", 0
+db "[Config]: Getting the system version...", 0
 .logErroVersaoDistro:
-db "[Config]: Impossivel obter informacoes de versao junto ao arquivo de dados.", 0
+db "[Config]: Unable to get version information from the database file.", 0
 .logDiscos:
-db "[Config]: Requisitando dados de volumes junto ao Hexagon...", 0
+db "[Config]: Requesting volume data from Hexagon...", 0
 .logPedirArquivoFonte:
-db "[Config]: Solicitando do usuario um nome de arquivo que contenha uma fonte compativel...", 0
+db "[Config]: Asking the user for a filename that contains a compatible font...", 0
 .logFontes:
-db "[Config]: Configurando e solicitando troca de fonte de exibicao...", 0
+db "[Config]: Configuring and requesting font change...", 0
 .logSucessoFonte:
-db "[Config]: Sucesso ao alterar a fonte de exibicao junto ao servidor grafico.", 0
+db "[Config]: Success changing the display source with the graphics server.", 0
 .logFalhaFonte:
-db "[Config]: Uma falha ocorreu ao trocar a fonte. Verifique se o arquivo existe e se e compativel.", 0
+db "[Config]: A failure occurred when changing the font. Check if the file exists and if it is compatible.", 0
 .logParalela:
-db "[Config]: Obtendo identificacao e status das portas parelelas...", 0
+db "[Config]: Obtaining identification and status of parallel ports...", 0
 .logResolucao:
-db "[Config]: Obtendo resolucao atual de exibicao junto ao Hexagon...", 0
+db "[Config]: Getting current display resolution...", 0
 .logTrocarResolucao800x600:
-db "[Config]: Iniciando troca para resolucao de 800x600 pixels. Baixa resolucao.", 0
+db "[Config]: Switching to 800x600 pixel resolution. Low resolution.", 0
 .logTrocarResolucao1024x768:
-db "[Config]: Iniciando troca para resolucao de 1024x768 pixels.", 0
+db "[Config]: Switching to 1024x768 pixels resolution. Optimal resolution.", 0
 .logSerial:
-db "[Config]: Obtendo identificacao e status das portas seriais...", 0
+db "[Config]: Obtaining identification and status of serial ports...", 0
 .logSerialAutomatico:
-db "[Config]: O Configuracoes do Hexagonix ira enviar um teste automatico via porta serial agora.", 0
+db "[Config]: Config will send an automatic test via the serial port now.", 0
 .logSerialManual:
-db "[Config]: O Configuracoes do Hexagonix ira enviar um teste com entrada manual do usuario.", 0
+db "[Config]: Config will submit a test with manual user input.", 0
 .logFalha:
-db "[Config]: Falha na operacao anterior.", 0
+db "[Config]: Previous operation failed.", 0
 .logSucesso:
-db "[Config]: Sucesso na operacao anterior.", 0
+db "[Config]: Success in the previous operation.", 0
 .logFalhaArquivos:
-db "[Config]: Falha ao encontrar o arquivo solicitado.", 0
+db "[Config]: Failed to find the requested file.", 0
 .logFinalizando:
-db "[Config]: Finalizando o Configuracoes do Hexagonix...", 0
+db "[Config]: Exiting Config...", 0
 .logFonteAusente:
-db "[Config]: O arquivo de fonte nao foi encontrado no disco.", 0
+db "[Config]: The font file was not found on the disk.", 0
