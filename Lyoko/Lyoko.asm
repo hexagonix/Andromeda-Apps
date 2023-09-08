@@ -2264,7 +2264,7 @@ reiniciarBufferTexto:
     mov esi, bufferArquivo
     mov eax, 0
     mov dword[linha], eax
-    
+
     mov byte[posicaoLinhaNaTela], 1
     mov eax, dword[posicaoLinhaAtual]
     mov dword[posicaoPaginaAtual], eax
