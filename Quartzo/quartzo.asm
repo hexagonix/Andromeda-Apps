@@ -96,7 +96,7 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "2.1.4"
+VERSAO        equ "3.0.0"
 tamanhoRodape = 44
 
 quartzo:
@@ -284,7 +284,6 @@ Quartzo:
 
     hx.syscall abrir
 
-    hx.syscall limparTela
     hx.syscall limparTela
 
     mov eax, dword[totalLinhas]
@@ -1129,7 +1128,6 @@ Quartzo:
 
     jmp .teclaPageUp.fim
 
-
 .teclaPageDown:
 
     mov eax, dword[linha]
@@ -1722,6 +1720,10 @@ abrirArquivoEditor:
 
     hx.syscall definirCor
 
+    call reiniciarBufferVideo
+
+    call reiniciarBufferTexto
+
     mov byte[necessarioRedesenhar], 1
 
     jmp Quartzo.carregarArquivo
@@ -1734,6 +1736,40 @@ abrirArquivoEditor:
     hx.syscall definirCor
 
     mov byte[necessarioRedesenhar], 1
+
+    ret
+
+;;************************************************************************************
+
+reiniciarBufferVideo:
+
+    mov esi, video.vd1
+
+    hx.syscall abrir
+
+    hx.syscall limparTela
+
+    hx.syscall atualizarTela
+
+    mov esi, video.vd0
+
+    hx.syscall abrir
+
+    ret
+
+;;************************************************************************************
+
+reiniciarBufferTexto:
+
+    mov dword[bufferArquivo], 10 ;; Vamos zerar o buffer de texto
+
+    mov esi, bufferArquivo
+    mov eax, 0
+    mov dword[linha], eax
+
+    mov byte[posicaoLinhaNaTela], 1
+    mov eax, dword[posicaoLinhaAtual]
+    mov dword[posicaoPaginaAtual], eax
 
     ret
 
