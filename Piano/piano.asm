@@ -517,7 +517,7 @@ montarTeclas:
 
 .teclaY:
 
-    mov dl, 57 ;; Anterior + 7
+    mov dl, 57 ;; Anterior + 8
     mov dh, 22 ;; Não alterar! Esta é a posição Y!
 
     hx.syscall definirCursor
