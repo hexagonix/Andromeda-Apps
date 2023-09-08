@@ -100,7 +100,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "2.0.0"
+VERSAO        equ "2.0.1"
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -192,12 +192,12 @@ db "Press [ESC] to close the welcome and go directly to the editor.", 10, 0
 db "Running the assembler (", MONTADOR, ") to generate your app...", 10, 10, 0
 .editado:
 db " *", 0 ;; O arquivo foi editado?
-.tituloAlterado:      db 0  ;; Título alterado?
-.caixaMaior:          db 0  ;; Tamanho da caixa (relativo à resolução da tela)
-.corFonte:            dd 0  ;; Cor a ser utilizada na fonte
-.corFundo:            dd 0  ;; Cor a ser utilizada no fundo
-.alterado:            db 0  ;; Armazenará se o buffer foi alterado pelo usuário
-.primeiraExecucao:    db 0  ;; Primeira vez que a função inicial é chamada?
+.tituloAlterado:      db 0 ;; Título alterado?
+.caixaMaior:          db 0 ;; Tamanho da caixa (relativo à resolução da tela)
+.corFonte:            dd 0 ;; Cor a ser utilizada na fonte
+.corFundo:            dd 0 ;; Cor a ser utilizada no fundo
+.alterado:            db 0 ;; Armazenará se o buffer foi alterado pelo usuário
+.primeiraExecucao:    db 0 ;; Primeira vez que a função inicial é chamada?
 
 totalLinhas:          dd 0  ;; Contador de linhas no arquivo
 linha:                dd 0  ;; Linha atual no arquivo
@@ -214,8 +214,6 @@ linhaParametros:      db 30 ;; Tamanho de parâmetro
 resolucao:            dd 0  ;; Resolução de vídeo
 
 ;;************************************************************************************
-
-;; Função inicial
 
 LyokoIDE:
 
@@ -263,7 +261,7 @@ LyokoIDE:
 
 .carregarArquivo:
 
-;; Ler arquivo
+;; Abrir arquivo
 
     mov esi, nomeArquivo
 
@@ -2237,8 +2235,6 @@ montarAviso:
 
 ;;************************************************************************************
 
-;;************************************************************************************
-
 reiniciarBufferVideo:
 
     mov esi, video.vd1
@@ -2265,7 +2261,7 @@ reiniciarBufferTexto:
     mov eax, 0
     mov dword[linha], eax
 
-    mov byte[posicaoLinhaNaTela], 1
+    mov byte[posicaoLinhaNaTela], 01h
     mov eax, dword[posicaoLinhaAtual]
     mov dword[posicaoPaginaAtual], eax
 
