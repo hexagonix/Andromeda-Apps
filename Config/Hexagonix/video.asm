@@ -66,6 +66,29 @@
 ;;
 ;; $HexagonixOS$
 
-VERSAOCONFIG             equ "2.6.1"
-VERSAOFERRAMENTAS        equ "1.4.1"
-VERSAODESIGNADAHEXAGONIX equ "Raava-CURRENT"
+definirCorTema:
+
+    mov eax, corPadraoInterface
+    mov ebx, dword[corFundo]
+
+    hx.syscall definirCor
+
+    ret
+
+;;************************************************************************************
+
+definirCorPadrao:
+
+    mov eax, dword[corFonte]
+    mov ebx, dword[corFundo]
+
+    hx.syscall definirCor
+
+    ret
+
+;;************************************************************************************
+
+;; Variáveis e constantes
+
+maxColunas: db 0 ;; Total de colunas disponíveis no vídeo na resolução atual
+maxLinhas:  db 0 ;; Total de linhas disponíveis no vídeo na resolução atual

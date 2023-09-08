@@ -94,23 +94,3 @@ match =SIM, VERBOSE
 
 ;;************************************************************************************
 
-definirCorTema:
-
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    ret
-
-;;************************************************************************************
-
-definirCorPadrao:
-
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    ret
-

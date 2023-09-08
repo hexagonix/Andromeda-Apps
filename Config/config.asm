@@ -98,11 +98,7 @@ include "dispositivos.s"
 
 ;; Versão do aplicativo
 
-include "Dados\versao.asm"
-
-;; Dados de gerenciamento
-
-include "Dados\Video.asm"
+include "versao.asm"
 
 ;; Os dados de log só serão incluídos no aplicativo se for necessário. O padrão é que
 ;; sejam incluídos
@@ -114,11 +110,11 @@ include "Dados\log.asm"
 
 }
 
-;; Funções de comunicação com o Sistema Operacional Hexagonix
+;; Funções, macros e objetos para comunicação com o Hexagonix
 
 include "Hexagonix\Hexagonix.asm"
 include "Hexagonix\hardware.asm"
-
+include "Hexagonix\video.asm"
 
 ;; Interfaces do aplicativo
 

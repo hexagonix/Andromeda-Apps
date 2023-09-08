@@ -66,5 +66,6 @@
 ;;
 ;; $HexagonixOS$
 
-maxColunas: db 0 ;; Total de colunas disponíveis no vídeo na resolução atual
-maxLinhas:  db 0 ;; Total de linhas disponíveis no vídeo na resolução atual
+VERSAOCONFIG             equ "2.7.0"
+VERSAOFERRAMENTAS        equ "1.5.0"
+VERSAODESIGNADAHEXAGONIX equ "Raava-CURRENT"
