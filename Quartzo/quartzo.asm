@@ -96,7 +96,7 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "3.0.5"
+VERSAO        equ "3.0.5.1"
 tamanhoRodape = 44
 
 quartzo:
@@ -976,12 +976,12 @@ processarEntrada:
     dec byte[posicaoAtualNaLinha] ;; Um caractere foi removido
     dec byte[tamanhoLinhaAtual]
 
-    jmp .prepararRetorno
+    jmp Quartzo.aguardarInteragirPrincipal
 
 .teclaBackspace.primeiraColuna:
 
     cmp byte[linha], 0
-    je .prepararRetorno
+    je Quartzo.aguardarInteragirPrincipal
 
 ;; Calcular tamanho anterior da linha
 
@@ -992,7 +992,7 @@ processarEntrada:
 
     call posicaoLinha
 
-    jc .prepararRetorno
+    jc Quartzo.aguardarInteragirPrincipal
 
     sub esi, bufferArquivo
 
@@ -1013,7 +1013,7 @@ processarEntrada:
     dec bl
 
     cmp dl, bl ;; Contando de 0
-    jae .prepararRetorno
+    jae Quartzo.aguardarInteragirPrincipal
 
 ;; Remover caractere de nova linha
 
@@ -1039,7 +1039,7 @@ processarEntrada:
 
     call posicaoLinha
 
-    jc .prepararRetorno
+    jc Quartzo.aguardarInteragirPrincipal
 
     sub esi, bufferArquivo
 
