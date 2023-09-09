@@ -1614,13 +1614,13 @@ processarEntrada:
 
     mov byte[retornoMenu], 00h
 
-    ret 
+    ret
 
 .prepararRetornoEspecial:
 
     mov byte[retornoMenu], 01h
 
-    ret 
+    ret
 
 ;;*************************************************************************************************
 
