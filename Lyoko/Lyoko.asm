@@ -100,7 +100,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "2.0.5"
+VERSAO        equ "2.0.5.1"
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -884,7 +884,7 @@ realizarMontagem:
 
     mov byte[necessarioRedesenhar], 1
 
-    jmp LyokoIDE.iniciarProcessamentoEntrada
+    ret
 
 ;;*************************************************************************************************
 
@@ -1390,12 +1390,12 @@ processarEntrada:
     dec byte[posicaoAtualNaLinha] ;; Um caractere foi removido
     dec byte[tamanhoLinhaAtual]
 
-    jmp .prepararRetorno
+    jmp LyokoIDE.aguardarInteragirPrincipal
 
 .teclaBackspace.primeiraColuna:
 
     cmp byte[linha], 0
-    je .prepararRetorno
+    je LyokoIDE.aguardarInteragirPrincipal
 
 ;; Calcular tamanho anterior da linha
 
@@ -1406,7 +1406,7 @@ processarEntrada:
 
     call posicaoLinha
 
-    jc .prepararRetorno
+    jc LyokoIDE.aguardarInteragirPrincipal
 
     sub esi, bufferArquivo
 
@@ -1427,7 +1427,7 @@ processarEntrada:
     dec bl
 
     cmp dl, bl ;; Contando de 0
-    jae .prepararRetorno
+    jae LyokoIDE.aguardarInteragirPrincipal
 
 ;; Remover caractere de nova linha
 
@@ -1453,7 +1453,7 @@ processarEntrada:
 
     call posicaoLinha
 
-    jc .prepararRetorno
+    jc LyokoIDE.aguardarInteragirPrincipal
 
     sub esi, bufferArquivo
 
