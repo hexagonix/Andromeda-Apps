@@ -96,7 +96,7 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "3.0.1"
+VERSAO        equ "3.0.2"
 tamanhoRodape = 44
 
 quartzo:
@@ -1747,11 +1747,11 @@ reiniciarBufferVideo:
 
     hx.syscall limparTela
 
-    hx.syscall atualizarTela
-
     mov esi, video.vd0
 
     hx.syscall abrir
+
+    hx.syscall limparTela
 
     ret
 
