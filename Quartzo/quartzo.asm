@@ -96,7 +96,7 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "3.0.4"
+VERSAO        equ "3.0.5"
 tamanhoRodape = 44
 
 quartzo:
@@ -142,6 +142,7 @@ necessarioRedesenhar: db 1 ;; Se não zero, é necessário redesenhar toda a tel
 nomeArquivo: times 13 db 0 ;; Nome do arquivo
 maxColunas:           db 0 ;; Total de colunas disponíveis no vídeo na resolução atual
 maxLinhas:            db 0 ;; Total de linhas disponíveis no vídeo na resolução atual
+retornoMenu:          db 0 ;; Usado para verificar se o retorno vem de um menu (CTRL+opção)
 
 ;;************************************************************************************
 
@@ -267,7 +268,7 @@ Quartzo:
 
     mov dword[posicaoPaginaAtual], 0
 
-.aguardarInteragir:
+.aguardarInteragirPrincipal:
 
     cmp byte[necessarioRedesenhar], 0
     je .outrasLinhasImpressas ;; Não é necessário imprimir outras linhas
@@ -433,1040 +434,16 @@ Quartzo:
 
     hx.syscall definirCursor
 
-.processarTeclado:
+.processarEntrada:
 
-    hx.syscall aguardarTeclado
+    call processarEntrada
 
-;; Vamos checar se a tecla CTRL está pressionada e tomar as devidas providências
+    cmp byte[retornoMenu], 01h
+    je .iniciarProcessamentoEntrada
 
-    push eax
+    jmp .aguardarInteragirPrincipal
 
-    hx.syscall obterEstadoTeclas
-
-    bt eax, 0
-    jc .teclasControl
-
-    pop eax
-
-;; Vamos agora interpretar os scan codes do teclado
-
-    cmp ah, 28
-    je .teclasReturn
-
-    cmp ah, 15 ;; Tab
-    je .caractereImprimivel
-
-    cmp ah, 71
-    je .teclaHome
-
-    cmp ah, 79
-    je .teclaEnd
-
-    cmp ah, 14
-    je .teclaBackspace
-
-    cmp ah, 83
-    je .teclaDelete
-
-    cmp ah, 75
-    je .teclaEsquerda
-
-    cmp ah, 77
-    je .teclaDireita
-
-    cmp ah, 72
-    je .teclaCima
-
-    cmp ah, 80
-    je .teclaBaixo
-
-    cmp ah, 81
-    je .teclaPageDown
-
-    cmp ah, 73
-    je .teclaPageUp
-
-;; Se o caractere não foi imprimível
-
-    cmp al, ' '
-    jl .aguardarInteragir
-
-    cmp al, '~'
-    ja .aguardarInteragir
-
-;; Outra tecla
-
-.caractereImprimivel:
-
-;; Não são suportados mais de 79 caracteres por linha
-
-    mov bl, byte[maxColunas]
-
-    dec bl
-
-    cmp byte[tamanhoLinhaAtual], bl
-    jae .aguardarInteragir
-
-    mov edx, 0
-    movzx esi, byte[posicaoAtualNaLinha] ;; Posição para inserir caracteres
-
-    add esi, dword[posicaoLinhaAtual]
-    add esi, bufferArquivo
-
-    hx.syscall inserirCaractere ;; Inserir char na string
-
-    inc byte[posicaoAtualNaLinha] ;; Um caractere foi adicionado
-    inc byte[tamanhoLinhaAtual]
-
-;; Mais teclas
-
-    jmp .aguardarInteragir
-
-;; Tecla Return ou Enter
-
-.teclasReturn:
-
-    mov byte[necessarioRedesenhar], 1
-
-    mov edx, 0
-
-    movzx esi, byte[posicaoAtualNaLinha]
-
-    add esi, bufferArquivo
-    add esi, dword[posicaoLinhaAtual]
-
-    mov al, 10
-
-    hx.syscall inserirCaractere
-
-;; Nova linha
-
-    inc dword[linha]
-
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-
-    call posicaoLinha
-
-    jc .aguardarInteragir
-
-    sub esi, bufferArquivo
-
-    mov dword[posicaoLinhaAtual], esi
-
-;; Calcular valores para essa linha
-
-    mov edx, 0
-    mov esi, bufferArquivo
-
-    add esi, dword[posicaoLinhaAtual]
-
-    call tamanhoLinha ;; Encontrar tamanho para essa linha
-
-    mov byte[posicaoAtualNaLinha], 0 ;; Cursor no fim da linha
-    mov byte[tamanhoLinhaAtual], dl  ;; Salvar o tamanho atual da linha
-
-    mov al, 10 ;; Caractere de nova linha
-    mov esi, bufferArquivo
-
-    hx.syscall encontrarCaractere
-
-    mov dword[totalLinhas], eax
-
-;; Tentar mover o cursor para baixo
-
-    mov bl, byte[maxLinhas]
-
-    sub bl, 2
-
-    cmp byte[posicaoLinhaNaTela], bl
-    jb .teclasReturn.cursorProximaLinha
-
-;; Se for última linha, rode a tela
-
-    mov bl, byte[maxLinhas]
-
-    sub bl, 2
-
-    mov byte[posicaoLinhaNaTela], bl
-
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-    movzx ebx, byte[maxLinhas]
-
-    sub bl, 3
-    sub eax, ebx
-
-    call posicaoLinha
-
-    jc .aguardarInteragir
-
-    sub esi, bufferArquivo
-
-    mov dword[posicaoPaginaAtual], esi
-
-    jmp .aguardarInteragir
-
-.teclasReturn.cursorProximaLinha:
-
-    inc byte[posicaoLinhaNaTela]
-
-    jmp .aguardarInteragir
-
-;; Teclas Control
-
-.teclasControl:
-
-    pop eax
-
-    cmp al, 's'
-    je .teclaControlS
-
-    cmp al, 'S'
-    je .teclaControlS
-
-    cmp al, 'a'
-    je .teclaControlA
-
-    cmp al, 'A'
-    je .teclaControlA
-
-    cmp al, 'f'
-    je fimPrograma
-
-    cmp al, 'F'
-    je fimPrograma
-
-    jmp .aguardarInteragir
-
-.teclaBackspace:
-
-;; Se na primeira coluna, não fazer nada
-
-    cmp byte[posicaoAtualNaLinha], 0
-    je .teclaBackspace.primeiraColuna
-
-;; Remover caractere da esquerda
-
-    movzx eax, byte[posicaoAtualNaLinha]
-
-    add eax, dword[posicaoLinhaAtual]
-
-    dec eax
-
-    mov esi, bufferArquivo
-
-    hx.syscall removerCaractereString
-
-    dec byte[posicaoAtualNaLinha] ;; Um caractere foi removido
-    dec byte[tamanhoLinhaAtual]
-
-    jmp .aguardarInteragir
-
-.teclaBackspace.primeiraColuna:
-
-    cmp byte[linha], 0
-    je .aguardarInteragir
-
-;; Calcular tamanho anterior da linha
-
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-
-    dec eax ;; Linha anterior
-
-    call posicaoLinha
-
-    jc .aguardarInteragir
-
-    sub esi, bufferArquivo
-
-    mov edx, 0
-
-    add esi, bufferArquivo
-
-    call tamanhoLinha ;; Encontrar tamanho
-
-    push edx ;; Salvar tamanho da linha
-
-    add dl, byte[tamanhoLinhaAtual]
-
-;; Backspace não habilitado (suporte de até 79 caracteres por linha)
-
-    mov bl, byte[maxColunas]
-
-    dec bl
-
-    cmp dl, bl ;; Contando de 0
-    jae .aguardarInteragir
-
-;; Remover caractere de nova linha
-
-    mov byte[necessarioRedesenhar], 1
-
-    movzx eax, byte[posicaoAtualNaLinha]
-
-    add eax, dword[posicaoLinhaAtual]
-
-    dec eax
-
-    mov esi, bufferArquivo
-
-    hx.syscall removerCaractereString
-
-    dec byte[totalLinhas] ;; Uma linha foi removida
-    dec dword[linha]
-
-;; Linha anterior
-
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-
-    call posicaoLinha
-
-    jc .aguardarInteragir
-
-    sub esi, bufferArquivo
-
-    push esi
-
-;; Calcular valores para essa linha
-
-    mov edx, 0
-
-    pop esi
-
-    push esi
-
-    add esi, bufferArquivo
-
-    call tamanhoLinha ;; Encontrar tamanho da linha atual
-
-    mov byte[tamanhoLinhaAtual], dl ;; Salvar tamanho da linha
-
-    pop dword[posicaoLinhaAtual]
-
-    pop edx
-
-    mov byte[posicaoAtualNaLinha], dl
-
-    jmp .teclaCima.cursorMovido
-
-.teclaDelete:
-
-;; Se na última coluna, não fazer nada
-
-    mov dl, byte[tamanhoLinhaAtual]
-
-    cmp byte[posicaoAtualNaLinha], dl
-    jae .aguardarInteragir
-
-    movzx eax, byte[posicaoAtualNaLinha]
-
-    add eax, dword[posicaoLinhaAtual]
-
-    mov esi, bufferArquivo
-
-    hx.syscall removerCaractereString
-
-    dec byte[tamanhoLinhaAtual] ;; Um caractere foi removido
-
-    inc byte[posicaoAtualNaLinha]
-
-.teclaEsquerda:
-
-;; Se na primeira coluna, não fazer nada
-
-    cmp byte[posicaoAtualNaLinha], 0
-    jne .teclaEsquerda.moverEsquerda
-
-    cmp byte[linha], 0
-    je .aguardarInteragir
-
-    mov bl, byte[maxColunas]
-    mov byte[posicaoAtualNaLinha], bl
-
-    jmp .teclaCima
-
-;; Mover cursor para a esquerda
-
-.teclaEsquerda.moverEsquerda:
-
-    dec byte[posicaoAtualNaLinha]
-
-    jmp .aguardarInteragir
-
-.teclaDireita:
-
-;; Se na última coluna, não fazer nada
-
-    mov dl, byte[tamanhoLinhaAtual]
-
-    cmp byte[posicaoAtualNaLinha], dl
-    jnae .teclaDireita.moverDireita
-
-;; Nova linha não permitida
-
-    mov eax, dword[linha]
-
-    inc eax
-
-    cmp dword[totalLinhas], eax
-    je .aguardarInteragir
-
-;; Nova linha
-
-    inc dword[linha]
-
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-
-    call posicaoLinha
-
-    jc .aguardarInteragir
-
-    sub esi, bufferArquivo
-
-    mov dword[posicaoLinhaAtual], esi
-
-;; Calcular valores para essa linha
-
-    mov edx, 0
-    mov esi, bufferArquivo
-
-    add esi, dword[posicaoLinhaAtual]
-
-    call tamanhoLinha
-
-    mov byte[posicaoAtualNaLinha], 0 ;; Cursor no fim da linha
-    mov byte[tamanhoLinhaAtual], dl  ;; Salvar tamanho da linha
-
-    jmp .teclaBaixo.proximo
-
-.teclaDireita.moverDireita:
-
-    inc byte[posicaoAtualNaLinha]
-
-    jmp .aguardarInteragir
-
-.teclaCima:
-
-;; Linha anterior não permitida
-
-    cmp dword[linha], 0
-    je .aguardarInteragir
-
-;; Linha anterior
-
-    dec dword[linha]
-
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-
-    call posicaoLinha
-
-    jc .aguardarInteragir
-
-    sub esi, bufferArquivo
-
-    mov dword[posicaoLinhaAtual], esi
-
-;; Calcular valores para essa linha
-
-    mov edx, 0
-    mov esi, bufferArquivo
-
-    add esi, dword[posicaoLinhaAtual]
-
-    call tamanhoLinha
-
-    mov byte[tamanhoLinhaAtual], dl
-
-    cmp dl, byte[posicaoAtualNaLinha]
-    jb .teclaCima.moverCursorAteOFim
-
-    jmp .teclaCima.cursorMovido ;; Não alterar a coluna do cursor
-
-.teclaCima.moverCursorAteOFim:
-
-    mov byte[posicaoAtualNaLinha], dl ;; Cursor ao fim da linha
-
-.teclaCima.cursorMovido:
-
-;; Tentar mover o cursor para cima
-
-    cmp byte[posicaoLinhaNaTela], 1
-    ja .teclaCima.cursorLinhaAnterior
-
-;; Se o cursor estiver na primeira linha, role a tela para cima
-
-    mov byte[posicaoLinhaNaTela], 1
-    mov eax, dword[posicaoLinhaAtual]
-    mov dword[posicaoPaginaAtual], eax
-
-    mov byte[necessarioRedesenhar], 1
-
-    jmp .aguardarInteragir
-
-.teclaCima.cursorLinhaAnterior:
-
-    dec byte[posicaoLinhaNaTela]
-
-    jmp .aguardarInteragir
-
-.teclaBaixo:
-
-;; Próxima linha não disponível
-
-    mov eax, dword[linha]
-
-    inc eax
-
-    cmp dword[totalLinhas], eax
-    je .aguardarInteragir
-
-;; Próxima linha
-
-    inc dword[linha]
-
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-
-    call posicaoLinha
-
-    jc .aguardarInteragir
-
-    sub esi, bufferArquivo
-
-    mov dword[posicaoLinhaAtual], esi
-
-;; Calcular valores para a linha
-
-    mov edx, 0
-    mov esi, bufferArquivo
-
-    add esi, dword[posicaoLinhaAtual]
-
-    call tamanhoLinha
-
-    mov byte[tamanhoLinhaAtual], dl
-
-    cmp dl, byte[posicaoAtualNaLinha]
-    jb .teclaBaixo.moverCursorAteOFim
-
-    jmp .teclaBaixo.cursorMovido ;; Não alterar a coluna
-
-.teclaBaixo.moverCursorAteOFim:
-
-    mov byte[posicaoAtualNaLinha], dl ;; Cursor ao fim da linha
-
-.teclaBaixo.cursorMovido:
-
-.teclaBaixo.proximo:
-
-;; Tentar mover o cursor para baixo
-
-    mov bl, byte[maxLinhas]
-
-    sub bl, 2
-
-    cmp byte[posicaoLinhaNaTela], bl
-    jb .teclaBaixo.cursorProximaLinha
-
-;; Se na última linha, girar tela para baixo
-
-    mov bl, byte[maxLinhas]
-
-    sub bl, 2
-
-    mov byte[posicaoLinhaNaTela], bl
-
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-    movzx ebx, byte[maxLinhas]
-
-    sub bl, 3
-    sub eax, ebx
-
-    call posicaoLinha
-
-    jc .aguardarInteragir
-
-    sub esi, bufferArquivo
-
-    mov dword[posicaoPaginaAtual], esi
-
-    mov byte[necessarioRedesenhar], 1
-
-    jmp .aguardarInteragir
-
-.teclaBaixo.cursorProximaLinha:
-
-    inc byte[posicaoLinhaNaTela]
-
-    jmp .aguardarInteragir
-
-.teclaHome:
-
-;; Mover cursor para primeira coluna
-
-    mov byte[posicaoAtualNaLinha], 0
-
-    jmp .aguardarInteragir
-
-.teclaEnd:
-
-;; Mover cursor para última coluna
-
-    mov edx, 0
-    mov esi, bufferArquivo
-
-    add esi, dword[posicaoLinhaAtual]
-
-    call tamanhoLinha
-
-    mov byte[posicaoAtualNaLinha], dl
-
-    jmp .aguardarInteragir
-
-.teclaPageUp:
-
-    mov eax, dword[linha]
-    movzx ebx, byte[maxLinhas]
-
-    sub bl, 3
-    sub eax, ebx
-
-    cmp eax, 0
-    jle .teclaPageUp.irParaPrimeiraLinha
-
-;; Não redesenhar se na última linha
-
-    mov bl, byte[maxLinhas]
-
-    sub bl, 2
-
-    cmp byte[posicaoLinhaNaTela], bl
-    jae .teclaPageUp.naoNecessarioRedesenhar
-
-    mov byte[necessarioRedesenhar], 1
-
-.teclaPageUp.naoNecessarioRedesenhar:
-
-;; Linha anterior
-
-    movzx ebx, byte[maxLinhas]
-
-    sub bl, 3
-    sub dword[linha], ebx
-
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-
-    call posicaoLinha
-
-    jc .aguardarInteragir
-
-    sub esi, bufferArquivo
-
-    mov dword[posicaoLinhaAtual], esi
-
-;; Calcular valores para essa linha
-
-    mov edx, 0
-    mov esi, bufferArquivo
-
-    add esi, dword[posicaoLinhaAtual]
-
-    call tamanhoLinha
-
-    mov byte[posicaoAtualNaLinha], dl ;; Cursor no fim da linha
-    mov byte[tamanhoLinhaAtual], dl
-
-.teclaPageUp.fim:
-
-    mov byte[posicaoLinhaNaTela], 1
-    mov eax, dword[posicaoLinhaAtual]
-    mov dword[posicaoPaginaAtual], eax
-
-    jmp .aguardarInteragir
-
-.teclaPageUp.irParaPrimeiraLinha:
-
-;; Page Up não disponível
-
-    cmp dword[linha], 0
-    je .aguardarInteragir
-
-    mov byte[necessarioRedesenhar], 1
-
-    mov esi, bufferArquivo
-    mov eax, 0
-    mov dword[linha], eax
-
-    call posicaoLinha
-
-    sub esi, bufferArquivo
-
-    mov dword[posicaoLinhaAtual], esi
-
-;; Calcular valores para a linha
-
-    mov edx, 0
-    mov esi, bufferArquivo
-
-    add esi, dword[posicaoLinhaAtual]
-
-    call tamanhoLinha
-
-    mov byte[posicaoAtualNaLinha], dl ;; Cursor no fim da linha
-    mov byte[tamanhoLinhaAtual], dl
-
-    jmp .teclaPageUp.fim
-
-.teclaPageDown:
-
-    mov eax, dword[linha]
-    movzx ebx, byte[maxLinhas]
-
-    sub bl, 3
-
-    add eax, ebx
-
-    cmp eax, dword[totalLinhas]
-    jae .teclaPageDown.irParaUltimaLinha
-
-;; Não redesenhar se primeira linha
-
-    cmp byte[posicaoLinhaNaTela], 1
-    jle .teclaPageDown.naoNecessarioRedesenhar
-
-    mov byte[necessarioRedesenhar], 1
-
-.teclaPageDown.naoNecessarioRedesenhar:
-
-;; Próxima linha
-
-    movzx ebx, byte[maxLinhas]
-
-    sub bl, 3
-
-    add dword[linha], ebx
-
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-
-    call posicaoLinha
-
-    jc .aguardarInteragir
-
-    sub esi, bufferArquivo
-
-    mov dword[posicaoLinhaAtual], esi
-
-;; Calcular valores para a linha
-
-    mov edx, 0
-    mov esi, bufferArquivo
-
-    add esi, dword[posicaoLinhaAtual]
-
-    call tamanhoLinha
-
-    mov byte[posicaoAtualNaLinha], dl
-    mov byte[tamanhoLinhaAtual], dl
-
-    mov bl, byte[maxLinhas]
-
-    sub bl, 2
-
-    mov byte[posicaoLinhaNaTela], bl
-
-    mov eax, dword[linha]
-    movzx ebx, byte[maxLinhas]
-
-    sub bl, 3
-    sub eax, ebx
-
-    mov esi, bufferArquivo
-
-    call posicaoLinha
-
-    jc .aguardarInteragir
-
-    sub esi, bufferArquivo
-
-    mov dword[posicaoPaginaAtual], esi
-
-    jmp .aguardarInteragir
-
-.teclaPageDown.irParaUltimaLinha:
-
-;; Page Down não disponível
-
-    mov eax, dword[linha]
-
-    inc eax
-
-    cmp eax, dword[totalLinhas]
-    jae .aguardarInteragir
-
-    mov byte[necessarioRedesenhar], 1
-
-;; Próxima linha
-
-    mov eax, dword[totalLinhas] ;; Última linha é o total de linhas - 1
-
-    dec eax
-
-    mov dword[linha], eax ;; Fazer da última linha a linha atual
-
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-
-    call posicaoLinha
-
-    jc .aguardarInteragir
-
-    sub esi, bufferArquivo
-
-    mov dword[posicaoLinhaAtual], esi
-
-;; Calcular valores para essa linha
-
-    mov edx, 0
-    mov esi, bufferArquivo
-
-    add esi, dword[posicaoLinhaAtual]
-
-    call tamanhoLinha
-
-    mov byte[posicaoAtualNaLinha], dl
-    mov byte[tamanhoLinhaAtual], dl
-
-    movzx ebx, byte[maxLinhas]
-
-    sub ebx, 3
-
-    cmp dword[totalLinhas], ebx ;; Checar por arquivos pequenos ou grandes
-    jae .maisQueUmaPagina
-
-;; Se arquivo pequeno
-
-    mov ebx, dword[totalLinhas]
-
-    dec ebx
-
-;; Se arquivo grande
-
-.maisQueUmaPagina:
-
-    inc bl
-
-    mov byte[posicaoLinhaNaTela], bl
-
-    mov eax, dword[linha]
-
-    sub eax, ebx
-
-    inc eax
-
-    mov esi, bufferArquivo
-
-    call posicaoLinha
-
-    jc .aguardarInteragir
-
-    sub esi, bufferArquivo
-
-    mov dword[posicaoPaginaAtual], esi
-
-    jmp .aguardarInteragir
-
-.teclaControlS:
-
-    call salvarArquivoEditor
-
-    jmp .iniciarProcessamentoEntrada
-
-.teclaControlA:
-
-    call abrirArquivoEditor
-
-    jmp .aguardarInteragir
-
-;;************************************************************************************
-
-fimPrograma:
-
-    ;; call salvarArquivoEditor
-
-    hx.syscall rolarTela
-
-    mov ebx, 00h
-
-    hx.syscall encerrarProcesso
-
-;;************************************************************************************
-;;
-;; Demais funções do aplicativo
-;;
-;;************************************************************************************
-
-;; Imprimir uma linha da String
-;;
-;; Entrada:
-;;
-;; ESI - Endereço do buffer
-;;
-;; Saída:
-;;
-;; ESI - Próximo buffer
-;; Carry definido no fim do arquivo
-
-imprimirLinha:
-
-    mov edx, 0 ;; Contador de caracteres
-
-.loopImprimir:
-
-    lodsb
-
-    cmp al, 10 ;; Fim da linha
-    je .fim
-
-    cmp al, 0 ;; Fim da String
-    je .fimArquivo
-
-    movzx ebx, byte[maxColunas]
-    dec bl
-
-    cmp edx, ebx
-    jae .tamanhoMaximoLinha
-
-    pushad
-
-    mov ebx, 01h
-
-    hx.syscall imprimirCaractere ;; Imprimir caractere em AL
-
-    popad
-
-    inc edx
-
-    jmp .loopImprimir ;; Mais caracteres
-
-.tamanhoMaximoLinha:
-
-    jmp .loopImprimir
-
-.fimArquivo:
-
-    stc
-
-.fim:
-
-    ret
-
-;;************************************************************************************
-
-;; Encontrar tamanho da linha
-;;
-;; Entrada:
-;;
-;; ESI - Endereço do buffer
-;;
-;; Saída:
-;;
-;; ESI - Próximo buffer
-;; EDX - += tamanho da linha
-
-tamanhoLinha:
-
-    mov al, byte[esi]
-
-    inc esi
-
-    cmp al, 10 ;; Fim da linha
-    je .fim
-
-    cmp al, 0 ;; Fim da string
-    je .fim
-
-    inc edx
-
-    jmp tamanhoLinha ;; Mais caracteres
-
-.fim:
-
-    ret
-
-;;************************************************************************************
-
-;; Encontrar endereço da linha na string
-;;
-;; Entrada:
-;;
-;; ESI - String
-;; EAX - Número da linha (contando de 0)
-;;
-;; Saída:
-;;
-;; ESI - Posição da string na linha
-;; Carry definido em linha não encontrada
-
-posicaoLinha:
-
-    push ebx
-
-    cmp eax, 0
-    je .linhaDesejadaEncontrada ;; Já na primeira linha
-
-    mov edx, 0   ;; Contador de linhas
-    mov ebx, eax ;; Salvar linha
-
-    dec ebx
-
-.proximoCaractere:
-
-    mov al, byte[esi]
-
-    inc esi
-
-    cmp al, 10 ;; Caractere de nova linha
-    je .linhaEncontrada
-
-    cmp al, 0 ;; Fim da string
-    je .linhaNaoEncontrada
-
-    jmp .proximoCaractere
-
-.linhaEncontrada:
-
-    cmp edx, ebx
-    je .linhaDesejadaEncontrada
-
-    inc edx ;; Contador de linhas
-
-    jmp .proximoCaractere
-
-.linhaDesejadaEncontrada:
-
-    clc
-
-    jmp .fim
-
-.linhaNaoEncontrada:
-
-    stc
-
-.fim:
-
-    pop ebx
-
-    ret
-
-;;************************************************************************************
+;;*************************************************************************************************
 
 salvarArquivoEditor:
 
@@ -1766,6 +743,1055 @@ reiniciarBufferTexto:
     mov byte[posicaoLinhaNaTela], 01h
     mov eax, dword[posicaoLinhaAtual]
     mov dword[posicaoPaginaAtual], eax
+
+    ret
+
+;;************************************************************************************
+
+processarEntrada:
+
+    hx.syscall aguardarTeclado
+
+;; Vamos checar se a tecla CTRL está pressionada e tomar as devidas providências
+
+    push eax
+
+    hx.syscall obterEstadoTeclas
+
+    bt eax, 0
+    jc .teclasControl
+
+    pop eax
+
+;; Vamos agora interpretar os scan codes do teclado
+
+    cmp ah, 28
+    je .teclasReturn
+
+    cmp ah, 15 ;; Tab
+    je .caractereImprimivel
+
+    cmp ah, 71
+    je .teclaHome
+
+    cmp ah, 79
+    je .teclaEnd
+
+    cmp ah, 14
+    je .teclaBackspace
+
+    cmp ah, 83
+    je .teclaDelete
+
+    cmp ah, 75
+    je .teclaEsquerda
+
+    cmp ah, 77
+    je .teclaDireita
+
+    cmp ah, 72
+    je .teclaCima
+
+    cmp ah, 80
+    je .teclaBaixo
+
+    cmp ah, 81
+    je .teclaPageDown
+
+    cmp ah, 73
+    je .teclaPageUp
+
+;; Se o caractere não foi imprimível
+
+    cmp al, ' '
+    jl .prepararRetorno
+
+    cmp al, '~'
+    ja .prepararRetorno
+
+;; Outra tecla
+
+.caractereImprimivel:
+
+;; Não são suportados mais de 79 caracteres por linha
+
+    mov bl, byte[maxColunas]
+
+    dec bl
+
+    cmp byte[tamanhoLinhaAtual], bl
+    jae .prepararRetorno
+
+    mov edx, 0
+    movzx esi, byte[posicaoAtualNaLinha] ;; Posição para inserir caracteres
+
+    add esi, dword[posicaoLinhaAtual]
+    add esi, bufferArquivo
+
+    hx.syscall inserirCaractere ;; Inserir char na string
+
+    inc byte[posicaoAtualNaLinha] ;; Um caractere foi adicionado
+    inc byte[tamanhoLinhaAtual]
+
+;; Mais teclas
+
+    jmp .prepararRetorno
+
+;; Tecla Return ou Enter
+
+.teclasReturn:
+
+    mov byte[necessarioRedesenhar], 1
+
+    mov edx, 0
+
+    movzx esi, byte[posicaoAtualNaLinha]
+
+    add esi, bufferArquivo
+    add esi, dword[posicaoLinhaAtual]
+
+    mov al, 10
+
+    hx.syscall inserirCaractere
+
+;; Nova linha
+
+    inc dword[linha]
+
+    mov esi, bufferArquivo
+    mov eax, dword[linha]
+
+    call posicaoLinha
+
+    jc .prepararRetorno
+
+    sub esi, bufferArquivo
+
+    mov dword[posicaoLinhaAtual], esi
+
+;; Calcular valores para essa linha
+
+    mov edx, 0
+    mov esi, bufferArquivo
+
+    add esi, dword[posicaoLinhaAtual]
+
+    call tamanhoLinha ;; Encontrar tamanho para essa linha
+
+    mov byte[posicaoAtualNaLinha], 0 ;; Cursor no fim da linha
+    mov byte[tamanhoLinhaAtual], dl  ;; Salvar o tamanho atual da linha
+
+    mov al, 10 ;; Caractere de nova linha
+    mov esi, bufferArquivo
+
+    hx.syscall encontrarCaractere
+
+    mov dword[totalLinhas], eax
+
+;; Tentar mover o cursor para baixo
+
+    mov bl, byte[maxLinhas]
+
+    sub bl, 2
+
+    cmp byte[posicaoLinhaNaTela], bl
+    jb .teclasReturn.cursorProximaLinha
+
+;; Se for última linha, rode a tela
+
+    mov bl, byte[maxLinhas]
+
+    sub bl, 2
+
+    mov byte[posicaoLinhaNaTela], bl
+
+    mov esi, bufferArquivo
+    mov eax, dword[linha]
+    movzx ebx, byte[maxLinhas]
+
+    sub bl, 3
+    sub eax, ebx
+
+    call posicaoLinha
+
+    jc .prepararRetorno
+
+    sub esi, bufferArquivo
+
+    mov dword[posicaoPaginaAtual], esi
+
+    jmp .prepararRetorno
+
+.teclasReturn.cursorProximaLinha:
+
+    inc byte[posicaoLinhaNaTela]
+
+    jmp .prepararRetorno
+
+;; Teclas Control
+
+.teclasControl:
+
+    pop eax
+
+    cmp al, 's'
+    je .teclaControlS
+
+    cmp al, 'S'
+    je .teclaControlS
+
+    cmp al, 'a'
+    je .teclaControlA
+
+    cmp al, 'A'
+    je .teclaControlA
+
+    cmp al, 'f'
+    je fimPrograma
+
+    cmp al, 'F'
+    je fimPrograma
+
+    jmp .prepararRetorno
+
+.teclaBackspace:
+
+;; Se na primeira coluna, não fazer nada
+
+    cmp byte[posicaoAtualNaLinha], 0
+    je .teclaBackspace.primeiraColuna
+
+;; Remover caractere da esquerda
+
+    movzx eax, byte[posicaoAtualNaLinha]
+
+    add eax, dword[posicaoLinhaAtual]
+
+    dec eax
+
+    mov esi, bufferArquivo
+
+    hx.syscall removerCaractereString
+
+    dec byte[posicaoAtualNaLinha] ;; Um caractere foi removido
+    dec byte[tamanhoLinhaAtual]
+
+    jmp .prepararRetorno
+
+.teclaBackspace.primeiraColuna:
+
+    cmp byte[linha], 0
+    je .prepararRetorno
+
+;; Calcular tamanho anterior da linha
+
+    mov esi, bufferArquivo
+    mov eax, dword[linha]
+
+    dec eax ;; Linha anterior
+
+    call posicaoLinha
+
+    jc .prepararRetorno
+
+    sub esi, bufferArquivo
+
+    mov edx, 0
+
+    add esi, bufferArquivo
+
+    call tamanhoLinha ;; Encontrar tamanho
+
+    push edx ;; Salvar tamanho da linha
+
+    add dl, byte[tamanhoLinhaAtual]
+
+;; Backspace não habilitado (suporte de até 79 caracteres por linha)
+
+    mov bl, byte[maxColunas]
+
+    dec bl
+
+    cmp dl, bl ;; Contando de 0
+    jae .prepararRetorno
+
+;; Remover caractere de nova linha
+
+    mov byte[necessarioRedesenhar], 1
+
+    movzx eax, byte[posicaoAtualNaLinha]
+
+    add eax, dword[posicaoLinhaAtual]
+
+    dec eax
+
+    mov esi, bufferArquivo
+
+    hx.syscall removerCaractereString
+
+    dec byte[totalLinhas] ;; Uma linha foi removida
+    dec dword[linha]
+
+;; Linha anterior
+
+    mov esi, bufferArquivo
+    mov eax, dword[linha]
+
+    call posicaoLinha
+
+    jc .prepararRetorno
+
+    sub esi, bufferArquivo
+
+    push esi
+
+;; Calcular valores para essa linha
+
+    mov edx, 0
+
+    pop esi
+
+    push esi
+
+    add esi, bufferArquivo
+
+    call tamanhoLinha ;; Encontrar tamanho da linha atual
+
+    mov byte[tamanhoLinhaAtual], dl ;; Salvar tamanho da linha
+
+    pop dword[posicaoLinhaAtual]
+
+    pop edx
+
+    mov byte[posicaoAtualNaLinha], dl
+
+    jmp .teclaCima.cursorMovido
+
+.teclaDelete:
+
+;; Se na última coluna, não fazer nada
+
+    mov dl, byte[tamanhoLinhaAtual]
+
+    cmp byte[posicaoAtualNaLinha], dl
+    jae .prepararRetorno
+
+    movzx eax, byte[posicaoAtualNaLinha]
+
+    add eax, dword[posicaoLinhaAtual]
+
+    mov esi, bufferArquivo
+
+    hx.syscall removerCaractereString
+
+    dec byte[tamanhoLinhaAtual] ;; Um caractere foi removido
+
+    inc byte[posicaoAtualNaLinha]
+
+.teclaEsquerda:
+
+;; Se na primeira coluna, não fazer nada
+
+    cmp byte[posicaoAtualNaLinha], 0
+    jne .teclaEsquerda.moverEsquerda
+
+    cmp byte[linha], 0
+    je .prepararRetorno
+
+    mov bl, byte[maxColunas]
+    mov byte[posicaoAtualNaLinha], bl
+
+    jmp .teclaCima
+
+;; Mover cursor para a esquerda
+
+.teclaEsquerda.moverEsquerda:
+
+    dec byte[posicaoAtualNaLinha]
+
+    jmp .prepararRetorno
+
+.teclaDireita:
+
+;; Se na última coluna, não fazer nada
+
+    mov dl, byte[tamanhoLinhaAtual]
+
+    cmp byte[posicaoAtualNaLinha], dl
+    jnae .teclaDireita.moverDireita
+
+;; Nova linha não permitida
+
+    mov eax, dword[linha]
+
+    inc eax
+
+    cmp dword[totalLinhas], eax
+    je .prepararRetorno
+
+;; Nova linha
+
+    inc dword[linha]
+
+    mov esi, bufferArquivo
+    mov eax, dword[linha]
+
+    call posicaoLinha
+
+    jc .prepararRetorno
+
+    sub esi, bufferArquivo
+
+    mov dword[posicaoLinhaAtual], esi
+
+;; Calcular valores para essa linha
+
+    mov edx, 0
+    mov esi, bufferArquivo
+
+    add esi, dword[posicaoLinhaAtual]
+
+    call tamanhoLinha
+
+    mov byte[posicaoAtualNaLinha], 0 ;; Cursor no fim da linha
+    mov byte[tamanhoLinhaAtual], dl  ;; Salvar tamanho da linha
+
+    jmp .teclaBaixo.proximo
+
+.teclaDireita.moverDireita:
+
+    inc byte[posicaoAtualNaLinha]
+
+    jmp .prepararRetorno
+
+.teclaCima:
+
+;; Linha anterior não permitida
+
+    cmp dword[linha], 0
+    je .prepararRetorno
+
+;; Linha anterior
+
+    dec dword[linha]
+
+    mov esi, bufferArquivo
+    mov eax, dword[linha]
+
+    call posicaoLinha
+
+    jc .prepararRetorno
+
+    sub esi, bufferArquivo
+
+    mov dword[posicaoLinhaAtual], esi
+
+;; Calcular valores para essa linha
+
+    mov edx, 0
+    mov esi, bufferArquivo
+
+    add esi, dword[posicaoLinhaAtual]
+
+    call tamanhoLinha
+
+    mov byte[tamanhoLinhaAtual], dl
+
+    cmp dl, byte[posicaoAtualNaLinha]
+    jb .teclaCima.moverCursorAteOFim
+
+    jmp .teclaCima.cursorMovido ;; Não alterar a coluna do cursor
+
+.teclaCima.moverCursorAteOFim:
+
+    mov byte[posicaoAtualNaLinha], dl ;; Cursor ao fim da linha
+
+.teclaCima.cursorMovido:
+
+;; Tentar mover o cursor para cima
+
+    cmp byte[posicaoLinhaNaTela], 1
+    ja .teclaCima.cursorLinhaAnterior
+
+;; Se o cursor estiver na primeira linha, role a tela para cima
+
+    mov byte[posicaoLinhaNaTela], 1
+    mov eax, dword[posicaoLinhaAtual]
+    mov dword[posicaoPaginaAtual], eax
+
+    mov byte[necessarioRedesenhar], 1
+
+    jmp .prepararRetorno
+
+.teclaCima.cursorLinhaAnterior:
+
+    dec byte[posicaoLinhaNaTela]
+
+    jmp .prepararRetorno
+
+.teclaBaixo:
+
+;; Próxima linha não disponível
+
+    mov eax, dword[linha]
+
+    inc eax
+
+    cmp dword[totalLinhas], eax
+    je .prepararRetorno
+
+;; Próxima linha
+
+    inc dword[linha]
+
+    mov esi, bufferArquivo
+    mov eax, dword[linha]
+
+    call posicaoLinha
+
+    jc .prepararRetorno
+
+    sub esi, bufferArquivo
+
+    mov dword[posicaoLinhaAtual], esi
+
+;; Calcular valores para a linha
+
+    mov edx, 0
+    mov esi, bufferArquivo
+
+    add esi, dword[posicaoLinhaAtual]
+
+    call tamanhoLinha
+
+    mov byte[tamanhoLinhaAtual], dl
+
+    cmp dl, byte[posicaoAtualNaLinha]
+    jb .teclaBaixo.moverCursorAteOFim
+
+    jmp .teclaBaixo.cursorMovido ;; Não alterar a coluna
+
+.teclaBaixo.moverCursorAteOFim:
+
+    mov byte[posicaoAtualNaLinha], dl ;; Cursor ao fim da linha
+
+.teclaBaixo.cursorMovido:
+
+.teclaBaixo.proximo:
+
+;; Tentar mover o cursor para baixo
+
+    mov bl, byte[maxLinhas]
+
+    sub bl, 2
+
+    cmp byte[posicaoLinhaNaTela], bl
+    jb .teclaBaixo.cursorProximaLinha
+
+;; Se na última linha, girar tela para baixo
+
+    mov bl, byte[maxLinhas]
+
+    sub bl, 2
+
+    mov byte[posicaoLinhaNaTela], bl
+
+    mov esi, bufferArquivo
+    mov eax, dword[linha]
+    movzx ebx, byte[maxLinhas]
+
+    sub bl, 3
+    sub eax, ebx
+
+    call posicaoLinha
+
+    jc .prepararRetorno
+
+    sub esi, bufferArquivo
+
+    mov dword[posicaoPaginaAtual], esi
+
+    mov byte[necessarioRedesenhar], 1
+
+    jmp .prepararRetorno
+
+.teclaBaixo.cursorProximaLinha:
+
+    inc byte[posicaoLinhaNaTela]
+
+    jmp .prepararRetorno
+
+.teclaHome:
+
+;; Mover cursor para primeira coluna
+
+    mov byte[posicaoAtualNaLinha], 0
+
+    jmp .prepararRetorno
+
+.teclaEnd:
+
+;; Mover cursor para última coluna
+
+    mov edx, 0
+    mov esi, bufferArquivo
+
+    add esi, dword[posicaoLinhaAtual]
+
+    call tamanhoLinha
+
+    mov byte[posicaoAtualNaLinha], dl
+
+    jmp .prepararRetorno
+
+.teclaPageUp:
+
+    mov eax, dword[linha]
+    movzx ebx, byte[maxLinhas]
+
+    sub bl, 3
+    sub eax, ebx
+
+    cmp eax, 0
+    jle .teclaPageUp.irParaPrimeiraLinha
+
+;; Não redesenhar se na última linha
+
+    mov bl, byte[maxLinhas]
+
+    sub bl, 2
+
+    cmp byte[posicaoLinhaNaTela], bl
+    jae .teclaPageUp.naoNecessarioRedesenhar
+
+    mov byte[necessarioRedesenhar], 1
+
+.teclaPageUp.naoNecessarioRedesenhar:
+
+;; Linha anterior
+
+    movzx ebx, byte[maxLinhas]
+
+    sub bl, 3
+    sub dword[linha], ebx
+
+    mov esi, bufferArquivo
+    mov eax, dword[linha]
+
+    call posicaoLinha
+
+    jc .prepararRetorno
+
+    sub esi, bufferArquivo
+
+    mov dword[posicaoLinhaAtual], esi
+
+;; Calcular valores para essa linha
+
+    mov edx, 0
+    mov esi, bufferArquivo
+
+    add esi, dword[posicaoLinhaAtual]
+
+    call tamanhoLinha
+
+    mov byte[posicaoAtualNaLinha], dl ;; Cursor no fim da linha
+    mov byte[tamanhoLinhaAtual], dl
+
+.teclaPageUp.fim:
+
+    mov byte[posicaoLinhaNaTela], 1
+    mov eax, dword[posicaoLinhaAtual]
+    mov dword[posicaoPaginaAtual], eax
+
+    jmp .prepararRetorno
+
+.teclaPageUp.irParaPrimeiraLinha:
+
+;; Page Up não disponível
+
+    cmp dword[linha], 0
+    je .prepararRetorno
+
+    mov byte[necessarioRedesenhar], 1
+
+    mov esi, bufferArquivo
+    mov eax, 0
+    mov dword[linha], eax
+
+    call posicaoLinha
+
+    sub esi, bufferArquivo
+
+    mov dword[posicaoLinhaAtual], esi
+
+;; Calcular valores para a linha
+
+    mov edx, 0
+    mov esi, bufferArquivo
+
+    add esi, dword[posicaoLinhaAtual]
+
+    call tamanhoLinha
+
+    mov byte[posicaoAtualNaLinha], dl ;; Cursor no fim da linha
+    mov byte[tamanhoLinhaAtual], dl
+
+    jmp .teclaPageUp.fim
+
+.teclaPageDown:
+
+    mov eax, dword[linha]
+    movzx ebx, byte[maxLinhas]
+
+    sub bl, 3
+
+    add eax, ebx
+
+    cmp eax, dword[totalLinhas]
+    jae .teclaPageDown.irParaUltimaLinha
+
+;; Não redesenhar se primeira linha
+
+    cmp byte[posicaoLinhaNaTela], 1
+    jle .teclaPageDown.naoNecessarioRedesenhar
+
+    mov byte[necessarioRedesenhar], 1
+
+.teclaPageDown.naoNecessarioRedesenhar:
+
+;; Próxima linha
+
+    movzx ebx, byte[maxLinhas]
+
+    sub bl, 3
+
+    add dword[linha], ebx
+
+    mov esi, bufferArquivo
+    mov eax, dword[linha]
+
+    call posicaoLinha
+
+    jc .prepararRetorno
+
+    sub esi, bufferArquivo
+
+    mov dword[posicaoLinhaAtual], esi
+
+;; Calcular valores para a linha
+
+    mov edx, 0
+    mov esi, bufferArquivo
+
+    add esi, dword[posicaoLinhaAtual]
+
+    call tamanhoLinha
+
+    mov byte[posicaoAtualNaLinha], dl
+    mov byte[tamanhoLinhaAtual], dl
+
+    mov bl, byte[maxLinhas]
+
+    sub bl, 2
+
+    mov byte[posicaoLinhaNaTela], bl
+
+    mov eax, dword[linha]
+    movzx ebx, byte[maxLinhas]
+
+    sub bl, 3
+    sub eax, ebx
+
+    mov esi, bufferArquivo
+
+    call posicaoLinha
+
+    jc .prepararRetorno
+
+    sub esi, bufferArquivo
+
+    mov dword[posicaoPaginaAtual], esi
+
+    jmp .prepararRetorno
+
+.teclaPageDown.irParaUltimaLinha:
+
+;; Page Down não disponível
+
+    mov eax, dword[linha]
+
+    inc eax
+
+    cmp eax, dword[totalLinhas]
+    jae .prepararRetorno
+
+    mov byte[necessarioRedesenhar], 1
+
+;; Próxima linha
+
+    mov eax, dword[totalLinhas] ;; Última linha é o total de linhas - 1
+
+    dec eax
+
+    mov dword[linha], eax ;; Fazer da última linha a linha atual
+
+    mov esi, bufferArquivo
+    mov eax, dword[linha]
+
+    call posicaoLinha
+
+    jc .prepararRetorno
+
+    sub esi, bufferArquivo
+
+    mov dword[posicaoLinhaAtual], esi
+
+;; Calcular valores para essa linha
+
+    mov edx, 0
+    mov esi, bufferArquivo
+
+    add esi, dword[posicaoLinhaAtual]
+
+    call tamanhoLinha
+
+    mov byte[posicaoAtualNaLinha], dl
+    mov byte[tamanhoLinhaAtual], dl
+
+    movzx ebx, byte[maxLinhas]
+
+    sub ebx, 3
+
+    cmp dword[totalLinhas], ebx ;; Checar por arquivos pequenos ou grandes
+    jae .maisQueUmaPagina
+
+;; Se arquivo pequeno
+
+    mov ebx, dword[totalLinhas]
+
+    dec ebx
+
+;; Se arquivo grande
+
+.maisQueUmaPagina:
+
+    inc bl
+
+    mov byte[posicaoLinhaNaTela], bl
+
+    mov eax, dword[linha]
+
+    sub eax, ebx
+
+    inc eax
+
+    mov esi, bufferArquivo
+
+    call posicaoLinha
+
+    jc .prepararRetorno
+
+    sub esi, bufferArquivo
+
+    mov dword[posicaoPaginaAtual], esi
+
+    jmp .prepararRetorno
+
+.teclaControlS:
+
+    call salvarArquivoEditor
+
+    jmp .prepararRetornoEspecial
+
+.teclaControlA:
+
+    call abrirArquivoEditor
+
+    jmp .prepararRetorno
+
+.prepararRetorno:
+
+    mov byte[retornoMenu], 00h
+
+    ret 
+
+.prepararRetornoEspecial:
+
+    mov byte[retornoMenu], 01h
+
+    ret 
+
+;;************************************************************************************
+
+fimPrograma:
+
+    ;; call salvarArquivoEditor
+
+    hx.syscall rolarTela
+
+    mov ebx, 00h
+
+    hx.syscall encerrarProcesso
+
+;;************************************************************************************
+
+;;************************************************************************************
+;;
+;; Funções acessórias
+;;
+;;************************************************************************************
+
+;; Imprimir uma linha da String
+;;
+;; Entrada:
+;;
+;; ESI - Endereço do buffer
+;;
+;; Saída:
+;;
+;; ESI - Próximo buffer
+;; Carry definido no fim do arquivo
+
+imprimirLinha:
+
+    mov edx, 0 ;; Contador de caracteres
+
+.loopImprimir:
+
+    lodsb
+
+    cmp al, 10 ;; Fim da linha
+    je .fim
+
+    cmp al, 0 ;; Fim da String
+    je .fimArquivo
+
+    movzx ebx, byte[maxColunas]
+    dec bl
+
+    cmp edx, ebx
+    jae .tamanhoMaximoLinha
+
+    pushad
+
+    mov ebx, 01h
+
+    hx.syscall imprimirCaractere ;; Imprimir caractere em AL
+
+    popad
+
+    inc edx
+
+    jmp .loopImprimir ;; Mais caracteres
+
+.tamanhoMaximoLinha:
+
+    jmp .loopImprimir
+
+.fimArquivo:
+
+    stc
+
+.fim:
+
+    ret
+
+;;************************************************************************************
+
+;; Encontrar tamanho da linha
+;;
+;; Entrada:
+;;
+;; ESI - Endereço do buffer
+;;
+;; Saída:
+;;
+;; ESI - Próximo buffer
+;; EDX - += tamanho da linha
+
+tamanhoLinha:
+
+    mov al, byte[esi]
+
+    inc esi
+
+    cmp al, 10 ;; Fim da linha
+    je .fim
+
+    cmp al, 0 ;; Fim da string
+    je .fim
+
+    inc edx
+
+    jmp tamanhoLinha ;; Mais caracteres
+
+.fim:
+
+    ret
+
+;;************************************************************************************
+
+;; Encontrar endereço da linha na string
+;;
+;; Entrada:
+;;
+;; ESI - String
+;; EAX - Número da linha (contando de 0)
+;;
+;; Saída:
+;;
+;; ESI - Posição da string na linha
+;; Carry definido em linha não encontrada
+
+posicaoLinha:
+
+    push ebx
+
+    cmp eax, 0
+    je .linhaDesejadaEncontrada ;; Já na primeira linha
+
+    mov edx, 0   ;; Contador de linhas
+    mov ebx, eax ;; Salvar linha
+
+    dec ebx
+
+.proximoCaractere:
+
+    mov al, byte[esi]
+
+    inc esi
+
+    cmp al, 10 ;; Caractere de nova linha
+    je .linhaEncontrada
+
+    cmp al, 0 ;; Fim da string
+    je .linhaNaoEncontrada
+
+    jmp .proximoCaractere
+
+.linhaEncontrada:
+
+    cmp edx, ebx
+    je .linhaDesejadaEncontrada
+
+    inc edx ;; Contador de linhas
+
+    jmp .proximoCaractere
+
+.linhaDesejadaEncontrada:
+
+    clc
+
+    jmp .fim
+
+.linhaNaoEncontrada:
+
+    stc
+
+.fim:
+
+    pop ebx
 
     ret
 
