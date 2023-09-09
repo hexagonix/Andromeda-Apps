@@ -100,7 +100,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "2.0.3"
+VERSAO        equ "2.0.4"
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -521,7 +521,7 @@ LyokoIDE:
     cmp byte[Lyoko.primeiraExecucao], 01h
     je exibirBoasVindas
 
-.proximo1:
+.iniciarProcessamentoEntrada:
 
 ;; Colocar cursor na posição atual na linha
 
@@ -1404,25 +1404,25 @@ LyokoIDE:
 
     call salvarArquivoEditor
 
-    jmp .proximo1
+    jmp .iniciarProcessamentoEntrada
 
 .teclaControlX:
 
     call exibirAjuda
 
-    jmp .proximo1
+    jmp .iniciarProcessamentoEntrada
 
 .teclaControlV:
 
     call exibirInfo
 
-    jmp .proximo1
+    jmp .iniciarProcessamentoEntrada
 
 .teclaControlM:
 
     call realizarMontagem
 
-    jmp .proximo1
+    jmp .iniciarProcessamentoEntrada
 
 .teclaControlA:
 
@@ -1977,7 +1977,7 @@ realizarMontagem:
 
     mov byte[necessarioRedesenhar], 1
 
-    jmp LyokoIDE.proximo1
+    jmp LyokoIDE.iniciarProcessamentoEntrada
 
 ;;************************************************************************************
 
@@ -2044,7 +2044,7 @@ exibirBoasVindas:
 
     mov byte[Lyoko.primeiraExecucao], 00h
 
-    jmp LyokoIDE.proximo1
+    jmp LyokoIDE.iniciarProcessamentoEntrada
 
 ;;************************************************************************************
 
