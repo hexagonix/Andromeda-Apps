@@ -96,7 +96,7 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "3.0.2"
+VERSAO        equ "3.0.3"
 tamanhoRodape = 44
 
 quartzo:
@@ -267,11 +267,7 @@ Quartzo:
 
     mov dword[posicaoPaginaAtual], 0
 
-    jmp .obterTecla
-
-;; Leitura
-
-.obterTecla:
+.aguardarInteragir:
 
     cmp byte[necessarioRedesenhar], 0
     je .outrasLinhasImpressas ;; Não é necessário imprimir outras linhas
@@ -437,11 +433,11 @@ Quartzo:
 
     hx.syscall definirCursor
 
-;; Obter teclas
-
-.prontoParaTecla:
+.processarTeclado:
 
     hx.syscall aguardarTeclado
+
+;; Vamos checar se a tecla CTRL está pressionada e tomar as devidas providências
 
     push eax
 
@@ -452,10 +448,12 @@ Quartzo:
 
     pop eax
 
-    cmp al, 10
+;; Vamos agora interpretar os scan codes do teclado
+
+    cmp ah, 28
     je .teclasReturn
 
-    cmp al, 9
+    cmp ah, 15 ;; Tab
     je .caractereImprimivel
 
     cmp ah, 71
@@ -491,10 +489,10 @@ Quartzo:
 ;; Se o caractere não foi imprimível
 
     cmp al, ' '
-    jl .obterTecla
+    jl .aguardarInteragir
 
     cmp al, '~'
-    ja .obterTecla
+    ja .aguardarInteragir
 
 ;; Outra tecla
 
@@ -507,7 +505,7 @@ Quartzo:
     dec bl
 
     cmp byte[tamanhoLinhaAtual], bl
-    jae .obterTecla
+    jae .aguardarInteragir
 
     mov edx, 0
     movzx esi, byte[posicaoAtualNaLinha] ;; Posição para inserir caracteres
@@ -522,7 +520,7 @@ Quartzo:
 
 ;; Mais teclas
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 ;; Tecla Return ou Enter
 
@@ -550,7 +548,7 @@ Quartzo:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -601,19 +599,19 @@ Quartzo:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
     mov dword[posicaoPaginaAtual], esi
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclasReturn.cursorProximaLinha:
 
     inc byte[posicaoLinhaNaTela]
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 ;; Teclas Control
 
@@ -639,7 +637,7 @@ Quartzo:
     cmp al, 'F'
     je fimPrograma
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaBackspace:
 
@@ -663,12 +661,12 @@ Quartzo:
     dec byte[posicaoAtualNaLinha] ;; Um caractere foi removido
     dec byte[tamanhoLinhaAtual]
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaBackspace.primeiraColuna:
 
     cmp byte[linha], 0
-    je .obterTecla
+    je .aguardarInteragir
 
 ;; Calcular tamanho anterior da linha
 
@@ -679,7 +677,7 @@ Quartzo:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -700,7 +698,7 @@ Quartzo:
     dec bl
 
     cmp dl, bl ;; Contando de 0
-    jae .obterTecla
+    jae .aguardarInteragir
 
 ;; Remover caractere de nova linha
 
@@ -726,7 +724,7 @@ Quartzo:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -761,7 +759,7 @@ Quartzo:
     mov dl, byte[tamanhoLinhaAtual]
 
     cmp byte[posicaoAtualNaLinha], dl
-    jae .obterTecla
+    jae .aguardarInteragir
 
     movzx eax, byte[posicaoAtualNaLinha]
 
@@ -783,7 +781,7 @@ Quartzo:
     jne .teclaEsquerda.moverEsquerda
 
     cmp byte[linha], 0
-    je .obterTecla
+    je .aguardarInteragir
 
     mov bl, byte[maxColunas]
     mov byte[posicaoAtualNaLinha], bl
@@ -796,7 +794,7 @@ Quartzo:
 
     dec byte[posicaoAtualNaLinha]
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaDireita:
 
@@ -814,7 +812,7 @@ Quartzo:
     inc eax
 
     cmp dword[totalLinhas], eax
-    je .obterTecla
+    je .aguardarInteragir
 
 ;; Nova linha
 
@@ -825,7 +823,7 @@ Quartzo:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -849,14 +847,14 @@ Quartzo:
 
     inc byte[posicaoAtualNaLinha]
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaCima:
 
 ;; Linha anterior não permitida
 
     cmp dword[linha], 0
-    je .obterTecla
+    je .aguardarInteragir
 
 ;; Linha anterior
 
@@ -867,7 +865,7 @@ Quartzo:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -908,13 +906,13 @@ Quartzo:
 
     mov byte[necessarioRedesenhar], 1
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaCima.cursorLinhaAnterior:
 
     dec byte[posicaoLinhaNaTela]
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaBaixo:
 
@@ -925,7 +923,7 @@ Quartzo:
     inc eax
 
     cmp dword[totalLinhas], eax
-    je .obterTecla
+    je .aguardarInteragir
 
 ;; Próxima linha
 
@@ -936,7 +934,7 @@ Quartzo:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -992,7 +990,7 @@ Quartzo:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -1000,13 +998,13 @@ Quartzo:
 
     mov byte[necessarioRedesenhar], 1
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaBaixo.cursorProximaLinha:
 
     inc byte[posicaoLinhaNaTela]
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaHome:
 
@@ -1014,7 +1012,7 @@ Quartzo:
 
     mov byte[posicaoAtualNaLinha], 0
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaEnd:
 
@@ -1029,7 +1027,7 @@ Quartzo:
 
     mov byte[posicaoAtualNaLinha], dl
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaPageUp:
 
@@ -1067,7 +1065,7 @@ Quartzo:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -1091,14 +1089,14 @@ Quartzo:
     mov eax, dword[posicaoLinhaAtual]
     mov dword[posicaoPaginaAtual], eax
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaPageUp.irParaPrimeiraLinha:
 
 ;; Page Up não disponível
 
     cmp dword[linha], 0
-    je .obterTecla
+    je .aguardarInteragir
 
     mov byte[necessarioRedesenhar], 1
 
@@ -1160,7 +1158,7 @@ Quartzo:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -1194,13 +1192,13 @@ Quartzo:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
     mov dword[posicaoPaginaAtual], esi
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaPageDown.irParaUltimaLinha:
 
@@ -1211,7 +1209,7 @@ Quartzo:
     inc eax
 
     cmp eax, dword[totalLinhas]
-    jae .obterTecla
+    jae .aguardarInteragir
 
     mov byte[necessarioRedesenhar], 1
 
@@ -1228,7 +1226,7 @@ Quartzo:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -1277,13 +1275,13 @@ Quartzo:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
     mov dword[posicaoPaginaAtual], esi
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaControlS:
 
@@ -1295,7 +1293,7 @@ Quartzo:
 
     call abrirArquivoEditor
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 ;;************************************************************************************
 
