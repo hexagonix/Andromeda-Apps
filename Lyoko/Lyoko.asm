@@ -100,7 +100,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "2.0.1"
+VERSAO        equ "2.0.2"
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -2243,11 +2243,11 @@ reiniciarBufferVideo:
 
     hx.syscall limparTela
 
-    hx.syscall atualizarTela
-
     mov esi, video.vd0
 
     hx.syscall abrir
+
+    hx.syscall limparTela
 
     ret
 
