@@ -96,7 +96,7 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "3.0.3"
+VERSAO        equ "3.0.4"
 tamanhoRodape = 44
 
 quartzo:
@@ -424,7 +424,7 @@ Quartzo:
 
     hx.syscall definirCor
 
-.proximo1:
+.iniciarProcessamentoEntrada:
 
 ;; Colocar cursor na posição atual na linha
 
@@ -1287,7 +1287,7 @@ Quartzo:
 
     call salvarArquivoEditor
 
-    jmp .proximo1
+    jmp .iniciarProcessamentoEntrada
 
 .teclaControlA:
 
