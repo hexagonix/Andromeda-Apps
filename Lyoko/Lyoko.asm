@@ -2046,7 +2046,7 @@ processarEntrada:
 
     mov byte[retornoMenu], 00h
 
-    ret 
+    ret
 
 .prepararRetornoEspecial:
 
@@ -2054,7 +2054,7 @@ processarEntrada:
 
     mov byte[retornoMenu], 00h
 
-    ret 
+    ret
 
 ;;*************************************************************************************************
 
