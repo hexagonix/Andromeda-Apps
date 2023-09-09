@@ -100,7 +100,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "2.0.2"
+VERSAO        equ "2.0.3"
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -343,11 +343,7 @@ LyokoIDE:
 
     mov dword[posicaoPaginaAtual], 0
 
-    jmp .obterTecla
-
-;; Leitura
-
-.obterTecla:
+.aguardarInteragir:
 
     cmp byte[necessarioRedesenhar], 00h
     je .outrasLinhasImpressas ;; Não é necessário imprimir outras linhas
@@ -534,11 +530,11 @@ LyokoIDE:
 
     hx.syscall definirCursor
 
-;; Obter teclas
-
-.prontoParaTecla:
+.processarTeclado:
 
     hx.syscall aguardarTeclado
+
+;; Vamos checar se a tecla CTRL está pressionada e tomar as devidas providências
 
     push eax
 
@@ -549,10 +545,12 @@ LyokoIDE:
 
     pop eax
 
-    cmp al, 10
+;; Vamos agora interpretar os scan codes do teclado
+
+    cmp ah, 28
     je .teclasReturn
 
-    cmp al, 9
+    cmp ah, 15 ;; Tab
     je .caractereImprimivel
 
     cmp ah, 71
@@ -588,10 +586,10 @@ LyokoIDE:
 ;; Se o caractere não foi imprimível
 
     cmp al, ' '
-    jl .obterTecla
+    jl .aguardarInteragir
 
     cmp al, '~'
-    ja .obterTecla
+    ja .aguardarInteragir
 
 ;; Outra tecla
 
@@ -606,7 +604,7 @@ LyokoIDE:
     dec bl
 
     cmp byte[tamanhoLinhaAtual], bl
-    jae .obterTecla
+    jae .aguardarInteragir
 
     mov edx, 0
     movzx esi, byte[posicaoAtualNaLinha] ;; Posição para inserir caracteres
@@ -621,7 +619,7 @@ LyokoIDE:
 
 ;; Mais teclas
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 ;; Tecla Return ou Enter
 
@@ -649,7 +647,7 @@ LyokoIDE:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -700,19 +698,19 @@ LyokoIDE:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
     mov dword[posicaoPaginaAtual], esi
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclasReturn.cursorProximaLinha:
 
     inc byte[posicaoLinhaNaTela]
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 ;; Teclas Control
 
@@ -756,7 +754,7 @@ LyokoIDE:
     cmp al, 'F'
     je fimPrograma
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaBackspace:
 
@@ -780,12 +778,12 @@ LyokoIDE:
     dec byte[posicaoAtualNaLinha] ;; Um caractere foi removido
     dec byte[tamanhoLinhaAtual]
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaBackspace.primeiraColuna:
 
     cmp byte[linha], 0
-    je .obterTecla
+    je .aguardarInteragir
 
 ;; Calcular tamanho anterior da linha
 
@@ -796,7 +794,7 @@ LyokoIDE:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -817,7 +815,7 @@ LyokoIDE:
     dec bl
 
     cmp dl, bl ;; Contando de 0
-    jae .obterTecla
+    jae .aguardarInteragir
 
 ;; Remover caractere de nova linha
 
@@ -843,7 +841,7 @@ LyokoIDE:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -878,7 +876,7 @@ LyokoIDE:
     mov dl, byte[tamanhoLinhaAtual]
 
     cmp byte[posicaoAtualNaLinha], dl
-    jae .obterTecla
+    jae .aguardarInteragir
 
     movzx eax, byte[posicaoAtualNaLinha]
 
@@ -900,7 +898,7 @@ LyokoIDE:
     jne .teclaEsquerda.moverEsquerda
 
     cmp byte[linha], 0
-    je .obterTecla
+    je .aguardarInteragir
 
     mov bl, byte[maxColunas]
     mov byte[posicaoAtualNaLinha], bl
@@ -913,7 +911,7 @@ LyokoIDE:
 
     dec byte[posicaoAtualNaLinha]
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaDireita:
 
@@ -931,7 +929,7 @@ LyokoIDE:
     inc eax
 
     cmp dword[totalLinhas], eax
-    je .obterTecla
+    je .aguardarInteragir
 
 ;; Nova linha
 
@@ -942,7 +940,7 @@ LyokoIDE:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -966,14 +964,14 @@ LyokoIDE:
 
     inc byte[posicaoAtualNaLinha]
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaCima:
 
 ;; Linha anterior não permitida
 
     cmp dword[linha], 0
-    je .obterTecla
+    je .aguardarInteragir
 
 ;; Linha anterior
 
@@ -984,7 +982,7 @@ LyokoIDE:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -1025,13 +1023,13 @@ LyokoIDE:
 
     mov byte[necessarioRedesenhar], 1
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaCima.cursorLinhaAnterior:
 
     dec byte[posicaoLinhaNaTela]
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaBaixo:
 
@@ -1042,7 +1040,7 @@ LyokoIDE:
     inc eax
 
     cmp dword[totalLinhas], eax
-    je .obterTecla
+    je .aguardarInteragir
 
 ;; Próxima linha
 
@@ -1053,7 +1051,7 @@ LyokoIDE:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -1109,7 +1107,7 @@ LyokoIDE:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -1117,13 +1115,13 @@ LyokoIDE:
 
     mov byte[necessarioRedesenhar], 1
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaBaixo.cursorProximaLinha:
 
     inc byte[posicaoLinhaNaTela]
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaHome:
 
@@ -1131,7 +1129,7 @@ LyokoIDE:
 
     mov byte[posicaoAtualNaLinha], 0
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaEnd:
 
@@ -1146,7 +1144,7 @@ LyokoIDE:
 
     mov byte[posicaoAtualNaLinha], dl
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaPageUp:
 
@@ -1184,7 +1182,7 @@ LyokoIDE:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -1208,14 +1206,14 @@ LyokoIDE:
     mov eax, dword[posicaoLinhaAtual]
     mov dword[posicaoPaginaAtual], eax
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaPageUp.irParaPrimeiraLinha:
 
 ;; Page Up não disponível
 
     cmp dword[linha], 0
-    je .obterTecla
+    je .aguardarInteragir
 
     mov byte[necessarioRedesenhar], 1
 
@@ -1277,7 +1275,7 @@ LyokoIDE:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -1311,13 +1309,13 @@ LyokoIDE:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
     mov dword[posicaoPaginaAtual], esi
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaPageDown.irParaUltimaLinha:
 
@@ -1328,7 +1326,7 @@ LyokoIDE:
     inc eax
 
     cmp eax, dword[totalLinhas]
-    jae .obterTecla
+    jae .aguardarInteragir
 
     mov byte[necessarioRedesenhar], 1
 
@@ -1345,7 +1343,7 @@ LyokoIDE:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
@@ -1394,13 +1392,13 @@ LyokoIDE:
 
     call posicaoLinha
 
-    jc .obterTecla
+    jc .aguardarInteragir
 
     sub esi, bufferArquivo
 
     mov dword[posicaoPaginaAtual], esi
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 .teclaControlS:
 
@@ -1430,7 +1428,7 @@ LyokoIDE:
 
     call abrirArquivoEditor
 
-    jmp .obterTecla
+    jmp .aguardarInteragir
 
 ;;************************************************************************************
 
