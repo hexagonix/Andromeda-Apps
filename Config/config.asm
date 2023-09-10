@@ -98,7 +98,7 @@ include "dispositivos.s"
 
 ;; Versão do aplicativo
 
-include "versao.asm"
+include "versao.s"
 
 ;; Os dados de log só serão incluídos no aplicativo se for necessário. O padrão é que
 ;; sejam incluídos
