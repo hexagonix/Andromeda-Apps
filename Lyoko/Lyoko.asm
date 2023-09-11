@@ -212,7 +212,7 @@ maxColunas:           db 0  ;; Total de colunas disponíveis no vídeo na resolu
 maxLinhas:            db 0  ;; Total de linhas disponíveis no vídeo na resolução atual
 linhaParametros:      db 30 ;; Tamanho de parâmetro
 resolucao:            dd 0  ;; Resolução de vídeo
-retornoMenu:          db 0 ;; Usado para verificar se o retorno vem de um menu (CTRL+opção)
+retornoMenu:          db 0  ;; Usado para verificar se o retorno vem de um menu (CTRL+opção)
 
 ;;*************************************************************************************************
 
