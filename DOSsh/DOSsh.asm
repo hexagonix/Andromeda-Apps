@@ -93,7 +93,7 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Hexagonix o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.7.3"
+versaoDOSsh         equ "0.7.4"
 compativelHexagonix equ "Raava-CURRENT"
 
 ;;**************************
@@ -182,12 +182,10 @@ db " CLS  - Clears the screen (in the case of Hexagonix, the terminal opened at 
 db " VER  - Displays version information of DOSsh running.", 10
 db " EXIT - Terminate this DOSsh session.", 10, 0
 
-;;**************************
+;; Buffers
 
-nomeArquivo: times 13 db 0
-discoAtual:  times 3  db 0
-listaRemanescente:    dd ?
-arquivoAtual:         dd ' '
+listaRemanescente: dd ?
+arquivoAtual:      dd ' '
 
 Andromeda.Interface Andromeda.Estelar.Interface
 
