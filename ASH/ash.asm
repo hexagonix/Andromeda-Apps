@@ -100,7 +100,7 @@ ASHErro            = VERMELHO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.4.1"
+versaoASH           equ "4.4.2"
 compativelHexagonix equ "Raava-CURRENT"
 
 ;;**************************
@@ -195,9 +195,8 @@ db 10, 10, "Warning! This is an obsolete built-in Andromeda SHell command.", 10
 db "Be aware that it may be removed soon. Use the Unix 'mount' tool instead.", 10
 db "You can find documentation for mount using 'man mount' anytime.", 0
 
-;;**************************
+;; Buffers
 
-nomeArquivo: times 13 db 0
 discoAtual:  times 3  db 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
