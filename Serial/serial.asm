@@ -266,4 +266,4 @@ db "[", VERSAO, "] | [^N] New message  [^S] Exit", 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
 
-msg: db 0
+msg: db 0 ;; Buffer
