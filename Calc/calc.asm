@@ -294,7 +294,7 @@ mostrarLogoSistema:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.7.1"
+VERSAO equ "1.7.2"
 
 calc:
 
@@ -316,22 +316,19 @@ db 10, "Option: ", 0
 db 10, 10, "The result is = ", 0
 .solicitarTecla:
 db 10, 10, "Press any key to continue...", 10, 10, 0
-
 .bannerHexagonix:
 db "Hexagonix Operating System", 0
 .copyright:
 db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
 .marcaRegistrada:
 db "All rights reserved.", 0
-
 .titulo:
 db "Hexagonix Operating System Basic Calculator",0
 .rodape:
 db "[", VERSAO, "] | [F1] Exit",0
 
-primeiroNumero:   dd 0
-segundoNumero:    dd 0
-resposta:         dd 0
+primeiroNumero: dd 0
+segundoNumero:  dd 0
+resposta:       dd 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
-
