@@ -262,7 +262,7 @@ terminar:
 ;;************************************************************************************
 
 ENERGIA equ "shutdown"
-VERSAO  equ "1.4.1"
+VERSAO  equ "1.4.2"
 
 desligar:
 
@@ -300,6 +300,6 @@ db "Hexagonix Operating System shutdown options",0
 .rodape:
 db "[", VERSAO, "]",0
 
-parametro: dd ?
+parametro: dd ? ;; Buffer
 
 Andromeda.Interface Andromeda.Estelar.Interface
