@@ -105,8 +105,6 @@ MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
 
-;; Área de mensagens e variáveis globais
-
 Lyoko:
 
 .rodapeNovoArquivo:
