@@ -96,7 +96,7 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "3.1.0"
+VERSAO        equ "3.1.1"
 tamanhoRodape = 44
 
 quartzo:
@@ -118,12 +118,11 @@ db "Column: ", 0
 .arquivoSalvo:
 db "File saved", 0
 .solicitarArquivo:
-db "File name [ENTER to cancel]: ", 0
+db "Filename [ENTER to cancel]: ", 0
 .rodapeNovoArquivo:
 db "New file", 0
 .permissaoNegada:
-db "Only an administrative user can change this file."
-db " Press any key to continue...", 0
+db "Only an administrative user can change this file. Press any key to continue...", 0
 .erroDeletando:
 db "Error updating file.", 0
 .tituloPrograma:
