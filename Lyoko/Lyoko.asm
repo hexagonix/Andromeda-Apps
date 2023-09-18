@@ -100,7 +100,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "2.1.0"
+VERSAO        equ "2.1.1"
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -144,25 +144,21 @@ db "Column: ", 0
 .arquivoSalvo:
 db "File saved.", 0
 .solicitarArquivo:
-db "File name [ENTER to cancel]: ", 0
+db "Filename [ENTER to cancel]: ", 0
 .permissaoNegada:
-db "Only an administrative user can change this file."
-db " Press any key to continue...", 0
+db "Only an administrative user can change this file. Press any key to continue...", 0
 .erroDeletando:
 db "Error updating file.", 0
 .tituloPrograma:
 db "Lyoko - An IDE for Hexagonix - Version ", VERSAO, 0
 .fasmX: db MONTADOR, 0
 .semFonte:
-db "No source file specified. Try saving your file to disk first.", 10, 10
-db 0
+db "No source file specified. Try saving your file to disk first.", 10, 10, 0
 .avisoSalvamento:
 db "The contents of the file have been changed and not saved. This may lead to data loss.", 10, 10
 db "Do you want to save your changes to the file? (Y/n)", 10, 0
 .saida:
 db "appX.app", 0
-.tamanhoLinha:
-dd 0
 .identificador:
 db "| File:               ", 0
 .nomeMontador:
@@ -171,11 +167,11 @@ db "| ", MONTADOR, 0
 db 10, 10, "Press [ESC] to close this warning.", 10, 0
 .infoLyoko:
 db "The name Lyoko comes from a series that marked me a lot in childhood, called Code Lyoko.", 10
-db "In a way, this series made me fall even more in love with computing and nothing else", 10
-db "It is fair to pay a symbolic tribute.", 10, 10
-db "Lyoko was designed to be a simple and easy to use IDE for developing applications", 10
-db "natives for Hexagonix on the system itself. It is also being used for development", 10
-db "various components of the operating system itself.", 10
+db "In a way, this series made me fall even more in love with computing and it is fair to pay a symbolic", 10
+db "tribute.", 10, 10
+db "Lyoko was designed to be a simple and easy to use IDE for developing applications for Hexagonix on", 10
+db "the system itself. It is also being used for development various components of the operating system", 10
+db "itself.", 10
 db "Lyoko is gaining more and more functions and is also constantly updated.", 10, 10
 db "Version of this edition of Lyoko: ", VERSAO, 10, 10
 db AUTOR, 10
@@ -185,8 +181,8 @@ db "Welcome to Lyoko, the official IDE for Hexagonix!", 10, 10
 db "With Lyoko, you can quickly write and build wonderful applications for Hexagonix.", 10
 db "You can at any time press [^X] (Ctrl+X) for help.", 10, 10
 db "Shall we start?", 10, 10
-db "You can start by pressing Ctrl-A [^A] to open a file or press [ESC] and start", 10
-db "encode your project right now!" , 10, 10
+db "You can start by pressing Ctrl-A [^A] to open a file or press [ESC] and start encode your project", 10
+db "right now!" , 10, 10
 db "Press [ESC] to close the welcome and go directly to the editor.", 10, 0
 .solicitandoMontagem:
 db "Running the assembler (", MONTADOR, ") to generate your app...", 10, 10, 0
@@ -198,6 +194,7 @@ db " *", 0 ;; O arquivo foi editado?
 .corFundo:            dd 0 ;; Cor a ser utilizada no fundo
 .alterado:            db 0 ;; Armazenará se o buffer foi alterado pelo usuário
 .primeiraExecucao:    db 0 ;; Primeira vez que a função inicial é chamada?
+.tamanhoLinha:        dd 0 ;; Tamanho da linha
 
 totalLinhas:          dd 0  ;; Contador de linhas no arquivo
 linha:                dd 0  ;; Linha atual no arquivo
