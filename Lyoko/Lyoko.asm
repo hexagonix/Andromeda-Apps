@@ -100,14 +100,14 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "2.1.1"
+VERSAO        equ "2.1.2"
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
 
 Lyoko:
 
-.rodapeNovoArquivo:
+.tituloNovoArquivo:
 db "New file", 0
 .avisoRapido:
 db "Lyoko uses the '", MONTADOR, "' assembler for building applications.", 10
@@ -149,7 +149,8 @@ db "Only an administrative user can change this file. Press any key to continue.
 db "Error updating file.", 0
 .tituloPrograma:
 db "Lyoko - An IDE for Hexagonix - Version ", VERSAO, 0
-.fasmX: db MONTADOR, 0
+.fasmX:
+db MONTADOR, 0
 .semFonte:
 db "No source file specified. Try saving your file to disk first.", 10, 10, 0
 .avisoSalvamento:
@@ -230,16 +231,16 @@ LyokoIDE:
     mov dword[resolucao], eax
 
     cmp byte[edi], 0 ;; Em caso de falta de argumentos
-    je .novoArquivo
+    je .criarNovoArquivo
 
     mov esi, edi ;; Argumentos do programa
 
     hx.syscall tamanhoString
 
     cmp eax, 12 ;; Nome de arquivo inválido
-    ja .novoArquivo
+    ja .criarNovoArquivo
 
-;; Salvar nome do arquivo
+.salvarNomeArquivo: ;; Salvar nome do arquivo
 
     push es
 
@@ -255,15 +256,13 @@ LyokoIDE:
 
     pop es
 
-.carregarArquivo:
-
-;; Abrir arquivo
+.carregarArquivo: ;; Abrir arquivo
 
     mov esi, nomeArquivo
 
     hx.syscall arquivoExiste
 
-    jc .novoArquivo ;; O arquivo não existe
+    jc .criarNovoArquivo ;; O arquivo não existe
 
     mov esi, nomeArquivo
 
@@ -277,7 +276,7 @@ LyokoIDE:
 
     mov ecx, eax
 
-;; Adicionar nome do arquivo no rodapé
+.configurarRodape: ;; Adicionar nome do arquivo no título do programa
 
     push es
 
@@ -295,11 +294,11 @@ LyokoIDE:
 
     jmp .inicio
 
-.novoArquivo:
+.criarNovoArquivo:
 
     mov byte[nomeArquivo], 0
 
-;; Adicionar 'Novo arquivo', ao rodapé do programa
+;; Adicionar 'New file', ao título do programa
 
     push es
 
@@ -308,14 +307,14 @@ LyokoIDE:
 
     mov ecx, 12
 
-    mov esi, Lyoko.rodapeNovoArquivo
+    mov esi, Lyoko.tituloNovoArquivo
     mov edi, Lyoko.identificador+tamanhoParaNomeArquivo ;; Posição
 
     rep movsb
 
     pop es
 
-.inicio:
+.iniciarInterface:
 
     mov al, 10 ;; Caractere de nova linha
 
