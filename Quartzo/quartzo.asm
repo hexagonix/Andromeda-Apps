@@ -96,7 +96,7 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "3.1.1"
+VERSAO        equ "3.1.2"
 tamanhoRodape = 44
 
 quartzo:
@@ -158,16 +158,16 @@ Quartzo:
     mov dword[quartzo.corFundo], ebx
 
     cmp byte[edi], 0 ;; Em caso de falta de argumentos
-    je .novoArquivo
+    je .criarNovoArquivo
 
     mov esi, edi ;; Argumentos do programa
 
     hx.syscall tamanhoString
 
     cmp eax, 12 ;; Nome de arquivo inválido
-    ja .novoArquivo
+    ja .criarNovoArquivo
 
-;; Salvar nome do arquivo
+.salvarNomeArquivo: ;; Salvar nome do arquivo
 
     push es
 
@@ -183,15 +183,13 @@ Quartzo:
 
     pop es
 
-.carregarArquivo:
-
-;; Abrir arquivo
+.carregarArquivo: ;; Abrir arquivo
 
     mov esi, nomeArquivo
 
     hx.syscall arquivoExiste
 
-    jc .novoArquivo ;; O arquivo não existe
+    jc .criarNovoArquivo ;; O arquivo não existe
 
     mov esi, nomeArquivo
 
@@ -205,7 +203,7 @@ Quartzo:
 
     mov ecx, eax
 
-;; Adicionar nome do arquivo no rodapé
+.configurarRodape: ;; Adicionar nome do arquivo no rodapé
 
     push es
 
@@ -223,11 +221,11 @@ Quartzo:
 
     jmp .inicio
 
-.novoArquivo:
+.criarNovoArquivo:
 
     mov byte[nomeArquivo], 0
 
-;; Adicionar 'Novo arquivo', ao rodapé do programa
+;; Adicionar 'New file', ao rodapé do programa
 
     push es
 
