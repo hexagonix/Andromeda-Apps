@@ -96,7 +96,7 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "3.1.2"
+VERSAO        equ "3.1.3"
 tamanhoRodape = 44
 
 quartzo:
@@ -219,7 +219,7 @@ Quartzo:
 
     pop es
 
-    jmp .inicio
+    jmp .iniciarInterface
 
 .criarNovoArquivo:
 
@@ -241,7 +241,7 @@ Quartzo:
 
     pop es
 
-.inicio:
+.iniciarInterface:
 
     mov al, 10 ;; Caractere de nova linha
 
