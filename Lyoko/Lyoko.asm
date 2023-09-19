@@ -100,7 +100,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "2.1.2"
+VERSAO        equ "2.1.3"
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -292,7 +292,7 @@ LyokoIDE:
 
     pop es
 
-    jmp .inicio
+    jmp .iniciarInterface
 
 .criarNovoArquivo:
 
