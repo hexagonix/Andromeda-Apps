@@ -100,7 +100,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "2.1.3"
+VERSAO        equ "2.1.3.1"
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -187,13 +187,13 @@ db "Press [ESC] to close the welcome and go directly to the editor.", 10, 0
 db "Running the assembler (", MONTADOR, ") to generate your app...", 10, 10, 0
 .editado:
 db " *", 0 ;; O arquivo foi editado?
-.tituloAlterado:      db 0 ;; Título alterado?
-.caixaMaior:          db 0 ;; Tamanho da caixa (relativo à resolução da tela)
-.corFonte:            dd 0 ;; Cor a ser utilizada na fonte
-.corFundo:            dd 0 ;; Cor a ser utilizada no fundo
-.alterado:            db 0 ;; Armazenará se o buffer foi alterado pelo usuário
-.primeiraExecucao:    db 0 ;; Primeira vez que a função inicial é chamada?
-.tamanhoLinha:        dd 0 ;; Tamanho da linha
+.tituloAlterado:   db 0 ;; Título alterado?
+.caixaMaior:       db 0 ;; Tamanho da caixa (relativo à resolução da tela)
+.corFonte:         dd 0 ;; Cor a ser utilizada na fonte
+.corFundo:         dd 0 ;; Cor a ser utilizada no fundo
+.alterado:         db 0 ;; Armazenará se o buffer foi alterado pelo usuário
+.primeiraExecucao: db 0 ;; Primeira vez que a função inicial é chamada?
+.tamanhoLinha:     dd 0 ;; Tamanho da linha
 
 totalLinhas:          dd 0  ;; Contador de linhas no arquivo
 linha:                dd 0  ;; Linha atual no arquivo
