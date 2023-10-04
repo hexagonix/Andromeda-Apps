@@ -100,7 +100,7 @@ ASHErro            = VERMELHO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.4.2"
+versaoASH           equ "4.5.0"
 compativelHexagonix equ "Raava-CURRENT"
 
 ;;**************************
@@ -300,7 +300,7 @@ inicioShell:
 
     hx.syscall compararPalavrasString
 
-    jc .comandoAD
+    jc .comandoCVOL
 
 ;;************************************************************************************
 
@@ -428,7 +428,7 @@ inicioShell:
 
 ;;************************************************************************************
 
-.comandoAD:
+.comandoCVOL:
 
     push esi
     push edi
@@ -453,7 +453,7 @@ inicioShell:
     pop edi
     pop esi
 
-    add esi, 02h
+    add esi, 04h
 
     hx.syscall cortarString
 
