@@ -93,9 +93,9 @@ db "[Config]: Obtaining identification and status of parallel ports...", 0
 .logResolucao:
 db "[Config]: Getting current display resolution...", 0
 .logTrocarResolucao800x600:
-db "[Config]: Switching to 800x600 pixel resolution. Low resolution.", 0
+db "[Config]: Switching to 800x600 pixel resolution.", 0
 .logTrocarResolucao1024x768:
-db "[Config]: Switching to 1024x768 pixels resolution. Optimal resolution.", 0
+db "[Config]: Switching to 1024x768 pixels resolution.", 0
 .logSerial:
 db "[Config]: Obtaining identification and status of serial ports...", 0
 .logSerialAutomatico:
