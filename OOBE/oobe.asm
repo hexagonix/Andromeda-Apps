@@ -83,7 +83,7 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.0.2"
+versaoOOBE = "1.1.0"
 
 COR_LOGO      = VERDE_40
 COR_SEPARADOR = TOMATE
@@ -179,7 +179,7 @@ db "Press any key to go to the next page...", 0
 .mensagemFinal:
 db 10, 10
 db "You will no longer see this message on the next boot.", 10, 10
-db "Now we need to restart the device. Press any key to restart...", 10, 10, 0 ;;'
+db "Press any key to finish the tour...", 10, 10, 0 ;;'
 .deletarManual:
 db 10, "An error occurred while removing OOBE. Remove it manually. For this, enter 'rm oobe'.", 10, 10, 0
 .arquivoOOBE:
@@ -339,7 +339,7 @@ inicioAPP:
 
     hx.syscall aguardarTeclado
 
-    jmp reiniciar
+    jmp terminar
 
 .erroDeletando:
 
@@ -357,23 +357,15 @@ inicioAPP:
 
     hx.syscall aguardarTeclado
 
-    jmp reiniciar
+    jmp terminar
 
 ;;************************************************************************************
 
 terminar:
 
-    restaurarConsoleLimpar ;; Macro que restaura o comportamento do console e limpa o terminal
+    restaurarConsole ;; Macro que restaura o comportamento do console e limpa o terminal
 
     hx.syscall encerrarProcesso
-
-;;************************************************************************************
-
-reiniciar:
-
-    restaurarConsoleLimpar ;; Macro que restaura o comportamento do console e limpa o terminal
-
-    hx.syscall reiniciarPC
 
 ;;************************************************************************************
 
