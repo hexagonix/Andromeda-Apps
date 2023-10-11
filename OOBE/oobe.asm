@@ -83,7 +83,7 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.1.0"
+versaoOOBE = "1.1.1"
 
 COR_LOGO      = VERDE_40
 COR_SEPARADOR = TOMATE
@@ -170,9 +170,9 @@ db "contribute to Hexagonix! You can also contribute by helping to test the syst
 db "all this, use the contact channels already mentioned. It will be a pleasure to have more people on", 10
 db "the project!", 0
 .pagina6:
-db "Tuor is running out :(. When finished, enter an 'ls' in the shell to start exploring the available", 10
-db "utilities. Remember: at any time, you can use 'man utility' to learn more about it. Hope you like", 10
-db "your experience with the system!", 0
+db "We have reached the end of the tutorial. When finished, enter an 'ls' in the shell to start", 10
+db "exploring the available utilities. Remember: at any time, you can use 'man utility' to learn more", 10
+db "about it. Hope you like your experience with the system!", 0
 .proximaPagina:
 db 10, 10
 db "Press any key to go to the next page...", 0
@@ -297,10 +297,6 @@ inicioAPP:
     restaurarCorConsole
 
     fputs OOBE.pagina6
-
-    fputs OOBE.proximaPagina
-
-    call exibirDivisoria
 
 ;;************************************************************************************
 
