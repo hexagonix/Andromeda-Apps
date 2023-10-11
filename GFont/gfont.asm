@@ -232,7 +232,7 @@ validarFonte:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "2.3.2"
+VERSAO equ "2.3.3"
 
 fonte:
 
@@ -263,9 +263,9 @@ db "[", VERSAO, "] | Use [F1] to cancel loading a new font", 0
 .tamanhoSuperior:
 db 10, 10, "This font file exceeds the maximum size of 2 Kb.", 10, 0
 
-linhaComando:     dd 0
-arquivoFonte:     dd ?
-regES:            dw 0
+linhaComando: dd 0
+arquivoFonte: dd ?
+regES: dw 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
 
