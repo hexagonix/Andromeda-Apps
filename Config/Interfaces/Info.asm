@@ -199,18 +199,16 @@ mostrarInterfaceInfo:
 
     pop ecx
 
-    cmp ch, 0
+    cmp ecx, 0
     je .continuar
 
     push ecx
 
     fputs msgInfo.ponto
 
-    pop ecx
+    pop eax
 
-    mov al, ch
-
-    hx.syscall imprimirCaractere
+    imprimirInteiro
 
 .continuar:
 
