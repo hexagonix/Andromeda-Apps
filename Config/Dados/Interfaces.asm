@@ -169,7 +169,7 @@ db "Total installed memory available: ", 0
 .kbytes:
 db " megabytes.", 0
 .Hexagon:
-db "Version of Hexagon (kernel): ", 0
+db "Hexagon (kernel) version: ", 0
 .ponto:
 db ".", 0
 .semCPUID:
