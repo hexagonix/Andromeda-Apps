@@ -100,7 +100,7 @@ ASHErro            = VERMELHO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.5.0"
+versaoASH           equ "4.5.1"
 compativelHexagonix equ "Raava-CURRENT"
 
 ;;**************************
@@ -119,7 +119,7 @@ db "All rights reserved.", 10, 0
 db 10, 10, "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
 db "All rights reserved.", 10, 0
 .limiteProcessos:
-db 10, 10, "[!] There is no memory available to run the requested application.", 10
+db 10, 10, "[!] There is no available process slot to run the requested application.", 10
 db "[!] Try to terminate applications or their instances first, and try again.", 10, 0
 .imagemInvalida:
 db ": unable to load image. Unsupported executable format.", 10, 0
