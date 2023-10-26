@@ -100,7 +100,7 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "2.1.3.1"
+VERSAO        equ "2.2.0"
 MONTADOR      equ "fasmX"
 AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS      equ "All rights reserved."
@@ -345,7 +345,7 @@ LyokoIDE:
 
 ;; Imprimir outras linhas
 
-    mov esi, video.vd1
+    mov esi, video.tty1
 
     hx.syscall abrir
 
@@ -444,7 +444,7 @@ LyokoIDE:
 
     hx.syscall atualizarTela
 
-    mov esi, video.vd0
+    mov esi, video.tty0
 
     hx.syscall abrir
 
@@ -2276,13 +2276,13 @@ posicaoLinha:
 
 reiniciarBufferVideo:
 
-    mov esi, video.vd1
+    mov esi, video.tty1
 
     hx.syscall abrir
 
     hx.syscall limparTela
 
-    mov esi, video.vd0
+    mov esi, video.tty0
 
     hx.syscall abrir
 
