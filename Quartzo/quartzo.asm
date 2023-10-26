@@ -80,7 +80,7 @@ cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, Quartzo, 01h
 include "hexagon.s"
 include "Estelar/estelar.s"
 include "erros.s"
-include "dispositivos.s"
+include "dev.s"
 
 ;;*************************************************************************************************
 
@@ -96,7 +96,7 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "3.2.0"
+VERSAO        equ "3.2.1"
 tamanhoRodape = 44
 
 quartzo:
@@ -207,8 +207,10 @@ Quartzo:
 
     push es
 
+;; Vamos configurar DS e ES com o segmento de dados do modo usuário
+
     push ds
-    pop es ;; ES = DS
+    pop es
 
 ;; Agora o nome do arquivo aberto será exibido na interface do aplicativo
 
@@ -272,7 +274,7 @@ Quartzo:
 
 ;; Imprimir outras linhas
 
-    mov esi, video.tty1
+    mov esi, Hexagon.LibASM.Dev.video.tty1
 
     hx.syscall abrir
 
@@ -353,7 +355,7 @@ Quartzo:
 
     hx.syscall atualizarTela
 
-    mov esi, video.tty0
+    mov esi, Hexagon.LibASM.Dev.video.tty0
 
     hx.syscall abrir
 
@@ -482,8 +484,10 @@ salvarArquivoEditor:
 
     push es
 
+;; Vamos configurar DS e ES com o segmento de dados do modo usuário
+
     push ds
-    pop es ;; ES = DS
+    pop es
 
     mov edi, nomeArquivo
     mov ecx, eax ;; Caracteres no nome de arquivo
@@ -662,8 +666,10 @@ abrirArquivoEditor:
 
     push es
 
+;; Vamos configurar DS e ES com o segmento de dados do modo usuário
+
     push ds
-    pop es ;; ES = DS
+    pop es
 
     mov edi, nomeArquivo
     mov ecx, eax ;; Caracteres no nome de arquivo
@@ -713,13 +719,13 @@ abrirArquivoEditor:
 
 reiniciarBufferVideo:
 
-    mov esi, video.tty1
+    mov esi, Hexagon.LibASM.Dev.video.tty1
 
     hx.syscall abrir
 
     hx.syscall limparTela
 
-    mov esi, video.tty0
+    mov esi, Hexagon.LibASM.Dev.video.tty0
 
     hx.syscall abrir
 
