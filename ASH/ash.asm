@@ -100,7 +100,7 @@ ASHErro            = VERMELHO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.5.1"
+versaoASH           equ "4.5.2"
 compativelHexagonix equ "Raava-CURRENT"
 
 ;;**************************
@@ -197,7 +197,7 @@ db "You can find documentation for mount using 'man mount' anytime.", 0
 
 ;; Buffers
 
-discoAtual:  times 3  db 0
+discoAtual: times 3 db 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
 
