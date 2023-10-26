@@ -244,8 +244,8 @@ LyokoIDE:
 
     push es
 
-    push ds
-    pop es ;; DS = ES
+    push ds ;; Segmento de dados do modo usuário (seletor 38h)
+    pop es
 
     mov edi, nomeArquivo
     mov ecx, eax ;; Caracteres no nome do arquivo
@@ -304,7 +304,7 @@ LyokoIDE:
 
     push es
 
-    push ds
+    push ds ;; Segmento de dados do modo usuário (seletor 38h)
     pop es
 
     mov ecx, 12

@@ -409,7 +409,7 @@ comandoDIR:
 
 .loopArquivos:
 
-    push ds
+    push ds ;; Segmento de dados do modo usuário (seletor 38h)
     pop es
 
     push ebx
@@ -604,7 +604,7 @@ obterArgumentos:
 
     push es
 
-    push ds
+    push ds ;; Segmento de dados do modo usuário (seletor 38h)
     pop es
 
     mov esi, ebx
@@ -631,7 +631,7 @@ obterArgumentos:
 
 lerListaArquivos:
 
-    push ds
+    push ds ;; Segmento de dados do modo usuário (seletor 38h)
     pop es
 
     mov esi, [listaRemanescente]
