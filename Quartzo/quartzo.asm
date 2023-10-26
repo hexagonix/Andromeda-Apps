@@ -96,7 +96,7 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "3.1.3"
+VERSAO        equ "3.2.0"
 tamanhoRodape = 44
 
 quartzo:
@@ -272,7 +272,7 @@ Quartzo:
 
 ;; Imprimir outras linhas
 
-    mov esi, video.vd1
+    mov esi, video.tty1
 
     hx.syscall abrir
 
@@ -353,7 +353,7 @@ Quartzo:
 
     hx.syscall atualizarTela
 
-    mov esi, video.vd0
+    mov esi, video.tty0
 
     hx.syscall abrir
 
@@ -713,13 +713,13 @@ abrirArquivoEditor:
 
 reiniciarBufferVideo:
 
-    mov esi, video.vd1
+    mov esi, video.tty1
 
     hx.syscall abrir
 
     hx.syscall limparTela
 
-    mov esi, video.vd0
+    mov esi, video.tty0
 
     hx.syscall abrir
 
