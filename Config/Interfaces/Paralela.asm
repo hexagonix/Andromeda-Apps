@@ -129,7 +129,7 @@ match =SIM, VERBOSE
 
     hx.syscall definirCor
 
-    fputs portasParalelas.imp0
+    fputs Hexagon.LibASM.Dev.portasParalelas.imp0
 
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]

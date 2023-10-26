@@ -71,7 +71,7 @@ exibirProcessadorInstalado:
 ;; Vamos verificar se existe um processador reconhecido. Se não, exibir que o mesmo
 ;; não suporta a instrução CPUID
 
-    mov esi, processadores.proc0
+    mov esi, Hexagon.LibASM.Dev.processadores.proc0
 
     hx.syscall abrir
 

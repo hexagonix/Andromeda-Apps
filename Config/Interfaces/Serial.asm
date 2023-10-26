@@ -127,7 +127,7 @@ match =SIM, VERBOSE
 
     hx.syscall definirCor
 
-    fputs portasSeriais.com1
+    fputs Hexagon.LibASM.Dev.portasSeriais.com1
 
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
@@ -201,7 +201,7 @@ match =SIM, VERBOSE
 
     fputs msgSerial.mensagemEnviando
 
-    mov esi, portasSeriais.com1
+    mov esi, Hexagon.LibASM.Dev.portasSeriais.com1
 
     hx.syscall abrir
 
@@ -242,7 +242,7 @@ match =SIM, VERBOSE
 
 }
 
-    mov esi, portasSeriais.com1
+    mov esi, Hexagon.LibASM.Dev.portasSeriais.com1
 
     hx.syscall abrir
 
@@ -266,7 +266,7 @@ match =SIM, VERBOSE
 
     hx.syscall definirCor
 
-    fputs portasSeriais.com1
+    fputs Hexagon.LibASM.Dev.portasSeriais.com1
 
     mov eax,  Andromeda.Estelar.Tema.Fonte.fontePadrao
     mov ebx, dword[corFundo]

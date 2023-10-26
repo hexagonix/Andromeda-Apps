@@ -92,7 +92,7 @@ include "verUtils.s"
 
 ;; Lista de dispositivos do Hexagon
 
-include "dispositivos.s"
+include "dev.s"
 
 ;;************************************************************************************
 
