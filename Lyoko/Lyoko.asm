@@ -100,10 +100,10 @@ tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO        equ "2.2.1"
-MONTADOR      equ "fasmX"
-AUTOR         equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
-DIREITOS      equ "All rights reserved."
+VERSAO   equ "2.2.2"
+MONTADOR equ "fasmX"
+AUTOR    equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
+DIREITOS equ "All rights reserved."
 
 Lyoko:
 
@@ -195,6 +195,8 @@ db " *", 0 ;; O arquivo foi editado?
 .primeiraExecucao: db 0 ;; Primeira vez que a função inicial é chamada?
 .tamanhoLinha:     dd 0 ;; Tamanho da linha
 
+nomeArquivo:  ;; Espaço para armazenamento do nome do arquivo
+times 13 db 0
 totalLinhas:          dd 0  ;; Contador de linhas no arquivo
 linha:                dd 0  ;; Linha atual no arquivo
 posicaoLinhaAtual:    dd 0  ;; Posição da linha atual em todo o arquivo
@@ -203,7 +205,6 @@ tamanhoLinhaAtual:    dd 0  ;; Tamanho da linha atual
 posicaoLinhaNaTela:   dd 1  ;; Posição da linha no display
 posicaoPaginaAtual:   dd 0  ;; Posição da página atual no arquivo (uma tela)
 necessarioRedesenhar: db 1  ;; Se não zero, é necessário redesenhar toda a tela
-nomeArquivo: times 13 db 0  ;; Espaço para armazenamento do nome do arquivo
 maxColunas:           db 0  ;; Total de colunas disponíveis no vídeo na resolução atual
 maxLinhas:            db 0  ;; Total de linhas disponíveis no vídeo na resolução atual
 linhaParametros:      db 30 ;; Tamanho de parâmetro
