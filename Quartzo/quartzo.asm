@@ -96,7 +96,8 @@ CORDESTAQUE = ROXO_ESCURO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO        equ "3.2.1"
+VERSAO equ "3.2.2"
+
 tamanhoRodape = 44
 
 quartzo:
@@ -130,6 +131,8 @@ db "Quartzo Text Editor for Hexagonix - Version ", VERSAO, 0
 .corFonte: dd 0
 .corFundo: dd 0
 
+nomeArquivo: ;; Nome do arquivo
+times 13 db 0
 totalLinhas:          dd 0 ;; Contador de linhas no arquivo
 linha:                dd 0 ;; Linha atual no arquivo
 posicaoLinhaAtual:    dd 0 ;; Posição da linha atual em todo o arquivo
@@ -138,7 +141,6 @@ tamanhoLinhaAtual:    dd 0 ;; Tamanho da linha atual
 posicaoLinhaNaTela:   dd 1 ;; Posição da linha no display
 posicaoPaginaAtual:   dd 0 ;; Posição da página atual no arquivo (uma tela)
 necessarioRedesenhar: db 1 ;; Se não zero, é necessário redesenhar toda a tela
-nomeArquivo: times 13 db 0 ;; Nome do arquivo
 maxColunas:           db 0 ;; Total de colunas disponíveis no vídeo na resolução atual
 maxLinhas:            db 0 ;; Total de linhas disponíveis no vídeo na resolução atual
 retornoMenu:          db 0 ;; Usado para verificar se o retorno vem de um menu (CTRL+opção)
