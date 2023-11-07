@@ -85,8 +85,6 @@ include "macros.s"
 
 inicioAPP:
 
-    mov [regES], es
-
     push ds ;; Segmento de dados do modo usuário (seletor 38h)
     pop es
 
@@ -232,7 +230,7 @@ validarFonte:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "2.3.3"
+VERSAO equ "2.3.4"
 
 fonte:
 
@@ -265,7 +263,6 @@ db 10, 10, "This font file exceeds the maximum size of 2 Kb.", 10, 0
 
 linhaComando: dd 0
 arquivoFonte: dd ?
-regES: dw 0
 
 Andromeda.Interface Andromeda.Estelar.Interface
 
