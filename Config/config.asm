@@ -77,10 +77,6 @@ cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioAPP, 01h
 
 ;;************************************************************************************
 
-inicioAPP:
-
-    jmp entradaConfig
-
 include "hexagon.s"
 include "Estelar/estelar.s"
 include "macros.s"
@@ -93,8 +89,6 @@ include "verUtils.s"
 ;; Lista de dispositivos do Hexagon
 
 include "dev.s"
-
-;;************************************************************************************
 
 ;; Versão do aplicativo
 
@@ -133,6 +127,12 @@ include "Interfaces\Serial.asm"
 include "Dados\Interfaces.asm"
 
 corPadraoInterface = OURO_HEXAGONIX
+
+;;************************************************************************************
+
+inicioAPP:
+
+    jmp entradaConfig
 
 ;;************************************************************************************
 
