@@ -100,7 +100,7 @@ ASHErro            = VERMELHO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.5.2"
+versaoASH           equ "4.5.3"
 compativelHexagonix equ "Raava-CURRENT"
 
 ;;**************************
@@ -129,7 +129,7 @@ db "[/]: ", 0
 db 10, "Licenced under BSD-3-Clause.", 10, 0
 
 .verboseEntradaASH:
-db "[ASH]: Starting Andromeda SHell (ASH) for Hexagonix ", compativelHexagonix, " or superior.", 0
+db "[ASH]: Andromeda SHell (ASH) for Hexagonix ", compativelHexagonix, " or superior.", 0
 .verboseVersaoASH:
 db "[ASH]: Andromeda SHell version ", versaoASH, ".", 0
 .verboseAutor:
@@ -139,9 +139,9 @@ db "[ASH]: All rights reserved.", 0
 .verboseSaida:
 db "[ASH]: Terminating the ASH...", 0
 .verboseLimite:
-db "[ASH]: [!] Memory full or process limit reached!", 0
+db "[ASH]: Warning: memory full or process limit reached!", 0
 .verboseInterface:
-db "[ASH]: [!!!] Performing mount point manipulation using deprecated functions that will be removed.", 0
+db "[ASH]: Warning: performing mount point manipulation using deprecated functions that will be removed.", 0
 
 ;;**************************
 
