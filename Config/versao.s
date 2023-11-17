@@ -66,6 +66,6 @@
 ;;
 ;; $HexagonixOS$
 
-VERSAOCONFIG             equ "2.8.1"
-VERSAOFERRAMENTAS        equ "1.5.1"
+VERSAOCONFIG             equ "2.8.2"
+VERSAOFERRAMENTAS        equ "1.6.0"
 VERSAODESIGNADAHEXAGONIX equ "Raava-CURRENT"

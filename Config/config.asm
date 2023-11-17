@@ -156,8 +156,8 @@ match =SIM, VERBOSE
 
     hx.syscall obterCor
 
-    mov dword[corFonte], eax
-    mov dword[corFundo], ebx
+    mov dword[corFonte], ecx
+    mov dword[corFundo], edx
 
 match =SIM, VERBOSE
 
