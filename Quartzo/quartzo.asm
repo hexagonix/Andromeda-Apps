@@ -92,11 +92,11 @@ include "dev.s"
 
 ;; Aparência
 
-CORDESTAQUE = ROXO_ESCURO
+CORDESTAQUE = HEXAGONIX_BLOSSOM_ROXO
 
 ;; Variáveis, constantes e estruturas
 
-VERSAO equ "3.2.2"
+VERSAO equ "3.2.3"
 
 tamanhoRodape = 44
 
