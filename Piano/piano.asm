@@ -220,7 +220,7 @@ inicioAPP:
     mov ebx, 80  ;; Início do bloco em Y
     mov esi, 635 ;; Comprimento do bloco
     mov edi, 450 ;; Altura do bloco
-    mov edx, LAVANDA_PASTEL ;; Cor do bloco
+    mov edx, HEXAGONIX_BLOSSOM_LAVANDA ;; Cor do bloco
 
     hx.syscall desenharBloco
 
@@ -466,7 +466,7 @@ montarTeclas:
 .legenda:
 
     mov eax, PRETO
-    mov ebx, LAVANDA_PASTEL
+    mov ebx, HEXAGONIX_BLOSSOM_LAVANDA
 
     hx.syscall definirCor
 
@@ -720,7 +720,7 @@ evidenciarTeclas:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.5.0"
+VERSAO equ "1.5.1"
 
 piano:
 
