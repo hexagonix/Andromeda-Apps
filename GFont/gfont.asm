@@ -88,20 +88,11 @@ inicioAPP:
     push ds ;; Segmento de dados do modo usuário (seletor 38h)
     pop es
 
-    hx.syscall obterCor
-
-    mov dword[Andromeda.Interface.corFonte], eax
-    mov dword[Andromeda.Interface.corFundo], ebx
-
+   Andromeda.Estelar.obterInfoConsole
 
 .executarInterface:
 
     hx.syscall limparTela
-
-    hx.syscall obterInfoTela
-
-    mov byte[Andromeda.Interface.numColunas], bl
-    mov byte[Andromeda.Interface.numLinhas], bh
 
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
 
@@ -230,7 +221,7 @@ validarFonte:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "2.3.4"
+VERSAO equ "2.4.0"
 
 fonte:
 
@@ -263,7 +254,5 @@ db 10, 10, "This font file exceeds the maximum size of 2 Kb.", 10, 0
 
 linhaComando: dd 0
 arquivoFonte: dd ?
-
-Andromeda.Interface Andromeda.Estelar.Interface
 
 bufferArquivo:
