@@ -85,17 +85,11 @@ include "macros.s"
 
 inicioAPP:
 
-    hx.syscall obterCor
-
-    mov dword[Andromeda.Interface.corFonte], eax
-    mov dword[Andromeda.Interface.corFundo], ebx
+    Andromeda.Estelar.obterInfoConsole
 
     hx.syscall limparTela
 
     hx.syscall obterInfoTela
-
-    mov byte[Andromeda.Interface.numColunas], bl
-    mov byte[Andromeda.Interface.numLinhas], bh
 
 ;; Imprime o título do programa e rodapé.
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
@@ -235,7 +229,7 @@ erroAbertura:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.1.1"
+VERSAO equ "1.2.0"
 
 serial:
 
@@ -263,7 +257,5 @@ db 10, 10, "Data sent via serial port ", 0
 db "Utility for sending data via the serial port of the Hexagonix Operating System", 0
 .rodape:
 db "[", VERSAO, "] | [^N] New message  [^S] Exit", 0
-
-Andromeda.Interface Andromeda.Estelar.Interface
 
 msg: db 0 ;; Buffer
