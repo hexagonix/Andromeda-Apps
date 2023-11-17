@@ -100,7 +100,7 @@ ASHErro            = VERMELHO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.5.3"
+versaoASH           equ "4.6.0"
 compativelHexagonix equ "Raava-CURRENT"
 
 ;;**************************
@@ -199,8 +199,6 @@ db "You can find documentation for mount using 'man mount' anytime.", 0
 
 discoAtual: times 3 db 0
 
-Andromeda.Interface Andromeda.Estelar.Interface
-
 ;;************************************************************************************
 
 inicioShell:
@@ -212,19 +210,11 @@ inicioShell:
 
 ;; Iniciar a configuração do terminal
 
-    hx.syscall obterCor
-
-    mov dword[Andromeda.Interface.corFonte], eax
-    mov dword[Andromeda.Interface.corFundo], ebx
+    Andromeda.Estelar.obterInfoConsole
 
     hx.syscall limparTela
 
-    hx.syscall obterInfoTela
-
     novaLinha
-
-    mov byte[Andromeda.Interface.numColunas], bl
-    mov byte[Andromeda.Interface.numLinhas], bh
 
     call exibirBannerASH
 
@@ -395,6 +385,8 @@ inicioShell:
     mov ecx, 01h
 
     call alterarCor
+
+    clc
 
     jmp .obterComando
 
