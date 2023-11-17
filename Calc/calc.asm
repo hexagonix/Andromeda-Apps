@@ -85,17 +85,7 @@ include "macros.s"
 
 inicioAPP:
 
-    hx.syscall obterCor
-
-    mov dword[Andromeda.Interface.corFonte], eax
-    mov dword[Andromeda.Interface.corFundo], ebx
-
-    hx.syscall limparTela
-
-    hx.syscall obterInfoTela
-
-    mov byte[Andromeda.Interface.numColunas], bl
-    mov byte[Andromeda.Interface.numLinhas], bh
+    Andromeda.Estelar.obterInfoConsole
 
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
 
@@ -294,7 +284,7 @@ mostrarLogoSistema:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.7.2"
+VERSAO equ "1.8.0"
 
 calc:
 
@@ -330,5 +320,3 @@ db "[", VERSAO, "] | [F1] Exit",0
 primeiroNumero: dd 0
 segundoNumero:  dd 0
 resposta:       dd 0
-
-Andromeda.Interface Andromeda.Estelar.Interface
