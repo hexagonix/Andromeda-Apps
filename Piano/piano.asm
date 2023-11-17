@@ -94,7 +94,7 @@ exibirInterfaceSobre:
     ;; Imprime o título do programa e rodapé
 
     mov eax, BRANCO_ANDROMEDA
-    mov ebx, AZUL_METALICO
+    mov ebx, HEXAGONIX_BLOSSOM_AZUL
 
     hx.syscall definirCor
 
@@ -195,23 +195,15 @@ exibirInterfaceSobre:
 
 inicioAPP:
 
-    hx.syscall obterCor
-
-    mov dword[Andromeda.Interface.corFonte], eax
-    mov dword[Andromeda.Interface.corFundo], ebx
+    Andromeda.Estelar.obterInfoConsole
 
     hx.syscall limparTela
-
-    hx.syscall obterInfoTela
-
-    mov byte[Andromeda.Interface.numColunas], bl
-    mov byte[Andromeda.Interface.numLinhas], bh
 
 ;; Imprime o título do programa e rodapé.
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
 
     Andromeda.Estelar.criarInterface piano.titulo, piano.rodape, \
-    AZUL_METALICO, AZUL_METALICO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
+    HEXAGONIX_BLOSSOM_AZUL, HEXAGONIX_BLOSSOM_AZUL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
 .blocoTeclado:
@@ -720,7 +712,7 @@ evidenciarTeclas:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.5.1"
+VERSAO equ "1.6.0"
 
 piano:
 
@@ -767,5 +759,3 @@ db "I", 0
 db "[SPACE]", 0
 .teclaZ:
 db "Z", 0
-
-Andromeda.Interface Andromeda.Estelar.Interface
