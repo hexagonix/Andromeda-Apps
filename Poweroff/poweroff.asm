@@ -99,17 +99,11 @@ inicioAPP:
 
 iniciarInterface:
 
-    hx.syscall obterCor
-
-    mov dword[Andromeda.Interface.corFonte], eax
-    mov dword[Andromeda.Interface.corFundo], ebx
+    Andromeda.Estelar.obterInfoConsole
 
     hx.syscall limparTela
 
     hx.syscall obterInfoTela
-
-    mov byte[Andromeda.Interface.numColunas], bl
-    mov byte[Andromeda.Interface.numLinhas], bh
 
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
 
@@ -262,7 +256,7 @@ terminar:
 ;;************************************************************************************
 
 ENERGIA equ "shutdown"
-VERSAO  equ "1.4.2"
+VERSAO  equ "1.5.0"
 
 desligar:
 
@@ -301,5 +295,3 @@ db "Hexagonix Operating System shutdown options",0
 db "[", VERSAO, "]",0
 
 parametro: dd ? ;; Buffer
-
-Andromeda.Interface Andromeda.Estelar.Interface
