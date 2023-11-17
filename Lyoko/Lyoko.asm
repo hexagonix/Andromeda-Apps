@@ -93,14 +93,14 @@ include "macros.s"
 
 ;; Aparência (cores)
 
-CORDESTAQUE = VERMELHO_TIJOLO
-CORLISTRA   = LARANJA
+CORDESTAQUE = HEXAGONIX_BLOSSOM_VERMELHO
+CORLISTRA   = HEXAGONIX_BLOSSOM_LARANJA
 
 tamanhoParaNomeArquivo = 8
 
 ;; Constantes e estruturas
 
-VERSAO   equ "2.2.2"
+VERSAO   equ "2.2.3"
 MONTADOR equ "fasmX"
 AUTOR    equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 DIREITOS equ "All rights reserved."
@@ -224,8 +224,8 @@ LyokoIDE:
 
     hx.syscall obterCor
 
-    mov dword[Lyoko.corFonte], eax
-    mov dword[Lyoko.corFundo], ebx
+    mov dword[Lyoko.corFonte], ecx
+    mov dword[Lyoko.corFundo], edx
 
     hx.syscall obterResolucao
 
