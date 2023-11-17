@@ -93,7 +93,7 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Hexagonix o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.8.0"
+versaoDOSsh         equ "0.9.0"
 compativelHexagonix equ "Raava-CURRENT"
 
 ;;**************************
@@ -187,8 +187,6 @@ db " EXIT - Terminate this DOSsh session.", 10, 0
 listaRemanescente: dd ?
 arquivoAtual:      dd ' '
 
-Andromeda.Interface Andromeda.Estelar.Interface
-
 ;;************************************************************************************
 
 inicioShell:
@@ -200,17 +198,7 @@ inicioShell:
 
 ;; Iniciar a configuração do terminal
 
-    hx.syscall obterCor
-
-    mov dword[Andromeda.Interface.corFonte], eax
-    mov dword[Andromeda.Interface.corFundo], ebx
-
-    hx.syscall limparTela
-
-    hx.syscall obterInfoTela
-
-    mov byte[Andromeda.Interface.numColunas], bl
-    mov byte[Andromeda.Interface.numLinhas], bh
+    Andromeda.Estelar.obterInfoConsole
 
     fputs DOSsh.iniciando
 
@@ -322,6 +310,8 @@ carregarImagem:
 .limiteAtingido:
 
     fputs DOSsh.limiteProcessos
+
+    clc
 
     jmp obterComando
 
