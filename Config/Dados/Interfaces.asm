@@ -188,13 +188,15 @@ db "To get started, select any category listed below:", 0
 .categoria1:
 db "[1] Change the resolution used by the current monitor.", 0
 .categoria2:
-db "[2] Check disks and storage.", 0
+db "[2] Change the default console color scheme.", 0
 .categoria3:
-db "[3] View and test serial ports.", 0
+db "[3] Check disks and storage.", 0
 .categoria4:
-db "[4] View parallel port and printer.", 0
+db "[4] View and test serial ports.", 0
 .categoria5:
-db "[5] Change the default system font.", 0
+db "[5] View parallel port and printer.", 0
+.categoria6:
+db "[6] Change the default system font.", 0
 
 ;;************************************************************************************
 
@@ -218,6 +220,19 @@ db "Current resolution: 1024x768 pixels", 0
 db "The resolution has recently changed.", 0
 .alterado:
 db "The resolution has been changed. If you don't like it, go back to the previous resolution.", 0
+
+;;************************************************************************************
+
+msgTema:
+
+.introducao:
+db "Here you can set the default Hexagonix console color scheme.", 0
+.inserir:
+db "Choose from one of the options below, inserting the number:", 0
+.opcao1:
+db "[1] Dark mode", 0
+.opcao2:
+db "[2] Light mode", 0
 
 ;;************************************************************************************
 
@@ -340,6 +355,8 @@ db "Change the default system display font", 0
 db "Configure parallel ports (printers)", 0
 .portaSerial:
 db "Serial port settings and diagnostics", 0
+.tema:
+db "Set console color scheme", 0
 
 ;;************************************************************************************
 
@@ -360,4 +377,6 @@ db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exi
 .portaParalela:
 db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
 .portaSerial:
+db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
+.tema:
 db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0

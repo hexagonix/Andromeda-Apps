@@ -130,6 +130,10 @@ mostrarInterfaceConfiguracoes:
 
     fputs msgConfig.categoria5
 
+    gotoxy 04, 12
+
+    fputs msgConfig.categoria6
+
 .obterTeclas:
 
     hx.syscall aguardarTeclado
@@ -156,15 +160,18 @@ mostrarInterfaceConfiguracoes:
     je mostrarInterfaceConfigResolucao
 
     cmp al, '2'
-    je mostrarInterfaceDiscos
+    je mostrarInterfaceConfigTema
 
     cmp al, '3'
-    je mostrarInterfaceSerial
+    je mostrarInterfaceDiscos
 
     cmp al, '4'
-    je mostrarInterfacePortaParalela
+    je mostrarInterfaceSerial
 
     cmp al, '5'
+    je mostrarInterfacePortaParalela
+
+    cmp al, '6'
     je mostrarInterfaceFonte
 
     jmp .obterTeclas

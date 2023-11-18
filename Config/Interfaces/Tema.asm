@@ -66,6 +66,133 @@
 ;;
 ;; $HexagonixOS$
 
-VERSAOCONFIG             equ "3.0.0"
-VERSAOFERRAMENTAS        equ "1.7.0"
-VERSAODESIGNADAHEXAGONIX equ "Raava-CURRENT"
+mostrarInterfaceConfigTema:
+
+    hx.syscall limparTela
+
+;; Imprime o título do programa e rodapé
+
+    mov eax, BRANCO_ANDROMEDA
+    mov ebx, corPadraoInterface
+
+    hx.syscall definirCor
+
+    mov al, 0
+
+    hx.syscall limparLinha
+
+    fputs TITULO.tema
+
+    mov al, byte[maxLinhas] ;; Última linha
+
+    dec al
+
+    hx.syscall limparLinha
+
+    fputs RODAPE.tema
+
+    mov eax, corPadraoInterface
+    mov ebx, dword[corFundo]
+
+    hx.syscall definirCor
+
+    call mostrarAvisoResolucao
+
+    mov eax, dword[corFonte]
+    mov ebx, dword[corFundo]
+
+    hx.syscall definirCor
+
+    gotoxy 02, 02
+
+    fputs msgTema.introducao
+
+    gotoxy 02, 05
+
+    fputs msgTema.inserir
+
+    gotoxy 04, 07
+
+    fputs msgTema.opcao1
+
+    gotoxy 04, 08
+
+    fputs msgTema.opcao2
+
+.obterTeclas:
+
+    hx.syscall aguardarTeclado
+
+    cmp al, 'v'
+    je mostrarInterfaceConfiguracoes
+
+    cmp al, 'V'
+    je mostrarInterfaceConfiguracoes
+
+    cmp al, 'b'
+    je mostrarInterfaceInfo
+
+    cmp al, 'B'
+    je mostrarInterfaceInfo
+
+    cmp al, 'c'
+    je finalizarAPP
+
+    cmp al, 'C'
+    je finalizarAPP
+
+    cmp al, '1'
+    je temaEscuro
+
+    cmp al, '2'
+    je temaClaro
+
+    jmp .obterTeclas
+
+;;************************************************************************************
+
+temaEscuro:
+
+    mov eax, HEXAGONIX_BLOSSOM_AMARELO
+    mov ebx, HEXAGONIX_BLOSSOM_CINZA
+    mov dword[corFundo], ebx
+    mov dword[corFonte], eax
+    mov ecx, 1234h
+
+    hx.syscall definirCor
+
+    call configurarConsoles
+
+    jmp mostrarInterfaceConfigTema
+
+;;************************************************************************************
+
+temaClaro:
+
+    mov eax, HEXAGONIX_CLASSICO_PRETO
+    mov ebx, HEXAGONIX_CLASSICO_BRANCO
+    mov dword[corFundo], ebx
+    mov dword[corFonte], eax
+    mov ecx, 1234h
+
+    hx.syscall definirCor
+
+    call configurarConsoles
+
+    jmp mostrarInterfaceConfigTema
+
+;;************************************************************************************
+
+configurarConsoles:
+
+    mov esi, Hexagon.LibASM.Dev.video.tty1 ;; Abre o console secundário
+
+    hx.syscall hx.open ;; Abre o dispositivo
+
+    hx.syscall limparTela
+
+    mov esi, Hexagon.LibASM.Dev.video.tty0 ;; Reabre o console padrão
+
+    hx.syscall hx.open ;; Abre o dispositivo
+
+    ret

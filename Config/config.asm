@@ -121,6 +121,7 @@ include "Interfaces\Discos.asm"
 include "Interfaces\Fonte.asm"
 include "Interfaces\Paralela.asm"
 include "Interfaces\Serial.asm"
+include "Interfaces\Tema.asm"
 
 ;; Mensagens do aplicativo
 
