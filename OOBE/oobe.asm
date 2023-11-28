@@ -83,11 +83,12 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.1.1"
+versaoOOBE = "1.2.0"
 
 COR_LOGO      = VERDE_40
-COR_SEPARADOR = TOMATE
+COR_SEPARADOR = HEXAGONIX_BLOSSOM_VERMELHO
 COR_ERRO      = ROXO_ESCURO
+COR_PAGINA    = HEXAGONIX_BLOSSOM_VERDE
 
 OOBE:
 
@@ -199,7 +200,7 @@ inicioAPP:
 
     call exibirBanner
 
-    definirCorConsole AMARELO_ESCURO, [Lib.Console.corFundo]
+    definirCorConsole COR_PAGINA, [Lib.Console.corFundo]
 
     fputs OOBE.pag1
 
@@ -218,7 +219,7 @@ inicioAPP:
 
     call exibirBanner
 
-    definirCorConsole AMARELO_ESCURO, [Lib.Console.corFundo]
+    definirCorConsole COR_PAGINA, [Lib.Console.corFundo]
 
     fputs OOBE.pag2
 
@@ -236,7 +237,7 @@ inicioAPP:
 
     call exibirBanner
 
-    definirCorConsole AMARELO_ESCURO, [Lib.Console.corFundo]
+    definirCorConsole COR_PAGINA, [Lib.Console.corFundo]
 
     fputs OOBE.pag3
 
@@ -254,7 +255,7 @@ inicioAPP:
 
     call exibirBanner
 
-    definirCorConsole AMARELO_ESCURO, [Lib.Console.corFundo]
+    definirCorConsole COR_PAGINA, [Lib.Console.corFundo]
 
     fputs OOBE.pag4
 
@@ -272,7 +273,7 @@ inicioAPP:
 
     call exibirBanner
 
-    definirCorConsole AMARELO_ESCURO, [Lib.Console.corFundo]
+    definirCorConsole COR_PAGINA, [Lib.Console.corFundo]
 
     fputs OOBE.pag5
 
@@ -290,7 +291,7 @@ inicioAPP:
 
     call exibirBanner
 
-    definirCorConsole AMARELO_ESCURO, [Lib.Console.corFundo]
+    definirCorConsole COR_PAGINA, [Lib.Console.corFundo]
 
     fputs OOBE.pag6
 
