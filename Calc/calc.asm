@@ -87,7 +87,8 @@ inicioAPP:
 
     Andromeda.Estelar.obterInfoConsole
 
-;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
+;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo,
+;; corTextoRodape, corTexto, corFundo
 
     Andromeda.Estelar.criarInterface calc.titulo, calc.rodape, \
     VERDE_ESCURO, VERDE_ESCURO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
@@ -284,7 +285,7 @@ mostrarLogoSistema:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.8.0"
+VERSAO equ "1.8.1"
 
 calc:
 
