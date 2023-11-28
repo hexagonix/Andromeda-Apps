@@ -94,15 +94,19 @@ inicioAPP:
 
     hx.syscall limparTela
 
-;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
+;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo,
+;; corTextoRodape, corTexto, corFundo
 
-    Andromeda.Estelar.criarInterface fonte.titulo, fonte.rodape, AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    Andromeda.Estelar.criarInterface fonte.titulo, fonte.rodape, \
+    AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
+    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
     xyfputs 39, 4, fonte.bannerHexagonix
     xyfputs 27, 5, fonte.copyright
     xyfputs 41, 6, fonte.marcaRegistrada
 
-    Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, \
+    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
     gotoxy 02, 10
 
@@ -221,7 +225,7 @@ validarFonte:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "2.4.0"
+VERSAO equ "2.4.1"
 
 fonte:
 
