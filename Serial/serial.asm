@@ -92,7 +92,8 @@ inicioAPP:
     hx.syscall obterInfoTela
 
 ;; Imprime o título do programa e rodapé.
-;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
+;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo,
+;; corTextoRodape, corTexto, corFundo
 
     Andromeda.Estelar.criarInterface serial.titulo, serial.rodape, \
     AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
@@ -229,7 +230,7 @@ erroAbertura:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.2.0"
+VERSAO equ "1.2.1"
 
 serial:
 
