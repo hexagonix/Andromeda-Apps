@@ -105,7 +105,8 @@ iniciarInterface:
 
     hx.syscall obterInfoTela
 
-;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
+;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo,
+;; corTextoRodape, corTexto, corFundo
 
     Andromeda.Estelar.criarInterface desligar.titulo, desligar.rodape, \
     INDIGO, INDIGO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
@@ -256,7 +257,7 @@ terminar:
 ;;************************************************************************************
 
 ENERGIA equ "shutdown"
-VERSAO  equ "1.5.0"
+VERSAO  equ "1.5.1"
 
 desligar:
 
