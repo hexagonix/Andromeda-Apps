@@ -93,7 +93,7 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Hexagonix o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.9.0"
+versaoDOSsh         equ "0.9.1"
 compativelHexagonix equ "Raava-CURRENT"
 
 ;;**************************
@@ -199,6 +199,8 @@ inicioShell:
 ;; Iniciar a configuração do terminal
 
     Andromeda.Estelar.obterInfoConsole
+
+    hx.syscall limparTela
 
     fputs DOSsh.iniciando
 
