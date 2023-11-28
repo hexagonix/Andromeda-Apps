@@ -132,7 +132,7 @@ mostrarInterfaceInfo:
 
     hx.syscall imprimirCaractere
 
-    fputs codigoObtido
+    fputs release
 
     mov al, ']'
 
@@ -167,12 +167,6 @@ mostrarInterfaceInfo:
     call definirCorTema
 
     fputs pacoteAtualizacoes
-
-    mov al, ' '
-
-    hx.syscall imprimirCaractere
-
-    fputs dataHora
 
     call definirCorPadrao
 
