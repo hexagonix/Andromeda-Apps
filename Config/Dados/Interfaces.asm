@@ -79,7 +79,7 @@ db "To get started, select one of the options below:", 0
 .categoria1:
 db "[1] Change general system settings.", 0
 .categoria2:
-db "[2] View more information about this version of Hexagonix", 0
+db "[2] View more information about this version of Hexagonix.", 0
 
 ;;************************************************************************************
 
