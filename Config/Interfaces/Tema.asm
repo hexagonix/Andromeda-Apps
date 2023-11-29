@@ -123,22 +123,16 @@ mostrarInterfaceConfigTema:
 
     hx.syscall aguardarTeclado
 
-    cmp al, 'v'
-    je mostrarInterfaceConfiguracoes
-
-    cmp al, 'V'
-    je mostrarInterfaceConfiguracoes
-
     cmp al, 'b'
-    je mostrarInterfaceInfo
+    je mostrarInterfaceConfiguracoes
 
     cmp al, 'B'
-    je mostrarInterfaceInfo
+    je mostrarInterfaceConfiguracoes
 
-    cmp al, 'c'
+    cmp al, 'x'
     je finalizarAPP
 
-    cmp al, 'C'
+    cmp al, 'X'
     je finalizarAPP
 
     cmp al, '1'

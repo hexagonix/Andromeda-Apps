@@ -81,7 +81,7 @@ mostrarInterfacePrincipal:
 
     hx.syscall limparLinha
 
-    fputs TITULO.inicio
+    fputs TITULO.principal
 
     mov al, byte[maxLinhas] ;; Última linha
 
@@ -89,7 +89,7 @@ mostrarInterfacePrincipal:
 
     hx.syscall limparLinha
 
-    fputs RODAPE.inicio
+    fputs RODAPE.principal
 
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
@@ -103,118 +103,46 @@ mostrarInterfacePrincipal:
 
     hx.syscall definirCor
 
-    call mostrarLogoSistema
-
-    gotoxy 39, 02
-
-    fputs msgInicio.introducao
-
-    gotoxy 18, 04
-
-    fputs msgInicio.nomeSistema
-
-    fputs nomeSistema
-
-    gotoxy 18, 05
-
-    fputs msgInicio.versaoSistema
-
-    call imprimirVersao
-
-    fputs msgInicio.versao
-
-    gotoxy 18, 06
-
-    fputs msgInicio.tipoSistema
-
-    gotoxy 18, 08
-
     call definirCorTema
 
-    fputs msgInfo.licenciado
+    gotoxy 00, 02
+
+    fputs msgGeral.logo
 
     call definirCorPadrao
 
-    gotoxy 18, 10
+;; A partir daqui, estamos abaixo do logo
 
-    fputs msgInicio.copyrightAndromeda
+    gotoxy 01, 13
 
-    gotoxy 18, 11
+    fputs msgPrincipal.introducao
 
-    fputs msgInicio.direitosReservados
+    gotoxy 01, 14
 
-    gotoxy 24, 13
+    fputs msgPrincipal.introducao2
 
-    call definirCorTema
+    gotoxy 01, 17
 
-    fputs msgInicio.separador
+    fputs msgPrincipal.categoria1
 
-    call definirCorPadrao
+    gotoxy 01, 18
 
-    gotoxy 39, 15
-
-    fputs msgInicio.sobrePC
-
-    gotoxy 02, 17
-
-    fputs msgInicio.processadorPrincipal
-
-    gotoxy 04, 19
-
-    fputs msgInicio.numProcessador
-
-    call definirCorTema
-
-    call exibirProcessadorInstalado
-
-    call definirCorPadrao
-
-    gotoxy 08, 20
-
-    fputs msgInicio.operacaoProcessador
-
-    gotoxy 02, 22
-
-    fputs msgInfo.memoriaDisponivel
-
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    hx.syscall usoMemoria
-
-    mov eax, ecx
-
-    imprimirInteiro
-
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    fputs msgInfo.kbytes
+    fputs msgPrincipal.categoria2
 
 .obterTeclas:
 
     hx.syscall aguardarTeclado
 
-    cmp al, 'a'
-    je mostrarInterfaceInfo
-
-    cmp al, 'A'
-    je mostrarInterfaceInfo
-
-    cmp al, 'b'
+    cmp al, '1'
     je mostrarInterfaceConfiguracoes
 
-    cmp al, 'B'
-    je mostrarInterfaceConfiguracoes
+    cmp al, '2'
+    je mostrarInterfaceInfo
 
-    cmp al, 'c'
+    cmp al, 'x'
     je finalizarAPP
 
-    cmp al, 'C'
+    cmp al, 'X'
     je finalizarAPP
 
     jmp .obterTeclas

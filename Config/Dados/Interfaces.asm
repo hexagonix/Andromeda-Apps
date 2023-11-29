@@ -70,36 +70,16 @@ use32
 
 align 32
 
-msgInicio: ;; Contêm todas as mensagens abaixo
+msgPrincipal:
 
 .introducao:
-db "About the system", 0
-.nomeSistema:
-db "Operating System name: ", 0
-.versaoSistema:
-db "Operating System version: ", 0
-.versao:
-db " ", 0
-.tipoSistema:
-db "Operating System type: 32-bit", 0
-.copyrightAndromeda:
-db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
-.direitosReservados:
-db "All rights reserved.", 0
-.separador:
-db "++++++++++++++++++++++++++++++++++++++++", 0
-.sobrePC:
-db "About the device", 0
-.processadorPrincipal:
-db "Installed processor (considering only the main processor):", 0
-.numProcessador:
-db "1) ", 0
-.operacaoProcessador:
-db "Processor in 32-bit protected mode", 0
-.memoriaDisponivel:
-db "Total installed memory available: ", 0
-.kbytes:
-db " megabytes.", 0
+db "Welcome to Config! Here you can get more information about Hexagonix or change system settings.", 0
+.introducao2:
+db "To get started, select one of the options below:", 0
+.categoria1:
+db "[1] Change general system settings.", 0
+.categoria2:
+db "[2] View more information about this version of Hexagonix", 0
 
 ;;************************************************************************************
 
@@ -114,16 +94,16 @@ db "You are using a version of Hexagonix that does not support this feature.", 0
 .ponto:
 db ".", 0
 .logo:
-db "88                                                                                88", 10
-db "88                                                                                ''", 10
-db "88", 10
-db "88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8", 10
-db "88P'    '88 a8P     88  `P8, ,8P'  ''     `P8 a8'    `P88 a8'     '8a 88P'   `'88 88  `P8, ,8P'", 10
-db "88       88 8PP'''''''    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(", 10
-db "88       88 '8b,   ,aa  ,d8' '8b,  88,    ,88 '8a,   ,d88 '8a,   ,a8' 88       88 88  ,d8' '8b,", 10
-db "88       88  `'Pbbd8'' 8P'     `P8 `'8bbdP'P8  `'PbbdP'P8  `'PbbdP''  88       88 88 8P'     `P8", 10
-db "                                               aa,    ,88", 10
-db "                                                'P8bbdP'", 0
+db "  88                                                                                88", 10
+db "  88                                                                                ''", 10
+db "  88", 10
+db "  88,dPPPba,   ,adPPPba, 8b,     ,d8 ,adPPPPba,  ,adPPPb,d8  ,adPPPba,  8b,dPPPba,  88 8b,     ,d8", 10
+db "  88P'    '88 a8P     88  `P8, ,8P'  ''     `P8 a8'    `P88 a8'     '8a 88P'   `'88 88  `P8, ,8P'", 10
+db "  88       88 8PP'''''''    )888(    ,adPPPPP88 8b       88 8b       d8 88       88 88    )888(", 10
+db "  88       88 '8b,   ,aa  ,d8' '8b,  88,    ,88 '8a,   ,d88 '8a,   ,a8' 88       88 88  ,d8' '8b,", 10
+db "  88       88  `'Pbbd8'' 8P'     `P8 `'8bbdP'P8  `'PbbdP'P8  `'PbbdP''  88       88 88 8P'     `P8", 10
+db "                                                 aa,    ,88", 10
+db "                                                  'P8bbdP'", 0
 .logoResumido:
 db "88", 10
 db "88", 10
@@ -339,7 +319,7 @@ db "]",0
 
 TITULO:
 
-.inicio:
+.principal:
 db "Hexagonix Settings", 0
 .info:
 db "About the Hexagonix Operating System and system updates", 0
@@ -362,21 +342,21 @@ db "Set console color scheme", 0
 
 RODAPE:
 
-.inicio:
-db "[Version ", VERSAOCONFIG, "] | [A] About system and updates [B] System settings [C] Exit", 0
+.principal:
+db "[Version ", VERSAOCONFIG, "] | [X] Exit", 0
 .info:
-db "[Version ", VERSAOCONFIG, "] | [V] Back [B] System settings [C] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
 .configuracoes:
-db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
 .resolucao:
-db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
 .discos:
-db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
 .fonte:
-db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
 .portaParalela:
-db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
 .portaSerial:
-db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
 .tema:
-db "[Version ", VERSAOCONFIG, "] | [V] Back [B] About System and updates [C] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
