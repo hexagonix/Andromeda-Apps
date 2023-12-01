@@ -93,8 +93,8 @@ include "macros.s"
 ;; Ela deve ser utilizada para identificar para qual versão do Hexagonix o DOSsh foi
 ;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
 
-versaoDOSsh         equ "0.9.1"
-compativelHexagonix equ "Raava-CURRENT"
+versaoDOSsh         equ "0.9.2"
+compativelHexagonix equ "System I-CURRENT"
 
 ;;**************************
 
