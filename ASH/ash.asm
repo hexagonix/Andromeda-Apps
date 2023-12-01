@@ -100,8 +100,8 @@ ASHErro            = VERMELHO
 ASHLimiteProcessos = AMARELO_ANDROMEDA
 ASHSucesso         = VERDE
 
-versaoASH           equ "4.6.0"
-compativelHexagonix equ "Raava-CURRENT"
+versaoASH           equ "4.6.1"
+compativelHexagonix equ "System I-CURRENT"
 
 ;;**************************
 
