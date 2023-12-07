@@ -93,7 +93,7 @@ inicioAPP:
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
 
     Andromeda.Estelar.criarInterface piano.titulo, piano.rodape, \
-    HEXAGONIX_BLOSSOM_AZUL, HEXAGONIX_BLOSSOM_AZUL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
+    COR_DESTAQUE, COR_DESTAQUE, COR_FONTE, COR_FONTE, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
 .blocoTeclado:
@@ -102,7 +102,7 @@ inicioAPP:
     mov ebx, 80  ;; Início do bloco em Y
     mov esi, 635 ;; Comprimento do bloco
     mov edi, 450 ;; Altura do bloco
-    mov edx, HEXAGONIX_BLOSSOM_LAVANDA ;; Cor do bloco
+    mov edx, COR_BLOCO ;; Cor do bloco
 
     hx.syscall desenharBloco
 
@@ -256,7 +256,7 @@ montarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, PRETO
+    mov edx, COR_FUNDO_TECLA
 
     hx.syscall desenharBloco
 
@@ -266,7 +266,7 @@ montarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, PRETO
+    mov edx, COR_FUNDO_TECLA
 
     hx.syscall desenharBloco
 
@@ -276,7 +276,7 @@ montarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, PRETO
+    mov edx, COR_FUNDO_TECLA
 
     hx.syscall desenharBloco
 
@@ -286,7 +286,7 @@ montarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, PRETO
+    mov edx, COR_FUNDO_TECLA
 
     hx.syscall desenharBloco
 
@@ -296,7 +296,7 @@ montarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, PRETO
+    mov edx, COR_FUNDO_TECLA
 
     hx.syscall desenharBloco
 
@@ -306,7 +306,7 @@ montarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, PRETO
+    mov edx, COR_FUNDO_TECLA
 
     hx.syscall desenharBloco
 
@@ -316,7 +316,7 @@ montarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, PRETO
+    mov edx, COR_FUNDO_TECLA
 
     hx.syscall desenharBloco
 
@@ -326,7 +326,7 @@ montarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, PRETO
+    mov edx, COR_FUNDO_TECLA
 
     hx.syscall desenharBloco
 
@@ -336,14 +336,14 @@ montarTeclas:
     mov ebx, 460
     mov esi, 500
     mov edi, 40
-    mov edx, PRETO
+    mov edx, COR_FUNDO_TECLA
 
     hx.syscall desenharBloco
 
 .legenda:
 
-    mov eax, PRETO
-    mov ebx, HEXAGONIX_BLOSSOM_LAVANDA
+    mov eax, COR_FUNDO_TECLA
+    mov ebx, COR_BLOCO
 
     hx.syscall definirCor
 
@@ -421,8 +421,8 @@ montarTeclas:
 
 .teclaEspaco:
 
-    mov eax, BRANCO_ANDROMEDA
-    mov ebx, PRETO
+    mov eax, COR_FONTE
+    mov ebx, COR_FUNDO_TECLA
 
     hx.syscall definirCor
 
@@ -452,7 +452,7 @@ evidenciarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, VERMELHO
+    mov edx, COR_DESTAQUE_TECLA
 
     hx.syscall desenharBloco
 
@@ -466,7 +466,7 @@ evidenciarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, VERMELHO
+    mov edx, COR_DESTAQUE_TECLA
 
     hx.syscall desenharBloco
 
@@ -480,7 +480,7 @@ evidenciarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, VERMELHO
+    mov edx, COR_DESTAQUE_TECLA
 
     hx.syscall desenharBloco
 
@@ -494,7 +494,7 @@ evidenciarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, VERMELHO
+    mov edx, COR_DESTAQUE_TECLA
 
     hx.syscall desenharBloco
 
@@ -508,7 +508,7 @@ evidenciarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, VERMELHO
+    mov edx, COR_DESTAQUE_TECLA
 
     hx.syscall desenharBloco
 
@@ -522,7 +522,7 @@ evidenciarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, VERMELHO
+    mov edx, COR_DESTAQUE_TECLA
 
     hx.syscall desenharBloco
 
@@ -536,7 +536,7 @@ evidenciarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, VERMELHO
+    mov edx, COR_DESTAQUE_TECLA
 
     hx.syscall desenharBloco
 
@@ -550,7 +550,7 @@ evidenciarTeclas:
     mov ebx, 84 ;; Não deve ser alterado
     mov esi, 30
     mov edi, 250
-    mov edx, VERMELHO
+    mov edx, COR_DESTAQUE_TECLA
 
     hx.syscall desenharBloco
 
@@ -564,12 +564,12 @@ evidenciarTeclas:
     mov ebx, 460
     mov esi, 500
     mov edi, 40
-    mov edx, VERMELHO
+    mov edx, COR_DESTAQUE_TECLA
 
     hx.syscall desenharBloco
 
-    mov eax, BRANCO_ANDROMEDA
-    mov ebx, VERMELHO
+    mov eax, COR_FONTE
+    mov ebx, COR_DESTAQUE_TECLA
 
     hx.syscall definirCor
 
@@ -604,8 +604,8 @@ exibirInterfaceSobre:
 
     ;; Imprime o título do programa e rodapé
 
-    mov eax, BRANCO_ANDROMEDA
-    mov ebx, HEXAGONIX_BLOSSOM_AZUL
+    mov eax, COR_FONTE
+    mov ebx, COR_DESTAQUE
 
     hx.syscall definirCor
 
@@ -710,12 +710,18 @@ exibirInterfaceSobre:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.7.0"
+VERSAO equ "1.7.1"
+
+COR_DESTAQUE       = HEXAGONIX_BLOSSOM_AZUL
+COR_FONTE          = HEXAGONIX_CLASSICO_BRANCO
+COR_BLOCO          = HEXAGONIX_BLOSSOM_LAVANDA
+COR_DESTAQUE_TECLA = HEXAGONIX_BLOSSOM_VERMELHO
+COR_FUNDO_TECLA    = HEXAGONIX_CLASSICO_PRETO
 
 piano:
 
 .sobreTeclado:
-db "Virtual Piano 'return PIANO;' for Hexagonix", 0
+db "return PIANO; for Hexagonix Operating System", 0
 .versaoTeclado:
 db "Version ", VERSAO, 0
 .autor:
@@ -731,11 +737,11 @@ db "+ Use the [SPACE] key to mute notes when necessary.", 0
 .topico3:
 db "+ Finally, use the [Z] key to terminate this application at any time.", 0
 .titulo:
-db "Virtual Piano 'return PIANO;' for Hexagonix", 0
+db "return PIANO;", 0
 .rodape:
-db "[", VERSAO, "] Press [X] to exit and [SPACE] to mute. Use [A] for more information", 0
+db "[", VERSAO, "] | [X] Exit, [A] About and help, [SPACE] Mute", 0
 .rodapeInfo:
-db "[", VERSAO, "] Press [B] to return or [X] to end this application", 0
+db "[", VERSAO, "] | [X] Exit, [B] Back", 0
 
 .teclaQ:
 db "Q", 0
