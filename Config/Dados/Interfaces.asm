@@ -345,18 +345,18 @@ RODAPE:
 .principal:
 db "[Version ", VERSAOCONFIG, "] | [X] Exit", 0
 .info:
-db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
 .configuracoes:
-db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
 .resolucao:
-db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
 .discos:
-db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
 .fonte:
-db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
 .portaParalela:
-db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
 .portaSerial:
-db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
 .tema:
-db "[Version ", VERSAOCONFIG, "] | [B] Back [X] Exit", 0
+db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
