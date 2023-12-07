@@ -108,24 +108,29 @@ iniciarInterface:
 ;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo,
 ;; corTextoRodape, corTexto, corFundo
 
-    Andromeda.Estelar.criarInterface desligar.titulo, desligar.rodape, \
-    INDIGO, INDIGO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
+    Andromeda.Estelar.criarInterface poweroff.titulo, poweroff.rodape, \
+    HEXAGONIX_BLOSSOM_AZUL_ANDROMEDA, HEXAGONIX_BLOSSOM_AZUL_ANDROMEDA, \
+    HEXAGONIX_CLASSICO_BRANCO, HEXAGONIX_CLASSICO_BRANCO, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-    novaLinha
-
-    xyfputs 39, 4, desligar.bannerHexagonix
-    xyfputs 27, 5, desligar.copyright
-    xyfputs 41, 6, desligar.marcaRegistrada
-
-    Andromeda.Estelar.criarLogotipo INDIGO, BRANCO_ANDROMEDA,\
+    Andromeda.Estelar.criarLogotipo HEXAGONIX_BLOSSOM_AZUL_ANDROMEDA, HEXAGONIX_CLASSICO_BRANCO,\
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-    xyfputs 02, 14, desligar.msgFinalizar
+;; Mensagens de informação do sistema opercional
 
-    xyfputs 02, 15, desligar.msgReiniciar
+    xyfputs 39, 4, poweroff.bannerHexagonix
+    xyfputs 27, 5, poweroff.copyright
+    xyfputs 41, 6, poweroff.marcaRegistrada
 
-    xyfputs 02, 17, desligar.msgSair
+;; Boas-vindas
+
+    xyfputs 01, 14, poweroff.introducao
+    xyfputs 01, 15, poweroff.introducao2
+
+;; Opções de desligamento
+
+    xyfputs 02, 18, poweroff.msgFinalizar
+    xyfputs 02, 19, poweroff.msgReiniciar
 
     call obterTeclas
 
@@ -133,14 +138,14 @@ iniciarInterface:
 
  finalizarSistema:
 
-    xyfputs 02, 18, desligar.msgDesligamento
+    xyfputs 02, 18, poweroff.msgDesligamento
 
     mov eax, VERDE_FLORESTA
     mov ebx, dword[Andromeda.Interface.corFundo]
 
     hx.syscall definirCor
 
-    fputs desligar.msgPronto
+    fputs poweroff.msgPronto
 
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
@@ -164,16 +169,22 @@ obterTeclas:
 
     pop eax
 
+    cmp al, 'x'
+    je terminar
+
+    cmp al, 'X'
+    je terminar
+
     jmp obterTeclas
 
 .teclasControl:
 
     pop eax
 
-    cmp al, 'd'
+    cmp al, 's'
     je HexagonixDesligar
 
-    cmp al, 'D'
+    cmp al, 'S'
     je HexagonixDesligar
 
     cmp al, 'r'
@@ -181,12 +192,6 @@ obterTeclas:
 
     cmp al, 'R'
     je HexagonixReiniciar
-
-    cmp al, 's'
-    je terminar
-
-    cmp al, 'S'
-    je terminar
 
     jmp obterTeclas
 
@@ -214,8 +219,8 @@ HexagonixReiniciar:
 
 executarEnergiaDesligamento:
 
-    mov esi, desligar.energia
-    mov edi, desligar.parametroDesligar
+    mov esi, poweroff.energia
+    mov edi, poweroff.parametroDesligar
     mov eax, 01h
 
     hx.syscall iniciarProcesso
@@ -226,8 +231,8 @@ executarEnergiaDesligamento:
 
 executarEnergiaReinicio:
 
-    mov esi, desligar.energia
-    mov edi, desligar.parametroReiniciar
+    mov esi, poweroff.energia
+    mov edi, poweroff.parametroReiniciar
     mov eax, 01h
 
     hx.syscall iniciarProcesso
@@ -238,7 +243,7 @@ executarEnergiaReinicio:
 
 falhaEnergia:
 
-    fputs desligar.falhaUtilitarioEnergia
+    fputs poweroff.falhaUtilitarioEnergia
 
     hx.syscall aguardarTeclado
 
@@ -257,9 +262,9 @@ terminar:
 ;;************************************************************************************
 
 ENERGIA equ "shutdown"
-VERSAO  equ "1.5.1"
+VERSAO  equ "1.6.0"
 
-desligar:
+poweroff:
 
 .bannerHexagonix:
 db "Hexagonix Operating System", 0
@@ -277,12 +282,14 @@ db "-re", 0 ;; Parâmetro que indica que não deve haver eco
 db 10, 10, "The system is coming down. Please wait... ", 0
 .msgReinicio:
 db "Rebooting the computer...", 10, 10, 0
+.introducao:
+db "Here you will find options to shutdown or restart your device.", 0
+.introducao2:
+db "Select any of the key combinations below to continue:", 0
 .msgReiniciar:
-db "Press [Ctrl-R] to reboot the computer.", 10, 0
+db "[Ctrl-R] to reboot the device.", 10, 0
 .msgFinalizar:
-db "Press [Ctrl-D] to power off the computer.", 10, 0
-.msgSair:
-db "Press [Ctrl-S] or [F1] to return to Hexagonix.", 0
+db "[Ctrl-S] to power off the device.", 10, 0
 .msgPronto:
 db "[Done]", 0
 .msgFalha:
@@ -291,8 +298,8 @@ db "[Fail]", 0
 db 10, 10, "Failed to run Unix shutdown utility. Try again later.", 10
 db "Press any key to end this application...", 0
 .titulo:
-db "Hexagonix Operating System shutdown options",0
+db "Hexagonix shutdown options",0
 .rodape:
-db "[", VERSAO, "]",0
+db "[", VERSAO, "] | [X] Exit",0
 
 parametro: dd ? ;; Buffer
