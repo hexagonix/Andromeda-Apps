@@ -83,116 +83,6 @@ include "macros.s"
 
 ;;************************************************************************************
 
-align 32
-
-exibirInterfaceSobre:
-
-    hx.syscall desligarSom
-
-    hx.syscall limparTela
-
-    ;; Imprime o título do programa e rodapé
-
-    mov eax, BRANCO_ANDROMEDA
-    mov ebx, HEXAGONIX_BLOSSOM_AZUL
-
-    hx.syscall definirCor
-
-    mov al, 0
-
-    hx.syscall limparLinha
-
-    fputs piano.titulo
-
-    mov al, byte[Andromeda.Interface.numLinhas] ;; Última linha
-
-    dec al
-
-    hx.syscall limparLinha
-
-    fputs piano.rodapeInfo
-
-    mov eax, dword[Andromeda.Interface.corFonte]
-    mov ebx, dword[Andromeda.Interface.corFundo]
-
-    hx.syscall definirCor
-
-    mov dh, 02
-    mov dl, 02
-
-    hx.syscall definirCursor
-
-    fputs piano.sobreTeclado
-
-    mov dh, 03
-    mov dl, 02
-
-    hx.syscall definirCursor
-
-    fputs piano.versaoTeclado
-
-    mov dh, 05
-    mov dl, 02
-
-    hx.syscall definirCursor
-
-    fputs piano.autor
-
-    mov dh, 06
-    mov dl, 02
-
-    hx.syscall definirCursor
-
-    fputs piano.direitos
-
-    mov dh, 08
-    mov dl, 04
-
-    hx.syscall definirCursor
-
-    fputs piano.ajuda
-
-    mov dh, 10
-    mov dl, 02
-
-    hx.syscall definirCursor
-
-    fputs piano.topico1
-
-    mov dh, 11
-    mov dl, 02
-
-    hx.syscall definirCursor
-
-    fputs piano.topico2
-
-    mov dh, 12
-    mov dl, 02
-
-    hx.syscall definirCursor
-
-    fputs piano.topico3
-
-.obterTeclas:
-
-    hx.syscall aguardarTeclado
-
-    cmp al, 'v'
-    je inicioAPP
-
-    cmp al, 'V'
-    je inicioAPP
-
-    cmp al, 'z'
-    je inicioAPP.fim
-
-    cmp al, 'Z'
-    je inicioAPP.fim
-
-    jmp .obterTeclas
-
-;;************************************************************
-
 inicioAPP:
 
     Andromeda.Estelar.obterInfoConsole
@@ -327,19 +217,14 @@ inicioAPP:
     cmp al, 'a'
     jne .sair
 
-    mov eax, dword[Andromeda.Interface.corFonte]
-    mov ebx, dword[Andromeda.Interface.corFundo]
-
-    hx.syscall definirCor
-
     jmp exibirInterfaceSobre
 
 .sair:
 
-    cmp al, 'z'
+    cmp al, 'x'
     je .fim
 
-    cmp al, 'Z'
+    cmp al, 'X'
     je .fim
 
     jmp .agora
@@ -706,13 +591,126 @@ evidenciarTeclas:
 
 ;;************************************************************
 
+exibirInterfaceSobre:
+
+    hx.syscall desligarSom
+
+    mov eax, dword[Andromeda.Interface.corFonte]
+    mov ebx, dword[Andromeda.Interface.corFundo]
+
+    hx.syscall definirCor
+
+    hx.syscall limparTela
+
+    ;; Imprime o título do programa e rodapé
+
+    mov eax, BRANCO_ANDROMEDA
+    mov ebx, HEXAGONIX_BLOSSOM_AZUL
+
+    hx.syscall definirCor
+
+    mov al, 0
+
+    hx.syscall limparLinha
+
+    fputs piano.titulo
+
+    mov al, byte[Andromeda.Interface.numLinhas] ;; Última linha
+
+    dec al
+
+    hx.syscall limparLinha
+
+    fputs piano.rodapeInfo
+
+    mov eax, dword[Andromeda.Interface.corFonte]
+    mov ebx, dword[Andromeda.Interface.corFundo]
+
+    hx.syscall definirCor
+
+    mov dh, 02
+    mov dl, 02
+
+    hx.syscall definirCursor
+
+    fputs piano.sobreTeclado
+
+    mov dh, 03
+    mov dl, 02
+
+    hx.syscall definirCursor
+
+    fputs piano.versaoTeclado
+
+    mov dh, 05
+    mov dl, 02
+
+    hx.syscall definirCursor
+
+    fputs piano.autor
+
+    mov dh, 06
+    mov dl, 02
+
+    hx.syscall definirCursor
+
+    fputs piano.direitos
+
+    mov dh, 08
+    mov dl, 04
+
+    hx.syscall definirCursor
+
+    fputs piano.ajuda
+
+    mov dh, 10
+    mov dl, 02
+
+    hx.syscall definirCursor
+
+    fputs piano.topico1
+
+    mov dh, 11
+    mov dl, 02
+
+    hx.syscall definirCursor
+
+    fputs piano.topico2
+
+    mov dh, 12
+    mov dl, 02
+
+    hx.syscall definirCursor
+
+    fputs piano.topico3
+
+.obterTeclas:
+
+    hx.syscall aguardarTeclado
+
+    cmp al, 'b'
+    je inicioAPP
+
+    cmp al, 'B'
+    je inicioAPP
+
+    cmp al, 'x'
+    je inicioAPP.fim
+
+    cmp al, 'X'
+    je inicioAPP.fim
+
+    jmp .obterTeclas
+
+;;************************************************************
+
 ;;************************************************************************************
 ;;
 ;; Dados do aplicativo
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.6.0"
+VERSAO equ "1.7.0"
 
 piano:
 
@@ -735,9 +733,9 @@ db "+ Finally, use the [Z] key to terminate this application at any time.", 0
 .titulo:
 db "Virtual Piano 'return PIANO;' for Hexagonix", 0
 .rodape:
-db "[", VERSAO, "] Press [Z] to exit and [SPACE] to mute. Use [A] for more information", 0
+db "[", VERSAO, "] Press [X] to exit and [SPACE] to mute. Use [A] for more information", 0
 .rodapeInfo:
-db "[", VERSAO, "] Press [V] to return or [Z] to end this application", 0
+db "[", VERSAO, "] Press [B] to return or [X] to end this application", 0
 
 .teclaQ:
 db "Q", 0
