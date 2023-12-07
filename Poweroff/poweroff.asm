@@ -109,11 +109,10 @@ iniciarInterface:
 ;; corTextoRodape, corTexto, corFundo
 
     Andromeda.Estelar.criarInterface poweroff.titulo, poweroff.rodape, \
-    HEXAGONIX_BLOSSOM_AZUL_ANDROMEDA, HEXAGONIX_BLOSSOM_AZUL_ANDROMEDA, \
-    HEXAGONIX_CLASSICO_BRANCO, HEXAGONIX_CLASSICO_BRANCO, \
+    COR_DESTAQUE, COR_DESTAQUE, COR_FONTE, COR_FONTE, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-    Andromeda.Estelar.criarLogotipo HEXAGONIX_BLOSSOM_AZUL_ANDROMEDA, HEXAGONIX_CLASSICO_BRANCO,\
+    Andromeda.Estelar.criarLogotipo COR_DESTAQUE, COR_FONTE,\
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
 ;; Mensagens de informação do sistema opercional
@@ -262,7 +261,10 @@ terminar:
 ;;************************************************************************************
 
 ENERGIA equ "shutdown"
-VERSAO  equ "1.6.0"
+VERSAO  equ "1.6.1"
+
+COR_DESTAQUE = HEXAGONIX_BLOSSOM_AZUL_ANDROMEDA
+COR_FONTE    = HEXAGONIX_CLASSICO_BRANCO
 
 poweroff:
 
