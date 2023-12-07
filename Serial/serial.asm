@@ -230,7 +230,7 @@ erroAbertura:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.2.1"
+VERSAO equ "1.2.2"
 
 serial:
 
@@ -257,6 +257,6 @@ db 10, 10, "Data sent via serial port ", 0
 .titulo:
 db "Utility for sending data via the serial port of the Hexagonix Operating System", 0
 .rodape:
-db "[", VERSAO, "] | [^N] New message  [^S] Exit", 0
+db "[", VERSAO, "] | [^N] New message, [^S] Exit", 0
 
 msg: db 0 ;; Buffer
