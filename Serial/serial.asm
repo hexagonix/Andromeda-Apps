@@ -96,7 +96,7 @@ inicioAPP:
 ;; corTextoRodape, corTexto, corFundo
 
     Andromeda.Estelar.criarInterface serial.titulo, serial.rodape, \
-    AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
+    COR_DESTAQUE, COR_DESTAQUE, COR_FONTE, COR_FONTE, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
     hx.syscall definirCor
@@ -118,11 +118,33 @@ inicioAPP:
 
     jc erroAbertura
 
-    novaLinha
+    push edi
 
-    fputs serial.ajuda
+;; Boas-vindas
 
-    fputs serial.prompt
+    xyfputs 01, 14, serial.introducao
+    xyfputs 01, 15, serial.introducao2
+
+    xyfputs 02, 18, serial.categoria1
+    xyfputs 02, 19, serial.categoria2
+
+    pop edi
+
+.loopVerificarCategorias:
+
+    hx.syscall aguardarTeclado
+
+    cmp al, '1'
+    je .continuar
+
+    cmp al, '2'
+    je terminar
+
+    jmp .loopVerificarCategorias
+
+.continuar:
+
+    xyfputs 02, 21, serial.prompt
 
     fputs serial.separador
 
@@ -142,12 +164,12 @@ inicioAPP:
 
     jc erro
 
-    mov eax, VERDE_FLORESTA
+    mov eax, COR_SUCESSO
     mov ebx, dword[Andromeda.Interface.corFundo]
 
     hx.syscall definirCor
 
-    fputs serial.enviado
+    xyfputs 02, 22, serial.enviado
 
     fputs serial.prompt
 
@@ -155,9 +177,6 @@ inicioAPP:
     mov ebx, dword[Andromeda.Interface.corFundo]
 
     hx.syscall definirCor
-
-    novaLinha
-    novaLinha
 
     jmp obterTeclas
 
@@ -188,17 +207,17 @@ obterTeclas:
     cmp al, 'N'
     je inicioAPP
 
-    cmp al, 's'
-    je Andromeda_Sair
+    cmp al, 'x'
+    je terminar
 
-    cmp al, 'S'
-    je Andromeda_Sair
+    cmp al, 'X'
+    je terminar
 
     jmp obterTeclas
 
 ;;************************************************************************************
 
-Andromeda_Sair:
+terminar:
 
     Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 
@@ -206,7 +225,7 @@ Andromeda_Sair:
 
 erro:
 
-    fputs serial.erroPorta
+    xyfputs 02, 22, serial.erroPorta
 
     hx.syscall aguardarTeclado
 
@@ -218,11 +237,11 @@ erro:
 
 erroAbertura:
 
-    fputs serial.erroAbertura
+    xyfputs 02, 14, serial.erroAbertura
 
     hx.syscall aguardarTeclado
 
-    jmp Andromeda_Sair
+    jmp terminar
 
 ;;************************************************************************************
 ;;
@@ -230,22 +249,32 @@ erroAbertura:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.2.2"
+VERSAO equ "1.3.0"
+
+COR_DESTAQUE = AZUL_ROYAL
+COR_FONTE    = HEXAGONIX_CLASSICO_BRANCO
+COR_SUCESSO  = VERDE_FLORESTA
 
 serial:
 
 .erroPorta:
-db 10, 10, "Unable to use the serial port.", 10, 0
+db "Unable to use the serial port. Press any key to exit...", 0
 .erroAbertura:
-db 10, 10, "Unable to open device for writing.", 10, 0
+db "Unable to open device for writing. Press any key to exit...", 0
 .bannerHexagonix:
 db "Hexagonix Operating System", 0
 .copyright:
 db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
 .marcaRegistrada:
 db "All rights reserved.", 0
-.ajuda:
-db 10, 10, "This application will help you to write data via serial port.", 10, 10, 10, 10, 0
+.introducao:
+db "This utility will help you send data via serial port.", 0
+.introducao2:
+db "To get started, select one of the options below:", 0
+.categoria1:
+db "[1] Send data via serial port.", 0
+.categoria2:
+db "[2] Exit.", 0
 .prompt:
 db "[com1]", 0
 .separador:
@@ -253,10 +282,10 @@ db ": ", 0
 .nomePorta:
 db "com1", 0
 .enviado:
-db 10, 10, "Data sent via serial port ", 0
+db "Data sent via serial port ", 0
 .titulo:
-db "Utility for sending data via the serial port of the Hexagonix Operating System", 0
+db "Serial port utility for Hexagonix", 0
 .rodape:
-db "[", VERSAO, "] | [^N] New message, [^S] Exit", 0
+db "[", VERSAO, "] | [^N] New message, [^X] Exit", 0
 
 msg: db 0 ;; Buffer
