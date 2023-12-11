@@ -260,8 +260,12 @@ db "asdfghjkl;'\", 10
 db "ZXCVBNM<>?", 10
 db "zxcvbnm,./", 10, 10
 db "Hexagonix Operating System", 10, 10, 0
-.falha:
-db "The requested file was not found or is not compatible with Hexagonix.", 0
+.fonteNaoEncontrada:
+db "The requested file was not found.", 0
+.fonteInvalida:
+db "The requested file is not compatible with Hexagonix.", 0
+.erroDesconhecido:
+db "An unknown error has occurred.", 0
 
 ;;************************************************************************************
 

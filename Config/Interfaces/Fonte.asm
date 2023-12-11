@@ -102,17 +102,11 @@ mostrarInterfaceFonte:
 
     hx.syscall definirCor
 
-    gotoxy 02, 02
+    xyfputs 02, 02, msgFonte.introducao
 
-    fputs msgFonte.introducao
+    xyfputs 02, 03, msgFonte.introducao2
 
-    gotoxy 02, 03
-
-    fputs msgFonte.introducao2
-
-    gotoxy 02, 06
-
-    fputs msgFonte.solicitarArquivo
+    xyfputs 02, 06, msgFonte.solicitarArquivo
 
 match =SIM, VERBOSE
 {
@@ -165,14 +159,12 @@ match =SIM, VERBOSE
 
 }
 
-    gotoxy 04, 08
-
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
     hx.syscall definirCor
 
-    fputs msgFonte.sucesso
+    xyfputs 04, 08, msgFonte.sucesso
 
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
@@ -206,20 +198,18 @@ match =SIM, VERBOSE
 
     fputs msgFonte.testeFonte
 
-    jmp .novaLinha
+    jmp .obterTeclas
 
 .semArquivo:
-
-    gotoxy 04, 08
 
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]
 
     hx.syscall definirCor
 
-    fputs msgFonte.semArquivo
+    xyfputs 04, 08, msgFonte.semArquivo
 
-    jmp .novaLinha
+    jmp .obterTeclas
 
 .erroArquivo:
 
@@ -230,18 +220,21 @@ match =SIM, VERBOSE
 
 }
 
-    gotoxy 04, 08
+    xyfputs 04, 08, msgFonte.arquivoAusente
 
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    fputs msgFonte.arquivoAusente
-
-    jmp .novaLinha
+    jmp .obterTeclas
 
 .erroFonte:
+
+    cmp eax, 01h
+    je .fonteNaoEncontrada
+
+    cmp eax, 02h
+    je .fonteInvalida
+
+    jmp .erroDesconhecido
+
+.fonteNaoEncontrada:
 
 match =SIM, VERBOSE
 {
@@ -250,15 +243,35 @@ match =SIM, VERBOSE
 
 }
 
-    gotoxy 04, 08
+    xyfputs 04, 08, msgFonte.fonteNaoEncontrada
 
-    fputs msgFonte.falha
+    jmp .obterTeclas
 
-    jmp .novaLinha
+.fonteInvalida:
 
-.novaLinha:
+match =SIM, VERBOSE
+{
 
-    novaLinha
+    logSistema Log.Config.logFalhaFonte, 00h, Log.Prioridades.p4
+
+}
+
+    xyfputs 04, 08, msgFonte.fonteInvalida
+
+    jmp .obterTeclas
+
+.erroDesconhecido:
+
+match =SIM, VERBOSE
+{
+
+    logSistema Log.Config.logFalhaFonte, 00h, Log.Prioridades.p4
+
+}
+
+    xyfputs 04, 08, msgFonte.erroDesconhecido
+
+    jmp .obterTeclas
 
 .obterTeclas:
 

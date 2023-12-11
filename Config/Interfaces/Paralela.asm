@@ -110,19 +110,13 @@ match =SIM, VERBOSE
 
     hx.syscall definirCor
 
-    gotoxy 02, 02
+    xyfputs 02, 02, msgPortaParalela.introducao
 
-    fputs msgPortaParalela.introducao
-
-    gotoxy 02, 03
-
-    fputs msgPortaParalela.introducao2
+    xyfputs 02, 03, msgPortaParalela.introducao2
 
 .infoParalela:
 
-    gotoxy 04, 06
-
-    fputs msgPortaParalela.impressoraPadrao
+    xyfputs 04, 06, msgPortaParalela.impressoraPadrao
 
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
@@ -135,14 +129,6 @@ match =SIM, VERBOSE
     mov ebx, dword[corFundo]
 
     hx.syscall definirCor
-
-    gotoxy 04, 07
-
-    jmp .novaLinha
-
-.novaLinha:
-
-    novaLinha
 
 .obterTeclas:
 

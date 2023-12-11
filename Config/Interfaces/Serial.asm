@@ -110,17 +110,11 @@ match =SIM, VERBOSE
 
     hx.syscall definirCor
 
-    gotoxy 02, 02
+    xyfputs 02, 02, msgSerial.introducao
 
-    fputs msgSerial.introducao
+    xyfputs 02, 03, msgSerial.introducao2
 
-    gotoxy 02, 03
-
-    fputs msgSerial.introducao2
-
-    gotoxy 04, 04
-
-    fputs msgSerial.portaPadrao
+    xyfputs 04, 04, msgSerial.portaPadrao
 
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]
@@ -134,18 +128,11 @@ match =SIM, VERBOSE
 
     hx.syscall definirCor
 
-    gotoxy 04, 05
+    xyfputs 04, 05, msgSerial.opcoes
 
-    fputs msgSerial.opcoes
+    xyfputs 04, 08, msgSerial.opcoes2
 
-    gotoxy 04, 08
-
-    fputs msgSerial.opcoes2
-
-    gotoxy 04, 09
-
-    fputs msgSerial.opcoes3
-
+    xyfputs 04, 09, msgSerial.opcoes3
 
 .obterTeclas:
 

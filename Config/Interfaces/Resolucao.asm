@@ -105,25 +105,15 @@ mostrarInterfaceConfigResolucao:
 
     hx.syscall definirCor
 
-    gotoxy 02, 02
+    xyfputs 02, 02, msgResolucao.introducao
 
-    fputs msgResolucao.introducao
+    xyfputs 02, 03, msgResolucao.introducao2
 
-    gotoxy 02, 03
+    xyfputs 02, 06, msgResolucao.inserir
 
-    fputs msgResolucao.introducao2
+    xyfputs 04, 08, msgResolucao.opcao1
 
-    gotoxy 02, 06
-
-    fputs msgResolucao.inserir
-
-    gotoxy 04, 08
-
-    fputs msgResolucao.opcao1
-
-    gotoxy 04, 09
-
-    fputs msgResolucao.opcao2
+    xyfputs 04, 09, msgResolucao.opcao2
 
     mov ah, byte[alterado]
 

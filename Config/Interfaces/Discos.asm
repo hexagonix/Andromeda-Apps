@@ -102,19 +102,13 @@ mostrarInterfaceDiscos:
 
     hx.syscall definirCor
 
-    gotoxy 02, 02
+    xyfputs 02, 02, msgDiscos.introducao
 
-    fputs msgDiscos.introducao
-
-    gotoxy 02, 03
-
-    fputs msgDiscos.introducao2
+    xyfputs 02, 03, msgDiscos.introducao2
 
 .infoDisco:
 
-    gotoxy 04, 06
-
-    fputs msgDiscos.discoAtual
+    xyfputs 04, 06, msgDiscos.discoAtual
 
 match =SIM, VERBOSE
 {
@@ -143,9 +137,7 @@ match =SIM, VERBOSE
 
     hx.syscall definirCor
 
-    gotoxy 04, 07
-
-    fputs msgDiscos.rotuloVolume
+    xyfputs 04, 07, msgDiscos.rotuloVolume
 
     mov eax, corPadraoInterface
     mov ebx, dword[corFundo]

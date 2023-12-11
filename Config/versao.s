@@ -66,6 +66,6 @@
 ;;
 ;; $HexagonixOS$
 
-VERSAOCONFIG             equ "4.1.1"
-VERSAOFERRAMENTAS        equ "2.0.0"
+VERSAOCONFIG             equ "4.2.0"
+VERSAOFERRAMENTAS        equ "3.0.0"
 VERSAODESIGNADAHEXAGONIX equ "System I"

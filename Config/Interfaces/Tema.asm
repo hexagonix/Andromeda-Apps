@@ -103,21 +103,13 @@ mostrarInterfaceConfigTema:
 
     hx.syscall definirCor
 
-    gotoxy 02, 02
+    xyfputs 02, 02, msgTema.introducao
 
-    fputs msgTema.introducao
+    xyfputs 02, 05, msgTema.inserir
 
-    gotoxy 02, 05
+    xyfputs 04, 07, msgTema.opcao1
 
-    fputs msgTema.inserir
-
-    gotoxy 04, 07
-
-    fputs msgTema.opcao1
-
-    gotoxy 04, 08
-
-    fputs msgTema.opcao2
+    xyfputs 04, 08, msgTema.opcao2
 
 .obterTeclas:
 

@@ -102,37 +102,21 @@ mostrarInterfaceConfiguracoes:
 
     hx.syscall definirCor
 
-    gotoxy 02, 02
+    xyfputs 02, 02, msgConfig.introducao
 
-    fputs msgConfig.introducao
+    xyfputs 02, 05, msgConfig.introducao2
 
-    gotoxy 02, 05
+    xyfputs 04, 07, msgConfig.categoria1
 
-    fputs msgConfig.introducao2
+    xyfputs 04, 08, msgConfig.categoria2
 
-    gotoxy 04, 07
+    xyfputs 04, 09, msgConfig.categoria3
 
-    fputs msgConfig.categoria1
+    xyfputs 04, 10, msgConfig.categoria4
 
-    gotoxy 04, 08
+    xyfputs 04, 11, msgConfig.categoria5
 
-    fputs msgConfig.categoria2
-
-    gotoxy 04, 09
-
-    fputs msgConfig.categoria3
-
-    gotoxy 04, 10
-
-    fputs msgConfig.categoria4
-
-    gotoxy 04, 11
-
-    fputs msgConfig.categoria5
-
-    gotoxy 04, 12
-
-    fputs msgConfig.categoria6
+    xyfputs 04, 12, msgConfig.categoria6
 
 .obterTeclas:
 

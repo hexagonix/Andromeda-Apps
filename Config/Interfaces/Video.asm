@@ -98,9 +98,7 @@ mostrarLogoResumido:
 
     hx.syscall definirCor
 
-    gotoxy 02, 02
-
-    fputs msgGeral.logoResumido
+    xyfputs 02, 02, msgGeral.logoResumido
 
     mov eax, dword[corFonte]
     mov ebx, dword[corFundo]

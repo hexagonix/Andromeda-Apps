@@ -105,29 +105,19 @@ mostrarInterfacePrincipal:
 
     call definirCorTema
 
-    gotoxy 00, 02
-
-    fputs msgGeral.logo
+    xyfputs 00, 02, msgGeral.logo
 
     call definirCorPadrao
 
 ;; A partir daqui, estamos abaixo do logo
 
-    gotoxy 01, 13
+    xyfputs 01, 13, msgPrincipal.introducao
 
-    fputs msgPrincipal.introducao
+    xyfputs 01, 14, msgPrincipal.introducao2
 
-    gotoxy 01, 14
+    xyfputs 01, 17, msgPrincipal.categoria1
 
-    fputs msgPrincipal.introducao2
-
-    gotoxy 01, 17
-
-    fputs msgPrincipal.categoria1
-
-    gotoxy 01, 18
-
-    fputs msgPrincipal.categoria2
+    xyfputs 01, 18, msgPrincipal.categoria2
 
 .obterTeclas:
 

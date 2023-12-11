@@ -98,17 +98,13 @@ mostrarInterfaceInfo:
 
     call mostrarLogoSistema
 
-    gotoxy 20, 02
-
     call definirCorTema
 
-    fputs msgInfo.introducao
+    xyfputs 20, 02, msgInfo.introducao
 
     call definirCorPadrao
 
-    gotoxy 18, 04
-
-    fputs msgInfo.nomeSistema
+    xyfputs 18, 04, msgInfo.nomeSistema
 
     call definirCorTema
 
@@ -116,9 +112,7 @@ mostrarInterfaceInfo:
 
     call definirCorPadrao
 
-    gotoxy 18, 05
-
-    fputs msgInfo.versaoSistema
+    xyfputs 18, 05, msgInfo.versaoSistema
 
     call definirCorTema
 
@@ -140,9 +134,7 @@ mostrarInterfaceInfo:
 
     call definirCorPadrao
 
-    gotoxy 18, 06
-
-    fputs msgInfo.buildSistema
+    xyfputs 18, 06, msgInfo.buildSistema
 
     call definirCorTema
 
@@ -150,9 +142,7 @@ mostrarInterfaceInfo:
 
     call definirCorPadrao
 
-    gotoxy 18, 07
-
-    fputs msgInfo.tipoSistema
+    xyfputs 18, 07, msgInfo.tipoSistema
 
     call definirCorTema
 
@@ -160,9 +150,7 @@ mostrarInterfaceInfo:
 
     call definirCorPadrao
 
-    gotoxy 18, 08
-
-    fputs msgInfo.pacoteAtualizacoes
+    xyfputs 18, 08, msgInfo.pacoteAtualizacoes
 
     call definirCorTema
 
@@ -172,9 +160,7 @@ mostrarInterfaceInfo:
 
 ;; Agora vamos exibir informações sobre o Hexagon
 
-    gotoxy 18, 09
-
-    fputs msgInfo.Hexagon
+    xyfputs 18, 09, msgInfo.Hexagon
 
     call definirCorTema
 
@@ -210,43 +196,29 @@ mostrarInterfaceInfo:
 
 ;; Voltamos à programação normal
 
-    gotoxy 18, 11
-
-    fputs nomeCompletoSistema
+    xyfputs 18, 11, nomeCompletoSistema
 
     call definirCorTema
 
 ;; Exibir licenciamento
 
-    gotoxy 18, 13
-
-    fputs msgInfo.licenciado
+    xyfputs 18, 13, msgInfo.licenciado
 
     call definirCorPadrao
 
-    gotoxy 18, 15
+    xyfputs 18, 15, msgInfo.copyrightAndromeda
 
-    fputs msgInfo.copyrightAndromeda
-
-    gotoxy 18, 16
-
-    fputs msgInfo.direitosReservados
-
-    gotoxy 30, 18
+    xyfputs 18, 16, msgInfo.direitosReservados
 
     call definirCorTema
 
-    fputs msgInfo.introducaoHardware
+    xyfputs 30, 18, msgInfo.introducaoHardware
 
     call definirCorPadrao
 
-    gotoxy 02, 20
+    xyfputs 02, 20, msgInfo.processadorPrincipal
 
-    fputs msgInfo.processadorPrincipal
-
-    gotoxy 04, 22
-
-    fputs msgInfo.numProcessador
+    xyfputs 04, 22, msgInfo.numProcessador
 
     call definirCorTema
 
@@ -254,13 +226,9 @@ mostrarInterfaceInfo:
 
     call definirCorPadrao
 
-    gotoxy 08, 23
+    xyfputs 08, 23, msgInfo.operacaoProcessador
 
-    fputs msgInfo.operacaoProcessador
-
-    gotoxy 02, 25
-
-    fputs msgInfo.memoriaDisponivel
+    xyfputs 02, 25, msgInfo.memoriaDisponivel
 
     call definirCorTema
 
