@@ -68,12 +68,12 @@
 
 use32
 
-;; Agora vamos criar um cabeçalho para a imagem HAPP final do aplicativo.
+;; Now let's create a HAPP header for the application
 
-include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
+include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioAPP, 01h
+;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -83,170 +83,170 @@ include "macros.s"
 
 ;;************************************************************************************
 
-inicioAPP:
+applicationStart:
 
     Andromeda.Estelar.obterInfoConsole
 
-;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo,
-;; corTextoRodape, corTexto, corFundo
+;; Format: title, footer, titleColor, footerColor, titleTextColor,
+;; footerTextColor, textColor, backgroundColor
 
-    Andromeda.Estelar.criarInterface calc.titulo, calc.rodape, \
+    Andromeda.Estelar.criarInterface calc.title, calc.footer, \
     VERDE_ESCURO, VERDE_ESCURO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
     xyfputs 39, 4, calc.bannerHexagonix
     xyfputs 27, 5, calc.copyright
-    xyfputs 41, 6, calc.marcaRegistrada
+    xyfputs 41, 6, calc.trademark
 
-    call mostrarLogoSistema
+    call showSystemLogo
 
     gotoxy 0, 13
 
 ;;************************************************************************************
 
-calcular:
+calculate:
 
-;; Obter primeiro número
+;; Get first number
 
-    fputs calc.primeiroNumero
+    fputs calc.firstNumber
 
-    call obterNumero
+    call getNumber
 
-    mov dword[primeiroNumero], eax ;; Salvar primeiro número
-
-    cmp eax, 0
-    je fim
-
-;; Obter segundo número
-
-    fputs calc.segundoNumero
-
-    call obterNumero
-
-    mov dword[segundoNumero], eax ;; Salvar segundo número
+    mov dword[firstNumber], eax ;; Save first number
 
     cmp eax, 0
-    je fim
+    je finish
 
-;; Perguntar qual operação executar
+;; Get second number
 
-    fputs calc.operacao
+    fputs calc.secondNumber
+
+    call getNumber
+
+    mov dword[secondNumber], eax ;; Save second number
+
+    cmp eax, 0
+    je finish
+
+;; Ask which operation to perform
+
+    fputs calc.operation
 
     hx.syscall aguardarTeclado
 
     cmp al, '0'
-    je adicionarNumeros
+    je addNumbers
 
     cmp al, '1'
-    je subtrair
+    je subtractNumbers
 
     cmp al, '2'
-    je multiplicar
+    je multiplyNumbers
 
     cmp al, '3'
-    je dividir
+    je divideNumbers
 
     cmp al, '4'
-    je fim
+    je finish
 
 ;;************************************************************************************
 
-adicionarNumeros:
+addNumbers:
 
-    mov eax, dword[primeiroNumero]
-    mov ebx, dword[segundoNumero]
+    mov eax, dword[firstNumber]
+    mov ebx, dword[secondNumber]
 
     add eax, ebx ;; EAX = EAX + EBX
 
-    mov dword[resposta], eax
+    mov dword[result], eax
 
-    jmp imprimirResposta
+    jmp displayResult
 
 ;;************************************************************************************
 
-subtrair:
+subtractNumbers:
 
-    mov eax, dword[primeiroNumero]
-    mov ebx, dword[segundoNumero]
+    mov eax, dword[firstNumber]
+    mov ebx, dword[secondNumber]
 
     sub eax, ebx ;; EAX = EAX - EBX
 
-    mov dword[resposta], eax
+    mov dword[result], eax
 
-    jmp imprimirResposta
+    jmp displayResult
 
 ;;************************************************************************************
 
-multiplicar:
+multiplyNumbers:
 
-    mov eax, dword[primeiroNumero]
-    mov ebx, dword[segundoNumero]
+    mov eax, dword[firstNumber]
+    mov ebx, dword[secondNumber]
 
     mul ebx ;; EAX = EAX * EBX
 
-    mov dword[resposta], eax
+    mov dword[result], eax
 
-    jmp imprimirResposta
+    jmp displayResult
 
 ;;************************************************************************************
 
-dividir:
+divideNumbers:
 
     cmp ebx, 0
-    je .dividirPorZero
+    je .divideByZero
 
-    mov eax, dword[primeiroNumero]
-    mov ebx, dword[segundoNumero]
+    mov eax, dword[firstNumber]
+    mov ebx, dword[secondNumber]
     mov edx, 0
 
     div ebx ;; EAX = EAX / EBX
 
-    mov dword[resposta], eax
+    mov dword[result], eax
 
-    jmp imprimirResposta
-
-;;************************************************************************************
-
-.dividirPorZero:
-
-    fputs calc.dividirPorZero
-
-    jmp imprimirResposta.proximo
+    jmp displayResult
 
 ;;************************************************************************************
 
-imprimirResposta:
+.divideByZero:
 
-    novaLinha
+    fputs calc.divideByZero
 
-    fputs calc.resultado
+    jmp displayResult.next
 
-    mov eax, dword[resposta]
+;;************************************************************************************
+
+displayResult:
+
+    putNewLine
+
+    fputs calc.result
+
+    mov eax, dword[result]
 
     imprimirInteiro
 
-.proximo:
+.next:
 
-    novaLinha
-    novaLinha
+    putNewLine
+    putNewLine
 
-    fputs calc.solicitarTecla
+    fputs calc.requestKey
 
     hx.syscall aguardarTeclado
 
-    jmp inicioAPP
+    jmp applicationStart
 
 ;;************************************************************************************
 
-;; Obter um número do teclado
+;; Get a number from the input
 ;;
-;; Saída:
+;; Output:
 ;;
-;; EAX - Número
+;; EAX - Number
 
-obterNumero:
+getNumber:
 
-    mov al, 10 ;; Máximo de 10 caracteres
+    mov al, 10 ;; Maximum 10 characters
 
     hx.syscall obterString
 
@@ -256,7 +256,7 @@ obterNumero:
 
     push eax
 
-    novaLinha
+    putNewLine
 
     pop eax
 
@@ -264,13 +264,13 @@ obterNumero:
 
 ;;************************************************************************************
 
-fim:
+finish:
 
     Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 
 ;;************************************************************************************
 
-mostrarLogoSistema:
+showSystemLogo:
 
     Andromeda.Estelar.criarLogotipo VERDE_ESCURO, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
@@ -281,21 +281,21 @@ mostrarLogoSistema:
 
 ;;************************************************************************************
 ;;
-;; Dados do aplicativo
+;;                        Application variables and data
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.8.1"
+VERSAO equ "1.9.0"
 
 calc:
 
-.dividirPorZero:
+.divideByZero:
 db "Division by zero not allowed!", 0
-.primeiroNumero:
+.firstNumber:
 db "Enter the first number (0 to exit): ", 0
-.segundoNumero:
+.secondNumber:
 db "Enter the second number (0 to exit): ", 0
-.operacao:
+.operation:
 db 10, "Enter the operation code, according to the list below:", 10, 10
 db "[0] SUM (+)", 10
 db "[1] SUB  (-)", 10
@@ -303,21 +303,21 @@ db "[2] MUL  (*)", 10
 db "[3] DIV  (/)", 10
 db "[4] EXIT", 10
 db 10, "Option: ", 0
-.resultado:
+.result:
 db 10, 10, "The result is = ", 0
-.solicitarTecla:
+.requestKey:
 db 10, 10, "Press any key to continue...", 10, 10, 0
 .bannerHexagonix:
 db "Hexagonix Operating System", 0
 .copyright:
 db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
-.marcaRegistrada:
+.trademark:
 db "All rights reserved.", 0
-.titulo:
+.title:
 db "Hexagonix Operating System Basic Calculator",0
-.rodape:
+.footer:
 db "[", VERSAO, "] | [F1] Exit",0
 
-primeiroNumero: dd 0
-segundoNumero:  dd 0
-resposta:       dd 0
+firstNumber:  dd 0
+secondNumber: dd 0
+result:       dd 0
