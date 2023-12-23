@@ -68,12 +68,12 @@
 
 use32
 
-;; Agora vamos criar um cabeçalho para a imagem HAPP final do aplicativo.
+;; Now let's create a HAPP header for the application
 
-include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
+include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioAPP, 01h
+;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -83,7 +83,7 @@ include "macros.s"
 
 ;;************************************************************************************
 
-inicioAPP:
+applicationStart:
 
     Andromeda.Estelar.obterInfoConsole
 
@@ -91,12 +91,11 @@ inicioAPP:
 
     hx.syscall obterInfoTela
 
-;; Imprime o título do programa e rodapé.
-;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo,
-;; corTextoRodape, corTexto, corFundo
+;; Format: title, footer, titleColor, footerColor, titleTextColor,
+;; footerTextColor, textColor, backgroundColor
 
-    Andromeda.Estelar.criarInterface serial.titulo, serial.rodape, \
-    COR_DESTAQUE, COR_DESTAQUE, COR_FONTE, COR_FONTE, \
+    Andromeda.Estelar.criarInterface serial.title, serial.footer, \
+    COLOR_HIGHLIGHT, COLOR_HIGHLIGHT, COLOT_FONT, COLOT_FONT, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
     hx.syscall definirCor
@@ -105,56 +104,56 @@ inicioAPP:
 
     xyfputs 39, 4, serial.bannerHexagonix
     xyfputs 27, 5, serial.copyright
-    xyfputs 41, 6, serial.marcaRegistrada
+    xyfputs 41, 6, serial.trademark
 
     Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
     gotoxy 02, 10
 
-    mov esi, serial.nomePorta
+    mov esi, serial.deviceName
 
     hx.syscall abrir
 
-    jc erroAbertura
+    jc openError
 
     push edi
 
-;; Boas-vindas
+;; Welcome
 
-    xyfputs 01, 14, serial.introducao
-    xyfputs 01, 15, serial.introducao2
+    xyfputs 01, 14, serial.intro
+    xyfputs 01, 15, serial.intro2
 
-    xyfputs 02, 18, serial.categoria1
-    xyfputs 02, 19, serial.categoria2
+    xyfputs 02, 18, serial.category1
+    xyfputs 02, 19, serial.category2
 
     pop edi
 
-.loopVerificarCategorias:
+.loopCheckCategories:
 
     hx.syscall aguardarTeclado
 
     cmp al, '1'
-    je .continuar
+    je .continue
 
     cmp al, '2'
-    je terminar
+    je finish
 
-    jmp .loopVerificarCategorias
+    jmp .loopCheckCategories
 
-.continuar:
+.continue:
 
     xyfputs 02, 21, serial.prompt
 
-    fputs serial.separador
+    fputs serial.separator
 
-    mov al, byte[Andromeda.Interface.numColunas] ;; Máximo de caracteres para obter
+    mov al, byte[Andromeda.Interface.numColunas] ;; Maximum characters to get
 
     sub al, 20
 
     hx.syscall obterString
 
-    ;; hx.syscall cortarString ;; Remover espaços em branco extras
+    ;; hx.syscall cortarString ;; Remove extra spaces
 
     mov [msg], esi
 
@@ -162,14 +161,14 @@ inicioAPP:
 
     hx.syscall escrever
 
-    jc erro
+    jc writeError
 
-    mov eax, COR_SUCESSO
+    mov eax, COLOR_SUCCESS
     mov ebx, dword[Andromeda.Interface.corFundo]
 
     hx.syscall definirCor
 
-    xyfputs 02, 22, serial.enviado
+    xyfputs 02, 22, serial.sent
 
     fputs serial.prompt
 
@@ -178,11 +177,11 @@ inicioAPP:
 
     hx.syscall definirCor
 
-    jmp obterTeclas
+    jmp getKeys
 
 ;;************************************************************************************
 
-obterTeclas:
+getKeys:
 
     hx.syscall aguardarTeclado
 
@@ -191,41 +190,41 @@ obterTeclas:
     hx.syscall obterEstadoTeclas
 
     bt eax, 0
-    jc .teclasControl
+    jc .controlKeys
 
     pop eax
 
-    jmp obterTeclas
+    jmp getKeys
 
-.teclasControl:
+.controlKeys:
 
     pop eax
 
     cmp al, 'n'
-    je inicioAPP
+    je applicationStart
 
     cmp al, 'N'
-    je inicioAPP
+    je applicationStart
 
     cmp al, 'x'
-    je terminar
+    je finish
 
     cmp al, 'X'
-    je terminar
+    je finish
 
-    jmp obterTeclas
+    jmp getKeys
 
 ;;************************************************************************************
 
-terminar:
+finish:
 
     Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 
 ;;************************************************************************************
 
-erro:
+writeError:
 
-    xyfputs 02, 22, serial.erroPorta
+    xyfputs 02, 22, serial.portError
 
     hx.syscall aguardarTeclado
 
@@ -235,57 +234,57 @@ erro:
 
 ;;************************************************************************************
 
-erroAbertura:
+openError:
 
-    xyfputs 02, 14, serial.erroAbertura
+    xyfputs 02, 14, serial.openError
 
     hx.syscall aguardarTeclado
 
-    jmp terminar
+    jmp finish
 
 ;;************************************************************************************
 ;;
-;; Dados do aplicativo
+;;                        Application variables and data
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.3.0"
+VERSION equ "1.4.0"
 
-COR_DESTAQUE = AZUL_ROYAL
-COR_FONTE    = HEXAGONIX_CLASSICO_BRANCO
-COR_SUCESSO  = VERDE_FLORESTA
+COLOR_HIGHLIGHT = AZUL_ROYAL
+COLOT_FONT      = HEXAGONIX_CLASSICO_BRANCO
+COLOR_SUCCESS   = VERDE_FLORESTA
 
 serial:
 
-.erroPorta:
+.portError:
 db "Unable to use the serial port. Press any key to exit...", 0
-.erroAbertura:
+.openError:
 db "Unable to open device for writing. Press any key to exit...", 0
 .bannerHexagonix:
 db "Hexagonix Operating System", 0
 .copyright:
 db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
-.marcaRegistrada:
+.trademark:
 db "All rights reserved.", 0
-.introducao:
+.intro:
 db "This utility will help you send data via serial port.", 0
-.introducao2:
+.intro2:
 db "To get started, select one of the options below:", 0
-.categoria1:
+.category1:
 db "[1] Send data via serial port.", 0
-.categoria2:
+.category2:
 db "[2] Exit.", 0
 .prompt:
 db "[com1]", 0
-.separador:
+.separator:
 db ": ", 0
-.nomePorta:
+.deviceName:
 db "com1", 0
-.enviado:
+.sent:
 db "Data sent via serial port ", 0
-.titulo:
+.title:
 db "Serial port utility for Hexagonix", 0
-.rodape:
-db "[", VERSAO, "] | [^N] New message, [^X] Exit", 0
+.footer:
+db "[", VERSION, "] | [^N] New message, [^X] Exit", 0
 
 msg: db 0 ;; Buffer
