@@ -285,7 +285,7 @@ showSystemLogo:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.9.0"
+VERSION equ "1.9.1"
 
 calc:
 
@@ -316,7 +316,7 @@ db "All rights reserved.", 0
 .title:
 db "Hexagonix Operating System Basic Calculator",0
 .footer:
-db "[", VERSAO, "] | [F1] Exit",0
+db "[", VERSION, "] | [F1] Exit",0
 
 firstNumber:  dd 0
 secondNumber: dd 0
