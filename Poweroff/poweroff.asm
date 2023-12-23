@@ -68,12 +68,12 @@
 
 use32
 
-;; Agora vamos criar um cabeçalho para a imagem HAPP final do aplicativo.
+;; Now let's create a HAPP header for the application
 
-include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
+include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioAPP, 01h
+;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -84,20 +84,20 @@ include "log.s"
 
 ;;************************************************************************************
 
-inicioAPP:
+applicationStart:
 
-    push ds ;; Segmento de dados do modo usuário (seletor 38h)
+    push ds ;; User mode data segment (38h selector)
     pop es
 
-    mov [parametro], edi ;; Salvar os parâmetros da linha de comando para uso futuro
+    mov [parameter], edi ;; Save command line parameters
 
-    mov esi, [parametro]
+    mov esi, [parameter]
 
-    jmp iniciarInterface
+    jmp buildInterface
 
 ;;************************************************************************************
 
-iniciarInterface:
+buildInterface:
 
     Andromeda.Estelar.obterInfoConsole
 
@@ -105,46 +105,46 @@ iniciarInterface:
 
     hx.syscall obterInfoTela
 
-;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo,
-;; corTextoRodape, corTexto, corFundo
+;; Format: title, footer, titleColor, footerColor, titleTextColor,
+;; footerTextColor, textColor, backgroundColor
 
-    Andromeda.Estelar.criarInterface poweroff.titulo, poweroff.rodape, \
-    COR_DESTAQUE, COR_DESTAQUE, COR_FONTE, COR_FONTE, \
+    Andromeda.Estelar.criarInterface poweroff.title, poweroff.footer, \
+    COLOR_HIGHLIGHT, COLOR_HIGHLIGHT, COLOR_FONT, COLOR_FONT, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-    Andromeda.Estelar.criarLogotipo COR_DESTAQUE, COR_FONTE,\
+    Andromeda.Estelar.criarLogotipo COLOR_HIGHLIGHT, COLOR_FONT,\
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-;; Mensagens de informação do sistema opercional
+;; Operating system information messages
 
     xyfputs 39, 4, poweroff.bannerHexagonix
     xyfputs 27, 5, poweroff.copyright
-    xyfputs 41, 6, poweroff.marcaRegistrada
+    xyfputs 41, 6, poweroff.trademark
 
-;; Boas-vindas
+;; Welcome
 
-    xyfputs 01, 14, poweroff.introducao
-    xyfputs 01, 15, poweroff.introducao2
+    xyfputs 01, 14, poweroff.intro
+    xyfputs 01, 15, poweroff.intro2
 
-;; Opções de desligamento
+;; Shutdown options
 
-    xyfputs 02, 18, poweroff.msgFinalizar
-    xyfputs 02, 19, poweroff.msgReiniciar
+    xyfputs 02, 18, poweroff.shutdownOption
+    xyfputs 02, 19, poweroff.rebootOption
 
-    call obterTeclas
+    call getKeys
 
 ;;************************************************************************************
 
- finalizarSistema:
+ shutdownSystem:
 
-    xyfputs 02, 18, poweroff.msgDesligamento
+    xyfputs 02, 18, poweroff.shutdownMessage
 
     mov eax, VERDE_FLORESTA
     mov ebx, dword[Andromeda.Interface.corFundo]
 
     hx.syscall definirCor
 
-    fputs poweroff.msgPronto
+    fputs poweroff.done
 
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
@@ -155,7 +155,7 @@ iniciarInterface:
 
 ;;************************************************************************************
 
-obterTeclas:
+getKeys:
 
     hx.syscall aguardarTeclado
 
@@ -164,107 +164,107 @@ obterTeclas:
     hx.syscall obterEstadoTeclas
 
     bt eax, 0
-    jc .teclasControl
+    jc .controlKeys
 
     pop eax
 
     cmp al, 'x'
-    je terminar
+    je finish
 
     cmp al, 'X'
-    je terminar
+    je finish
 
-    jmp obterTeclas
+    jmp getKeys
 
-.teclasControl:
+.controlKeys:
 
     pop eax
 
     cmp al, 's'
-    je HexagonixDesligar
+    je shutdownHexagonix
 
     cmp al, 'S'
-    je HexagonixDesligar
+    je shutdownHexagonix
 
     cmp al, 'r'
-    je HexagonixReiniciar
+    je rebootHexagonix
 
     cmp al, 'R'
-    je HexagonixReiniciar
+    je rebootHexagonix
 
-    jmp obterTeclas
-
-;;************************************************************************************
-
-HexagonixDesligar:
-
-    call finalizarSistema
-
-    call executarEnergiaDesligamento
-
-    jmp terminar
+    jmp getKeys
 
 ;;************************************************************************************
 
-HexagonixReiniciar:
+shutdownHexagonix:
 
-    call finalizarSistema
+    call shutdownSystem
 
-    call executarEnergiaReinicio
+    call runUnixShutdownUtilityPoweroff
 
-    jmp terminar
+    jmp finish
 
 ;;************************************************************************************
 
-executarEnergiaDesligamento:
+rebootHexagonix:
 
-    mov esi, poweroff.energia
-    mov edi, poweroff.parametroDesligar
+    call shutdownSystem
+
+    call runUnixShutdownUtilityReboot
+
+    jmp finish
+
+;;************************************************************************************
+
+runUnixShutdownUtilityPoweroff:
+
+    mov esi, poweroff.shutdownUtility
+    mov edi, poweroff.shutdownParameter
     mov eax, 01h
 
     hx.syscall iniciarProcesso
 
-    jc falhaEnergia
+    jc shutdowUtilityError
 
 ;;************************************************************************************
 
-executarEnergiaReinicio:
+runUnixShutdownUtilityReboot:
 
-    mov esi, poweroff.energia
-    mov edi, poweroff.parametroReiniciar
+    mov esi, poweroff.shutdownUtility
+    mov edi, poweroff.rebootParameter
     mov eax, 01h
 
     hx.syscall iniciarProcesso
 
-    jc falhaEnergia
+    jc shutdowUtilityError
 
 ;;************************************************************************************
 
-falhaEnergia:
+shutdowUtilityError:
 
-    fputs poweroff.falhaUtilitarioEnergia
+    fputs poweroff.failureShutdownUtility
 
     hx.syscall aguardarTeclado
 
-    jmp terminar
+    jmp finish
 
 ;;************************************************************************************
 
-terminar:
+finish:
 
     Andromeda.Estelar.finalizarProcessoGrafico 0, 0
 
 ;;************************************************************************************
 ;;
-;; Dados do aplicativo
+;;                        Application variables and data
 ;;
 ;;************************************************************************************
 
-ENERGIA equ "shutdown"
-VERSAO  equ "1.6.1"
+SHUTDOWN equ "shutdown"
+VERSION  equ "1.7.0"
 
-COR_DESTAQUE = HEXAGONIX_BLOSSOM_AZUL_ANDROMEDA
-COR_FONTE    = HEXAGONIX_CLASSICO_BRANCO
+COLOR_HIGHLIGHT = HEXAGONIX_BLOSSOM_AZUL_ANDROMEDA
+COLOR_FONT      = HEXAGONIX_CLASSICO_BRANCO
 
 poweroff:
 
@@ -272,36 +272,36 @@ poweroff:
 db "Hexagonix Operating System", 0
 .copyright:
 db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
-.marcaRegistrada:
+.trademark:
 db "All rights reserved.", 0
-.energia:
-db ENERGIA, 0
-.parametroDesligar:
-db "-de", 0 ;; Parâmetro que indica que não deve haver eco
-.parametroReiniciar:
-db "-re", 0 ;; Parâmetro que indica que não deve haver eco
-.msgDesligamento:
+.shutdownUtility:
+db SHUTDOWN, 0
+.shutdownParameter:
+db "-de", 0
+.rebootParameter:
+db "-re", 0
+.shutdownMessage:
 db 10, 10, "The system is coming down. Please wait... ", 0
-.msgReinicio:
+.rebootMessage:
 db "Rebooting the computer...", 10, 10, 0
-.introducao:
+.intro:
 db "Here you will find options to shutdown or restart your device.", 0
-.introducao2:
+.intro2:
 db "Select any of the key combinations below to continue:", 0
-.msgReiniciar:
+.rebootOption:
 db "[Ctrl-R] to reboot the device.", 10, 0
-.msgFinalizar:
+.shutdownOption:
 db "[Ctrl-S] to power off the device.", 10, 0
-.msgPronto:
+.done:
 db "[Done]", 0
-.msgFalha:
+.failure:
 db "[Fail]", 0
-.falhaUtilitarioEnergia:
+.failureShutdownUtility:
 db 10, 10, "Failed to run Unix shutdown utility. Try again later.", 10
 db "Press any key to end this application...", 0
-.titulo:
+.title:
 db "Hexagonix shutdown options",0
-.rodape:
-db "[", VERSAO, "] | [X] Exit",0
+.footer:
+db "[", VERSION, "] | [X] Exit",0
 
-parametro: dd ? ;; Buffer
+parameter: dd ? ;; Buffer
