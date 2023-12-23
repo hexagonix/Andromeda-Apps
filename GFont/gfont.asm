@@ -224,7 +224,7 @@ validateFont:
 ;;
 ;;************************************************************************************
 
-VERSAO equ "2.5.0"
+VERSION equ "2.5.1"
 
 gfont:
 
@@ -251,7 +251,7 @@ db "All rights reserved.", 0
 .title:
 db "Hexagonix Operating System default font changer utility", 0
 .footer:
-db "[", VERSAO, "] | Use [F1] to cancel loading a new font", 0
+db "[", VERSION, "] | Use [F1] to cancel loading a new font", 0
 .sizeExceeded:
 db 10, 10, "This font file exceeds the maximum size of 2 Kb.", 10, 0
 
