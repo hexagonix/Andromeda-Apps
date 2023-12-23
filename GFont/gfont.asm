@@ -68,12 +68,12 @@
 
 use32
 
-;; Agora vamos criar um cabeçalho para a imagem HAPP final do aplicativo.
+;; Now let's create a HAPP header for the application
 
-include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
+include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioAPP, 01h
+;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -83,9 +83,9 @@ include "macros.s"
 
 ;;************************************************************************************
 
-inicioAPP:
+applicationStart:
 
-    push ds ;; Segmento de dados do modo usuário (seletor 38h)
+    push ds ;; User mode data segment (38h selector)
     pop es
 
    Andromeda.Estelar.obterInfoConsole
@@ -94,63 +94,63 @@ inicioAPP:
 
     hx.syscall limparTela
 
-;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo,
-;; corTextoRodape, corTexto, corFundo
+;; Format: title, footer, titleColor, footerColor, titleTextColor,
+;; footerTextColor, textColor, backgroundColor
 
-    Andromeda.Estelar.criarInterface fonte.titulo, fonte.rodape, \
+    Andromeda.Estelar.criarInterface gfont.title, gfont.footer, \
     AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-    xyfputs 39, 4, fonte.bannerHexagonix
-    xyfputs 27, 5, fonte.copyright
-    xyfputs 41, 6, fonte.marcaRegistrada
+    xyfputs 39, 4, gfont.bannerHexagonix
+    xyfputs 27, 5, gfont.copyright
+    xyfputs 41, 6, gfont.trademark
 
     Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
     gotoxy 02, 10
 
-    fputs fonte.boasVindas
+    fputs gfont.welcomeMessage
 
-    fputs fonte.nomeFonte
+    fputs gfont.fontFilename
 
-    mov al, byte[Andromeda.Interface.numColunas] ;; Máximo de caracteres para obter
+    mov al, byte[Andromeda.Interface.numColunas] ;; Maximum characters to get
 
     sub al, 20
 
     hx.syscall obterString
 
-    hx.syscall cortarString ;; Remover espaços em branco extras
+    hx.syscall cortarString ;; Remove extra spaces
 
-    mov [arquivoFonte], esi
+    mov [fontFile], esi
 
-    call validarFonte
+    call validateFont
 
-    jc erroFormato
+    jc formatError
 
     hx.syscall alterarFonte
 
-    jc erroFonte
+    jc fontError
 
-    fputs fonte.sucesso
+    fputs gfont.success
 
-    jmp finalizarAPP
+    jmp finish
 
-erroFonte:
+fontError:
 
-    fputs fonte.falha
+    fputs gfont.fileNotFound
 
-    jmp finalizarAPP
+    jmp finish
 
-erroFormato:
+formatError:
 
-    fputs fonte.falhaFormato
+    fputs gfont.invalidFormat
 
-    jmp finalizarAPP
+    jmp finish
 
 ;;************************************************************************************
 
-finalizarAPP:
+finish:
 
     hx.syscall aguardarTeclado
 
@@ -158,105 +158,104 @@ finalizarAPP:
 
 ;;************************************************************************************
 
-validarFonte:
+validateFont:
 
-    mov esi, [arquivoFonte]
-    mov edi, bufferArquivo
+    mov esi, [fontFile]
+    mov edi, appFileBuffer
 
     hx.syscall abrir
 
-    jc .erroSemFonte
+    jc .fileNotFound
 
-    mov edi, bufferArquivo
+    mov edi, appFileBuffer
 
     cmp byte[edi+0], "H"
-    jne .naoHFNT
+    jne .invalidHFNT
 
     cmp byte[edi+1], "F"
-    jne .naoHFNT
+    jne .invalidHFNT
 
     cmp byte[edi+2], "N"
-    jne .naoHFNT
+    jne .invalidHFNT
 
     cmp byte[edi+3], "T"
-    jne .naoHFNT
+    jne .invalidHFNT
 
 .verificarTamanho:
 
     hx.syscall arquivoExiste
 
-;; Em EAX, o tamanho do arquivo. Ele não deve ser maior que 2000 bytes, o que poderia
-;; sobrescrever dados na memória do Hexagon
+;; In EAX, the file size. It must not be larger than 2000 bytes
 
     mov ebx, 2000
 
     cmp eax, ebx
-    jng .continuar
+    jng .continue
 
-    jmp .tamanhoSuperior
+    jmp .sizeExceeded
 
-.continuar:
+.continue:
 
     clc
 
     ret
 
-.erroSemFonte:
+.fileNotFound:
 
-    fputs fonte.falha
+    fputs gfont.fileNotFound
 
-    jmp finalizarAPP
+    jmp finish
 
-.naoHFNT:
+.invalidHFNT:
 
     stc
 
     ret
 
-.tamanhoSuperior:
+.sizeExceeded:
 
-    fputs fonte.tamanhoSuperior
+    fputs gfont.sizeExceeded
 
-    jmp finalizarAPP
+    jmp finish
 
 ;;************************************************************************************
 ;;
-;; Dados do aplicativo
+;;                        Application variables and data
 ;;
 ;;************************************************************************************
 
-VERSAO equ "2.4.1"
+VERSAO equ "2.5.0"
 
-fonte:
+gfont:
 
-.boasVindas:
+.welcomeMessage:
 db 10, 10, "Use this program to change the default system display font.", 10, 10
 db "Remember that only fonts designed for Hexagonix can be used.", 10, 10, 10, 10, 0
-.nomeFonte:
+.fontFilename:
 db "Filename: ", 0
-.sucesso:
+.success:
 db 10, 10, "Font changed successfully.", 10, 10
 db "Press any key to continue...", 10, 10, 0
-.falha:
+.fileNotFound:
 db 10, 10, "The file cannot be found.", 10, 10
 db 10, 10, "Press any key to continue...", 10, 10, 0
-.falhaFormato:
+.invalidFormat:
 db 10, 10, "The provided file does not contain a font in Hexagon format.", 10, 10
 db "Press any key to continue...", 10, 10, 0
 .bannerHexagonix:
 db "Hexagonix Operating System", 0
 .copyright:
 db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
-.marcaRegistrada:
+.trademark:
 db "All rights reserved.", 0
-.titulo:
+.title:
 db "Hexagonix Operating System default font changer utility", 0
-.rodape:
+.footer:
 db "[", VERSAO, "] | Use [F1] to cancel loading a new font", 0
-.tamanhoSuperior:
+.sizeExceeded:
 db 10, 10, "This font file exceeds the maximum size of 2 Kb.", 10, 0
 
-linhaComando: dd 0
-arquivoFonte: dd ?
+commandLine: dd 0
+fontFile:    dd ?
 
-bufferArquivo:
+appFileBuffer:
