@@ -68,12 +68,12 @@
 
 use32
 
-;; Agora vamos criar um cabeçalho para a imagem HAPP final do aplicativo.
+;; Now let's create a HAPP header for the application
 
-include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
+include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo
-cabecalhoASH cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioShell, 01h
+;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, shellStart, 01h
 
 ;;************************************************************************************
 
@@ -85,92 +85,89 @@ include "macros.s"
 
 ;;************************************************************************************
 ;;
-;; Dados, variáveis e constantes utilizadas pelo shell
+;;                        Application variables and data
 ;;
 ;;************************************************************************************
 
-;; A versão do ASH é independente da versão do restante do sistema.
-;; Ela deve ser utilizada para identificar para qual versão do Hexagonix o ASH foi
-;; desenvolvido. Essa informação pode ser fornecida com o comando 'help'.
+ASHBannerFontColor = HEXAGONIX_CLASSICO_BRANCO
+ASHTheme           = VERDE_MAR
+ASHConsoleTheme    = ASHTheme
+ASHWarning         = TOMATE
+ASHError           = VERMELHO
+ASHLimitReached    = AMARELO_ANDROMEDA
+ASHSuccess         = VERDE
 
-ASHPadrao          = VERDE_MAR
-ASHTerminal        = ASHPadrao
-ASHAviso           = TOMATE
-ASHErro            = VERMELHO
-ASHLimiteProcessos = AMARELO_ANDROMEDA
-ASHSucesso         = VERDE
-
-versaoASH           equ "4.6.2"
-compativelHexagonix equ "System I"
+VERSION             equ "4.7.0"
+compatibleHexagonix equ "System I"
 
 ;;**************************
 
 ASH:
 
-.comandoInvalido:
+.invalidCommand:
 db 10, 10, "[!] Invalid internal command or application not found.", 10, 0
 .bannerASH:
 db "ASH - Andromeda SHell", 0
-.boasVindas:
+.welcome:
 db "Welcome to Andromeda SHell - ASH", 10, 10
 db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
 db "All rights reserved.", 10, 0
-.direitosAutorais:
+.copyright:
 db 10, 10, "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
 db "All rights reserved.", 10, 0
-.limiteProcessos:
+.processLimit:
 db 10, 10, "[!] There is no available process slot to run the requested application.", 10
 db "[!] Try to terminate applications or their instances first, and try again.", 10, 0
-.imagemInvalida:
+.invalidImage:
 db ": unable to load image. Unsupported executable format.", 10, 0
 .prompt:
 db "[/]: ", 0
-.licenca:
+.license:
 db 10, "Licenced under BSD-3-Clause.", 10, 0
 
-.verboseEntradaASH:
-db "[ASH]: Andromeda SHell (ASH) for Hexagonix ", compativelHexagonix, " or superior.", 0
-.verboseVersaoASH:
-db "[ASH]: Andromeda SHell version ", versaoASH, ".", 0
-.verboseAutor:
+.verboseStartingASH:
+db "[ASH]: Andromeda SHell (ASH) for Hexagonix ", compatibleHexagonix, " or superior.", 0
+.verboseVersionASH:
+db "[ASH]: Andromeda SHell version ", VERSION, ".", 0
+.verboseAuthors:
 db "[ASH]: Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes.", 0
-.verboseDireitos:
+.verboseCopyright:
 db "[ASH]: All rights reserved.", 0
-.verboseSaida:
+.verboseExitASH:
 db "[ASH]: Terminating the ASH...", 0
-.verboseLimite:
+.verboseProcessLimit:
 db "[ASH]: Warning: memory full or process limit reached!", 0
-.verboseInterface:
+.verboseDeprecatedInterface:
 db "[ASH]: Warning: performing mount point manipulation using deprecated functions that will be removed.", 0
 
 ;;**************************
 
-ASH.comandos:
+ASH.commands:
 
-.alterarVolume:
+.changeVolume:
 db "cvol", 0
-.sair:
+.exit:
 db "exit",0
-.versao:
+.version:
 db "ver", 0
-.ajuda:
+.help:
 db "help", 0
 
 ;;**************************
 
-ASH.ajuda:
+ASH.help:
 
-.introducao:
-db 10, 10, "Andromeda SHell version ", versaoASH, 10
-db "Compatible with Hexagonix ", compativelHexagonix, " or superior.", 0
-.conteudoAjuda:
+.intro:
+db 10, 10, "Andromeda SHell version ", VERSION, 10
+db "Compatible with Hexagonix ", compatibleHexagonix, " or superior.", 0
+.helpContent:
 db 10, 10, "Internal commands available:", 10, 10
 db " VER  - Displays information about the running ASH version.", 10
 db " EXIT - Terminate this ASH session.", 10, 0
 
 ;;**************************
 
-ASH.discos:
+ASH.volume:
 
 .hd0:
 db "hd0", 0
@@ -182,49 +179,49 @@ db "hd2", 0
 db "hd3", 0
 .info:
 db "info", 0
-.discoAtual:
+.currentVolume:
 db 10, 10, "Current volume used by the system: ", 0
-.erroAlterar:
+.mountError:
 db 10, 10, "A valid volume or parameter was not provided for this command.", 10, 10
 db "Cannot change default volume.", 10, 10
 db "Use a device name as an argument or 'info' for current disk information.", 10, 0
-.rotuloVolume:
+.volumeLabel:
 db 10, 10, "Volume label: ", 0
-.avisoSairdeLinha:
+.deprecatedInterfaceWarning:
 db 10, 10, "Warning! This is an obsolete built-in Andromeda SHell command.", 10
 db "Be aware that it may be removed soon. Use the Unix 'mount' tool instead.", 10
 db "You can find documentation for mount using 'man mount' anytime.", 0
 
 ;; Buffers
 
-discoAtual: times 3 db 0
+currentVolume: times 3 db 0
 
 ;;************************************************************************************
 
-inicioShell:
+shellStart:
 
-    logSistema ASH.verboseEntradaASH, 00h, Log.Prioridades.p4
-    logSistema ASH.verboseVersaoASH, 00h, Log.Prioridades.p4
-    logSistema ASH.verboseAutor, 00h, Log.Prioridades.p4
-    logSistema ASH.verboseDireitos, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseStartingASH, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseVersionASH, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseAuthors, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseCopyright, 00h, Log.Prioridades.p4
 
-;; Iniciar a configuração do terminal
+;; Start console configuration
 
     Andromeda.Estelar.obterInfoConsole
 
     hx.syscall limparTela
 
-    novaLinha
+    putNewLine
 
-    call exibirBannerASH
+    call showBanner
 
-    fputs ASH.boasVindas
+    fputs ASH.welcome
 
 ;;************************************************************************************
 
-.obterComando:
+.getCommand:
 
-    call exibirBannerASH
+    call showBanner
 
     hx.syscall obterCursor
 
@@ -234,10 +231,10 @@ inicioShell:
 
     xor ecx, ecx
 
-    mov eax, ASHTerminal
+    mov eax, ASHConsoleTheme
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    call alterarCor
+    call changeColor
 
     pop ecx
 
@@ -245,74 +242,73 @@ inicioShell:
 
     mov ecx, 01h
 
-    call alterarCor
+    call changeColor
 
-    mov al, byte[Andromeda.Interface.numColunas] ;; Máximo de caracteres para obter
+    mov al, byte[Andromeda.Interface.numColunas] ;; Maximum characters to get
 
     sub al, 20
 
     hx.syscall obterString
 
-    hx.syscall cortarString ;; Remover espaços em branco extras
+    hx.syscall cortarString ;; Remove extra spaces
 
-    cmp byte[esi], 0 ;; Nenhum comando inserido
-    je .obterComando
+    cmp byte[esi], 0 ;; No command entered
+    je .getCommand
 
-;; Comparar com comandos internos disponíveis
+;; Compare with available internal commands
 
-    ;; Comando EXIT
+    ;; EXIT command
 
-    mov edi, ASH.comandos.sair
-
-    hx.syscall compararPalavrasString
-
-    jc .finalizarShell
-
-    ;; Comando VER
-
-    mov edi, ASH.comandos.versao
+    mov edi, ASH.commands.exit
 
     hx.syscall compararPalavrasString
 
-    jc .comandoVER
+    jc .finishShell
 
-    ;; Comando HELP
+    ;; VER command
 
-    mov edi, ASH.comandos.ajuda
-
-    hx.syscall compararPalavrasString
-
-    jc .comandoAJUDA
-
-    ;; Comando CVOL
-
-    mov edi, ASH.comandos.alterarVolume
+    mov edi, ASH.commands.version
 
     hx.syscall compararPalavrasString
 
-    jc .comandoCVOL
+    jc .commandVER
+
+    ;; HELP command
+
+    mov edi, ASH.commands.help
+
+    hx.syscall compararPalavrasString
+
+    jc .commandHELP
+
+    ;; CVOL command
+
+    mov edi, ASH.commands.changeVolume
+
+    hx.syscall compararPalavrasString
+
+    jc .commandCVOL
 
 ;;************************************************************************************
 
-;; Tentar carregar um programa
+;; Try to load a program
 
-    call obterArgumentos ;; Separar comando e argumentos
+    call getArguments ;; Separate command and arguments
 
     push esi
     push edi
 
-    jmp .carregarPrograma
+    jmp .loadApplication
 
-.falhaExecutando:
+.failedToExecute:
 
-;; Agora o erro enviado pelo sistema será analisado, para que o shell conheça
-;; sua natureza
+;; Now the error sent by the system will be analyzed, so that the shell knows its nature
 
-    cmp eax, Hexagon.limiteProcessos ;; Limite de processos em execução atingido
-    je .limiteAtingido               ;; Se sim, exibir a mensagem apropriada
+    cmp eax, Hexagon.limiteProcessos ;; Limit of running processes reached
+    je .limitReached                 ;; If yes, display the appropriate message
 
-    cmp eax, Hexagon.imagemInvalida  ;; Limite de processos em execução atingido
-    je .imagemHAPPInvalida           ;; Se sim, exibir a mensagem apropriada
+    cmp eax, Hexagon.imagemInvalida ;; Invalid HAPP image
+    je .invalidHAPPImage            ;; If yes, display the appropriate message
 
     hx.syscall obterCursor
 
@@ -320,27 +316,27 @@ inicioShell:
 
     xor ecx, ecx
 
-    mov eax, ASHErro
+    mov eax, ASHError
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    call alterarCor
+    call changeColor
 
     pop ecx
 
-    fputs ASH.comandoInvalido
+    fputs ASH.invalidCommand
 
     mov ecx, 01h
 
-    call alterarCor
+    call changeColor
 
-    jmp .obterComando
+    jmp .getCommand
 
-.imagemHAPPInvalida:
+.invalidHAPPImage:
 
     push esi
 
-    novaLinha
-    novaLinha
+    putNewLine
+    putNewLine
 
     pop esi
 
@@ -350,47 +346,47 @@ inicioShell:
 
     xor ecx, ecx
 
-    mov eax, ASHErro
+    mov eax, ASHError
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    call alterarCor
+    call changeColor
 
     pop ecx
 
-    fputs ASH.imagemInvalida
+    fputs ASH.invalidImage
 
     mov ecx, 01h
 
-    call alterarCor
+    call changeColor
 
-    jmp .obterComando
+    jmp .getCommand
 
-.limiteAtingido:
+.limitReached:
 
-    logSistema ASH.verboseLimite, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseProcessLimit, 00h, Log.Prioridades.p4
 
     push ecx
 
     xor ecx, ecx
 
-    mov eax, ASHLimiteProcessos
+    mov eax, ASHLimitReached
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    call alterarCor
+    call changeColor
 
     pop ecx
 
-    fputs ASH.limiteProcessos
+    fputs ASH.processLimit
 
     mov ecx, 01h
 
-    call alterarCor
+    call changeColor
 
     clc
 
-    jmp .obterComando
+    jmp .getCommand
 
-.carregarPrograma:
+.loadApplication:
 
     pop edi
 
@@ -406,21 +402,21 @@ inicioShell:
 
     hx.syscall iniciarProcesso
 
-    jc .falhaExecutando
+    jc .failedToExecute
 
-    jmp .obterComando
-
-;;************************************************************************************
-
-.comandoAJUDA:
-
-    fputs ASH.ajuda.conteudoAjuda
-
-    jmp .obterComando
+    jmp .getCommand
 
 ;;************************************************************************************
 
-.comandoCVOL:
+.commandHELP:
+
+    fputs ASH.help.helpContent
+
+    jmp .getCommand
+
+;;************************************************************************************
+
+.commandCVOL:
 
     push esi
     push edi
@@ -429,18 +425,18 @@ inicioShell:
 
     xor ecx, ecx
 
-    mov eax, ASHAviso
+    mov eax, ASHWarning
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    call alterarCor
+    call changeColor
 
     pop ecx
 
-    fputs ASH.discos.avisoSairdeLinha
+    fputs ASH.volume.deprecatedInterfaceWarning
 
     mov ecx, 01h
 
-    call alterarCor
+    call changeColor
 
     pop edi
     pop esi
@@ -449,95 +445,95 @@ inicioShell:
 
     hx.syscall cortarString
 
-    mov edi, ASH.discos.hd0
+    mov edi, ASH.volume.hd0
 
     hx.syscall compararPalavrasString
 
-    jc .alterarParaHD0
+    jc .changeToHD0
 
-    mov edi, ASH.discos.hd1
-
-    hx.syscall compararPalavrasString
-
-    jc .alterarParaHD1
-
-    mov edi, ASH.discos.hd2
+    mov edi, ASH.volume.hd1
 
     hx.syscall compararPalavrasString
 
-    jc .alterarParaHD2
+    jc .changeToHD1
 
-    mov edi, ASH.discos.hd3
-
-    hx.syscall compararPalavrasString
-
-    jc .alterarParaHD3
-
-    mov edi, ASH.discos.info
+    mov edi, ASH.volume.hd2
 
     hx.syscall compararPalavrasString
 
-    jc .infoDisco
+    jc .changeToHD2
 
-    jmp .erroAlterar
+    mov edi, ASH.volume.hd3
 
-.alterarParaHD0:
+    hx.syscall compararPalavrasString
 
-    logSistema ASH.verboseInterface, 00h, Log.Prioridades.p4
+    jc .changeToHD3
 
-    mov esi, ASH.discos.hd0
+    mov edi, ASH.volume.info
+
+    hx.syscall compararPalavrasString
+
+    jc .volumeInfo
+
+    jmp .mountError
+
+.changeToHD0:
+
+    logSistema ASH.verboseDeprecatedInterface, 00h, Log.Prioridades.p4
+
+    mov esi, ASH.volume.hd0
 
     hx.syscall abrir
 
-    novaLinha
+    putNewLine
 
-    jmp .obterComando
+    jmp .getCommand
 
-.alterarParaHD1:
+.changeToHD1:
 
-    logSistema ASH.verboseInterface, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseDeprecatedInterface, 00h, Log.Prioridades.p4
 
-    mov esi, ASH.discos.hd1
-
-    hx.syscall abrir
-
-    novaLinha
-
-    jmp .obterComando
-
-.alterarParaHD2:
-
-    logSistema ASH.verboseInterface, 00h, Log.Prioridades.p4
-
-    mov esi, ASH.discos.hd2
+    mov esi, ASH.volume.hd1
 
     hx.syscall abrir
 
-    novaLinha
+    putNewLine
 
-    jmp .obterComando
+    jmp .getCommand
 
-.alterarParaHD3:
+.changeToHD2:
 
-    logSistema ASH.verboseInterface, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseDeprecatedInterface, 00h, Log.Prioridades.p4
 
-    mov esi, ASH.discos.hd3
+    mov esi, ASH.volume.hd2
 
     hx.syscall abrir
 
-    novaLinha
+    putNewLine
 
-    jmp .obterComando
+    jmp .getCommand
 
-.erroAlterar:
+.changeToHD3:
 
-    fputs ASH.discos.erroAlterar
+    logSistema ASH.verboseDeprecatedInterface, 00h, Log.Prioridades.p4
 
-    jmp .obterComando
+    mov esi, ASH.volume.hd3
 
-.infoDisco:
+    hx.syscall abrir
 
-    fputs ASH.discos.discoAtual
+    putNewLine
+
+    jmp .getCommand
+
+.mountError:
+
+    fputs ASH.volume.mountError
+
+    jmp .getCommand
+
+.volumeInfo:
+
+    fputs ASH.volume.currentVolume
 
     hx.syscall obterDisco
 
@@ -548,10 +544,10 @@ inicioShell:
 
     xor ecx, ecx
 
-    mov eax, ASHPadrao
+    mov eax, ASHTheme
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    call alterarCor
+    call changeColor
 
     pop ecx
 
@@ -561,18 +557,18 @@ inicioShell:
 
     mov ecx, 01h
 
-    call alterarCor
+    call changeColor
 
-    fputs ASH.discos.rotuloVolume
+    fputs ASH.volume.volumeLabel
 
     push ecx
 
     xor ecx, ecx
 
-    mov eax, ASHPadrao
+    mov eax, ASHTheme
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    call alterarCor
+    call changeColor
 
     pop ecx
 
@@ -582,54 +578,54 @@ inicioShell:
 
     mov ecx, 01h
 
-    call alterarCor
+    call changeColor
 
-.novaLinha:
+.putNewLine:
 
-    novaLinha
+    putNewLine
 
-    jmp .obterComando
+    jmp .getCommand
 
 ;;************************************************************************************
 
-.comandoVER:
+.commandVER:
 
     push ecx
 
     xor ecx, ecx
 
-    mov eax, ASHPadrao
+    mov eax, ASHTheme
     mov ebx, dword[Andromeda.Interface.corFundo]
 
-    call alterarCor
+    call changeColor
 
     pop ecx
 
-    fputs ASH.ajuda.introducao
+    fputs ASH.help.intro
 
     mov ecx, 01h
 
-    call alterarCor
+    call changeColor
 
-    fputs ASH.direitosAutorais
+    fputs ASH.copyright
 
-    fputs ASH.licenca
+    fputs ASH.license
 
-    jmp .obterComando
+    jmp .getCommand
 
 ;;************************************************************************************
 
-.finalizarShell:
+.finishShell:
 
-    logSistema ASH.verboseSaida, 00h, Log.Prioridades.p4
+    logSistema ASH.verboseExitASH, 00h, Log.Prioridades.p4
 
-    novaLinha
+    putNewLine
 
     mov ebx, 00h
 
     hx.syscall encerrarProcesso
 
-    jmp .obterComando
+    jmp .getCommand
 
     hx.syscall aguardarTeclado
 
@@ -639,25 +635,25 @@ inicioShell:
 
 ;;************************************************************************************
 ;;
-;; Fim dos comandos internos do ASH
+;; End of ASH internal commands
 ;;
-;; Funções úteis para o manipulação de dados no shell do ASH
+;; Useful functions for manipulating data in the ASH shell
 ;;
 ;;************************************************************************************
 
-;; Separar nome de comando e argumentos
+;; Separate command name and arguments
 ;;
-;; Entrada:
+;; Input:
 ;;
-;; ESI - Endereço do comando
+;; ESI - Command address
 ;;
-;; Saída:
+;; Output:
 ;;
-;; ESI - Endereço do comando
-;; EDI - Argumentos do comando
-;; CF  - Definido em caso de falta de extensão
+;; ESI - Command address
+;; EDI - Command arguments
+;; CF  - Set in case of lack of extension
 
-obterArgumentos:
+getArguments:
 
     push esi
 
@@ -666,14 +662,14 @@ obterArgumentos:
     lodsb ;; mov AL, byte[ESI] & inc ESI
 
     cmp al, 0
-    je .naoencontrado
+    je .notFound
 
     cmp al, ' '
-    je .espacoEncontrado
+    je .spaceFound
 
     jmp .loop
 
-.naoencontrado:
+.notFound:
 
     pop esi
 
@@ -683,7 +679,7 @@ obterArgumentos:
 
     jmp .fim
 
-.espacoEncontrado:
+.spaceFound:
 
     mov byte[esi-1], 0
     mov ebx, esi
@@ -692,21 +688,21 @@ obterArgumentos:
 
     mov ecx, eax
 
-    inc ecx ;; Incluindo o último caractere (NULL)
+    inc ecx ;; Including the last character (NULL)
 
     push es
 
-    push ds ;; Segmento de dados do modo usuário (seletor 38h)
+    push ds ;; User mode data segment (38h selector)
     pop es
 
     mov esi, ebx
-    mov edi, bufferArquivo
+    mov edi, appFileBuffer
 
-    rep movsb ;; Copiar (ECX) caracteres da string de ESI para EDI
+    rep movsb ;; Copy (ECX) string characters from ESI to EDI
 
     pop es
 
-    mov edi, bufferArquivo
+    mov edi, appFileBuffer
 
     pop esi
 
@@ -718,24 +714,24 @@ obterArgumentos:
 
 ;;************************************************************************************
 
-;; Altera a cor da fonte e do plano de fundo
+;; Change font and background color
 ;;
-;; Entrada:
+;; Input:
 ;;
-;; EAX - Cor da fonte
-;; EBX - Cor do plano de fundo
-;; ECX - 01h para restaurar ao padrão do sistema
+;; EAX - Font color
+;; EBX - Background Color
+;; ECX - 01h to restore to system default
 
-alterarCor:
+changeColor:
 
     cmp ecx, 01h
-    je .padrao
+    je .default
 
     hx.syscall definirCor
 
     ret
 
-.padrao:
+.default:
 
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
@@ -746,7 +742,7 @@ alterarCor:
 
 ;;************************************************************************************
 
-exibirBannerASH:
+showBanner:
 
     hx.syscall obterCursor
 
@@ -756,10 +752,10 @@ exibirBannerASH:
 
     xor ecx, ecx
 
-    mov eax, BRANCO_ANDROMEDA
-    mov ebx, ASHPadrao
+    mov eax, ASHBannerFontColor
+    mov ebx, ASHTheme
 
-    call alterarCor
+    call changeColor
 
     pop ecx
 
@@ -771,7 +767,7 @@ exibirBannerASH:
 
     mov ecx, 01h
 
-    call alterarCor
+    call changeColor
 
     pop edx
 
@@ -785,4 +781,4 @@ exibirBannerASH:
 
 ;;************************************************************************************
 
-bufferArquivo: ;; Endereço para carregamento de arquivos
+appFileBuffer: ;; Address for opening files
