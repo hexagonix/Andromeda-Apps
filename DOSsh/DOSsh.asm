@@ -68,12 +68,12 @@
 
 use32
 
-;; Agora vamos criar um cabeçalho para a imagem HAPP final do aplicativo.
+;; Now let's create a HAPP header for the application
 
-include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
+include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo
-cabecalhoDOSsh cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioShell, 01h
+;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, shellStart, 01h
 
 ;;************************************************************************************
 
@@ -85,80 +85,76 @@ include "macros.s"
 
 ;;************************************************************************************
 ;;
-;; Dados, variáveis e constantes utilizadas pelo shell
+;;                        Application variables and data
 ;;
 ;;************************************************************************************
 
-;; A versão do DOSsh é independente da versão do restante do sistema.
-;; Ela deve ser utilizada para identificar para qual versão do Hexagonix o DOSsh foi
-;; desenvolvido. Essa informação pode ser fornecida com o comando 'ajuda'.
-
-versaoDOSsh         equ "0.9.3"
-compativelHexagonix equ "System I"
+VERSION             equ "0.10.0"
+compatibleHexagonix equ "System I"
 
 ;;**************************
 
 DOSsh:
 
-.iniciando:
+.starting:
 db 10, "Starting HX-DOS...", 10, 10
 db "HIMEM is testing extended memory... done.", 10, 0
-.comandoInvalido:
+.invalidCommand:
 db "Bad command or filename.", 0
-.direitosAutorais:
+.copyright:
 db 10, 10, "Copyright (C) 2022-", __stringano, " Felipe Miguel Nery Lunkes", 10
 db "All rights reserved.", 10, 0
-.limiteProcessos:
+.processLimit:
 db 10, 10, "There is not enough memory available to run the requested application.", 10
 db "Try to terminate applications or their instances first, and try again.", 0
-.imagemInvalida:
+.invalidImage:
 db ": unable to load image. Unsupported executable format.", 10, 0
 .prompt:
 db "C:\> ", 0
-.erroGeralArquivo:
+.fileNotFound:
 db 10, "File not found.", 10, 0
-.licenca:
+.license:
 db 10, "Licenced under BSD-3-Clause.", 0
-.extensaoCOW:
+.extensionCOW:
 db ".COW",0
-.extensaoMAN:
+.extensionMAN:
 db ".MAN",0
-.extensaoOCL:
+.extensionOCL:
 db ".OCL",0
 
 ;; Verbose
 
-.verboseEntradaDOSsh:
-db "[DOSsh]: DOSsh for Hexagonix version ", compativelHexagonix, " or superior.", 0
-.verboseVersaoDOSsh:
-db "[DOSsh]: DOSsh version ", versaoDOSsh, ".", 0
-.verboseAutor:
+.verboseStartingDOSsh:
+db "[DOSsh]: DOSsh for Hexagonix version ", compatibleHexagonix, " or superior.", 0
+.verboseDOSshVersion:
+db "[DOSsh]: DOSsh version ", VERSION, ".", 0
+.verboseAuthor:
 db "[DOSsh]: Copyright (C) 2022-", __stringano, " Felipe Miguel Nery Lunkes.", 0
-.verboseDireitos:
+.verboseCopyright:
 db "[DOSsh]: All rights reserved.", 0
-.verboseSaida:
+.verboseExitDOSsh:
 db "[DOSsh]: Terminating DOSsh and returning control to the parent process...", 0
-.verboseLimite:
+.verboseProcessLimit:
 db "[DOSsh]: Memory or process limit reached!", 0
 
-;; Relativo ao comando dir
+;; Relative to the dir command
 
 DOSsh.dir:
 
-.dirLinha1:
+.dirLine1:
 db 10, 10, "Volume in drive C is ", 0
-.dirLinha2:
+.dirLine2:
 db 10, "Volume Serial Number is HXHX-HXHX", 0
-.dirLinha3:
+.dirLine3:
 db 10, "Directory of C:\", 10, 10, 0
 
-DOSsh.comandos:
+DOSsh.commands:
 
-.sair:
+.exit:
 db "exit",0
-.versao:
+.version:
 db "ver", 0
-.ajuda:
+.help:
 db "help", 0
 .cls:
 db "cls", 0
@@ -167,14 +163,14 @@ db "dir", 0
 .type:
 db "type", 0
 
-;; Relativo aos comandos help e ver
+;; Regarding the help and ver commands
 
-DOSsh.ajuda:
+DOSsh.help:
 
-.introducao:
+.intro:
 db 10, 10, "HX-DOS version 6.22", 10
-db "DOSsh version ", versaoDOSsh, 0
-.conteudoAjuda:
+db "DOSsh version ", VERSION, 0
+.helpContent:
 db 10, 10, "Internal commands available:", 10, 10
 db " DIR  - Displays files on the current volume.", 10
 db " TYPE - Displays the contents of a file given as a parameter.", 10
@@ -184,155 +180,154 @@ db " EXIT - Terminate this DOSsh session.", 10, 0
 
 ;; Buffers
 
-listaRemanescente: dd ?
-arquivoAtual:      dd ' '
+remainingList: dd ?
+currentFile:   dd ' '
 
 ;;************************************************************************************
 
-inicioShell:
+shellStart:
 
-    logSistema DOSsh.verboseEntradaDOSsh, 00h, Log.Prioridades.p4
-    logSistema DOSsh.verboseVersaoDOSsh, 00h, Log.Prioridades.p4
-    logSistema DOSsh.verboseAutor, 00h, Log.Prioridades.p4
-    logSistema DOSsh.verboseDireitos, 00h, Log.Prioridades.p4
+    logSistema DOSsh.verboseStartingDOSsh, 00h, Log.Prioridades.p4
+    logSistema DOSsh.verboseDOSshVersion, 00h, Log.Prioridades.p4
+    logSistema DOSsh.verboseAuthor, 00h, Log.Prioridades.p4
+    logSistema DOSsh.verboseCopyright, 00h, Log.Prioridades.p4
 
-;; Iniciar a configuração do terminal
+;; Start console configuration
 
     Andromeda.Estelar.obterInfoConsole
 
     hx.syscall limparTela
 
-    fputs DOSsh.iniciando
+    fputs DOSsh.starting
 
 ;;************************************************************************************
 
-obterComando:
+getCommand:
 
-    novaLinha
+    putNewLine
 
-.semNovaLinha:
+.withoutNewLine:
 
     fputs DOSsh.prompt
 
-    mov al, byte[Andromeda.Interface.numColunas] ;; Máximo de caracteres para obter
+    mov al, byte[Andromeda.Interface.numColunas] ;; Maximum characters to get
 
     sub al, 20
 
     hx.syscall obterString
 
-    hx.syscall cortarString ;; Remover espaços em branco extras
+    hx.syscall cortarString ;; Remove extra spaces
 
     cmp byte[esi], 0 ;; Nenhum comando inserido
-    je obterComando
+    je getCommand
 
-;; Comparar com comandos internos disponíveis
+;; Compare with available internal commands
 
-    ;; Comando SAIR
+    ;; EXIT command
 
-    mov edi, DOSsh.comandos.sair
-
-    hx.syscall compararPalavrasString
-
-    jc finalizarShell
-
-    ;; Comando VER
-
-    mov edi, DOSsh.comandos.versao
+    mov edi, DOSsh.commands.exit
 
     hx.syscall compararPalavrasString
 
-    jc comandoVER
+    jc finishShell
 
-    ;; Comando AJUDA
+    ;; VER command
 
-    mov edi, DOSsh.comandos.ajuda
-
-    hx.syscall compararPalavrasString
-
-    jc comandoAJUDA
-
-    ;; Comando CLS
-
-    mov edi, DOSsh.comandos.cls
+    mov edi, DOSsh.commands.version
 
     hx.syscall compararPalavrasString
 
-    jc comandoCLS
+    jc commandVER
 
-    ;; Comando DIR
+    ;; HELP command
 
-    mov edi, DOSsh.comandos.dir
-
-    hx.syscall compararPalavrasString
-
-    jc comandoDIR
-
-    ;; Comando TYPE
-
-    mov edi, DOSsh.comandos.type
+    mov edi, DOSsh.commands.help
 
     hx.syscall compararPalavrasString
 
-    jc comandoTYPE
+    jc commandHELP
+
+    ;; CLS command
+
+    mov edi, DOSsh.commands.cls
+
+    hx.syscall compararPalavrasString
+
+    jc commandCLS
+
+    ;; DIR command
+
+    mov edi, DOSsh.commands.dir
+
+    hx.syscall compararPalavrasString
+
+    jc commandDIR
+
+    ;; TYPE command
+
+    mov edi, DOSsh.commands.type
+
+    hx.syscall compararPalavrasString
+
+    jc commandTYPE
 
 ;;************************************************************************************
 
-carregarImagem:
+loadImage:
 
-;; Tentar carregar um programa
+;; Try to load a program
 
-    call obterArgumentos ;; Separar comando e argumentos
+    call getArguments ;; Separate command and arguments
 
     push esi
     push edi
 
-    jmp .carregarPrograma
+    jmp .loadApplication
 
-.falhaExecutando:
+.failedToExecute:
 
-;; Agora o erro enviado pelo Sistema será analisado, para que o Shell conheça
-;; sua natureza
+;; Now the error sent by the system will be analyzed, so that the shell knows its nature
 
-    cmp eax, Hexagon.limiteProcessos ;; Limite de processos em execução atingido
-    je .limiteAtingido               ;; Se sim, exibir a mensagem apropriada
+    cmp eax, Hexagon.limiteProcessos ;; Limit of running processes reached
+    je .limitReached                 ;; If yes, display the appropriate message
 
-    cmp eax, Hexagon.imagemInvalida
-    je .imagemHAPPInvalida
+    cmp eax, Hexagon.imagemInvalida ;; Invalid HAPP image
+    je .invalidHAPPImage            ;; If yes, display the appropriate message
 
     push esi
 
-    novaLinha
+    putNewLine
 
     pop esi
 
-    fputs DOSsh.comandoInvalido
+    fputs DOSsh.invalidCommand
 
-    jmp obterComando
+    jmp getCommand
 
-.limiteAtingido:
+.limitReached:
 
-    fputs DOSsh.limiteProcessos
+    fputs DOSsh.processLimit
 
     clc
 
-    jmp obterComando
+    jmp getCommand
 
-.imagemHAPPInvalida:
+.invalidHAPPImage:
 
     push esi
 
-    novaLinha
-    novaLinha
+    putNewLine
+    putNewLine
 
     pop esi
 
     imprimirString
 
-    fputs DOSsh.imagemInvalida
+    fputs DOSsh.invalidImage
 
-    jmp obterComando
+    jmp getCommand
 
-.carregarPrograma:
+.loadApplication:
 
     pop edi
 
@@ -348,31 +343,31 @@ carregarImagem:
 
     hx.syscall iniciarProcesso
 
-    jc .falhaExecutando
+    jc .failedToExecute
 
-    jmp obterComando
-
-;;************************************************************************************
-
-comandoAJUDA:
-
-    fputs DOSsh.ajuda.conteudoAjuda
-
-    jmp obterComando
+    jmp getCommand
 
 ;;************************************************************************************
 
-comandoCLS:
+commandHELP:
+
+    fputs DOSsh.help.helpContent
+
+    jmp getCommand
+
+;;************************************************************************************
+
+commandCLS:
 
     hx.syscall limparTela
 
-    jmp obterComando
+    jmp getCommand
 
 ;;************************************************************************************
 
-comandoDIR:
+commandDIR:
 
-    fputs DOSsh.dir.dirLinha1
+    fputs DOSsh.dir.dirLine1
 
     hx.syscall obterDisco
 
@@ -380,17 +375,17 @@ comandoDIR:
 
     imprimirString
 
-    fputs DOSsh.dir.dirLinha2
+    fputs DOSsh.dir.dirLine2
 
-    fputs DOSsh.dir.dirLinha3
+    fputs DOSsh.dir.dirLine3
 
 .obterListaArquivos:
 
-    hx.syscall listarArquivos ;; Obter arquivos em ESI
+    hx.syscall listarArquivos ;; Get files in ESI
 
-   ;; jc .erroLista
+   ;; jc .listError
 
-    mov [listaRemanescente], esi
+    mov [remainingList], esi
 
     push eax
 
@@ -399,81 +394,81 @@ comandoDIR:
     xor ecx, ecx
     xor edx, edx
 
-.loopArquivos:
+.fileLoop:
 
-    push ds ;; Segmento de dados do modo usuário (seletor 38h)
+    push ds ;; User mode data segment (38h selector)
     pop es
 
     push ebx
     push ecx
 
-    call lerListaArquivos
+    call readFileList
 
     push esi
 
     sub esi, 5
 
-    mov edi, DOSsh.extensaoMAN
+    mov edi, DOSsh.extensionMAN
 
-    hx.syscall compararPalavrasString ;; Checar por extensão .MAN
+    hx.syscall compararPalavrasString ;; Check for .MAN extension
 
-    jc .ocultar
+    jc .hide
 
-    mov edi, DOSsh.extensaoOCL
+    mov edi, DOSsh.extensionOCL
 
-    hx.syscall compararPalavrasString ;; Checar por extensão .OCL
+    hx.syscall compararPalavrasString ;; Check for .OCL extension
 
-    jc .ocultar
+    jc .hide
 
-    mov edi, DOSsh.extensaoCOW
+    mov edi, DOSsh.extensionCOW
 
-    hx.syscall compararPalavrasString ;; Checar por extensão .COW
+    hx.syscall compararPalavrasString ;; Check for .COW extension
 
-    jc .ocultar
+    jc .hide
 
     pop esi
 
-    fputs [arquivoAtual]
+    fputs [currentFile]
 
     push ecx
     push ebx
     push eax
 
-    novaLinha
+    putNewLine
 
     pop eax
     pop ebx
     pop ecx
 
-    jmp .contar
+    jmp .count
 
-.ocultar:
+.hide:
 
     pop esi
 
     inc ecx
 
-.contar:
+.count:
 
     pop ecx
     pop ebx
 
     cmp ecx, ebx
-    je .terminado
+    je .finished
 
     inc ecx
 
-    jmp .loopArquivos
+    jmp .fileLoop
 
-.terminado:
+.finished:
 
-    jmp obterComando.semNovaLinha
+    jmp getCommand.withoutNewLine
 
 ;;************************************************************************************
 
-comandoTYPE:
+commandTYPE:
 
-    call obterArgumentos
+    call getArguments
 
     push edi
 
@@ -481,49 +476,49 @@ comandoTYPE:
 
     hx.syscall arquivoExiste
 
-    jc erroGeralArquivo
+    jc fileNotFound
 
     mov esi, edi
-    mov edi, bufferArquivo
+    mov edi, appFileBuffer
 
     hx.syscall abrir
 
-    jc erroGeralArquivo
+    jc fileNotFound
 
-    novaLinha
-    novaLinha
+    putNewLine
+    putNewLine
 
-    fputs bufferArquivo
+    fputs appFileBuffer
 
-    jmp obterComando
-
-;;************************************************************************************
-
-comandoVER:
-
-    fputs DOSsh.ajuda.introducao
-
-    fputs DOSsh.direitosAutorais
-
-    fputs DOSsh.licenca
-
-    novaLinha
-
-    jmp obterComando
+    jmp getCommand
 
 ;;************************************************************************************
 
-finalizarShell:
+commandVER:
 
-    logSistema DOSsh.verboseSaida, 00h, Log.Prioridades.p4
+    fputs DOSsh.help.intro
 
-    novaLinha
+    fputs DOSsh.copyright
+
+    fputs DOSsh.license
+
+    putNewLine
+
+    jmp getCommand
+
+;;************************************************************************************
+
+finishShell:
+
+    logSistema DOSsh.verboseExitDOSsh, 00h, Log.Prioridades.p4
+
+    putNewLine
 
     mov ebx, 00h
 
     hx.syscall encerrarProcesso
 
-    jmp obterComando
+    jmp getCommand
 
     hx.syscall aguardarTeclado
 
@@ -531,33 +526,35 @@ finalizarShell:
 
 ;;************************************************************************************
 
-erroGeralArquivo:
+fileNotFound:
 
-    fputs DOSsh.erroGeralArquivo
+    fputs DOSsh.fileNotFound
 
-    jmp obterComando
+    jmp getCommand
+
+;;************************************************************************************
 
 ;;************************************************************************************
 ;;
-;; Fim dos comandos internos do DOSsh
+;; End of DOSsh internal commands
 ;;
-;; Funções úteis para o manipulação de dados no shell do DOSsh
+;; Useful functions for manipulating data in the DOSsh shell
 ;;
 ;;************************************************************************************
 
-;; Separar nome de comando e argumentos
+;; Separate command name and arguments
 ;;
-;; Entrada:
+;; Input:
 ;;
-;; ESI - Endereço do comando
+;; ESI - Command address
 ;;
-;; Saída:
+;; Output:
 ;;
-;; ESI - Endereço do comando
-;; EDI - Argumentos do comando
-;; CF  - Definido em caso de falta de extensão
+;; ESI - Command address
+;; EDI - Command arguments
+;; CF  - Set in case of lack of extension
 
-obterArgumentos:
+getArguments:
 
     push esi
 
@@ -566,14 +563,14 @@ obterArgumentos:
     lodsb ;; mov AL, byte[ESI] & inc ESI
 
     cmp al, 0
-    je .naoencontrado
+    je .notFound
 
     cmp al, ' '
-    je .espacoEncontrado
+    je .spaceFound
 
     jmp .loop
 
-.naoencontrado:
+.notFound:
 
     pop esi
 
@@ -581,9 +578,9 @@ obterArgumentos:
 
     stc
 
-    jmp .fim
+    jmp .end
 
-.espacoEncontrado:
+.spaceFound:
 
     mov byte[esi-1], 0
     mov ebx, esi
@@ -592,58 +589,55 @@ obterArgumentos:
 
     mov ecx, eax
 
-    inc ecx ;; Incluindo o último caractere (NULL)
+    inc ecx ;; Including the last character (NULL)
 
     push es
 
-    push ds ;; Segmento de dados do modo usuário (seletor 38h)
+    push ds ;; User mode data segment (38h selector)
     pop es
 
     mov esi, ebx
-    mov edi, bufferArquivo
+    mov edi, appFileBuffer
 
-    rep movsb ;; Copiar (ECX) caracteres da string de ESI para EDI
+    rep movsb ;; Copy (ECX) string characters from ESI to EDI
 
     pop es
 
-    mov edi, bufferArquivo
+    mov edi, appFileBuffer
 
     pop esi
 
     clc
 
-.fim:
+.end:
 
     ret
 
 ;;************************************************************************************
 
-;; Obtem os parâmetros necessários para o funcionamento do programa, diretamente da linha
-;; de comando fornecida pelo sistema
+readFileList:
 
-lerListaArquivos:
-
-    push ds ;; Segmento de dados do modo usuário (seletor 38h)
+    push ds ;; User mode data segment (38h selector)
     pop es
 
-    mov esi, [listaRemanescente]
-    mov [arquivoAtual], esi
+    mov esi, [remainingList]
+    mov [currentFile], esi
 
     mov al, ' '
 
     hx.syscall encontrarCaractere
 
-    jc .pronto
+    jc .done
 
     mov al, ' '
 
-    call encontrarCaractereListaArquivos
+    call findCharacterInFileList
 
-    mov [listaRemanescente], esi
+    mov [remainingList], esi
 
-    jmp .pronto
+    jmp .done
 
-.pronto:
+.done:
 
     clc
 
@@ -651,27 +645,27 @@ lerListaArquivos:
 
 ;;************************************************************************************
 
-;; Realiza a busca de um caractere específico na String fornecida
+;; Searches for a specific character in the given string
 ;;
-;; Entrada:
+;; Input:
 ;;
-;; ESI - String à ser verificada
-;; AL  - Caractere para procurar
+;; ESI - String to be checked
+;; AL  - Character to search for
 ;;
-;; Saída:
+;; Output:
 ;;
-;; ESI - Posição do caractere na String fornecida
+;; ESI - Character position in the given string
 
-encontrarCaractereListaArquivos:
+findCharacterInFileList:
 
     lodsb
 
     cmp al, ' '
-    je .pronto
+    je .done
 
-    jmp encontrarCaractereListaArquivos
+    jmp findCharacterInFileList
 
-.pronto:
+.done:
 
     mov byte[esi-1], 0
 
@@ -679,4 +673,4 @@ encontrarCaractereListaArquivos:
 
 ;;************************************************************************************
 
-bufferArquivo: ;; Endereço para carregamento de arquivos
+appFileBuffer: ;; Address for opening files
