@@ -68,11 +68,11 @@
 
 use32
 
-;; Agora vamos criar um cabeçalho para a imagem HAPP final do aplicativo.
+;; Now let's create a HAPP header for the application
 
-include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
+include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo
+;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
 cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, Quartzo, 01h
 
 ;;*************************************************************************************************
@@ -84,66 +84,66 @@ include "dev.s"
 
 ;;*************************************************************************************************
 
-;;*************************************************************************************************
+;;************************************************************************************
 ;;
-;; Dados do aplicativo
+;;                        Application variables and data
 ;;
-;;*************************************************************************************************
+;;************************************************************************************
 
-;; Aparência
+;; Appearance
 
-CORDESTAQUE = HEXAGONIX_BLOSSOM_ROXO
+COLOR_HIGHLIGHT = HEXAGONIX_BLOSSOM_ROXO
 
-;; Variáveis, constantes e estruturas
+;; Variables, constants and structures
 
-VERSAO equ "3.2.3"
+VERSION equ "3.3.0"
 
-tamanhoRodape = 44
+footerSize = 44
 
 quartzo:
 
-.formato:
+.format:
 db "UTF-8", 0
-.formatoFimLinha:
+.endLineFormat:
 db "LF", 0
-.virgula:
+.comma:
 db ", ", 0
-.separador:
+.separator:
 db " | ", 0
-.rodapePrograma:
+.applicationFooter:
 db "[^F] Exit, [^A] Open, [^S] Save | Filename:               ", 0
-.linha:
+.line:
 db "Line: ", 0
-.coluna:
+.column:
 db "Column: ", 0
-.arquivoSalvo:
+.fileSaved:
 db "File saved", 0
-.solicitarArquivo:
+.askForFile:
 db "Filename [ENTER to cancel]: ", 0
-.rodapeNovoArquivo:
+.newFileFooter:
 db "New file", 0
-.permissaoNegada:
+.permissionDenied:
 db "Only an administrative user can change this file. Press any key to continue...", 0
-.erroDeletando:
+.unlinkError:
 db "Error updating file.", 0
-.tituloPrograma:
-db "Quartzo Text Editor for Hexagonix - Version ", VERSAO, 0
-.corFonte: dd 0
-.corFundo: dd 0
+.applicationTitle:
+db "Quartzo Text Editor for Hexagonix - Version ", VERSION, 0
+.fontColor: dd 0
+.backGroundColor: dd 0
 
-nomeArquivo: ;; Nome do arquivo
+filename: ;; Filename
 times 13 db 0
-totalLinhas:          dd 0 ;; Contador de linhas no arquivo
-linha:                dd 0 ;; Linha atual no arquivo
-posicaoLinhaAtual:    dd 0 ;; Posição da linha atual em todo o arquivo
-posicaoAtualNaLinha:  dd 0 ;; Posição do cursor na linha atual
-tamanhoLinhaAtual:    dd 0 ;; Tamanho da linha atual
-posicaoLinhaNaTela:   dd 1 ;; Posição da linha no display
-posicaoPaginaAtual:   dd 0 ;; Posição da página atual no arquivo (uma tela)
-necessarioRedesenhar: db 1 ;; Se não zero, é necessário redesenhar toda a tela
-maxColunas:           db 0 ;; Total de colunas disponíveis no vídeo na resolução atual
-maxLinhas:            db 0 ;; Total de linhas disponíveis no vídeo na resolução atual
-retornoMenu:          db 0 ;; Usado para verificar se o retorno vem de um menu (CTRL+opção)
+totalLines:              dd 0 ;; Line counter in the file
+line:                    dd 0 ;; Current line in file
+positionCurrentLine:     dd 0 ;; Current line position throughout the file
+positionCurrentOnLine:   dd 0 ;; Cursor position on current line
+sizeCurrentLine:         dd 0 ;; Current line size
+positionLineOnScreen:    dd 1 ;; Line position on the display
+positionCurrentPage:     dd 0 ;; Position of the current page in the file (one screen)
+screenRefreshIsRequired: db 1 ;; If not zero, you need to redraw the entire screen
+maxColumns:              db 0 ;; Total columns available in the video at the current resolution
+maxLines:                db 0 ;; Total lines available in the video at the current resolution
+returnOrigin:            db 0 ;; Used to check if the return comes from a menu (CTRL+option)
 
 ;;*************************************************************************************************
 
@@ -151,130 +151,128 @@ Quartzo:
 
     hx.syscall obterInfoTela
 
-    mov byte[maxColunas], bl
-    mov byte[maxLinhas], bh
+    mov byte[maxColumns], bl
+    mov byte[maxLines], bh
 
     hx.syscall obterCor
 
-    mov dword[quartzo.corFonte], eax
-    mov dword[quartzo.corFundo], ebx
+    mov dword[quartzo.fontColor], eax
+    mov dword[quartzo.backGroundColor], ebx
 
-    cmp byte[edi], 0 ;; Em caso de falta de argumentos
-    je .criarNovoArquivo
+    cmp byte[edi], 0 ;; In case of lack of arguments
+    je .createNewFile
 
-    mov esi, edi ;; Argumentos do programa
+    mov esi, edi ;; Application arguments
 
     hx.syscall tamanhoString
 
-    cmp eax, 12 ;; Nome de arquivo inválido
-    ja .criarNovoArquivo
+    cmp eax, 12 ;; Invalid filename
+    ja .createNewFile
 
-.salvarNomeArquivo: ;; Salvar nome do arquivo
+.saveFilename: ;; Save filename
 
     push es
 
-    push ds ;; Segmento de dados do modo usuário (seletor 38h)
+    push ds ;; User mode data segment (38h selector)
     pop es
 
-    mov edi, nomeArquivo
-    mov ecx, eax ;; Caracteres no nome do arquivo
+    mov edi, filename
+    mov ecx, eax ;; Characters in the filename
 
-    inc ecx ;; Incluindo o caractere NULL
+    inc ecx ;; Including the NULL character
 
     rep movsb
 
     pop es
 
-.carregarArquivo: ;; Abrir arquivo
+.loadFile: ;; Open file
 
-    mov esi, nomeArquivo
+    mov esi, filename
 
     hx.syscall arquivoExiste
 
-    jc .criarNovoArquivo ;; O arquivo não existe
+    jc .createNewFile ;; The file does not exist
 
-    mov esi, nomeArquivo
+    mov esi, filename
 
-    mov edi, bufferArquivo ;; Endereço para o carregamento
+    mov edi, appFileBuffer ;; Loading address
 
     hx.syscall abrir
 
-    mov esi, nomeArquivo
+    mov esi, filename
 
     hx.syscall tamanhoString
 
     mov ecx, eax
 
-.configurarRodape: ;; Adicionar nome do arquivo no rodapé
+.configureFooter: ;; Add file name in footer
 
     push es
 
-;; Vamos configurar DS e ES com o segmento de dados do modo usuário
-
-    push ds
+    push ds ;; User mode data segment (38h selector)
     pop es
 
-;; Agora o nome do arquivo aberto será exibido na interface do aplicativo
+;; Now the name of the opened file will be displayed in the application interface
 
-    mov edi, quartzo.rodapePrograma+tamanhoRodape ;; Posição
-    mov esi, nomeArquivo
+    mov edi, quartzo.applicationFooter+footerSize ;; Poaition
+    mov esi, filename
 
     rep movsb
 
     pop es
 
-    jmp .iniciarInterface
+    jmp .startInterface
 
-.criarNovoArquivo:
+.createNewFile:
 
-    mov byte[nomeArquivo], 0
+    mov byte[filename], 0
 
-;; Adicionar 'New file', ao rodapé do programa
+;; Add 'New file' to the application footer
 
     push es
 
-    push ds ;; Segmento de dados do modo usuário (seletor 38h)
+    push ds ;; User mode data segment (38h selector)
     pop es
 
     mov ecx, 12
 
-    mov esi, quartzo.rodapeNovoArquivo
-    mov edi, quartzo.rodapePrograma+tamanhoRodape
+    mov esi, quartzo.newFileFooter
+    mov edi, quartzo.applicationFooter+footerSize
 
     rep movsb
 
     pop es
 
-.iniciarInterface:
+.startInterface:
 
-    mov al, 10 ;; Caractere de nova linha
+    mov al, 10 ;; New line character
 
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
     hx.syscall encontrarCaractere
 
-    mov dword[totalLinhas], eax
+    mov dword[totalLines], eax
 
-    mov dword[posicaoLinhaAtual], 0
+    mov dword[positionCurrentLine], 0
 
     mov edx, 0
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
-    add esi, dword[posicaoLinhaAtual]
+    add esi, dword[positionCurrentLine]
 
-    call tamanhoLinha ;; Encontrar tamanho da linha atual
+    call lineSize ;; Find current line size
 
-    mov byte[posicaoAtualNaLinha], dl ;; Cursor no final da linha
-    mov byte[tamanhoLinhaAtual], dl   ;; Salvar tamanho da linha atual
+    mov byte[positionCurrentOnLine], dl ;; Cursor at end of line
+    mov byte[sizeCurrentLine], dl       ;; Save current line size
 
-    mov dword[posicaoPaginaAtual], 0
+    mov dword[positionCurrentPage], 0
 
-.aguardarInteragirPrincipal:
+.waitInteract:
 
-    cmp byte[necessarioRedesenhar], 0
-    je .outrasLinhasImpressas ;; Não é necessário imprimir outras linhas
+    cmp byte[screenRefreshIsRequired], 0
+    je .otherPrintedLines ;; No need to print other lines
 
-;; Imprimir outras linhas
+;; Print other lines
 
     mov esi, Hexagon.LibASM.Dev.video.tty1
 
@@ -282,39 +280,39 @@ Quartzo:
 
     hx.syscall limparTela
 
-    mov eax, dword[totalLinhas]
+    mov eax, dword[totalLines]
 
-    cmp dword[linha], eax
-    je .outrasLinhasImpressas
+    cmp dword[line], eax
+    je .otherPrintedLines
 
-.imprimirOutrasLinhas:
+.printOtherLines:
 
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
-    add esi, dword[posicaoPaginaAtual]
+    add esi, dword[positionCurrentPage]
 
-    novaLinha
+    putNewLine
 
-    movzx ecx, byte[maxLinhas]
+    movzx ecx, byte[maxLines]
 
     sub ecx, 2
 
-.imprimirOutrasLinhasLoop:
+.printOtherLinesLoop:
 
-    call imprimirLinha
+    call printLine
 
-    jc .imprimirTitulo
+    jc .printTitle
 
-    novaLinha
+    putNewLine
 
-    loop .imprimirOutrasLinhasLoop
+    loop .printOtherLinesLoop
 
-.imprimirTitulo:
+.printTitle:
 
-;; Imprime o título do programa e rodapé
+;; Prints application title and footer
 
     mov eax, BRANCO_ANDROMEDA
-    mov ebx, CORDESTAQUE
+    mov ebx, COLOR_HIGHLIGHT
 
     hx.syscall definirCor
 
@@ -322,38 +320,38 @@ Quartzo:
 
     hx.syscall limparLinha
 
-    fputs quartzo.tituloPrograma
+    fputs quartzo.applicationTitle
 
-    mov al, byte[maxLinhas] ;; Última linha
+    mov al, byte[maxLines] ;; Last line
 
     dec al
 
     hx.syscall limparLinha
 
-    fputs quartzo.rodapePrograma
+    fputs quartzo.applicationFooter
 
     hx.syscall obterCursor
 
-    mov dl, byte[maxColunas]
+    mov dl, byte[maxColumns]
 
     sub dl, 41
 
     hx.syscall definirCursor
 
-    fputs quartzo.separador
+    fputs quartzo.separator
 
-    fputs quartzo.formato
+    fputs quartzo.format
 
-    fputs quartzo.separador
+    fputs quartzo.separator
 
-    mov eax, dword[quartzo.corFonte]
-    mov ebx, dword[quartzo.corFundo]
+    mov eax, dword[quartzo.fontColor]
+    mov ebx, dword[quartzo.backGroundColor]
 
     hx.syscall definirCor
 
-;; Atualizar tela
+;; Refresh tela
 
-.atualizarBuffer:
+.updateBuffer:
 
     hx.syscall atualizarTela
 
@@ -361,59 +359,59 @@ Quartzo:
 
     hx.syscall abrir
 
-.outrasLinhasImpressas:
+.otherPrintedLines:
 
-    mov byte[necessarioRedesenhar], 0
+    mov byte[screenRefreshIsRequired], 0
 
     mov dl, 0
-    mov dh, byte[posicaoLinhaNaTela]
+    mov dh, byte[positionLineOnScreen]
 
     hx.syscall definirCursor
 
-;; Imprimir linha atual
+;; Print last line
 
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
-    add esi, dword[posicaoLinhaAtual]
+    add esi, dword[positionCurrentLine]
 
-    call imprimirLinha
+    call printLine
 
     mov al, ' '
 
     hx.syscall imprimirCaractere
 
-;; Imprimir linha e coluna atuais
+;; Print current line and column
 
     mov eax, BRANCO_ANDROMEDA
-    mov ebx, CORDESTAQUE
+    mov ebx, COLOR_HIGHLIGHT
 
     hx.syscall definirCor
 
-    mov dl, byte[maxColunas]
+    mov dl, byte[maxColumns]
 
     sub dl, 30
 
-    mov dh, byte[maxLinhas]
+    mov dh, byte[maxLines]
 
     dec dh
 
     hx.syscall definirCursor
 
-    fputs quartzo.linha
+    fputs quartzo.line
 
-    mov eax, dword[linha]
+    mov eax, dword[line]
 
-    inc eax ;; Contando de 1
+    inc eax ;; Counting from 1
 
     imprimirInteiro
 
-    fputs quartzo.virgula
+    fputs quartzo.comma
 
-    fputs quartzo.coluna
+    fputs quartzo.column
 
-    movzx eax, byte[posicaoAtualNaLinha]
+    movzx eax, byte[positionCurrentOnLine]
 
-    inc eax ;; Contando de 1
+    inc eax ;; Counting from 1
 
     imprimirInteiro
 
@@ -421,305 +419,301 @@ Quartzo:
 
     hx.syscall imprimirCaractere
 
-    mov eax, dword[quartzo.corFonte]
-    mov ebx, dword[quartzo.corFundo]
+    mov eax, dword[quartzo.fontColor]
+    mov ebx, dword[quartzo.backGroundColor]
 
     hx.syscall definirCor
 
-.iniciarProcessamentoEntrada:
+.startProcessingInput:
 
-;; Colocar cursor na posição atual na linha
+;; Place cursor at current position on line
 
-    mov dl, byte[posicaoAtualNaLinha]
-    mov dh, byte[posicaoLinhaNaTela]
+    mov dl, byte[positionCurrentOnLine]
+    mov dh, byte[positionLineOnScreen]
 
     hx.syscall definirCursor
 
-.processarEntrada:
+.processInput:
 
-    call processarEntrada
+    call processInput
 
-    cmp byte[retornoMenu], 01h
-    je .iniciarProcessamentoEntrada
+    cmp byte[returnOrigin], 01h
+    je .startProcessingInput
 
-    jmp .aguardarInteragirPrincipal
+    jmp .waitInteract
 
 ;;*************************************************************************************************
 
-salvarArquivoEditor:
+saveFileEditor:
 
-    cmp byte[nomeArquivo], 0
-    jne .naoNovoArquivo
+    cmp byte[filename], 0
+    jne .noNewFile
 
-;; Obter nome de arquivo
+;; Get filename
 
     mov eax, PRETO
     mov ebx, CINZA_CLARO
 
     hx.syscall definirCor
 
-    mov al, byte[maxLinhas]
+    mov al, byte[maxLines]
 
     sub al, 2
 
     hx.syscall limparLinha
 
     mov dl, 0
-    mov dh, byte[maxLinhas]
+    mov dh, byte[maxLines]
 
     sub dh, 2
 
     hx.syscall definirCursor
 
-    fputs quartzo.solicitarArquivo
+    fputs quartzo.askForFile
 
-    mov eax, 12 ;; Máximo de caracteres
+    mov eax, 12 ;; Maximum characters
 
     hx.syscall obterString
 
     hx.syscall tamanhoString
 
     cmp eax, 0
-    je .fim
+    je .end
 
-;; Salvar nome de arquivo
+;; Save filename
 
     push es
 
-;; Vamos configurar DS e ES com o segmento de dados do modo usuário
-
-    push ds
+    push ds ;; User mode data segment (38h selector)
     pop es
 
-    mov edi, nomeArquivo
-    mov ecx, eax ;; Caracteres no nome de arquivo
+    mov edi, filename
+    mov ecx, eax ;; Characters in the filename
 
-    inc ecx ;; Incluindo NULL
+    inc ecx ;; Including NULL
 
     rep movsb
 
-;; Adicionar ao rodapé
+;; Add to footer
 
-    mov ecx, eax ;; Caracteres do nome do arquivo
+    mov ecx, eax ;; Characters in the filename
 
     inc ecx
 
-    mov esi, nomeArquivo
-    mov edi, quartzo.rodapePrograma+tamanhoRodape
+    mov esi, filename
+    mov edi, quartzo.applicationFooter+footerSize
 
     rep movsb
 
     pop es
 
-    mov eax, dword[quartzo.corFonte]
-    mov ebx, dword[quartzo.corFundo]
+    mov eax, dword[quartzo.fontColor]
+    mov ebx, dword[quartzo.backGroundColor]
 
     hx.syscall definirCor
 
-    jmp .continuar
+    jmp .continue
 
-.naoNovoArquivo:
+.noNewFile:
 
-;; Se o arquivo já existe, delete-o
+;; If the file already exists, delete it
 
-    mov esi, nomeArquivo
+    mov esi, filename
 
     hx.syscall deletarArquivo
 
-    jc .erroDeletando
+    jc .unlinkError
 
-.continuar:
+.continue:
 
-;; Encontrar tamanho do arquivo
+;; Find file size
 
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
     hx.syscall tamanhoString
 
-;; Salvar arquivo
+;; Save file
 
-    mov esi, nomeArquivo
-    mov edi, bufferArquivo
+    mov esi, filename
+    mov edi, appFileBuffer
 
     hx.syscall salvarArquivo
 
-;; Exibir mensagem de salvamento
+;; Display save message
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, VERDE
 
     hx.syscall definirCor
 
-    mov al, byte[maxLinhas]
+    mov al, byte[maxLines]
 
     sub al, 2
 
     hx.syscall limparLinha
 
     mov dl, 0
-    mov dh, byte[maxLinhas]
+    mov dh, byte[maxLines]
 
     sub dh, 2
 
     hx.syscall definirCursor
 
-    fputs quartzo.arquivoSalvo
+    fputs quartzo.fileSaved
 
-.fim:
+.end:
 
-    mov eax, dword[quartzo.corFonte]
-    mov ebx, dword[quartzo.corFundo]
+    mov eax, dword[quartzo.fontColor]
+    mov ebx, dword[quartzo.backGroundColor]
 
     hx.syscall definirCor
 
-    mov byte[necessarioRedesenhar], 1
+    mov byte[screenRefreshIsRequired], 1
 
     ret
 
-.erroDeletando:
+.unlinkError:
 
     cmp eax, IO.operacaoNegada
-    je .permissaoNegada
+    je .permissionDenied
 
     mov eax, PRETO
     mov ebx, CINZA_CLARO
 
     hx.syscall definirCor
 
-    mov al, byte[maxLinhas]
+    mov al, byte[maxLines]
 
     sub al, 2
 
     hx.syscall limparLinha
 
     mov dl, 0
-    mov dh, byte[maxLinhas]
+    mov dh, byte[maxLines]
 
     sub dh, 2
 
     hx.syscall definirCursor
 
-    fputs quartzo.erroDeletando
+    fputs quartzo.unlinkError
 
     hx.syscall aguardarTeclado
 
-    jmp .fim
+    jmp .end
 
-.permissaoNegada:
+.permissionDenied:
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, VERMELHO_TIJOLO
 
     hx.syscall definirCor
 
-    mov al, byte[maxLinhas]
+    mov al, byte[maxLines]
 
     sub al, 2
 
     hx.syscall limparLinha
 
     mov dl, 0
-    mov dh, byte[maxLinhas]
+    mov dh, byte[maxLines]
 
     sub dh, 2
 
     hx.syscall definirCursor
 
-    fputs quartzo.permissaoNegada
+    fputs quartzo.permissionDenied
 
-    jmp .fim
+    jmp .end
 
 ;;*************************************************************************************************
 
-abrirArquivoEditor:
+openFileEditor:
 
-;; Obter nome de arquivo
+;; Get filename
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, VERDE
 
     hx.syscall definirCor
 
-    mov al, byte[maxLinhas]
+    mov al, byte[maxLines]
 
     sub al, 2
 
     hx.syscall limparLinha
 
     mov dl, 0
-    mov dh, byte[maxLinhas]
+    mov dh, byte[maxLines]
 
     sub dh, 2
 
     hx.syscall definirCursor
 
-    fputs quartzo.solicitarArquivo
+    fputs quartzo.askForFile
 
-    mov eax, 12 ;; Máximo de caracteres
+    mov eax, 12 ;; Maximum characters
 
     hx.syscall obterString
 
     hx.syscall tamanhoString
 
     cmp eax, 0
-    je .fim
+    je .end
 
-;; Salvar nome de arquivo
+;; Save filename
 
     push es
 
-;; Vamos configurar DS e ES com o segmento de dados do modo usuário
-
-    push ds
+    push ds ;; User mode data segment (38h selector)
     pop es
 
-    mov edi, nomeArquivo
-    mov ecx, eax ;; Caracteres no nome de arquivo
+    mov edi, filename
+    mov ecx, eax ;; Characters in the filename
 
-    inc ecx ;; Incluindo NULL
+    inc ecx ;; Including NULL
 
     rep movsb
 
-;; Adicionar ao rodapé
+;; Add to footer
 
-    mov ecx, eax ;; Caracteres do nome do arquivo
+    mov ecx, eax ;; Filename characters
 
     inc ecx
 
-    mov esi, nomeArquivo
-    mov edi, quartzo.rodapePrograma+tamanhoRodape
+    mov esi, filename
+    mov edi, quartzo.applicationFooter+footerSize
 
     rep movsb
 
     pop es
 
-    mov eax, dword[quartzo.corFonte]
-    mov ebx, dword[quartzo.corFundo]
+    mov eax, dword[quartzo.fontColor]
+    mov ebx, dword[quartzo.backGroundColor]
 
     hx.syscall definirCor
 
-    call reiniciarBufferVideo
+    call restartVideoBuffer
 
-    call reiniciarBufferTexto
+    call restartTextBuffer
 
-    mov byte[necessarioRedesenhar], 1
+    mov byte[screenRefreshIsRequired], 1
 
-    jmp Quartzo.carregarArquivo
+    jmp Quartzo.loadFile
 
-.fim:
+.end:
 
-    mov eax, dword[quartzo.corFonte]
-    mov ebx, dword[quartzo.corFundo]
+    mov eax, dword[quartzo.fontColor]
+    mov ebx, dword[quartzo.backGroundColor]
 
     hx.syscall definirCor
 
-    mov byte[necessarioRedesenhar], 1
+    mov byte[screenRefreshIsRequired], 1
 
     ret
 
 ;;*************************************************************************************************
 
-reiniciarBufferVideo:
+restartVideoBuffer:
 
     mov esi, Hexagon.LibASM.Dev.video.tty1
 
@@ -737,326 +731,326 @@ reiniciarBufferVideo:
 
 ;;*************************************************************************************************
 
-reiniciarBufferTexto:
+restartTextBuffer:
 
-    mov dword[bufferArquivo], 10 ;; Vamos zerar o buffer de texto
+    mov dword[appFileBuffer], 10 ;; Let's clear the text buffer
 
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
     mov eax, 0
-    mov dword[linha], eax
+    mov dword[line], eax
 
-    mov byte[posicaoLinhaNaTela], 01h
-    mov eax, dword[posicaoLinhaAtual]
-    mov dword[posicaoPaginaAtual], eax
+    mov byte[positionLineOnScreen], 01h
+    mov eax, dword[positionCurrentLine]
+    mov dword[positionCurrentPage], eax
 
     ret
 
 ;;************************************************************************************
 
-processarEntrada:
+processInput:
 
     hx.syscall aguardarTeclado
 
-;; Vamos checar se a tecla CTRL está pressionada e tomar as devidas providências
+;; Let's check if the CTRL key is pressed and take the necessary action
 
     push eax
 
     hx.syscall obterEstadoTeclas
 
     bt eax, 0
-    jc .teclasControl
+    jc .controlKeys
 
     pop eax
 
-;; Vamos agora interpretar os scan codes do teclado
+;; Let's now interpret the keyboard scan codes
 
     cmp ah, 28
-    je .teclasReturn
+    je .returnKeys
 
     cmp ah, 15 ;; Tab
-    je .caractereImprimivel
+    je .printableCharacter
 
     cmp ah, 71
-    je .teclaHome
+    je .homeKey
 
     cmp ah, 79
-    je .teclaEnd
+    je .endKey
 
     cmp ah, 14
-    je .teclaBackspace
+    je .backspaceKey
 
     cmp ah, 83
-    je .teclaDelete
+    je .deleteKey
 
     cmp ah, 75
-    je .teclaEsquerda
+    je .leftKey
 
     cmp ah, 77
-    je .teclaDireita
+    je .rightKey
 
     cmp ah, 72
-    je .teclaCima
+    je .upKey
 
     cmp ah, 80
-    je .teclaBaixo
+    je .downKey
 
     cmp ah, 81
-    je .teclaPageDown
+    je .pageDownKey
 
     cmp ah, 73
-    je .teclaPageUp
+    je .pageUpKey
 
-;; Se o caractere não foi imprimível
+;; If the character was not printable
 
     cmp al, ' '
-    jl .prepararRetorno
+    jl .prepareReturn
 
     cmp al, '~'
-    ja .prepararRetorno
+    ja .prepareReturn
 
-;; Outra tecla
+;; Other key
 
-.caractereImprimivel:
+.printableCharacter:
 
-;; Não são suportados mais de 79 caracteres por linha
+;; No more than 79 characters per line are supported
 
-    mov bl, byte[maxColunas]
+    mov bl, byte[maxColumns]
 
     dec bl
 
-    cmp byte[tamanhoLinhaAtual], bl
-    jae .prepararRetorno
+    cmp byte[sizeCurrentLine], bl
+    jae .prepareReturn
 
     mov edx, 0
-    movzx esi, byte[posicaoAtualNaLinha] ;; Posição para inserir caracteres
+    movzx esi, byte[positionCurrentOnLine] ;; Position for inserting characters
 
-    add esi, dword[posicaoLinhaAtual]
-    add esi, bufferArquivo
+    add esi, dword[positionCurrentLine]
+    add esi, appFileBuffer
 
-    hx.syscall inserirCaractere ;; Inserir char na string
+    hx.syscall inserirCaractere ;; Insert char into string
 
-    inc byte[posicaoAtualNaLinha] ;; Um caractere foi adicionado
-    inc byte[tamanhoLinhaAtual]
+    inc byte[positionCurrentOnLine] ;; A character has been added
+    inc byte[sizeCurrentLine]
 
-;; Mais teclas
+;; More keys
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-;; Tecla Return ou Enter
+;; Return or Enter key
 
-.teclasReturn:
+.returnKeys:
 
-    mov byte[necessarioRedesenhar], 1
+    mov byte[screenRefreshIsRequired], 1
 
     mov edx, 0
 
-    movzx esi, byte[posicaoAtualNaLinha]
+    movzx esi, byte[positionCurrentOnLine]
 
-    add esi, bufferArquivo
-    add esi, dword[posicaoLinhaAtual]
+    add esi, appFileBuffer
+    add esi, dword[positionCurrentLine]
 
     mov al, 10
 
     hx.syscall inserirCaractere
 
-;; Nova linha
+;; New line
 
-    inc dword[linha]
+    inc dword[line]
 
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
+    mov esi, appFileBuffer
+    mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
-    sub esi, bufferArquivo
+    sub esi, appFileBuffer
 
-    mov dword[posicaoLinhaAtual], esi
+    mov dword[positionCurrentLine], esi
 
-;; Calcular valores para essa linha
+;; Calculate values ​​for this line
 
     mov edx, 0
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
-    add esi, dword[posicaoLinhaAtual]
+    add esi, dword[positionCurrentLine]
 
-    call tamanhoLinha ;; Encontrar tamanho para essa linha
+    call lineSize ;; Find size for this line
 
-    mov byte[posicaoAtualNaLinha], 0 ;; Cursor no fim da linha
-    mov byte[tamanhoLinhaAtual], dl  ;; Salvar o tamanho atual da linha
+    mov byte[positionCurrentOnLine], 0 ;; Cursor at end of line
+    mov byte[sizeCurrentLine], dl  ;; Save current line size
 
-    mov al, 10 ;; Caractere de nova linha
-    mov esi, bufferArquivo
+    mov al, 10 ;; New line character
+    mov esi, appFileBuffer
 
     hx.syscall encontrarCaractere
 
-    mov dword[totalLinhas], eax
+    mov dword[totalLines], eax
 
-;; Tentar mover o cursor para baixo
+;; Try moving the cursor down
 
-    mov bl, byte[maxLinhas]
-
-    sub bl, 2
-
-    cmp byte[posicaoLinhaNaTela], bl
-    jb .teclasReturn.cursorProximaLinha
-
-;; Se for última linha, rode a tela
-
-    mov bl, byte[maxLinhas]
+    mov bl, byte[maxLines]
 
     sub bl, 2
 
-    mov byte[posicaoLinhaNaTela], bl
+    cmp byte[positionLineOnScreen], bl
+    jb .returnKeys.cursorNextLine
 
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-    movzx ebx, byte[maxLinhas]
+;; If it's the last line, scroll down
+
+    mov bl, byte[maxLines]
+
+    sub bl, 2
+
+    mov byte[positionLineOnScreen], bl
+
+    mov esi, appFileBuffer
+    mov eax, dword[line]
+    movzx ebx, byte[maxLines]
 
     sub bl, 3
     sub eax, ebx
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
-    sub esi, bufferArquivo
+    sub esi, appFileBuffer
 
-    mov dword[posicaoPaginaAtual], esi
+    mov dword[positionCurrentPage], esi
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclasReturn.cursorProximaLinha:
+.returnKeys.cursorNextLine:
 
-    inc byte[posicaoLinhaNaTela]
+    inc byte[positionLineOnScreen]
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-;; Teclas Control
+;; Control keys
 
-.teclasControl:
+.controlKeys:
 
     pop eax
 
     cmp al, 's'
-    je .teclaControlS
+    je .controlSKeys
 
     cmp al, 'S'
-    je .teclaControlS
+    je .controlSKeys
 
     cmp al, 'a'
-    je .teclaControlA
+    je .controlAKeys
 
     cmp al, 'A'
-    je .teclaControlA
+    je .controlAKeys
 
     cmp al, 'f'
-    je fimPrograma
+    je finishApplication
 
     cmp al, 'F'
-    je fimPrograma
+    je finishApplication
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaBackspace:
+.backspaceKey:
 
-;; Se na primeira coluna, não fazer nada
+;; If in the first column, do nothing
 
-    cmp byte[posicaoAtualNaLinha], 0
-    je .teclaBackspace.primeiraColuna
+    cmp byte[positionCurrentOnLine], 0
+    je .backspaceKey.firstColumn
 
-;; Remover caractere da esquerda
+;; Remove character from left
 
-    movzx eax, byte[posicaoAtualNaLinha]
+    movzx eax, byte[positionCurrentOnLine]
 
-    add eax, dword[posicaoLinhaAtual]
+    add eax, dword[positionCurrentLine]
 
     dec eax
 
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
     hx.syscall removerCaractereString
 
-    dec byte[posicaoAtualNaLinha] ;; Um caractere foi removido
-    dec byte[tamanhoLinhaAtual]
+    dec byte[positionCurrentOnLine] ;; A character has been removed
+    dec byte[sizeCurrentLine]
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaBackspace.primeiraColuna:
+.backspaceKey.firstColumn:
 
-    cmp byte[linha], 0
-    je .prepararRetorno
+    cmp byte[line], 0
+    je .prepareReturn
 
-;; Calcular tamanho anterior da linha
+;; Calculate previous line size
 
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
+    mov esi, appFileBuffer
+    mov eax, dword[line]
 
-    dec eax ;; Linha anterior
+    dec eax ;; Previous line
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
-    sub esi, bufferArquivo
+    sub esi, appFileBuffer
 
     mov edx, 0
 
-    add esi, bufferArquivo
+    add esi, appFileBuffer
 
-    call tamanhoLinha ;; Encontrar tamanho
+    call lineSize ;; Find size
 
-    push edx ;; Salvar tamanho da linha
+    push edx ;; Save line size
 
-    add dl, byte[tamanhoLinhaAtual]
+    add dl, byte[sizeCurrentLine]
 
-;; Backspace não habilitado (suporte de até 79 caracteres por linha)
+;; Backspace not enabled (support up to 79 characters per line)
 
-    mov bl, byte[maxColunas]
+    mov bl, byte[maxColumns]
 
     dec bl
 
-    cmp dl, bl ;; Contando de 0
-    jnae .continuar
+    cmp dl, bl ;; Counting from 0
+    jnae .continue
 
     pop edx
 
     ret
 
-.continuar:
+.continue:
 
-;; Remover caractere de nova linha
+;; Remove newline character
 
-    mov byte[necessarioRedesenhar], 1
+    mov byte[screenRefreshIsRequired], 1
 
-    movzx eax, byte[posicaoAtualNaLinha]
+    movzx eax, byte[positionCurrentOnLine]
 
-    add eax, dword[posicaoLinhaAtual]
+    add eax, dword[positionCurrentLine]
 
     dec eax
 
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
     hx.syscall removerCaractereString
 
-    dec byte[totalLinhas] ;; Uma linha foi removida
-    dec dword[linha]
+    dec byte[totalLines] ;; A line has been removed
+    dec dword[line]
 
-;; Linha anterior
+;; Previous line
 
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
+    mov esi, appFileBuffer
+    mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .retornoPush
+    jc .pushReturn
 
-    sub esi, bufferArquivo
+    sub esi, appFileBuffer
 
     push esi
 
-;; Calcular valores para essa linha
+;; Calculate values ​​for this line
 
     mov edx, 0
 
@@ -1064,586 +1058,586 @@ processarEntrada:
 
     push esi
 
-    add esi, bufferArquivo
+    add esi, appFileBuffer
 
-    call tamanhoLinha ;; Encontrar tamanho da linha atual
+    call lineSize ;; Find current line size
 
-    mov byte[tamanhoLinhaAtual], dl ;; Salvar tamanho da linha
+    mov byte[sizeCurrentLine], dl ;; Save line size
 
-    pop dword[posicaoLinhaAtual]
+    pop dword[positionCurrentLine]
 
     pop edx
 
-    mov byte[posicaoAtualNaLinha], dl
+    mov byte[positionCurrentOnLine], dl
 
-    jmp .teclaCima.cursorMovido
+    jmp .upKey.cursorMoved
 
-.retornoPush:
+.pushReturn:
 
     pop edx
 
     ret
 
-.teclaDelete:
+.deleteKey:
 
-;; Se na última coluna, não fazer nada
+;; If in the last column, do nothing
 
-    mov dl, byte[tamanhoLinhaAtual]
+    mov dl, byte[sizeCurrentLine]
 
-    cmp byte[posicaoAtualNaLinha], dl
-    jae .prepararRetorno
+    cmp byte[positionCurrentOnLine], dl
+    jae .prepareReturn
 
-    movzx eax, byte[posicaoAtualNaLinha]
+    movzx eax, byte[positionCurrentOnLine]
 
-    add eax, dword[posicaoLinhaAtual]
+    add eax, dword[positionCurrentLine]
 
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
     hx.syscall removerCaractereString
 
-    dec byte[tamanhoLinhaAtual] ;; Um caractere foi removido
+    dec byte[sizeCurrentLine] ;; A character has been removed
 
-    inc byte[posicaoAtualNaLinha]
+    inc byte[positionCurrentOnLine]
 
-.teclaEsquerda:
+.leftKey:
 
-;; Se na primeira coluna, não fazer nada
+;; If in the first column, do nothing
 
-    cmp byte[posicaoAtualNaLinha], 0
-    jne .teclaEsquerda.moverEsquerda
+    cmp byte[positionCurrentOnLine], 0
+    jne .leftKey.moveLeft
 
-    cmp byte[linha], 0
-    je .prepararRetorno
+    cmp byte[line], 0
+    je .prepareReturn
 
-    mov bl, byte[maxColunas]
-    mov byte[posicaoAtualNaLinha], bl
+    mov bl, byte[maxColumns]
+    mov byte[positionCurrentOnLine], bl
 
-    jmp .teclaCima
+    jmp .upKey
 
-;; Mover cursor para a esquerda
+;; Move cursor left
 
-.teclaEsquerda.moverEsquerda:
+.leftKey.moveLeft:
 
-    dec byte[posicaoAtualNaLinha]
+    dec byte[positionCurrentOnLine]
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaDireita:
+.rightKey:
 
-;; Se na última coluna, não fazer nada
+;; If in the last column, do nothing
 
-    mov dl, byte[tamanhoLinhaAtual]
+    mov dl, byte[sizeCurrentLine]
 
-    cmp byte[posicaoAtualNaLinha], dl
-    jnae .teclaDireita.moverDireita
+    cmp byte[positionCurrentOnLine], dl
+    jnae .rightKey.moveRight
 
-;; Nova linha não permitida
+;; New line not allowed
 
-    mov eax, dword[linha]
+    mov eax, dword[line]
 
     inc eax
 
-    cmp dword[totalLinhas], eax
-    je .prepararRetorno
+    cmp dword[totalLines], eax
+    je .prepareReturn
 
-;; Nova linha
+;; New line
 
-    inc dword[linha]
+    inc dword[line]
 
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
+    mov esi, appFileBuffer
+    mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
-    sub esi, bufferArquivo
+    sub esi, appFileBuffer
 
-    mov dword[posicaoLinhaAtual], esi
+    mov dword[positionCurrentLine], esi
 
-;; Calcular valores para essa linha
-
-    mov edx, 0
-    mov esi, bufferArquivo
-
-    add esi, dword[posicaoLinhaAtual]
-
-    call tamanhoLinha
-
-    mov byte[posicaoAtualNaLinha], 0 ;; Cursor no fim da linha
-    mov byte[tamanhoLinhaAtual], dl  ;; Salvar tamanho da linha
-
-    jmp .teclaBaixo.proximo
-
-.teclaDireita.moverDireita:
-
-    inc byte[posicaoAtualNaLinha]
-
-    jmp .prepararRetorno
-
-.teclaCima:
-
-;; Linha anterior não permitida
-
-    cmp dword[linha], 0
-    je .prepararRetorno
-
-;; Linha anterior
-
-    dec dword[linha]
-
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-
-    call posicaoLinha
-
-    jc .prepararRetorno
-
-    sub esi, bufferArquivo
-
-    mov dword[posicaoLinhaAtual], esi
-
-;; Calcular valores para essa linha
+;; Calculate values ​​for this line
 
     mov edx, 0
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
-    add esi, dword[posicaoLinhaAtual]
+    add esi, dword[positionCurrentLine]
 
-    call tamanhoLinha
+    call lineSize
 
-    mov byte[tamanhoLinhaAtual], dl
+    mov byte[positionCurrentOnLine], 0 ;; Cursor at end of line
+    mov byte[sizeCurrentLine], dl      ;; Save line size
 
-    cmp dl, byte[posicaoAtualNaLinha]
-    jb .teclaCima.moverCursorAteOFim
+    jmp .downKey.next
 
-    jmp .teclaCima.cursorMovido ;; Não alterar a coluna do cursor
+.rightKey.moveRight:
 
-.teclaCima.moverCursorAteOFim:
+    inc byte[positionCurrentOnLine]
 
-    mov byte[posicaoAtualNaLinha], dl ;; Cursor ao fim da linha
+    jmp .prepareReturn
 
-.teclaCima.cursorMovido:
+.upKey:
 
-;; Tentar mover o cursor para cima
+;; Previous line not allowed
 
-    cmp byte[posicaoLinhaNaTela], 1
-    ja .teclaCima.cursorLinhaAnterior
+    cmp dword[line], 0
+    je .prepareReturn
 
-;; Se o cursor estiver na primeira linha, role a tela para cima
+;; Previous line
 
-    mov byte[posicaoLinhaNaTela], 1
-    mov eax, dword[posicaoLinhaAtual]
-    mov dword[posicaoPaginaAtual], eax
+    dec dword[line]
 
-    mov byte[necessarioRedesenhar], 1
+    mov esi, appFileBuffer
+    mov eax, dword[line]
 
-    jmp .prepararRetorno
+    call linePosition
 
-.teclaCima.cursorLinhaAnterior:
+    jc .prepareReturn
 
-    dec byte[posicaoLinhaNaTela]
+    sub esi, appFileBuffer
 
-    jmp .prepararRetorno
+    mov dword[positionCurrentLine], esi
 
-.teclaBaixo:
+;; Calculate values ​​for this line
 
-;; Próxima linha não disponível
+    mov edx, 0
+    mov esi, appFileBuffer
 
-    mov eax, dword[linha]
+    add esi, dword[positionCurrentLine]
+
+    call lineSize
+
+    mov byte[sizeCurrentLine], dl
+
+    cmp dl, byte[positionCurrentOnLine]
+    jb .upKey.moveCursorToEnd
+
+    jmp .upKey.cursorMoved ;; Do not change the cursor column
+
+.upKey.moveCursorToEnd:
+
+    mov byte[positionCurrentOnLine], dl ;; Cursor at end of line
+
+.upKey.cursorMoved:
+
+;; Try moving the cursor up
+
+    cmp byte[positionLineOnScreen], 1
+    ja .upKey.cursorPreviousLine
+
+;; If the cursor is on the first line, scroll up
+
+    mov byte[positionLineOnScreen], 1
+    mov eax, dword[positionCurrentLine]
+    mov dword[positionCurrentPage], eax
+
+    mov byte[screenRefreshIsRequired], 1
+
+    jmp .prepareReturn
+
+.upKey.cursorPreviousLine:
+
+    dec byte[positionLineOnScreen]
+
+    jmp .prepareReturn
+
+.downKey:
+
+;; Next line not available
+
+    mov eax, dword[line]
 
     inc eax
 
-    cmp dword[totalLinhas], eax
-    je .prepararRetorno
+    cmp dword[totalLines], eax
+    je .prepareReturn
 
-;; Próxima linha
+;; Next line
 
-    inc dword[linha]
+    inc dword[line]
 
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
+    mov esi, appFileBuffer
+    mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
-    sub esi, bufferArquivo
+    sub esi, appFileBuffer
 
-    mov dword[posicaoLinhaAtual], esi
+    mov dword[positionCurrentLine], esi
 
-;; Calcular valores para a linha
+;; Calculate values ​​for the line
 
     mov edx, 0
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
-    add esi, dword[posicaoLinhaAtual]
+    add esi, dword[positionCurrentLine]
 
-    call tamanhoLinha
+    call lineSize
 
-    mov byte[tamanhoLinhaAtual], dl
+    mov byte[sizeCurrentLine], dl
 
-    cmp dl, byte[posicaoAtualNaLinha]
-    jb .teclaBaixo.moverCursorAteOFim
+    cmp dl, byte[positionCurrentOnLine]
+    jb .downKey.moveCursorToEnd
 
-    jmp .teclaBaixo.cursorMovido ;; Não alterar a coluna
+    jmp .downKey.cursorMoved ;; Do not change the column
 
-.teclaBaixo.moverCursorAteOFim:
+.downKey.moveCursorToEnd:
 
-    mov byte[posicaoAtualNaLinha], dl ;; Cursor ao fim da linha
+    mov byte[positionCurrentOnLine], dl ;; Cursor at end of line
 
-.teclaBaixo.cursorMovido:
+.downKey.cursorMoved:
 
-.teclaBaixo.proximo:
+.downKey.next:
 
-;; Tentar mover o cursor para baixo
+;; Try moving the cursor down
 
-    mov bl, byte[maxLinhas]
-
-    sub bl, 2
-
-    cmp byte[posicaoLinhaNaTela], bl
-    jb .teclaBaixo.cursorProximaLinha
-
-;; Se na última linha, girar tela para baixo
-
-    mov bl, byte[maxLinhas]
+    mov bl, byte[maxLines]
 
     sub bl, 2
 
-    mov byte[posicaoLinhaNaTela], bl
+    cmp byte[positionLineOnScreen], bl
+    jb .downKey.cursorNextLine
 
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
-    movzx ebx, byte[maxLinhas]
+;; If in the last line, rotate screen down
+
+    mov bl, byte[maxLines]
+
+    sub bl, 2
+
+    mov byte[positionLineOnScreen], bl
+
+    mov esi, appFileBuffer
+    mov eax, dword[line]
+    movzx ebx, byte[maxLines]
 
     sub bl, 3
     sub eax, ebx
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
-    sub esi, bufferArquivo
+    sub esi, appFileBuffer
 
-    mov dword[posicaoPaginaAtual], esi
+    mov dword[positionCurrentPage], esi
 
-    mov byte[necessarioRedesenhar], 1
+    mov byte[screenRefreshIsRequired], 1
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaBaixo.cursorProximaLinha:
+.downKey.cursorNextLine:
 
-    inc byte[posicaoLinhaNaTela]
+    inc byte[positionLineOnScreen]
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaHome:
+.homeKey:
 
-;; Mover cursor para primeira coluna
+;; Move cursor to first column
 
-    mov byte[posicaoAtualNaLinha], 0
+    mov byte[positionCurrentOnLine], 0
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaEnd:
+.endKey:
 
-;; Mover cursor para última coluna
+;; Move cursor to last column
 
     mov edx, 0
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
-    add esi, dword[posicaoLinhaAtual]
+    add esi, dword[positionCurrentLine]
 
-    call tamanhoLinha
+    call lineSize
 
-    mov byte[posicaoAtualNaLinha], dl
+    mov byte[positionCurrentOnLine], dl
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaPageUp:
+.pageUpKey:
 
-    mov eax, dword[linha]
-    movzx ebx, byte[maxLinhas]
+    mov eax, dword[line]
+    movzx ebx, byte[maxLines]
 
     sub bl, 3
     sub eax, ebx
 
     cmp eax, 0
-    jle .teclaPageUp.irParaPrimeiraLinha
+    jle .pageUpKey.goToFirstLine
 
-;; Não redesenhar se na última linha
+;; Do not redraw if on the last line
 
-    mov bl, byte[maxLinhas]
+    mov bl, byte[maxLines]
 
     sub bl, 2
 
-    cmp byte[posicaoLinhaNaTela], bl
-    jae .teclaPageUp.naoNecessarioRedesenhar
+    cmp byte[positionLineOnScreen], bl
+    jae .pageUpKey.notNecessaryRefresh
 
-    mov byte[necessarioRedesenhar], 1
+    mov byte[screenRefreshIsRequired], 1
 
-.teclaPageUp.naoNecessarioRedesenhar:
+.pageUpKey.notNecessaryRefresh:
 
-;; Linha anterior
+;; Previous line
 
-    movzx ebx, byte[maxLinhas]
+    movzx ebx, byte[maxLines]
 
     sub bl, 3
-    sub dword[linha], ebx
+    sub dword[line], ebx
 
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
+    mov esi, appFileBuffer
+    mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
-    sub esi, bufferArquivo
+    sub esi, appFileBuffer
 
-    mov dword[posicaoLinhaAtual], esi
+    mov dword[positionCurrentLine], esi
 
-;; Calcular valores para essa linha
+;; Calculate values ​​for this line
 
     mov edx, 0
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
-    add esi, dword[posicaoLinhaAtual]
+    add esi, dword[positionCurrentLine]
 
-    call tamanhoLinha
+    call lineSize
 
-    mov byte[posicaoAtualNaLinha], dl ;; Cursor no fim da linha
-    mov byte[tamanhoLinhaAtual], dl
+    mov byte[positionCurrentOnLine], dl ;; Cursor at end of line
+    mov byte[sizeCurrentLine], dl
 
-.teclaPageUp.fim:
+.pageUpKey.end:
 
-    mov byte[posicaoLinhaNaTela], 1
-    mov eax, dword[posicaoLinhaAtual]
-    mov dword[posicaoPaginaAtual], eax
+    mov byte[positionLineOnScreen], 1
+    mov eax, dword[positionCurrentLine]
+    mov dword[positionCurrentPage], eax
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaPageUp.irParaPrimeiraLinha:
+.pageUpKey.goToFirstLine:
 
-;; Page Up não disponível
+;; Page Up not available
 
-    cmp dword[linha], 0
-    je .prepararRetorno
+    cmp dword[line], 0
+    je .prepareReturn
 
-    mov byte[necessarioRedesenhar], 1
+    mov byte[screenRefreshIsRequired], 1
 
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
     mov eax, 0
-    mov dword[linha], eax
+    mov dword[line], eax
 
-    call posicaoLinha
+    call linePosition
 
-    sub esi, bufferArquivo
+    sub esi, appFileBuffer
 
-    mov dword[posicaoLinhaAtual], esi
+    mov dword[positionCurrentLine], esi
 
-;; Calcular valores para a linha
+;; Calculate values ​​for the line
 
     mov edx, 0
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
-    add esi, dword[posicaoLinhaAtual]
+    add esi, dword[positionCurrentLine]
 
-    call tamanhoLinha
+    call lineSize
 
-    mov byte[posicaoAtualNaLinha], dl ;; Cursor no fim da linha
-    mov byte[tamanhoLinhaAtual], dl
+    mov byte[positionCurrentOnLine], dl ;; Cursor at end of line
+    mov byte[sizeCurrentLine], dl
 
-    jmp .teclaPageUp.fim
+    jmp .pageUpKey.end
 
-.teclaPageDown:
+.pageDownKey:
 
-    mov eax, dword[linha]
-    movzx ebx, byte[maxLinhas]
+    mov eax, dword[line]
+    movzx ebx, byte[maxLines]
 
     sub bl, 3
 
     add eax, ebx
 
-    cmp eax, dword[totalLinhas]
-    jae .teclaPageDown.irParaUltimaLinha
+    cmp eax, dword[totalLines]
+    jae .pageDownKey.goToLastLine
 
-;; Não redesenhar se primeira linha
+;; Don't redraw if it's the first line
 
-    cmp byte[posicaoLinhaNaTela], 1
-    jle .teclaPageDown.naoNecessarioRedesenhar
+    cmp byte[positionLineOnScreen], 1
+    jle .pageDownKey.notNecessaryRefresh
 
-    mov byte[necessarioRedesenhar], 1
+    mov byte[screenRefreshIsRequired], 1
 
-.teclaPageDown.naoNecessarioRedesenhar:
+.pageDownKey.notNecessaryRefresh:
 
-;; Próxima linha
+;; Next line
 
-    movzx ebx, byte[maxLinhas]
+    movzx ebx, byte[maxLines]
 
     sub bl, 3
 
-    add dword[linha], ebx
+    add dword[line], ebx
 
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
+    mov esi, appFileBuffer
+    mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
-    sub esi, bufferArquivo
+    sub esi, appFileBuffer
 
-    mov dword[posicaoLinhaAtual], esi
+    mov dword[positionCurrentLine], esi
 
-;; Calcular valores para a linha
+;; Calculate values ​​for the line
 
     mov edx, 0
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
-    add esi, dword[posicaoLinhaAtual]
+    add esi, dword[positionCurrentLine]
 
-    call tamanhoLinha
+    call lineSize
 
-    mov byte[posicaoAtualNaLinha], dl
-    mov byte[tamanhoLinhaAtual], dl
+    mov byte[positionCurrentOnLine], dl
+    mov byte[sizeCurrentLine], dl
 
-    mov bl, byte[maxLinhas]
+    mov bl, byte[maxLines]
 
     sub bl, 2
 
-    mov byte[posicaoLinhaNaTela], bl
+    mov byte[positionLineOnScreen], bl
 
-    mov eax, dword[linha]
-    movzx ebx, byte[maxLinhas]
+    mov eax, dword[line]
+    movzx ebx, byte[maxLines]
 
     sub bl, 3
     sub eax, ebx
 
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
-    sub esi, bufferArquivo
+    sub esi, appFileBuffer
 
-    mov dword[posicaoPaginaAtual], esi
+    mov dword[positionCurrentPage], esi
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaPageDown.irParaUltimaLinha:
+.pageDownKey.goToLastLine:
 
-;; Page Down não disponível
+;; Page Down not available
 
-    mov eax, dword[linha]
+    mov eax, dword[line]
 
     inc eax
 
-    cmp eax, dword[totalLinhas]
-    jae .prepararRetorno
+    cmp eax, dword[totalLines]
+    jae .prepareReturn
 
-    mov byte[necessarioRedesenhar], 1
+    mov byte[screenRefreshIsRequired], 1
 
-;; Próxima linha
+;; Next line
 
-    mov eax, dword[totalLinhas] ;; Última linha é o total de linhas - 1
+    mov eax, dword[totalLines] ;; Last line is the total number of lines - 1
 
     dec eax
 
-    mov dword[linha], eax ;; Fazer da última linha a linha atual
+    mov dword[line], eax ;; Make the last line the current line
 
-    mov esi, bufferArquivo
-    mov eax, dword[linha]
+    mov esi, appFileBuffer
+    mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
-    sub esi, bufferArquivo
+    sub esi, appFileBuffer
 
-    mov dword[posicaoLinhaAtual], esi
+    mov dword[positionCurrentLine], esi
 
-;; Calcular valores para essa linha
+;; Calculate values ​​for this line
 
     mov edx, 0
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
-    add esi, dword[posicaoLinhaAtual]
+    add esi, dword[positionCurrentLine]
 
-    call tamanhoLinha
+    call lineSize
 
-    mov byte[posicaoAtualNaLinha], dl
-    mov byte[tamanhoLinhaAtual], dl
+    mov byte[positionCurrentOnLine], dl
+    mov byte[sizeCurrentLine], dl
 
-    movzx ebx, byte[maxLinhas]
+    movzx ebx, byte[maxLines]
 
     sub ebx, 3
 
-    cmp dword[totalLinhas], ebx ;; Checar por arquivos pequenos ou grandes
-    jae .maisQueUmaPagina
+    cmp dword[totalLines], ebx ;; Check for small or large files
+    jae .moreThanOnePage
 
-;; Se arquivo pequeno
+;; If small file
 
-    mov ebx, dword[totalLinhas]
+    mov ebx, dword[totalLines]
 
     dec ebx
 
-;; Se arquivo grande
+;; If large file
 
-.maisQueUmaPagina:
+.moreThanOnePage:
 
     inc bl
 
-    mov byte[posicaoLinhaNaTela], bl
+    mov byte[positionLineOnScreen], bl
 
-    mov eax, dword[linha]
+    mov eax, dword[line]
 
     sub eax, ebx
 
     inc eax
 
-    mov esi, bufferArquivo
+    mov esi, appFileBuffer
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
-    sub esi, bufferArquivo
+    sub esi, appFileBuffer
 
-    mov dword[posicaoPaginaAtual], esi
+    mov dword[positionCurrentPage], esi
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaControlS:
+.controlSKeys:
 
-    call salvarArquivoEditor
+    call saveFileEditor
 
-    jmp .prepararRetornoEspecial
+    jmp .prepareSpecialReturn
 
-.teclaControlA:
+.controlAKeys:
 
-    call abrirArquivoEditor
+    call openFileEditor
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.prepararRetorno:
+.prepareReturn:
 
-    mov byte[retornoMenu], 00h
+    mov byte[returnOrigin], 00h
 
     ret
 
-.prepararRetornoEspecial:
+.prepareSpecialReturn:
 
-    mov byte[retornoMenu], 01h
+    mov byte[returnOrigin], 01h
 
     ret
 
 ;;*************************************************************************************************
 
-fimPrograma:
+finishApplication:
 
-    ;; call salvarArquivoEditor
+    ;; call saveFileEditor
 
     hx.syscall rolarTela
 
@@ -1655,158 +1649,158 @@ fimPrograma:
 
 ;;*************************************************************************************************
 ;;
-;; Funções acessórias
+;; Accessory functions
 ;;
 ;;*************************************************************************************************
 
-;; Imprimir uma linha da String
+;; Print a line of String
 ;;
-;; Entrada:
+;; Input:
 ;;
-;; ESI - Endereço do buffer
+;; ESI - Buffer Address
 ;;
-;; Saída:
+;; Output:
 ;;
-;; ESI - Próximo buffer
-;; Carry definido no fim do arquivo
+;; ESI - Next Buffer
+;; Carry defined at the end of the file
 
-imprimirLinha:
+printLine:
 
-    mov edx, 0 ;; Contador de caracteres
+    mov edx, 0 ;; Character counter
 
-.loopImprimir:
+.printLoop:
 
     lodsb
 
-    cmp al, 10 ;; Fim da linha
-    je .fim
+    cmp al, 10 ;; Line end
+    je .end
 
-    cmp al, 0 ;; Fim da String
-    je .fimArquivo
+    cmp al, 0 ;; String end
+    je .fileEnd
 
-    movzx ebx, byte[maxColunas]
+    movzx ebx, byte[maxColumns]
     dec bl
 
     cmp edx, ebx
-    jae .tamanhoMaximoLinha
+    jae .maxLineSize
 
     pushad
 
     mov ebx, 01h
 
-    hx.syscall imprimirCaractere ;; Imprimir caractere em AL
+    hx.syscall imprimirCaractere ;; Print character in AL
 
     popad
 
     inc edx
 
-    jmp .loopImprimir ;; Mais caracteres
+    jmp .printLoop ;; More characters
 
-.tamanhoMaximoLinha:
+.maxLineSize:
 
-    jmp .loopImprimir
+    jmp .printLoop
 
-.fimArquivo:
+.fileEnd:
 
     stc
 
-.fim:
+.end:
 
     ret
 
 ;;*************************************************************************************************
 
-;; Encontrar tamanho da linha
+;; Find line size
 ;;
-;; Entrada:
+;; Input:
 ;;
-;; ESI - Endereço do buffer
+;; ESI - Buffer Address
 ;;
-;; Saída:
+;; Output:
 ;;
-;; ESI - Próximo buffer
-;; EDX - += tamanho da linha
+;; ESI - Next Buffer
+;; EDX - += line size
 
-tamanhoLinha:
+lineSize:
 
     mov al, byte[esi]
 
     inc esi
 
-    cmp al, 10 ;; Fim da linha
-    je .fim
+    cmp al, 10 ;; Line end
+    je .end
 
-    cmp al, 0 ;; Fim da string
-    je .fim
+    cmp al, 0 ;; String end
+    je .end
 
     inc edx
 
-    jmp tamanhoLinha ;; Mais caracteres
+    jmp lineSize ;; More characters
 
-.fim:
+.end:
 
     ret
 
 ;;*************************************************************************************************
 
-;; Encontrar endereço da linha na string
+;; Find line address in string
 ;;
-;; Entrada:
+;; Input:
 ;;
 ;; ESI - String
-;; EAX - Número da linha (contando de 0)
+;; EAX - Line number (counting from 0)
 ;;
-;; Saída:
+;; Output:
 ;;
-;; ESI - Posição da string na linha
-;; Carry definido em linha não encontrada
+;; ESI - Position of the string on the line
+;; Carry defined in line not found
 
-posicaoLinha:
+linePosition:
 
     push ebx
 
     cmp eax, 0
-    je .linhaDesejadaEncontrada ;; Já na primeira linha
+    je .desiredLineFound ;; Already in the first line
 
-    mov edx, 0   ;; Contador de linhas
-    mov ebx, eax ;; Salvar linha
+    mov edx, 0   ;; Line counter
+    mov ebx, eax ;; Save line
 
     dec ebx
 
-.proximoCaractere:
+.nextCharacter:
 
     mov al, byte[esi]
 
     inc esi
 
-    cmp al, 10 ;; Caractere de nova linha
-    je .linhaEncontrada
+    cmp al, 10 ;; New line character
+    je .lineFound
 
-    cmp al, 0 ;; Fim da string
-    je .linhaNaoEncontrada
+    cmp al, 0 ;; String end
+    je .lineNotFound
 
-    jmp .proximoCaractere
+    jmp .nextCharacter
 
-.linhaEncontrada:
+.lineFound:
 
     cmp edx, ebx
-    je .linhaDesejadaEncontrada
+    je .desiredLineFound
 
-    inc edx ;; Contador de linhas
+    inc edx ;; Line counter
 
-    jmp .proximoCaractere
+    jmp .nextCharacter
 
-.linhaDesejadaEncontrada:
+.desiredLineFound:
 
     clc
 
-    jmp .fim
+    jmp .end
 
-.linhaNaoEncontrada:
+.lineNotFound:
 
     stc
 
-.fim:
+.end:
 
     pop ebx
 
@@ -1814,10 +1808,4 @@ posicaoLinha:
 
 ;;*************************************************************************************************
 
-;;*************************************************************************************************
-;;
-;; Buffer para armazenamento do arquivo solicitado
-;;
-;;*************************************************************************************************
-
-bufferArquivo: db 10
+appFileBuffer: db 10 ;; Address for opening files
