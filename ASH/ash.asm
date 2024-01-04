@@ -97,7 +97,7 @@ ASHError           = VERMELHO
 ASHLimitReached    = AMARELO_ANDROMEDA
 ASHSuccess         = VERDE
 
-VERSION             equ "4.7.0"
+VERSION             equ "4.7.1"
 compatibleHexagonix equ "System I"
 
 ;;**************************
@@ -677,7 +677,7 @@ getArguments:
 
     stc
 
-    jmp .fim
+    jmp .end
 
 .spaceFound:
 
@@ -708,7 +708,7 @@ getArguments:
 
     clc
 
-.fim:
+.end:
 
     ret
 
