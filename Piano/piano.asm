@@ -14,7 +14,7 @@
 ;;                     Sistema Operacional Hexagonix - Hexagonix Operating System
 ;;
 ;;                         Copyright (c) 2015-2024 Felipe Miguel Nery Lunkes
-;;                        Todos os direitos reservados - All rights reserved.
+;;                        Todos os copyright reservados - All rights reserved.
 ;;
 ;;*************************************************************************************************
 ;;
@@ -22,7 +22,7 @@
 ;;
 ;; O Hexagonix e seus componentes são licenciados sob licença BSD-3-Clause. Leia abaixo
 ;; a licença que governa este arquivo e verifique a licença de cada repositório para
-;; obter mais informações sobre seus direitos e obrigações ao utilizar e reutilizar
+;; obter mais informações sobre seus copyright e obrigações ao utilizar e reutilizar
 ;; o código deste ou de outros arquivos.
 ;;
 ;; English:
@@ -68,12 +68,12 @@
 
 use32
 
-;; Agora vamos criar um cabeçalho para a imagem HAPP final do aplicativo.
+;; Now let's create a HAPP header for the application
 
-include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
+include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioAPP, 01h
+;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -83,67 +83,67 @@ include "macros.s"
 
 ;;************************************************************************************
 
-inicioAPP:
+applicationStart:
 
     Andromeda.Estelar.obterInfoConsole
 
     hx.syscall limparTela
 
-;; Imprime o título do programa e rodapé.
-;; Formato: titulo, rodape, corTitulo, corRodape, corTextoTitulo, corTextoRodape, corTexto, corFundo
+;; Format: title, footer, titleColor, footerColor, titleTextColor,
+;; footerTextColor, textColor, backgroundColor
 
-    Andromeda.Estelar.criarInterface piano.titulo, piano.rodape, \
-    COR_DESTAQUE, COR_DESTAQUE, COR_FONTE, COR_FONTE, \
+    Andromeda.Estelar.criarInterface piano.title, piano.footer, \
+    COLOR_HIGHTLIGHT, COLOR_HIGHTLIGHT, COLOR_FONT, COLOR_FONT, \
     [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
 
-.blocoTeclado:
+.pianoBlock:
 
-    mov eax, 80  ;; Início do bloco em X
-    mov ebx, 80  ;; Início do bloco em Y
-    mov esi, 635 ;; Comprimento do bloco
-    mov edi, 450 ;; Altura do bloco
-    mov edx, COR_BLOCO ;; Cor do bloco
+    mov eax, 80  ;; Start of block at X
+    mov ebx, 80  ;; Start of block at Y
+    mov esi, 635 ;; Block length
+    mov edi, 450 ;; Block height
+    mov edx, COLOR_BLOCK ;; Block color
 
     hx.syscall desenharBloco
 
-    call montarTeclas
+    call assembleKeys
 
-.novamente:
+.again:
 
     hx.syscall aguardarTeclado
 
-.semtecla: ; Procura as teclas e emite os sons
+.noKey: ;; Find the keys and play the sounds
 
     cmp al, 'q'
     jne .w
 
-    call evidenciarTeclas.evidenciarQ
+    call highlightKeys.highlightQ
 
     tocarNota 4000
 
-    jmp .novamente
+    jmp .again
 
 .w:
 
     cmp al, 'w'
     jne .e
 
-    call evidenciarTeclas.evidenciarW
+    call highlightKeys.highlightW
 
     tocarNota 3600
 
-    jmp .novamente
+    jmp .again
 
 .e:
 
     cmp al, 'e'
     jne .r
 
-    call evidenciarTeclas.evidenciarE
+    call highlightKeys.highlightE
 
     tocarNota 3200
 
-    jmp .novamente
+    jmp .again
 
 
 .r:
@@ -151,89 +151,89 @@ inicioAPP:
     cmp al, 'r'
     jne .t
 
-    call evidenciarTeclas.evidenciarR
+    call highlightKeys.highlightR
 
     tocarNota 3000
 
-    jmp .novamente
+    jmp .again
 
 .t:
 
     cmp al, 't'
     jne .y
 
-    call evidenciarTeclas.evidenciarT
+    call highlightKeys.highlightT
 
     tocarNota 2700
 
-    jmp .novamente
+    jmp .again
 
 .y:
 
     cmp al, 'y'
     jne .u
 
-    call evidenciarTeclas.evidenciarY
+    call highlightKeys.highlightY
 
     tocarNota 2400
 
-    jmp .novamente
+    jmp .again
 
 .u:
 
     cmp al, 'u'
     jne .i
 
-    call evidenciarTeclas.evidenciarU
+    call highlightKeys.highlightU
 
     tocarNota 2100
 
-    jmp .novamente
+    jmp .again
 
 .i:
 
     cmp al, 'i'
-    jne .espaco
+    jne .spaceKey
 
-    call evidenciarTeclas.evidenciarI
+    call highlightKeys.highlightI
 
     tocarNota 2000
 
-    jmp .novamente
+    jmp .again
 
-.espaco:
+.spaceKey:
 
     cmp al, ' '
-    jne .informacoes
+    jne .getInfo
 
-    call evidenciarTeclas.evidenciarEspaco
+    call highlightKeys.highlightSpace
 
     finalizarNota
 
-    jmp .novamente
+    jmp .again
 
-.informacoes:
+.getInfo:
 
     cmp al, 'a'
-    jne .sair
+    jne .exitPiano
 
-    jmp exibirInterfaceSobre
+    jmp showInfoInterface
 
-.sair:
+.exitPiano:
 
     cmp al, 'x'
-    je .fim
+    je .end
 
     cmp al, 'X'
-    je .fim
+    je .end
 
-    jmp .agora
+    jmp .now
 
-.agora:
+.now:
 
-    jmp .novamente
+    jmp .again
 
-.fim:
+.end:
 
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
@@ -248,181 +248,181 @@ inicioAPP:
 
 ;;************************************************************
 
-montarTeclas:
+assembleKeys:
 
-.primeiraTecla:
+.firstKey:
 
     mov eax, 144
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_FUNDO_TECLA
+    mov edx, COLOR_KEY_BACKGROUND
 
     hx.syscall desenharBloco
 
-.segundaTecla:
+.secondKey:
 
     mov eax, 204
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_FUNDO_TECLA
+    mov edx, COLOR_KEY_BACKGROUND
 
     hx.syscall desenharBloco
 
-.terceiraTecla:
+.thirdKey:
 
     mov eax, 264
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_FUNDO_TECLA
+    mov edx, COLOR_KEY_BACKGROUND
 
     hx.syscall desenharBloco
 
-.quartaTecla:
+.fourthKey:
 
     mov eax, 324
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_FUNDO_TECLA
+    mov edx, COLOR_KEY_BACKGROUND
 
     hx.syscall desenharBloco
 
-.quintaTecla:
+.fifthKey:
 
     mov eax, 384
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_FUNDO_TECLA
+    mov edx, COLOR_KEY_BACKGROUND
 
     hx.syscall desenharBloco
 
-.sextaTecla:
+.sixthKey:
 
     mov eax, 444
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_FUNDO_TECLA
+    mov edx, COLOR_KEY_BACKGROUND
 
     hx.syscall desenharBloco
 
-.setimaTecla:
+.seventhKey:
 
     mov eax, 504
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_FUNDO_TECLA
+    mov edx, COLOR_KEY_BACKGROUND
 
     hx.syscall desenharBloco
 
-.oitavaTecla:
+.eighthKey:
 
     mov eax, 564
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_FUNDO_TECLA
+    mov edx, COLOR_KEY_BACKGROUND
 
     hx.syscall desenharBloco
 
-.blocoEspaco:
+.spaceBlock:
 
     mov eax, 145
     mov ebx, 460
     mov esi, 500
     mov edi, 40
-    mov edx, COR_FUNDO_TECLA
+    mov edx, COLOR_KEY_BACKGROUND
 
     hx.syscall desenharBloco
 
-.legenda:
+.subtitle:
 
-    mov eax, COR_FUNDO_TECLA
-    mov ebx, COR_BLOCO
+    mov eax, COLOR_KEY_BACKGROUND
+    mov ebx, COLOR_BLOCK
 
     hx.syscall definirCor
 
-.teclaQ:
+.keyQ:
 
     mov dl, 19
-    mov dh, 22 ;; Não alterar! Esta é a posição Y!
+    mov dh, 22 ;; Do not change! This is the Y position!
 
     hx.syscall definirCursor
 
-    fputs piano.teclaQ
+    fputs piano.keyQ
 
-.teclaW:
+.keyW:
 
-    mov dl, 27 ;; Anterior + 8
-    mov dh, 22 ;; Não alterar! Esta é a posição Y!
-
-    hx.syscall definirCursor
-
-    fputs piano.teclaW
-
-.teclaE:
-
-    mov dl, 34 ;; Anterior + 7
-    mov dh, 22 ;; Não alterar! Esta é a posição Y!
+    mov dl, 27 ;; Previous + 8
+    mov dh, 22 ;; Do not change! This is the Y position!
 
     hx.syscall definirCursor
 
-    fputs piano.teclaE
+    fputs piano.keyW
 
-.teclaR:
+.keyE:
 
-    mov dl, 42 ;; Anterior + 8
-    mov dh, 22 ;; Não alterar! Esta é a posição Y!
-
-    hx.syscall definirCursor
-
-    fputs piano.teclaR
-
-.teclaT:
-
-    mov dl, 49 ;; Anterior + 7
-    mov dh, 22 ;; Não alterar! Esta é a posição Y!
+    mov dl, 34 ;; Previous + 7
+    mov dh, 22 ;; Do not change! This is the Y position!
 
     hx.syscall definirCursor
 
-    fputs piano.teclaT
+    fputs piano.keyE
 
-.teclaY:
+.keyR:
 
-    mov dl, 57 ;; Anterior + 8
-    mov dh, 22 ;; Não alterar! Esta é a posição Y!
-
-    hx.syscall definirCursor
-
-    fputs piano.teclaY
-
-.teclaU:
-
-    mov dl, 64 ;; Anterior + 7
-    mov dh, 22 ;; Não alterar! Esta é a posição Y!
+    mov dl, 42 ;; Previous + 8
+    mov dh, 22 ;; Do not change! This is the Y position!
 
     hx.syscall definirCursor
 
-    fputs piano.teclaU
+    fputs piano.keyR
 
-.teclaI:
+.keyT:
 
-    mov dl, 72 ;; Anterior + 8
-    mov dh, 22 ;; Não alterar! Esta é a posição Y!
+    mov dl, 49 ;; Previous + 7
+    mov dh, 22 ;; Do not change! This is the Y position!
 
     hx.syscall definirCursor
 
-    fputs piano.teclaI
+    fputs piano.keyT
 
-.teclaEspaco:
+.keyY:
 
-    mov eax, COR_FONTE
-    mov ebx, COR_FUNDO_TECLA
+    mov dl, 57 ;; Previous + 8
+    mov dh, 22 ;; Do not change! This is the Y position!
+
+    hx.syscall definirCursor
+
+    fputs piano.keyY
+
+.keyU:
+
+    mov dl, 64 ;; Previous + 7
+    mov dh, 22 ;; Do not change! This is the Y position!
+
+    hx.syscall definirCursor
+
+    fputs piano.keyU
+
+.keyI:
+
+    mov dl, 72 ;; Previous + 8
+    mov dh, 22 ;; Do not change! This is the Y position!
+
+    hx.syscall definirCursor
+
+    fputs piano.keyI
+
+.keySpace:
+
+    mov eax, COLOR_FONT
+    mov ebx, COLOR_KEY_BACKGROUND
 
     hx.syscall definirCor
 
@@ -431,7 +431,7 @@ montarTeclas:
 
     hx.syscall definirCursor
 
-    fputs piano.teclaEspaco
+    fputs piano.keySpace
 
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
@@ -442,134 +442,134 @@ montarTeclas:
 
 ;;************************************************************
 
-evidenciarTeclas:
+highlightKeys:
 
-.evidenciarQ:
+.highlightQ:
 
-    call montarTeclas
+    call assembleKeys
 
     mov eax, 144
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_DESTAQUE_TECLA
+    mov edx, COLOR_KEY_HIGHLIGHT
 
     hx.syscall desenharBloco
 
     ret
 
-.evidenciarW:
+.highlightW:
 
-    call montarTeclas
+    call assembleKeys
 
     mov eax, 204
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_DESTAQUE_TECLA
+    mov edx, COLOR_KEY_HIGHLIGHT
 
     hx.syscall desenharBloco
 
     ret
 
-.evidenciarE:
+.highlightE:
 
-    call montarTeclas
+    call assembleKeys
 
     mov eax, 264
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_DESTAQUE_TECLA
+    mov edx, COLOR_KEY_HIGHLIGHT
 
     hx.syscall desenharBloco
 
     ret
 
-.evidenciarR:
+.highlightR:
 
-    call montarTeclas
+    call assembleKeys
 
     mov eax, 324
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_DESTAQUE_TECLA
+    mov edx, COLOR_KEY_HIGHLIGHT
 
     hx.syscall desenharBloco
 
     ret
 
-.evidenciarT:
+.highlightT:
 
-    call montarTeclas
+    call assembleKeys
 
     mov eax, 384
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_DESTAQUE_TECLA
+    mov edx, COLOR_KEY_HIGHLIGHT
 
     hx.syscall desenharBloco
 
     ret
 
-.evidenciarY:
+.highlightY:
 
-    call montarTeclas
+    call assembleKeys
 
     mov eax, 444
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_DESTAQUE_TECLA
+    mov edx, COLOR_KEY_HIGHLIGHT
 
     hx.syscall desenharBloco
 
     ret
 
-.evidenciarU:
+.highlightU:
 
-    call montarTeclas
+    call assembleKeys
 
     mov eax, 504
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_DESTAQUE_TECLA
+    mov edx, COLOR_KEY_HIGHLIGHT
 
     hx.syscall desenharBloco
 
     ret
 
-.evidenciarI:
+.highlightI:
 
-    call montarTeclas
+    call assembleKeys
 
     mov eax, 564
-    mov ebx, 84 ;; Não deve ser alterado
+    mov ebx, 84 ;; Should not be changed
     mov esi, 30
     mov edi, 250
-    mov edx, COR_DESTAQUE_TECLA
+    mov edx, COLOR_KEY_HIGHLIGHT
 
     hx.syscall desenharBloco
 
     ret
 
-.evidenciarEspaco:
+.highlightSpace:
 
-    call montarTeclas
+    call assembleKeys
 
     mov eax, 145
     mov ebx, 460
     mov esi, 500
     mov edi, 40
-    mov edx, COR_DESTAQUE_TECLA
+    mov edx, COLOR_KEY_HIGHLIGHT
 
     hx.syscall desenharBloco
 
-    mov eax, COR_FONTE
-    mov ebx, COR_DESTAQUE_TECLA
+    mov eax, COLOR_FONT
+    mov ebx, COLOR_KEY_HIGHLIGHT
 
     hx.syscall definirCor
 
@@ -578,7 +578,7 @@ evidenciarTeclas:
 
     hx.syscall definirCursor
 
-    mov esi, piano.teclaEspaco
+    mov esi, piano.keySpace
 
     imprimirString
 
@@ -591,7 +591,7 @@ evidenciarTeclas:
 
 ;;************************************************************
 
-exibirInterfaceSobre:
+showInfoInterface:
 
     hx.syscall desligarSom
 
@@ -602,10 +602,10 @@ exibirInterfaceSobre:
 
     hx.syscall limparTela
 
-    ;; Imprime o título do programa e rodapé
+;; Prints program title and footer
 
-    mov eax, COR_FONTE
-    mov ebx, COR_DESTAQUE
+    mov eax, COLOR_FONT
+    mov ebx, COLOR_HIGHTLIGHT
 
     hx.syscall definirCor
 
@@ -613,15 +613,15 @@ exibirInterfaceSobre:
 
     hx.syscall limparLinha
 
-    fputs piano.titulo
+    fputs piano.title
 
-    mov al, byte[Andromeda.Interface.numLinhas] ;; Última linha
+    mov al, byte[Andromeda.Interface.numLinhas] ;; Last line
 
     dec al
 
     hx.syscall limparLinha
 
-    fputs piano.rodapeInfo
+    fputs piano.infoFooter
 
     mov eax, dword[Andromeda.Interface.corFonte]
     mov ebx, dword[Andromeda.Interface.corFundo]
@@ -633,133 +633,131 @@ exibirInterfaceSobre:
 
     hx.syscall definirCursor
 
-    fputs piano.sobreTeclado
+    fputs piano.aboutPiano
 
     mov dh, 03
     mov dl, 02
 
     hx.syscall definirCursor
 
-    fputs piano.versaoTeclado
+    fputs piano.pianoVersion
 
     mov dh, 05
     mov dl, 02
 
     hx.syscall definirCursor
 
-    fputs piano.autor
+    fputs piano.author
 
     mov dh, 06
     mov dl, 02
 
     hx.syscall definirCursor
 
-    fputs piano.direitos
+    fputs piano.copyright
 
     mov dh, 08
     mov dl, 04
 
     hx.syscall definirCursor
 
-    fputs piano.ajuda
+    fputs piano.help
 
     mov dh, 10
     mov dl, 02
 
     hx.syscall definirCursor
 
-    fputs piano.topico1
+    fputs piano.topic1
 
     mov dh, 11
     mov dl, 02
 
     hx.syscall definirCursor
 
-    fputs piano.topico2
+    fputs piano.topic2
 
     mov dh, 12
     mov dl, 02
 
     hx.syscall definirCursor
 
-    fputs piano.topico3
+    fputs piano.topic3
 
-.obterTeclas:
+.getKeys:
 
     hx.syscall aguardarTeclado
 
     cmp al, 'b'
-    je inicioAPP
+    je applicationStart
 
     cmp al, 'B'
-    je inicioAPP
+    je applicationStart
 
     cmp al, 'x'
-    je inicioAPP.fim
+    je applicationStart.end
 
     cmp al, 'X'
-    je inicioAPP.fim
+    je applicationStart.end
 
-    jmp .obterTeclas
+    jmp .getKeys
 
 ;;************************************************************
 
 ;;************************************************************************************
 ;;
-;; Dados do aplicativo
+;;                        Application variables and data
 ;;
 ;;************************************************************************************
 
-VERSAO equ "1.7.1"
+VERSION equ "1.8.0"
 
-COR_DESTAQUE       = HEXAGONIX_BLOSSOM_AZUL
-COR_FONTE          = HEXAGONIX_CLASSICO_BRANCO
-COR_BLOCO          = HEXAGONIX_BLOSSOM_LAVANDA
-COR_DESTAQUE_TECLA = HEXAGONIX_BLOSSOM_VERMELHO
-COR_FUNDO_TECLA    = HEXAGONIX_CLASSICO_PRETO
+COLOR_HIGHTLIGHT     = HEXAGONIX_BLOSSOM_AZUL
+COLOR_FONT           = HEXAGONIX_CLASSICO_BRANCO
+COLOR_BLOCK          = HEXAGONIX_BLOSSOM_LAVANDA
+COLOR_KEY_HIGHLIGHT  = HEXAGONIX_BLOSSOM_VERMELHO
+COLOR_KEY_BACKGROUND = HEXAGONIX_CLASSICO_PRETO
 
 piano:
 
-.sobreTeclado:
+.aboutPiano:
 db "return PIANO; for Hexagonix Operating System", 0
-.versaoTeclado:
-db "Version ", VERSAO, 0
-.autor:
+.pianoVersion:
+db "Version ", VERSION, 0
+.author:
 db "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes", 0
-.direitos:
+.copyright:
 db "All rights reserved.", 0
-.ajuda:
+.help:
 db "A small help topic for this program:", 0
-.topico1:
+.topic1:
 db "+ Use the [QWERTYUI] keys to issue notes.", 0
-.topico2:
+.topic2:
 db "+ Use the [SPACE] key to mute notes when necessary.", 0
-.topico3:
+.topic3:
 db "+ Finally, use the [Z] key to terminate this application at any time.", 0
-.titulo:
+.title:
 db "return PIANO;", 0
-.rodape:
-db "[", VERSAO, "] | [X] Exit, [A] About and help, [SPACE] Mute", 0
-.rodapeInfo:
-db "[", VERSAO, "] | [X] Exit, [B] Back", 0
+.footer:
+db "[", VERSION, "] | [X] Exit, [A] About and help, [SPACE] Mute", 0
+.infoFooter:
+db "[", VERSION, "] | [X] Exit, [B] Back", 0
 
-.teclaQ:
+.keyQ:
 db "Q", 0
-.teclaW:
+.keyW:
 db "W", 0
-.teclaE:
+.keyE:
 db "E", 0
-.teclaR:
+.keyR:
 db "R", 0
-.teclaT:
+.keyT:
 db "T", 0
-.teclaY:
+.keyY:
 db "Y", 0
-.teclaU:
+.keyU:
 db "U", 0
-.teclaI:
+.keyI:
 db "I", 0
-.teclaEspaco:
+.keySpace:
 db "[SPACE]", 0
-.teclaZ:
-db "Z", 0
