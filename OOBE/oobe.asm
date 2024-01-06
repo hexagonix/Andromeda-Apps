@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, applicationStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -83,7 +83,7 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.3.0"
+versaoOOBE = "1.4.0"
 
 COLOR_LOGO    = VERDE_40
 COLOR_DIVIDER = HEXAGONIX_BLOSSOM_VERMELHO
@@ -194,17 +194,17 @@ db "jack", 0
 
 applicationStart:
 
-    salvarConsole
+    saveConsole
 
 .page1:
 
     call showBanner
 
-    definirCorConsole COLOR_PAGE, [Lib.Console.corFundo]
+    setConsoleColor COLOR_PAGE, [Lib.Console.backgroundColor]
 
     fputs OOBE.pag1
 
-    restaurarCorConsole
+    restoreConsoleColor
 
     fputs OOBE.page1
 
@@ -212,18 +212,18 @@ applicationStart:
 
     call showDivider
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
 
 .page2:
 
     call showBanner
 
-    definirCorConsole COLOR_PAGE, [Lib.Console.corFundo]
+    setConsoleColor COLOR_PAGE, [Lib.Console.backgroundColor]
 
     fputs OOBE.pag2
 
-    restaurarCorConsole
+    restoreConsoleColor
 
     fputs OOBE.page2
 
@@ -231,17 +231,17 @@ applicationStart:
 
     call showDivider
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
 .page3:
 
     call showBanner
 
-    definirCorConsole COLOR_PAGE, [Lib.Console.corFundo]
+    setConsoleColor COLOR_PAGE, [Lib.Console.backgroundColor]
 
     fputs OOBE.pag3
 
-    restaurarCorConsole
+    restoreConsoleColor
 
     fputs OOBE.page3
 
@@ -249,17 +249,17 @@ applicationStart:
 
     call showDivider
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
 .page4:
 
     call showBanner
 
-    definirCorConsole COLOR_PAGE, [Lib.Console.corFundo]
+    setConsoleColor COLOR_PAGE, [Lib.Console.backgroundColor]
 
     fputs OOBE.pag4
 
-    restaurarCorConsole
+    restoreConsoleColor
 
     fputs OOBE.page4
 
@@ -267,17 +267,17 @@ applicationStart:
 
     call showDivider
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
 .page5:
 
     call showBanner
 
-    definirCorConsole COLOR_PAGE, [Lib.Console.corFundo]
+    setConsoleColor COLOR_PAGE, [Lib.Console.backgroundColor]
 
     fputs OOBE.pag5
 
-    restaurarCorConsole
+    restoreConsoleColor
 
     fputs OOBE.page5
 
@@ -285,17 +285,17 @@ applicationStart:
 
     call showDivider
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
 .page6:
 
     call showBanner
 
-    definirCorConsole COLOR_PAGE, [Lib.Console.corFundo]
+    setConsoleColor COLOR_PAGE, [Lib.Console.backgroundColor]
 
     fputs OOBE.pag6
 
-    restaurarCorConsole
+    restoreConsoleColor
 
     fputs OOBE.page6
 
@@ -312,47 +312,47 @@ applicationStart:
 
     mov esi, OOBE.root
 
-    hx.syscall definirUsuario
+    hx.syscall hx.setUser
 
     mov esi, OOBE.fileOOBE
 
-    hx.syscall deletarArquivo
+    hx.syscall hx.unlink
 
     jc .unlinkError
 
     fputs OOBE.finalMessage
 
-    definirCorConsole COLOR_DIVIDER, [Lib.Console.corFundo]
+    setConsoleColor COLOR_DIVIDER, [Lib.Console.backgroundColor]
 
     fputs OOBE.divider
 
-    restaurarCorConsole
+    restoreConsoleColor
 
     mov eax, 555 ;; Common user code
 
     mov esi, OOBE.jack
 
-    hx.syscall definirUsuario
+    hx.syscall hx.setUser
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     jmp finish
 
 .unlinkError:
 
-    definirCorConsole COLOR_ERROR, [Lib.Console.corFundo]
+    setConsoleColor COLOR_ERROR, [Lib.Console.backgroundColor]
 
     fputs OOBE.manualRemove
 
     fputs OOBE.finalMessage
 
-    definirCorConsole COLOR_DIVIDER, [Lib.Console.corFundo]
+    setConsoleColor COLOR_DIVIDER, [Lib.Console.backgroundColor]
 
     fputs OOBE.divider
 
-    restaurarCorConsole
+    restoreConsoleColor
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     jmp finish
 
@@ -360,29 +360,29 @@ applicationStart:
 
 finish:
 
-    restaurarConsole ;; Macro that restores console behavior and cleans up the console
+    restoreConsole ;; Macro that restores console behavior and cleans up the console
 
-    hx.syscall encerrarProcesso
+    hx.syscall hx.exit
 
 ;;************************************************************************************
 
 showBanner:
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
-    definirCorConsole COLOR_DIVIDER, [Lib.Console.corFundo]
+    setConsoleColor COLOR_DIVIDER, [Lib.Console.backgroundColor]
 
     fputs OOBE.divider
 
-    definirCorConsole COLOR_LOGO, [Lib.Console.corFundo]
+    setConsoleColor COLOR_LOGO, [Lib.Console.backgroundColor]
 
     fputs OOBE.banner
 
-    definirCorConsole COLOR_DIVIDER, [Lib.Console.corFundo]
+    setConsoleColor COLOR_DIVIDER, [Lib.Console.backgroundColor]
 
     fputs OOBE.divider
 
-    restaurarCorConsole
+    restoreConsoleColor
 
     ret
 
@@ -390,13 +390,13 @@ showBanner:
 
 showDivider:
 
-    definirCorConsole COLOR_DIVIDER, [Lib.Console.corFundo]
+    setConsoleColor COLOR_DIVIDER, [Lib.Console.backgroundColor]
 
     putNewLine
     putNewLine
 
     fputs OOBE.divider
 
-    restaurarCorConsole
+    restoreConsoleColor
 
     ret
