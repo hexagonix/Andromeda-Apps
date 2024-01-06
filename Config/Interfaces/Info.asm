@@ -70,53 +70,53 @@ mostrarInterfaceInfo:
 
     hx.syscall limparTela
 
-;; Imprime o título do programa e rodapé
+;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
-    mov ebx, corPadraoInterface
+    mov ebx, interfaceDefaultColor
 
     hx.syscall definirCor
 
     mov al, 0
     hx.syscall limparLinha
 
-    fputs TITULO.info
+    fputs TITLE.info
 
-    mov al, byte[maxLinhas] ;; Última linha
+    mov al, byte[maxRows] ;; Last row
 
     dec al
 
     hx.syscall limparLinha
 
-    fputs RODAPE.info
+    fputs FOOTER.info
 
-    call definirCorTema
+    call setDefaultTheme
 
-    call mostrarAvisoResolucao
+    call showResolutionWarning
 
-    call definirCorPadrao
+    call setDefaultColor
 
-    call mostrarLogoSistema
+    call showHexagonixLogo
 
-    call definirCorTema
+    call setDefaultTheme
 
-    xyfputs 20, 02, msgInfo.introducao
+    xyfputs 20, 02, infoInterfaceData.intro
 
-    call definirCorPadrao
+    call setDefaultColor
 
-    xyfputs 18, 04, msgInfo.nomeSistema
+    xyfputs 18, 04, infoInterfaceData.systemName
 
-    call definirCorTema
+    call setDefaultTheme
 
-    fputs nomeSistema
+    fputs systemName
 
-    call definirCorPadrao
+    call setDefaultColor
 
-    xyfputs 18, 05, msgInfo.versaoSistema
+    xyfputs 18, 05, infoInterfaceData.systemVersion
 
-    call definirCorTema
+    call setDefaultTheme
 
-    call imprimirVersao
+    call printSystemVersion
 
     mov al, ' '
 
@@ -132,37 +132,37 @@ mostrarInterfaceInfo:
 
     hx.syscall imprimirCaractere
 
-    call definirCorPadrao
+    call setDefaultColor
 
-    xyfputs 18, 06, msgInfo.buildSistema
+    xyfputs 18, 06, infoInterfaceData.systemBuild
 
-    call definirCorTema
+    call setDefaultTheme
 
-    fputs buildObtida
+    fputs buildObtained
 
-    call definirCorPadrao
+    call setDefaultColor
 
-    xyfputs 18, 07, msgInfo.tipoSistema
+    xyfputs 18, 07, infoInterfaceData.systemType
 
-    call definirCorTema
+    call setDefaultTheme
 
-    fputs msgInfo.modeloSistema
+    fputs infoInterfaceData.systemModel
 
-    call definirCorPadrao
+    call setDefaultColor
 
-    xyfputs 18, 08, msgInfo.pacoteAtualizacoes
+    xyfputs 18, 08, infoInterfaceData.updatePackage
 
-    call definirCorTema
+    call setDefaultTheme
 
-    fputs pacoteAtualizacoes
+    fputs updatePackage
 
-    call definirCorPadrao
+    call setDefaultColor
 
-;; Agora vamos exibir informações sobre o Hexagon
+;; Now let's display information about Hexagon
 
-    xyfputs 18, 09, msgInfo.Hexagon
+    xyfputs 18, 09, infoInterfaceData.Hexagon
 
-    call definirCorTema
+    call setDefaultTheme
 
     hx.syscall retornarVersao
 
@@ -171,7 +171,7 @@ mostrarInterfaceInfo:
 
     imprimirInteiro
 
-    fputs msgInfo.ponto
+    fputs infoInterfaceData.dot
 
     pop eax
 
@@ -180,57 +180,57 @@ mostrarInterfaceInfo:
     pop ecx
 
     cmp ecx, 0
-    je .continuar
+    je .continue
 
     push ecx
 
-    fputs msgInfo.ponto
+    fputs infoInterfaceData.dot
 
     pop eax
 
     imprimirInteiro
 
-.continuar:
+.continue:
 
-    call definirCorPadrao
+    call setDefaultColor
 
-;; Voltamos à programação normal
+;; We return to normal programming
 
-    xyfputs 18, 11, nomeCompletoSistema
+    xyfputs 18, 11, systemFullName
 
-    call definirCorTema
+    call setDefaultTheme
 
-;; Exibir licenciamento
+;; Show licensing
 
-    xyfputs 18, 13, msgInfo.licenciado
+    xyfputs 18, 13, infoInterfaceData.license
 
-    call definirCorPadrao
+    call setDefaultColor
 
-    xyfputs 18, 15, msgInfo.copyrightAndromeda
+    xyfputs 18, 15, infoInterfaceData.copyright
 
-    xyfputs 18, 16, msgInfo.direitosReservados
+    xyfputs 18, 16, infoInterfaceData.trademark
 
-    call definirCorTema
+    call setDefaultTheme
 
-    xyfputs 30, 18, msgInfo.introducaoHardware
+    xyfputs 30, 18, infoInterfaceData.hardwareIntro
 
-    call definirCorPadrao
+    call setDefaultColor
 
-    xyfputs 02, 20, msgInfo.processadorPrincipal
+    xyfputs 02, 20, infoInterfaceData.mainProcessor
 
-    xyfputs 04, 22, msgInfo.numProcessador
+    xyfputs 04, 22, infoInterfaceData.processorNumber
 
-    call definirCorTema
+    call setDefaultTheme
 
     call exibirProcessadorInstalado
 
-    call definirCorPadrao
+    call setDefaultColor
 
-    xyfputs 08, 23, msgInfo.operacaoProcessador
+    xyfputs 08, 23, infoInterfaceData.processorOperationMode
 
-    xyfputs 02, 25, msgInfo.memoriaDisponivel
+    xyfputs 02, 25, infoInterfaceData.availableMemory
 
-    call definirCorTema
+    call setDefaultTheme
 
     hx.syscall usoMemoria
 
@@ -238,24 +238,24 @@ mostrarInterfaceInfo:
 
     imprimirInteiro
 
-    call definirCorPadrao
+    call setDefaultColor
 
-    fputs msgInfo.kbytes
+    fputs infoInterfaceData.kbytes
 
-.obterTeclas:
+.getKeys:
 
     hx.syscall aguardarTeclado
 
     cmp al, 'b'
-    je mostrarInterfacePrincipal
+    je showMainInterface
 
     cmp al, 'B'
-    je mostrarInterfacePrincipal
+    je showMainInterface
 
     cmp al, 'x'
-    je finalizarAPP
+    je finishApplication
 
     cmp al, 'X'
-    je finalizarAPP
+    je finishApplication
 
-    jmp .obterTeclas
+    jmp .getKeys

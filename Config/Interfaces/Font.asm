@@ -66,47 +66,47 @@
 ;;
 ;; $HexagonixOS$
 
-mostrarInterfaceFonte:
+showFontInterface:
 
     hx.syscall limparTela
 
-;; Imprime o título do programa e rodapé
+;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
-    mov ebx, corPadraoInterface
+    mov ebx, interfaceDefaultColor
 
     hx.syscall definirCor
 
     mov al, 0
     hx.syscall limparLinha
 
-    fputs TITULO.fonte
+    fputs TITLE.font
 
-    mov al, byte[maxLinhas] ;; Última linha
+    mov al, byte[maxRows] ;; Last row
 
     dec al
 
     hx.syscall limparLinha
 
-    fputs RODAPE.fonte
+    fputs FOOTER.font
 
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    call mostrarAvisoResolucao
-
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    xyfputs 02, 02, msgFonte.introducao
+    call showResolutionWarning
 
-    xyfputs 02, 03, msgFonte.introducao2
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
 
-    xyfputs 02, 06, msgFonte.solicitarArquivo
+    hx.syscall definirCor
+
+    xyfputs 02, 02, fontInterfaceData.intro
+
+    xyfputs 02, 03, fontInterfaceData.intro2
+
+    xyfputs 02, 06, fontInterfaceData.requestFile
 
 match =SIM, VERBOSE
 {
@@ -115,8 +115,8 @@ match =SIM, VERBOSE
 
 }
 
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
@@ -124,12 +124,12 @@ match =SIM, VERBOSE
 
     hx.syscall obterString
 
-    hx.syscall cortarString ;; Remover espaços em branco extras
+    hx.syscall cortarString ;; Remove extra spaces
 
-    mov dword[fonte], esi
+    mov dword[font], esi
 
     cmp byte[esi], 0
-    je .semArquivo
+    je .withoutFile
 
 match =SIM, VERBOSE
 {
@@ -138,19 +138,19 @@ match =SIM, VERBOSE
 
 }
 
-    mov esi, dword[fonte]
+    mov esi, dword[font]
 
     clc
 
     hx.syscall arquivoExiste
 
-    jc .erroArquivo
+    jc .fileError
 
     clc
 
     hx.syscall alterarFonte
 
-    jc .erroFonte
+    jc .fontError
 
 match =SIM, VERBOSE
 {
@@ -159,59 +159,59 @@ match =SIM, VERBOSE
 
 }
 
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    xyfputs 04, 08, msgFonte.sucesso
+    xyfputs 04, 08, fontInterfaceData.success
 
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    fputs dword[fonte]
-
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    fputs msgFonte.fechamento
+    fputs dword[font]
 
-    fputs msgFonte.introducaoTeste
-
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    fputs dword[fonte]
+    fputs fontInterfaceData.closure
 
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+    fputs fontInterfaceData.testIntro
 
-    hx.syscall definirCor
-
-    fputs msgFonte.ponto
-
-    fputs msgFonte.testeFonte
-
-    jmp .obterTeclas
-
-.semArquivo:
-
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    xyfputs 04, 08, msgFonte.semArquivo
+    fputs dword[font]
 
-    jmp .obterTeclas
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
 
-.erroArquivo:
+    hx.syscall definirCor
+
+    fputs fontInterfaceData.dot
+
+    fputs fontInterfaceData.fontTest
+
+    jmp .getKeys
+
+.withoutFile:
+
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
+
+    hx.syscall definirCor
+
+    xyfputs 04, 08, fontInterfaceData.withoutFile
+
+    jmp .getKeys
+
+.fileError:
 
 match =SIM, VERBOSE
 {
@@ -220,34 +220,21 @@ match =SIM, VERBOSE
 
 }
 
-    xyfputs 04, 08, msgFonte.arquivoAusente
+    xyfputs 04, 08, fontInterfaceData.fileNotFound
 
-    jmp .obterTeclas
+    jmp .getKeys
 
-.erroFonte:
+.fontError:
 
     cmp eax, 01h
-    je .fonteNaoEncontrada
+    je .fileNotFound
 
     cmp eax, 02h
-    je .fonteInvalida
+    je .invalidFile
 
-    jmp .erroDesconhecido
+    jmp .unknownError
 
-.fonteNaoEncontrada:
-
-match =SIM, VERBOSE
-{
-
-    logSistema Log.Config.logFalhaFonte, 00h, Log.Prioridades.p4
-
-}
-
-    xyfputs 04, 08, msgFonte.fonteNaoEncontrada
-
-    jmp .obterTeclas
-
-.fonteInvalida:
+.fileNotFound:
 
 match =SIM, VERBOSE
 {
@@ -256,11 +243,11 @@ match =SIM, VERBOSE
 
 }
 
-    xyfputs 04, 08, msgFonte.fonteInvalida
+    xyfputs 04, 08, fontInterfaceData.fileNotFound
 
-    jmp .obterTeclas
+    jmp .getKeys
 
-.erroDesconhecido:
+.invalidFile:
 
 match =SIM, VERBOSE
 {
@@ -269,24 +256,37 @@ match =SIM, VERBOSE
 
 }
 
-    xyfputs 04, 08, msgFonte.erroDesconhecido
+    xyfputs 04, 08, fontInterfaceData.invalidFile
 
-    jmp .obterTeclas
+    jmp .getKeys
 
-.obterTeclas:
+.unknownError:
+
+match =SIM, VERBOSE
+{
+
+    logSistema Log.Config.logFalhaFonte, 00h, Log.Prioridades.p4
+
+}
+
+    xyfputs 04, 08, fontInterfaceData.unknownError
+
+    jmp .getKeys
+
+.getKeys:
 
     hx.syscall aguardarTeclado
 
     cmp al, 'b'
-    je mostrarInterfaceConfiguracoes
+    je showConfigInterface
 
     cmp al, 'B'
-    je mostrarInterfaceConfiguracoes
+    je showConfigInterface
 
     cmp al, 'x'
-    je finalizarAPP
+    je finishApplication
 
     cmp al, 'X'
-    je finalizarAPP
+    je finishApplication
 
-    jmp .obterTeclas
+    jmp .getKeys

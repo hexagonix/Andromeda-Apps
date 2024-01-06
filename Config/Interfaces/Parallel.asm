@@ -66,14 +66,21 @@
 ;;
 ;; $HexagonixOS$
 
-mostrarInterfaceConfigResolucao:
+showParallelInterface:
+
+match =SIM, VERBOSE
+{
+
+    logSistema Log.Config.logParalela, 00h, Log.Prioridades.p4
+
+}
 
     hx.syscall limparTela
 
-;; Imprime o título do programa e rodapé
+;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
-    mov ebx, corPadraoInterface
+    mov ebx, interfaceDefaultColor
 
     hx.syscall definirCor
 
@@ -81,171 +88,62 @@ mostrarInterfaceConfigResolucao:
 
     hx.syscall limparLinha
 
-    fputs TITULO.resolucao
+    fputs TITLE.parallelPort
 
-    mov al, byte[maxLinhas] ;; Última linha
+    mov al, byte[maxRows] ;; Last row
 
     dec al
 
     hx.syscall limparLinha
 
-    fputs RODAPE.resolucao
+    fputs FOOTER.parallelPort
 
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    call mostrarAvisoResolucao
-
-    call exibirResolucao
-
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    xyfputs 02, 02, msgResolucao.introducao
+    call showResolutionWarning
 
-    xyfputs 02, 03, msgResolucao.introducao2
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
 
-    xyfputs 02, 06, msgResolucao.inserir
+    hx.syscall definirCor
 
-    xyfputs 04, 08, msgResolucao.opcao1
+    xyfputs 02, 02, parallelInterfaceData.intro
 
-    xyfputs 04, 09, msgResolucao.opcao2
+    xyfputs 02, 03, parallelInterfaceData.intro2
 
-    mov ah, byte[alterado]
+.parallelPortInfo:
 
-    cmp byte ah, 1
-    je .alterou
+    xyfputs 04, 06, parallelInterfaceData.impressoraPadrao
 
-.obterTeclas:
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
+
+    hx.syscall definirCor
+
+    fputs Hexagon.LibASM.Dev.portasParalelas.lpt0
+
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
+
+    hx.syscall definirCor
+
+.getKeys:
 
     hx.syscall aguardarTeclado
 
     cmp al, 'b'
-    je mostrarInterfaceConfiguracoes
+    je showConfigInterface
 
     cmp al, 'B'
-    je mostrarInterfaceConfiguracoes
+    je showConfigInterface
 
     cmp al, 'x'
-    je finalizarAPP
+    je finishApplication
 
     cmp al, 'X'
-    je finalizarAPP
+    je finishApplication
 
-    cmp al, '1'
-    je modoGrafico1
-
-    cmp al, '2'
-    je modoGrafico2
-
-
-    jmp .obterTeclas
-
-.alterou:
-
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    mov dh, 15
-    mov dl, 02
-
-    hx.syscall definirCursor
-
-    fputs msgResolucao.resolucaoAlterada
-
-    mov dh, 17
-    mov dl, 02
-
-    hx.syscall definirCursor
-
-    fputs msgResolucao.alterado
-
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    jmp .obterTeclas
-
-modoGrafico1:
-
-match =SIM, VERBOSE
-{
-
-    logSistema Log.Config.logTrocarResolucao800x600, 00h, Log.Prioridades.p4
-
-}
-
-    mov eax, 1
-
-    hx.syscall definirResolucao
-
-    hx.syscall obterInfoTela
-
-    mov byte[maxColunas], bl
-    mov byte[maxLinhas], bh
-
-    mov byte[alterado], 1
-
-    mov dh, 15
-    mov dl, 02
-
-    jmp mostrarInterfaceConfigResolucao
-
-modoGrafico2:
-
-match =SIM, VERBOSE
-{
-
-    logSistema Log.Config.logTrocarResolucao1024x768, 00h, Log.Prioridades.p4
-
-}
-
-    mov eax, 2
-    hx.syscall definirResolucao
-
-    hx.syscall obterInfoTela
-
-    mov byte[maxColunas], bl
-    mov byte[maxLinhas], bh
-
-    mov byte[alterado], 1
-
-    jmp mostrarInterfaceConfigResolucao
-
-exibirResolucao:
-
-    mov dh, 13
-    mov dl, 02
-
-    hx.syscall definirCursor
-
-    hx.syscall obterResolucao
-
-    cmp eax, 1
-    je .modoGrafico1
-
-    cmp eax, 2
-    je .modoGrafico2
-
-    ret
-
-.modoGrafico1:
-
-    fputs msgResolucao.modo1
-
-    ret
-
-.modoGrafico2:
-
-    fputs msgResolucao.modo2
-
-   ret
-
-alterado: dd 0
+    jmp .getKeys

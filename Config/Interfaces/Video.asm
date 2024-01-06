@@ -66,18 +66,18 @@
 ;;
 ;; $HexagonixOS$
 
-mostrarAvisoResolucao:
+showResolutionWarning:
 
     hx.syscall obterResolucao
 
     cmp eax, 1
-    je .modoGrafico1
+    je .graphicMode1
 
     ret
 
-.modoGrafico1:
+.graphicMode1:
 
-    mov al, byte[maxLinhas] ;; Última linha
+    mov al, byte[maxRows] ;; Last row
 
     dec al
     dec al
@@ -85,23 +85,23 @@ mostrarAvisoResolucao:
 
     hx.syscall limparLinha
 
-    fputs msgGeral.mensagemResolucao
+    fputs generalData.resolutionWarning
 
     ret
 
 ;;************************************************************************************
 
-mostrarLogoResumido:
+showFlatLogo:
 
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    xyfputs 02, 02, msgGeral.logoResumido
+    xyfputs 02, 02, generalData.flatLogo
 
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
@@ -109,45 +109,45 @@ mostrarLogoResumido:
 
 ;;************************************************************************************
 
-mostrarLogoSistema:
+showHexagonixLogo:
 
-;; Desenhar um bloco de cor específica
-;; Entrada: EAX - X; EBX - Y; ESI - Comprimento
-;; Entrada: EDI - Altura; EDX - Cor em hexadecimal
+;; Draw a specific color block
+;; Input: EAX - X; EBX - Y; ESI - Length
+;; Input: EDI - Height; EDX - Color in hexadecimal
 
-.primeiraLinha:
+.firstLine:
 
-    mov eax, 20      ;; Posição X
-    mov ebx, 30      ;; Posição Y
-    mov esi, 20      ;; Comprimento
-    mov edi, 150     ;; Altura
-    mov edx, corPadraoInterface ;; Cor
-
-    hx.syscall desenharBloco
-
-.segundaLinha:
-
-    mov eax, 89      ;; Posição X
-    mov ebx, 30      ;; Posição Y
-    mov esi, 20      ;; Comprimento
-    mov edi, 150     ;; Altura
-    mov edx, corPadraoInterface ;; Cor
+    mov eax, 20      ;; X position
+    mov ebx, 30      ;; Y position
+    mov esi, 20      ;; Length
+    mov edi, 150     ;; Height
+    mov edx, interfaceDefaultColor ;; Color
 
     hx.syscall desenharBloco
 
-.terceiraLinha:
+.secondLine:
 
-    mov eax, 39      ;; Posição X
-    mov ebx, 90      ;; Posição Y
-    mov esi, 50      ;; Comprimento
-    mov edi, 30      ;; Altura
-    mov edx, corPadraoInterface ;; Cor
+    mov eax, 89      ;; X position
+    mov ebx, 30      ;; Y position
+    mov esi, 20      ;; Length
+    mov edi, 150     ;; Height
+    mov edx, interfaceDefaultColor ;; Color
 
     hx.syscall desenharBloco
 
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+.thirdLine:
+
+    mov eax, 39      ;; X position
+    mov ebx, 90      ;; Y position
+    mov esi, 50      ;; Length
+    mov edi, 30      ;; Height
+    mov edx, interfaceDefaultColor ;; Color
+
+    hx.syscall desenharBloco
+
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-ret
+    ret

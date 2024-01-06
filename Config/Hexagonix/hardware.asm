@@ -76,21 +76,21 @@ exibirProcessadorInstalado:
     hx.syscall abrir
 
     cmp byte [esi], 0
-    je .semCPUID
+    je .withoutCPUID
 
     imprimirString
 
     ret
 
-.semCPUID:
+.withoutCPUID:
 
-    call definirCorTema
+    call setDefaultTheme
 
-    mov esi, msgInfo.semCPUID
+    mov esi, infoInterfaceData.withoutCPUID
 
     imprimirString
 
-    call definirCorPadrao
+    call setDefaultColor
 
     ret
 

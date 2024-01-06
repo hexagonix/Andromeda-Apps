@@ -66,6 +66,119 @@
 ;;
 ;; $HexagonixOS$
 
-VERSAOCONFIG             equ "4.2.0"
-VERSAOFERRAMENTAS        equ "3.0.0"
-VERSAODESIGNADAHEXAGONIX equ "System I"
+showThemeInterface:
+
+    hx.syscall limparTela
+
+;; Display program title and footer
+
+    mov eax, BRANCO_ANDROMEDA
+    mov ebx, interfaceDefaultColor
+
+    hx.syscall definirCor
+
+    mov al, 0
+
+    hx.syscall limparLinha
+
+    fputs TITLE.theme
+
+    mov al, byte[maxRows] ;; Last row
+
+    dec al
+
+    hx.syscall limparLinha
+
+    fputs FOOTER.theme
+
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
+
+    hx.syscall definirCor
+
+    call showResolutionWarning
+
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
+
+    hx.syscall definirCor
+
+    xyfputs 02, 02, themeInterfaceData.intro
+
+    xyfputs 02, 05, themeInterfaceData.insert
+
+    xyfputs 04, 07, themeInterfaceData.option1
+
+    xyfputs 04, 08, themeInterfaceData.option2
+
+.getKeys:
+
+    hx.syscall aguardarTeclado
+
+    cmp al, 'b'
+    je showConfigInterface
+
+    cmp al, 'B'
+    je showConfigInterface
+
+    cmp al, 'x'
+    je finishApplication
+
+    cmp al, 'X'
+    je finishApplication
+
+    cmp al, '1'
+    je applyDarkTheme
+
+    cmp al, '2'
+    je applyLightTheme
+
+    jmp .getKeys
+
+;;************************************************************************************
+
+applyDarkTheme:
+
+    mov eax, HEXAGONIX_BLOSSOM_AMARELO
+    mov ebx, HEXAGONIX_BLOSSOM_CINZA
+    mov dword[backgroundColor], ebx
+    mov dword[fontColor], eax
+    mov ecx, 1234h
+
+    hx.syscall definirCor
+
+    call configureConsoles
+
+    jmp showThemeInterface
+
+;;************************************************************************************
+
+applyLightTheme:
+
+    mov eax, HEXAGONIX_CLASSICO_PRETO
+    mov ebx, HEXAGONIX_CLASSICO_BRANCO
+    mov dword[backgroundColor], ebx
+    mov dword[fontColor], eax
+    mov ecx, 1234h
+
+    hx.syscall definirCor
+
+    call configureConsoles
+
+    jmp showThemeInterface
+
+;;************************************************************************************
+
+configureConsoles:
+
+    mov esi, Hexagon.LibASM.Dev.video.tty1 ;; Open the secondary console
+
+    hx.syscall hx.open ;; Open the device
+
+    hx.syscall limparTela
+
+    mov esi, Hexagon.LibASM.Dev.video.tty0 ;; Reopen the default console
+
+    hx.syscall hx.open ;; Open the device
+
+    ret

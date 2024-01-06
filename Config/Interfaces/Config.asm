@@ -66,90 +66,90 @@
 ;;
 ;; $HexagonixOS$
 
-mostrarInterfaceConfiguracoes:
+showConfigInterface:
 
     hx.syscall limparTela
 
-;; Imprime o título do programa e rodapé
+;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
-    mov ebx, corPadraoInterface
+    mov ebx, interfaceDefaultColor
 
     hx.syscall definirCor
 
     mov al, 0
     hx.syscall limparLinha
 
-    fputs TITULO.configuracoes
+    fputs TITLE.config
 
-    mov al, byte[maxLinhas] ;; Última linha
+    mov al, byte[maxRows] ;; Last row
 
     dec al
 
     hx.syscall limparLinha
 
-    fputs RODAPE.configuracoes
+    fputs FOOTER.config
 
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    call mostrarAvisoResolucao
-
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    xyfputs 02, 02, msgConfig.introducao
+    call showResolutionWarning
 
-    xyfputs 02, 05, msgConfig.introducao2
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
 
-    xyfputs 04, 07, msgConfig.categoria1
+    hx.syscall definirCor
 
-    xyfputs 04, 08, msgConfig.categoria2
+    xyfputs 02, 02, configInterfaceData.intro
 
-    xyfputs 04, 09, msgConfig.categoria3
+    xyfputs 02, 05, configInterfaceData.intro2
 
-    xyfputs 04, 10, msgConfig.categoria4
+    xyfputs 04, 07, configInterfaceData.category1
 
-    xyfputs 04, 11, msgConfig.categoria5
+    xyfputs 04, 08, configInterfaceData.category2
 
-    xyfputs 04, 12, msgConfig.categoria6
+    xyfputs 04, 09, configInterfaceData.category3
 
-.obterTeclas:
+    xyfputs 04, 10, configInterfaceData.category4
+
+    xyfputs 04, 11, configInterfaceData.category5
+
+    xyfputs 04, 12, configInterfaceData.category6
+
+.getKeys:
 
     hx.syscall aguardarTeclado
 
     cmp al, 'b'
-    je mostrarInterfacePrincipal
+    je showMainInterface
 
     cmp al, 'B'
-    je mostrarInterfacePrincipal
+    je showMainInterface
 
     cmp al, 'x'
-    je finalizarAPP
+    je finishApplication
 
     cmp al, 'X'
-    je finalizarAPP
+    je finishApplication
 
     cmp al, '1'
-    je mostrarInterfaceConfigResolucao
+    je showResolutionInterface
 
     cmp al, '2'
-    je mostrarInterfaceConfigTema
+    je showThemeInterface
 
     cmp al, '3'
-    je mostrarInterfaceDiscos
+    je showVolumeInterface
 
     cmp al, '4'
-    je mostrarInterfaceSerial
+    je showSerialInterface
 
     cmp al, '5'
-    je mostrarInterfacePortaParalela
+    je showParallelInterface
 
     cmp al, '6'
-    je mostrarInterfaceFonte
+    je showFontInterface
 
-    jmp .obterTeclas
+    jmp .getKeys

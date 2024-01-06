@@ -68,9 +68,9 @@
 
 ;; Solicita a versão do sistema, a decodifica e exibe para o usuário
 
-imprimirVersao:
+printSystemVersion:
 
-    mov esi, versaoObtida
+    mov esi, versionObtained
 
     imprimirString
 
@@ -78,7 +78,7 @@ imprimirVersao:
 
 ;;************************************************************************************
 
-finalizarAPP:
+finishApplication:
 
 match =SIM, VERBOSE
 

@@ -66,14 +66,14 @@
 ;;
 ;; $HexagonixOS$
 
-mostrarInterfacePrincipal:
+showMainInterface:
 
     hx.syscall limparTela
 
-;; Imprime o título do programa e rodapé
+;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
-    mov ebx, corPadraoInterface
+    mov ebx, interfaceDefaultColor
 
     hx.syscall definirCor
 
@@ -81,58 +81,58 @@ mostrarInterfacePrincipal:
 
     hx.syscall limparLinha
 
-    fputs TITULO.principal
+    fputs TITLE.main
 
-    mov al, byte[maxLinhas] ;; Última linha
+    mov al, byte[maxRows] ;; Last row
 
     dec al
 
     hx.syscall limparLinha
 
-    fputs RODAPE.principal
+    fputs FOOTER.main
 
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    call mostrarAvisoResolucao
-
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    call definirCorTema
+    call showResolutionWarning
 
-    xyfputs 00, 02, msgGeral.logo
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
 
-    call definirCorPadrao
+    hx.syscall definirCor
 
-;; A partir daqui, estamos abaixo do logo
+    call setDefaultTheme
 
-    xyfputs 01, 13, msgPrincipal.introducao
+    xyfputs 00, 02, generalData.logo
 
-    xyfputs 01, 14, msgPrincipal.introducao2
+    call setDefaultColor
 
-    xyfputs 01, 17, msgPrincipal.categoria1
+;; From here, we are below the logo
 
-    xyfputs 01, 18, msgPrincipal.categoria2
+    xyfputs 01, 13, mainInterfaceData.intro
 
-.obterTeclas:
+    xyfputs 01, 14, mainInterfaceData.intro2
+
+    xyfputs 01, 17, mainInterfaceData.category1
+
+    xyfputs 01, 18, mainInterfaceData.category2
+
+.getKeys:
 
     hx.syscall aguardarTeclado
 
     cmp al, '1'
-    je mostrarInterfaceConfiguracoes
+    je showConfigInterface
 
     cmp al, '2'
     je mostrarInterfaceInfo
 
     cmp al, 'x'
-    je finalizarAPP
+    je finishApplication
 
     cmp al, 'X'
-    je finalizarAPP
+    je finishApplication
 
-    jmp .obterTeclas
+    jmp .getKeys

@@ -68,12 +68,12 @@
 
 use32
 
-;; Agora vamos criar um cabeçalho para a imagem HAPP final do aplicativo.
+;; Now let's create a HAPP header for the application
 
-include "HAPP.s" ;; Aqui está uma estrutura para o cabeçalho HAPP
+include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instância | Estrutura | Arquitetura | Versão | Subversão | Entrada | Tipo
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, inicioAPP, 01h
+;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
+cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -82,62 +82,62 @@ include "Estelar/estelar.s"
 include "macros.s"
 include "log.s"
 
-;; Funções de gerenciamento de versão
+;; Version management functions
 
 include "verUtils.s"
 
-;; Lista de dispositivos do Hexagon
+;; Hexagon device list
 
 include "dev.s"
 
-;; Versão do aplicativo
+;; Application version
 
-include "versao.s"
+include "version.s"
 
-;; Os dados de log só serão incluídos no aplicativo se for necessário. O padrão é que
-;; sejam incluídos
+;; Log data will only be included in the application if necessary.
+;; The default is that they are included
 
 match =SIM, VERBOSE
 {
 
-include "Dados\log.asm"
+include "Data\log.asm"
 
 }
 
-;; Funções, macros e objetos para comunicação com o Hexagonix
+;; Functions, macros and objects for communicating with Hexagonix
 
 include "Hexagonix\Hexagonix.asm"
 include "Hexagonix\hardware.asm"
 include "Hexagonix\video.asm"
 
-;; Interfaces do aplicativo
+;; Application interfaces
 
-include "Interfaces\Principal.asm"
+include "Interfaces\Main.asm"
 include "Interfaces\Info.asm"
 include "Interfaces\Config.asm"
-include "Interfaces\Resolucao.asm"
+include "Interfaces\Resolution.asm"
 include "Interfaces\Video.asm"
-include "Interfaces\Discos.asm"
-include "Interfaces\Fonte.asm"
-include "Interfaces\Paralela.asm"
+include "Interfaces\Volumes.asm"
+include "Interfaces\Font.asm"
+include "Interfaces\Parallel.asm"
 include "Interfaces\Serial.asm"
-include "Interfaces\Tema.asm"
+include "Interfaces\Themes.asm"
 
-;; Mensagens do aplicativo
+;; Application messages
 
-include "Dados\Interfaces.asm"
+include "Data\Interfaces.asm"
 
-corPadraoInterface = OURO_HEXAGONIX
-
-;;************************************************************************************
-
-inicioAPP:
-
-    jmp entradaConfig
+interfaceDefaultColor = OURO_HEXAGONIX
 
 ;;************************************************************************************
 
-entradaConfig:
+applicationStart:
+
+    jmp configEntrypoint
+
+;;************************************************************************************
+
+configEntrypoint:
 
 match =SIM, VERBOSE
 
@@ -150,15 +150,15 @@ match =SIM, VERBOSE
 
     hx.syscall obterInfoTela
 
-    mov byte[maxColunas], bl
-    mov byte[maxLinhas], bh
+    mov byte[maxColumns], bl
+    mov byte[maxRows], bh
 
-    mov byte[alterado], 0
+    mov byte[changed], 0
 
     hx.syscall obterCor
 
-    mov dword[corFonte], ecx
-    mov dword[corFundo], edx
+    mov dword[fontColor], ecx
+    mov dword[backgroundColor], edx
 
 match =SIM, VERBOSE
 
@@ -168,13 +168,13 @@ match =SIM, VERBOSE
 
 }
 
-    call obterVersaoDistribuicao
+    call getHexagonixVersion
 
-    jc .erroVersao
+    jc .versionError
 
-    jmp .continuar
+    jmp .continue
 
-.erroVersao:
+.versionError:
 
 match =SIM, VERBOSE
 
@@ -184,20 +184,20 @@ match =SIM, VERBOSE
 
 }
 
-.continuar:
+.continue:
 
-    jmp mostrarInterfacePrincipal
+    jmp showMainInterface
 
-fonte: times 13 db 0
+font: times 13 db 0
 
-corFundo: dd 0
-corFonte: dd 0
+backgroundColor: dd 0
+fontColor: dd 0
 
-enderecoCarregamento:
+appFileBuffer:
 
 Buffers:
 
-;; Buffer para armazenamento de dados temporários
+;; Buffer for temporary data storage
 
 .msg: db 0
 

@@ -66,10 +66,10 @@
 ;;
 ;; $HexagonixOS$
 
-definirCorTema:
+setDefaultTheme:
 
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
@@ -77,10 +77,10 @@ definirCorTema:
 
 ;;************************************************************************************
 
-definirCorPadrao:
+setDefaultColor:
 
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
@@ -90,5 +90,5 @@ definirCorPadrao:
 
 ;; Variáveis e constantes
 
-maxColunas: db 0 ;; Total de colunas disponíveis no vídeo na resolução atual
-maxLinhas:  db 0 ;; Total de linhas disponíveis no vídeo na resolução atual
+maxColumns: db 0 ;; Total de colunas disponíveis no vídeo na resolução atual
+maxRows:  db 0 ;; Total de linhas disponíveis no vídeo na resolução atual

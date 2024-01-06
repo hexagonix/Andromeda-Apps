@@ -70,28 +70,28 @@ use32
 
 align 32
 
-msgPrincipal:
+mainInterfaceData:
 
-.introducao:
+.intro:
 db "Welcome to Config! Here you can get more information about Hexagonix or change system settings.", 0
-.introducao2:
+.intro2:
 db "To get started, select one of the options below:", 0
-.categoria1:
+.category1:
 db "[1] Change general system settings.", 0
-.categoria2:
+.category2:
 db "[2] View more information about this version of Hexagonix.", 0
 
 ;;************************************************************************************
 
-msgGeral:
+generalData:
 
-.mensagemResolucao:
+.resolutionWarning:
 db "It is recommended to use this application in 1024x768 resolution for better use of the screen.", 0
-.msgErro:
+.msgError:
 db "Error performing the requested operation.", 0
-.msgVersao:
+.msgVersion:
 db "You are using a version of Hexagonix that does not support this feature.", 0
-.ponto:
+.dot:
 db ".", 0
 .logo:
 db "  88                                                                                88", 10
@@ -104,7 +104,7 @@ db "  88       88 '8b,   ,aa  ,d8' '8b,  88,    ,88 '8a,   ,d88 '8a,   ,a8' 88  
 db "  88       88  `'Pbbd8'' 8P'     `P8 `'8bbdP'P8  `'PbbdP'P8  `'PbbdP''  88       88 88 8P'     `P8", 10
 db "                                                 aa,    ,88", 10
 db "                                                  'P8bbdP'", 0
-.logoResumido:
+.flatLogo:
 db "88", 10
 db "88", 10
 db "88", 10
@@ -116,140 +116,140 @@ db "88       88", 0
 
 ;;************************************************************************************
 
-msgInfo:
+infoInterfaceData:
 
-.introducao:
+.intro:
 db "Detailed Information of the Hexagonix Operating System", 0
-.nomeSistema:
+.systemName:
 db "Installed Operating System name: ", 0
-.versaoSistema:
+.systemVersion:
 db "Operating System version: ", 0
-.buildSistema:
+.systemBuild:
 db "Operating System build: ", 0
-.tipoSistema:
+.systemType:
 db "Operating System type:", 0
-.modeloSistema:
+.systemModel:
 db " 32-bit", 10, 0
-.pacoteAtualizacoes:
+.updatePackage:
 db "Update package installed: ", 0
-.copyrightAndromeda:
+.copyright:
 db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
-.direitosReservados:
+.trademark:
 db "All rights reserved.", 0
-.introducaoHardware:
+.hardwareIntro:
 db "Hardware information for this device", 0
-.processadorPrincipal:
+.mainProcessor:
 db "Installed processor (considering only the main processor):", 0
-.numProcessador:
+.processorNumber:
 db "1) ", 0
-.operacaoProcessador:
+.processorOperationMode:
 db "Processor in 32-bit protected mode", 0
-.memoriaDisponivel:
+.availableMemory:
 db "Total installed memory available: ", 0
 .kbytes:
 db " megabytes.", 0
 .Hexagon:
 db "Hexagon (kernel) version: ", 0
-.ponto:
+.dot:
 db ".", 0
-.semCPUID:
+.withoutCPUID:
 db "The processor does not support the CPUID instruction and cannot be identified.", 0
-.licenciado:
+.license:
 db "Licensed under BSD-3-Clause", 0
 
 ;;************************************************************************************
 
-msgConfig:
+configInterfaceData:
 
-.introducao:
+.intro:
 db "Here you can change some settings of Hexagonix", 0
-.introducao2:
+.intro2:
 db "To get started, select any category listed below:", 0
-.categoria1:
+.category1:
 db "[1] Change the resolution used by the current monitor.", 0
-.categoria2:
+.category2:
 db "[2] Change the default console color scheme.", 0
-.categoria3:
+.category3:
 db "[3] Check disks and storage.", 0
-.categoria4:
+.category4:
 db "[4] View and test serial ports.", 0
-.categoria5:
+.category5:
 db "[5] View parallel port and printer.", 0
-.categoria6:
+.category6:
 db "[6] Change the default system font.", 0
 
 ;;************************************************************************************
 
-msgResolucao:
+resolutionInterfaceData:
 
-.introducao:
+.intro:
 db "Here you can change the resolution of the computer video, among", 0
-.introducao2:
+.intro2:
 db "the available options.", 0
-.inserir:
+.insert:
 db "Choose from one of the options below, inserting the number:", 0
-.opcao1:
+.option1:
 db "[1] Resolution of 800x600 pixels", 0
-.opcao2:
+.option2:
 db "[2] Resolution of 1024x768 pixels", 0
-.modo1:
+.mode1:
 db "Current resolution: 800x600 pixels", 0
-.modo2:
+.mode2:
 db "Current resolution: 1024x768 pixels", 0
-.resolucaoAlterada:
+.resolutionChanged:
 db "The resolution has recently changed.", 0
-.alterado:
+.changed:
 db "The resolution has been changed. If you don't like it, go back to the previous resolution.", 0
 
 ;;************************************************************************************
 
-msgTema:
+themeInterfaceData:
 
-.introducao:
+.intro:
 db "Here you can set the default Hexagonix console color scheme.", 0
-.inserir:
+.insert:
 db "Choose from one of the options below, inserting the number:", 0
-.opcao1:
+.option1:
 db "[1] Dark mode", 0
-.opcao2:
+.option2:
 db "[2] Light mode", 0
 
 ;;************************************************************************************
 
-msgDiscos:
+volumesInterfaceData:
 
-.introducao:
+.intro:
 db "Here you can track information about your computer's storage and disks", 0
-.introducao2:
+.intro2:
 db "available for use.", 0
-.discoAtual:
+.currentVolume:
 db "Current disk mounted at [/] used by system: ", 0
-.rotuloVolume:
+.volumeLabel:
 db "Label of the volume mounted at [/] used by the system: ", 0
 
 ;;************************************************************************************
 
-msgFonte:
+fontInterfaceData:
 
-.introducao:
+.intro:
 db "Here you can change the default system display font. Remembering that the font", 0
-.introducao2:
+.intro2:
 db "must be compatible with the Hexagonix Operating System", 0
-.solicitarArquivo:
+.requestFile:
 db "Please enter the name of the Hexagonix font file ([ENTER] to cancel): ", 0
-.sucesso:
+.success:
 db "Successfully changing system default font to: [", 0
-.fechamento:
+.closure:
 db "]", 0
-.introducaoTeste:
+.testIntro:
 db 10, 10, "Font and character layout preview: ", 0
-.arquivoAusente:
-db "The requested file was not found on disk.", 0
-.semArquivo:
+.fileNotFound:
+db "The requested file was not found on this volume.", 0
+.withoutFile:
 db "A filename was not provided. The operation was cancelled.", 0
-.ponto:
+.dot:
 db ".", 10, 10, 0
-.testeFonte:
+.fontTest:
 db "Hexagonix Operating System", 10, 10
 db "1234567890-=", 10
 db "!@#$%^&*()_+", 10
@@ -260,107 +260,105 @@ db "asdfghjkl;'\", 10
 db "ZXCVBNM<>?", 10
 db "zxcvbnm,./", 10, 10
 db "Hexagonix Operating System", 10, 10, 0
-.fonteNaoEncontrada:
-db "The requested file was not found.", 0
-.fonteInvalida:
+.invalidFile:
 db "The requested file is not compatible with Hexagonix.", 0
-.erroDesconhecido:
+.unknownError:
 db "An unknown error has occurred.", 0
 
 ;;************************************************************************************
 
-nomeSistema:
+systemName:
 db "Hexagonix", 0
-nomeCompletoSistema:
+systemFullName:
 db "Hexagonix Operating System", 0
 
 ;;************************************************************************************
 
-msgPortaParalela:
+parallelInterfaceData:
 
-.introducao:
+.intro:
 db "Here you can configure and view the parallel port (printer) settings", 0
-.introducao2:
+.intro2:
 db "in use on this computer.", 0
 .impressoraPadrao:
 db "Default printer on this computer: ", 0
 
 ;;************************************************************************************
 
-msgSerial:
+serialInterfaceData:
 
-.introducao:
+.intro:
 db "Here you can view and perform actions with the serial port.", 0
-.introducao2: db 0
-.portaPadrao:
+.intro2: db 0
+.defaultPort:
 db "Standard serial port for this computer: ", 0
-.opcoes:
+.options:
 db "You can request an automatic port test or you can send a message.", 0
-.opcoes2:
+.options2:
 db "To do so, select [D] for an automatic test and [E] for a manual submission.", 0
-.opcoes3:
+.options3:
 db "If you do not wish to carry out these operations, simply return to the previous menu.", 0
-.mensagemEnviando:
+.msgSending:
 db "Performing data sending test via serial port... ", 0
-.enviado:
+.sent:
 db " [Sent]", 0
-.erroEnvio:
+.sendError:
 db "Error sending to serial port.", 0
-.erroAbertura:
+.openError:
 db "Error opening device for writing.", 0
-.mensagemAutomatica:
+.automaticMessage:
 db "This is an automated message from the Hexagonix Operating System Control Panel! ", 10, 0
-.insiraMensagem:
+.insertMessage:
 db "Enter your message to ", 0
-.doisPontos:
+.colon:
 db ": ", 0
-.colcheteEsquerdo:
+.leftBracket:
 db "[", 0
-.colcheteDireito:
+.rightBracket:
 db "]",0
 
 ;;************************************************************************************
 
-TITULO:
+TITLE:
 
-.principal:
+.main:
 db "Hexagonix Settings", 0
 .info:
 db "About the Hexagonix Operating System and system updates", 0
-.configuracoes:
+.config:
 db "Hexagonix Settings", 0
-.resolucao:
+.resolution:
 db "Video resolution settings", 0
-.discos:
+.volumes:
 db "Hexagonix disk and storage information", 0
-.fonte:
+.font:
 db "Change the default system display font", 0
-.portaParalela:
+.parallelPort:
 db "Configure parallel ports (printers)", 0
-.portaSerial:
+.serialPort:
 db "Serial port settings and diagnostics", 0
-.tema:
+.theme:
 db "Set console color scheme", 0
 
 ;;************************************************************************************
 
-RODAPE:
+FOOTER:
 
-.principal:
-db "[Version ", VERSAOCONFIG, "] | [X] Exit", 0
+.main:
+db "[Version ", VERSION, "] | [X] Exit", 0
 .info:
-db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
-.configuracoes:
-db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
-.resolucao:
-db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
-.discos:
-db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
-.fonte:
-db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
-.portaParalela:
-db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
-.portaSerial:
-db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
-.tema:
-db "[Version ", VERSAOCONFIG, "] | [B] Back, [X] Exit", 0
+db "[Version ", VERSION, "] | [B] Back, [X] Exit", 0
+.config:
+db "[Version ", VERSION, "] | [B] Back, [X] Exit", 0
+.resolution:
+db "[Version ", VERSION, "] | [B] Back, [X] Exit", 0
+.volumes:
+db "[Version ", VERSION, "] | [B] Back, [X] Exit", 0
+.font:
+db "[Version ", VERSION, "] | [B] Back, [X] Exit", 0
+.parallelPort:
+db "[Version ", VERSION, "] | [B] Back, [X] Exit", 0
+.serialPort:
+db "[Version ", VERSION, "] | [B] Back, [X] Exit", 0
+.theme:
+db "[Version ", VERSION, "] | [B] Back, [X] Exit", 0

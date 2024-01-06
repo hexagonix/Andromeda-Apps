@@ -66,84 +66,112 @@
 ;;
 ;; $HexagonixOS$
 
-mostrarInterfacePortaParalela:
-
-match =SIM, VERBOSE
-{
-
-    logSistema Log.Config.logParalela, 00h, Log.Prioridades.p4
-
-}
+showVolumeInterface:
 
     hx.syscall limparTela
 
-;; Imprime o título do programa e rodapé
+;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
-    mov ebx, corPadraoInterface
+    mov ebx, interfaceDefaultColor
 
     hx.syscall definirCor
 
     mov al, 0
-
     hx.syscall limparLinha
 
-    fputs TITULO.portaParalela
+    fputs TITLE.volumes
 
-    mov al, byte[maxLinhas] ;; Última linha
+    mov al, byte[maxRows] ;; Last row
 
     dec al
 
     hx.syscall limparLinha
 
-    fputs RODAPE.portaParalela
+    fputs FOOTER.volumes
 
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    call mostrarAvisoResolucao
-
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    xyfputs 02, 02, msgPortaParalela.introducao
+    call showResolutionWarning
 
-    xyfputs 02, 03, msgPortaParalela.introducao2
-
-.infoParalela:
-
-    xyfputs 04, 06, msgPortaParalela.impressoraPadrao
-
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    fputs Hexagon.LibASM.Dev.portasParalelas.lpt0
+    xyfputs 02, 02, volumesInterfaceData.intro
 
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+    xyfputs 02, 03, volumesInterfaceData.intro2
+
+.infoVolumes:
+
+    xyfputs 04, 06, volumesInterfaceData.currentVolume
+
+match =SIM, VERBOSE
+{
+
+    logSistema Log.Config.logDiscos, 00h, Log.Prioridades.p4
+
+}
+
+    hx.syscall obterDisco
+
+    push edi ;; Volume label
+    push esi ;; Device name depending on the system
+
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-.obterTeclas:
+    pop esi
+
+    imprimirString
+
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
+
+    hx.syscall definirCor
+
+    xyfputs 04, 07, volumesInterfaceData.volumeLabel
+
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
+
+    hx.syscall definirCor
+
+    pop esi
+
+    imprimirString
+
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
+
+    hx.syscall definirCor
+
+    jmp .putNewLine
+
+.putNewLine:
+
+    putNewLine
+
+.getKeys:
 
     hx.syscall aguardarTeclado
 
     cmp al, 'b'
-    je mostrarInterfaceConfiguracoes
+    je showConfigInterface
 
     cmp al, 'B'
-    je mostrarInterfaceConfiguracoes
+    je showConfigInterface
 
     cmp al, 'x'
-    je finalizarAPP
+    je finishApplication
 
     cmp al, 'X'
-    je finalizarAPP
+    je finishApplication
 
-    jmp .obterTeclas
+    jmp .getKeys

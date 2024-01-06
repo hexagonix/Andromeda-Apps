@@ -66,14 +66,14 @@
 ;;
 ;; $HexagonixOS$
 
-mostrarInterfaceConfigTema:
+showResolutionInterface:
 
     hx.syscall limparTela
 
-;; Imprime o título do programa e rodapé
+;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
-    mov ebx, corPadraoInterface
+    mov ebx, interfaceDefaultColor
 
     hx.syscall definirCor
 
@@ -81,104 +81,170 @@ mostrarInterfaceConfigTema:
 
     hx.syscall limparLinha
 
-    fputs TITULO.tema
+    fputs TITLE.resolution
 
-    mov al, byte[maxLinhas] ;; Última linha
+    mov al, byte[maxRows] ;; Last row
 
     dec al
 
     hx.syscall limparLinha
 
-    fputs RODAPE.tema
+    fputs FOOTER.resolution
 
-    mov eax, corPadraoInterface
-    mov ebx, dword[corFundo]
-
-    hx.syscall definirCor
-
-    call mostrarAvisoResolucao
-
-    mov eax, dword[corFonte]
-    mov ebx, dword[corFundo]
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    xyfputs 02, 02, msgTema.introducao
+    call showResolutionWarning
 
-    xyfputs 02, 05, msgTema.inserir
+    call showResolution
 
-    xyfputs 04, 07, msgTema.opcao1
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
 
-    xyfputs 04, 08, msgTema.opcao2
+    hx.syscall definirCor
 
-.obterTeclas:
+    xyfputs 02, 02, resolutionInterfaceData.intro
+
+    xyfputs 02, 03, resolutionInterfaceData.intro2
+
+    xyfputs 02, 06, resolutionInterfaceData.insert
+
+    xyfputs 04, 08, resolutionInterfaceData.option1
+
+    xyfputs 04, 09, resolutionInterfaceData.option2
+
+    mov ah, byte[changed]
+
+    cmp byte ah, 1
+    je .hasChanged
+
+.getKeys:
 
     hx.syscall aguardarTeclado
 
     cmp al, 'b'
-    je mostrarInterfaceConfiguracoes
+    je showConfigInterface
 
     cmp al, 'B'
-    je mostrarInterfaceConfiguracoes
+    je showConfigInterface
 
     cmp al, 'x'
-    je finalizarAPP
+    je finishApplication
 
     cmp al, 'X'
-    je finalizarAPP
+    je finishApplication
 
     cmp al, '1'
-    je temaEscuro
+    je graphicMode1
 
     cmp al, '2'
-    je temaClaro
+    je graphicMode2
 
-    jmp .obterTeclas
+    jmp .getKeys
 
-;;************************************************************************************
+.hasChanged:
 
-temaEscuro:
-
-    mov eax, HEXAGONIX_BLOSSOM_AMARELO
-    mov ebx, HEXAGONIX_BLOSSOM_CINZA
-    mov dword[corFundo], ebx
-    mov dword[corFonte], eax
-    mov ecx, 1234h
+    mov eax, interfaceDefaultColor
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    call configurarConsoles
+    mov dh, 15
+    mov dl, 02
 
-    jmp mostrarInterfaceConfigTema
+    hx.syscall definirCursor
 
-;;************************************************************************************
+    fputs resolutionInterfaceData.resolutionChanged
 
-temaClaro:
+    mov dh, 17
+    mov dl, 02
 
-    mov eax, HEXAGONIX_CLASSICO_PRETO
-    mov ebx, HEXAGONIX_CLASSICO_BRANCO
-    mov dword[corFundo], ebx
-    mov dword[corFonte], eax
-    mov ecx, 1234h
+    hx.syscall definirCursor
+
+    fputs resolutionInterfaceData.changed
+
+    mov eax, dword[fontColor]
+    mov ebx, dword[backgroundColor]
 
     hx.syscall definirCor
 
-    call configurarConsoles
+    jmp .getKeys
 
-    jmp mostrarInterfaceConfigTema
+graphicMode1:
 
-;;************************************************************************************
+match =SIM, VERBOSE
+{
 
-configurarConsoles:
+    logSistema Log.Config.logTrocarResolucao800x600, 00h, Log.Prioridades.p4
 
-    mov esi, Hexagon.LibASM.Dev.video.tty1 ;; Abre o console secundário
+}
 
-    hx.syscall hx.open ;; Abre o dispositivo
+    mov eax, 1
 
-    hx.syscall limparTela
+    hx.syscall definirResolucao
 
-    mov esi, Hexagon.LibASM.Dev.video.tty0 ;; Reabre o console padrão
+    hx.syscall obterInfoTela
 
-    hx.syscall hx.open ;; Abre o dispositivo
+    mov byte[maxColumns], bl
+    mov byte[maxRows], bh
+
+    mov byte[changed], 1
+
+    mov dh, 15
+    mov dl, 02
+
+    jmp showResolutionInterface
+
+graphicMode2:
+
+match =SIM, VERBOSE
+{
+
+    logSistema Log.Config.logTrocarResolucao1024x768, 00h, Log.Prioridades.p4
+
+}
+
+    mov eax, 2
+    hx.syscall definirResolucao
+
+    hx.syscall obterInfoTela
+
+    mov byte[maxColumns], bl
+    mov byte[maxRows], bh
+
+    mov byte[changed], 1
+
+    jmp showResolutionInterface
+
+showResolution:
+
+    mov dh, 13
+    mov dl, 02
+
+    hx.syscall definirCursor
+
+    hx.syscall obterResolucao
+
+    cmp eax, 1
+    je .graphicMode1
+
+    cmp eax, 2
+    je .graphicMode2
 
     ret
+
+.graphicMode1:
+
+    fputs resolutionInterfaceData.mode1
+
+    ret
+
+.graphicMode2:
+
+    fputs resolutionInterfaceData.mode2
+
+   ret
+
+changed: dd 0
