@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, applicationStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -87,14 +87,14 @@ applicationStart:
 
     Andromeda.Estelar.obterInfoConsole
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
 ;; Format: title, footer, titleColor, footerColor, titleTextColor,
 ;; footerTextColor, textColor, backgroundColor
 
     Andromeda.Estelar.criarInterface piano.title, piano.footer, \
     COLOR_HIGHTLIGHT, COLOR_HIGHTLIGHT, COLOR_FONT, COLOR_FONT, \
-    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
 .pianoBlock:
 
@@ -104,13 +104,13 @@ applicationStart:
     mov edi, 450 ;; Block height
     mov edx, COLOR_BLOCK ;; Block color
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
     call assembleKeys
 
 .again:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
 .noKey: ;; Find the keys and play the sounds
 
@@ -119,7 +119,7 @@ applicationStart:
 
     call highlightKeys.highlightQ
 
-    tocarNota 4000
+    playNote 4000
 
     jmp .again
 
@@ -130,7 +130,7 @@ applicationStart:
 
     call highlightKeys.highlightW
 
-    tocarNota 3600
+    playNote 3600
 
     jmp .again
 
@@ -141,7 +141,7 @@ applicationStart:
 
     call highlightKeys.highlightE
 
-    tocarNota 3200
+    playNote 3200
 
     jmp .again
 
@@ -153,7 +153,7 @@ applicationStart:
 
     call highlightKeys.highlightR
 
-    tocarNota 3000
+    playNote 3000
 
     jmp .again
 
@@ -164,7 +164,7 @@ applicationStart:
 
     call highlightKeys.highlightT
 
-    tocarNota 2700
+    playNote 2700
 
     jmp .again
 
@@ -175,7 +175,7 @@ applicationStart:
 
     call highlightKeys.highlightY
 
-    tocarNota 2400
+    playNote 2400
 
     jmp .again
 
@@ -186,7 +186,7 @@ applicationStart:
 
     call highlightKeys.highlightU
 
-    tocarNota 2100
+    playNote 2100
 
     jmp .again
 
@@ -197,7 +197,7 @@ applicationStart:
 
     call highlightKeys.highlightI
 
-    tocarNota 2000
+    playNote 2000
 
     jmp .again
 
@@ -208,7 +208,7 @@ applicationStart:
 
     call highlightKeys.highlightSpace
 
-    finalizarNota
+    finishNote
 
     jmp .again
 
@@ -235,16 +235,16 @@ applicationStart:
 
 .end:
 
-    mov eax, dword[Andromeda.Interface.corFonte]
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, dword[Andromeda.Interface.fontColor]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
-    hx.syscall desligarSom
+    hx.syscall hx.offSound
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
-    Andromeda.Estelar.finalizarProcessoGrafico 0, 0
+    Andromeda.Estelar.finishGraphicProcess 0, 0
 
 ;;************************************************************
 
@@ -258,7 +258,7 @@ assembleKeys:
     mov edi, 250
     mov edx, COLOR_KEY_BACKGROUND
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
 .secondKey:
 
@@ -268,7 +268,7 @@ assembleKeys:
     mov edi, 250
     mov edx, COLOR_KEY_BACKGROUND
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
 .thirdKey:
 
@@ -278,7 +278,7 @@ assembleKeys:
     mov edi, 250
     mov edx, COLOR_KEY_BACKGROUND
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
 .fourthKey:
 
@@ -288,7 +288,7 @@ assembleKeys:
     mov edi, 250
     mov edx, COLOR_KEY_BACKGROUND
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
 .fifthKey:
 
@@ -298,7 +298,7 @@ assembleKeys:
     mov edi, 250
     mov edx, COLOR_KEY_BACKGROUND
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
 .sixthKey:
 
@@ -308,7 +308,7 @@ assembleKeys:
     mov edi, 250
     mov edx, COLOR_KEY_BACKGROUND
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
 .seventhKey:
 
@@ -318,7 +318,7 @@ assembleKeys:
     mov edi, 250
     mov edx, COLOR_KEY_BACKGROUND
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
 .eighthKey:
 
@@ -328,7 +328,7 @@ assembleKeys:
     mov edi, 250
     mov edx, COLOR_KEY_BACKGROUND
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
 .spaceBlock:
 
@@ -338,21 +338,21 @@ assembleKeys:
     mov edi, 40
     mov edx, COLOR_KEY_BACKGROUND
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
 .subtitle:
 
     mov eax, COLOR_KEY_BACKGROUND
     mov ebx, COLOR_BLOCK
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
 .keyQ:
 
     mov dl, 19
     mov dh, 22 ;; Do not change! This is the Y position!
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.keyQ
 
@@ -361,7 +361,7 @@ assembleKeys:
     mov dl, 27 ;; Previous + 8
     mov dh, 22 ;; Do not change! This is the Y position!
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.keyW
 
@@ -370,7 +370,7 @@ assembleKeys:
     mov dl, 34 ;; Previous + 7
     mov dh, 22 ;; Do not change! This is the Y position!
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.keyE
 
@@ -379,7 +379,7 @@ assembleKeys:
     mov dl, 42 ;; Previous + 8
     mov dh, 22 ;; Do not change! This is the Y position!
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.keyR
 
@@ -388,7 +388,7 @@ assembleKeys:
     mov dl, 49 ;; Previous + 7
     mov dh, 22 ;; Do not change! This is the Y position!
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.keyT
 
@@ -397,7 +397,7 @@ assembleKeys:
     mov dl, 57 ;; Previous + 8
     mov dh, 22 ;; Do not change! This is the Y position!
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.keyY
 
@@ -406,7 +406,7 @@ assembleKeys:
     mov dl, 64 ;; Previous + 7
     mov dh, 22 ;; Do not change! This is the Y position!
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.keyU
 
@@ -415,7 +415,7 @@ assembleKeys:
     mov dl, 72 ;; Previous + 8
     mov dh, 22 ;; Do not change! This is the Y position!
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.keyI
 
@@ -424,19 +424,19 @@ assembleKeys:
     mov eax, COLOR_FONT
     mov ebx, COLOR_KEY_BACKGROUND
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov dl, 45
     mov dh, 29
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.keySpace
 
-    mov eax, dword[Andromeda.Interface.corFonte]
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, dword[Andromeda.Interface.fontColor]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     ret
 
@@ -454,7 +454,7 @@ highlightKeys:
     mov edi, 250
     mov edx, COLOR_KEY_HIGHLIGHT
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
     ret
 
@@ -468,7 +468,7 @@ highlightKeys:
     mov edi, 250
     mov edx, COLOR_KEY_HIGHLIGHT
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
     ret
 
@@ -482,7 +482,7 @@ highlightKeys:
     mov edi, 250
     mov edx, COLOR_KEY_HIGHLIGHT
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
     ret
 
@@ -496,7 +496,7 @@ highlightKeys:
     mov edi, 250
     mov edx, COLOR_KEY_HIGHLIGHT
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
     ret
 
@@ -510,7 +510,7 @@ highlightKeys:
     mov edi, 250
     mov edx, COLOR_KEY_HIGHLIGHT
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
     ret
 
@@ -524,7 +524,7 @@ highlightKeys:
     mov edi, 250
     mov edx, COLOR_KEY_HIGHLIGHT
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
     ret
 
@@ -538,7 +538,7 @@ highlightKeys:
     mov edi, 250
     mov edx, COLOR_KEY_HIGHLIGHT
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
     ret
 
@@ -552,7 +552,7 @@ highlightKeys:
     mov edi, 250
     mov edx, COLOR_KEY_HIGHLIGHT
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
     ret
 
@@ -566,26 +566,26 @@ highlightKeys:
     mov edi, 40
     mov edx, COLOR_KEY_HIGHLIGHT
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
     mov eax, COLOR_FONT
     mov ebx, COLOR_KEY_HIGHLIGHT
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov dl, 45
     mov dh, 29
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     mov esi, piano.keySpace
 
-    imprimirString
+    printString
 
-    mov eax, dword[Andromeda.Interface.corFonte]
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, dword[Andromeda.Interface.fontColor]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     ret
 
@@ -593,25 +593,25 @@ highlightKeys:
 
 showInfoInterface:
 
-    hx.syscall desligarSom
+    hx.syscall hx.offSound
 
-    mov eax, dword[Andromeda.Interface.corFonte]
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, dword[Andromeda.Interface.fontColor]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
 ;; Prints program title and footer
 
     mov eax, COLOR_FONT
     mov ebx, COLOR_HIGHTLIGHT
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, 0
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs piano.title
 
@@ -619,74 +619,74 @@ showInfoInterface:
 
     dec al
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs piano.infoFooter
 
-    mov eax, dword[Andromeda.Interface.corFonte]
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, dword[Andromeda.Interface.fontColor]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov dh, 02
     mov dl, 02
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.aboutPiano
 
     mov dh, 03
     mov dl, 02
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.pianoVersion
 
     mov dh, 05
     mov dl, 02
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.author
 
     mov dh, 06
     mov dl, 02
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.copyright
 
     mov dh, 08
     mov dl, 04
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.help
 
     mov dh, 10
     mov dl, 02
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.topic1
 
     mov dh, 11
     mov dl, 02
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.topic2
 
     mov dh, 12
     mov dl, 02
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs piano.topic3
 
 .getKeys:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     cmp al, 'b'
     je applicationStart
@@ -710,7 +710,7 @@ showInfoInterface:
 ;;
 ;;************************************************************************************
 
-VERSION equ "1.8.0"
+VERSION equ "1.9.0"
 
 COLOR_HIGHTLIGHT     = HEXAGONIX_BLOSSOM_AZUL
 COLOR_FONT           = HEXAGONIX_CLASSICO_BRANCO
