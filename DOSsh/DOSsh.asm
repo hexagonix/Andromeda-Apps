@@ -289,10 +289,10 @@ loadImage:
 ;; Now the error sent by the system will be analyzed, so that the shell knows its nature
 
     cmp eax, Hexagon.processesLimit ;; Limit of running processes reached
-    je .limitReached                 ;; If yes, display the appropriate message
+    je .limitReached                ;; If yes, display the appropriate message
 
     cmp eax, Hexagon.invalidImage ;; Invalid HAPP image
-    je .invalidHAPPImage            ;; If yes, display the appropriate message
+    je .invalidHAPPImage          ;; If yes, display the appropriate message
 
     push esi
 
