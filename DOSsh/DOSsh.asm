@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, shellStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 00, shellStart, 01h
 
 ;;************************************************************************************
 
@@ -187,16 +187,16 @@ currentFile:   dd ' '
 
 shellStart:
 
-    logSistema DOSsh.verboseStartingDOSsh, 00h, Log.Prioridades.p4
-    logSistema DOSsh.verboseDOSshVersion, 00h, Log.Prioridades.p4
-    logSistema DOSsh.verboseAuthor, 00h, Log.Prioridades.p4
-    logSistema DOSsh.verboseCopyright, 00h, Log.Prioridades.p4
+    systemLog DOSsh.verboseStartingDOSsh, 00h, Log.Priorities.p4
+    systemLog DOSsh.verboseDOSshVersion, 00h, Log.Priorities.p4
+    systemLog DOSsh.verboseAuthor, 00h, Log.Priorities.p4
+    systemLog DOSsh.verboseCopyright, 00h, Log.Priorities.p4
 
 ;; Start console configuration
 
     Andromeda.Estelar.obterInfoConsole
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
     fputs DOSsh.starting
 
@@ -214,9 +214,9 @@ getCommand:
 
     sub al, 20
 
-    hx.syscall obterString
+    hx.syscall hx.getString
 
-    hx.syscall cortarString ;; Remove extra spaces
+    hx.syscall hx.trimString ;; Remove extra spaces
 
     cmp byte[esi], 0 ;; Nenhum comando inserido
     je getCommand
@@ -227,7 +227,7 @@ getCommand:
 
     mov edi, DOSsh.commands.exit
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc finishShell
 
@@ -235,7 +235,7 @@ getCommand:
 
     mov edi, DOSsh.commands.version
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc commandVER
 
@@ -243,7 +243,7 @@ getCommand:
 
     mov edi, DOSsh.commands.help
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc commandHELP
 
@@ -251,7 +251,7 @@ getCommand:
 
     mov edi, DOSsh.commands.cls
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc commandCLS
 
@@ -259,7 +259,7 @@ getCommand:
 
     mov edi, DOSsh.commands.dir
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc commandDIR
 
@@ -267,7 +267,7 @@ getCommand:
 
     mov edi, DOSsh.commands.type
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc commandTYPE
 
@@ -288,10 +288,10 @@ loadImage:
 
 ;; Now the error sent by the system will be analyzed, so that the shell knows its nature
 
-    cmp eax, Hexagon.limiteProcessos ;; Limit of running processes reached
+    cmp eax, Hexagon.processesLimit ;; Limit of running processes reached
     je .limitReached                 ;; If yes, display the appropriate message
 
-    cmp eax, Hexagon.imagemInvalida ;; Invalid HAPP image
+    cmp eax, Hexagon.invalidImage ;; Invalid HAPP image
     je .invalidHAPPImage            ;; If yes, display the appropriate message
 
     push esi
@@ -321,7 +321,7 @@ loadImage:
 
     pop esi
 
-    imprimirString
+    printString
 
     fputs DOSsh.invalidImage
 
@@ -333,7 +333,7 @@ loadImage:
 
     mov esi, edi
 
-    hx.syscall cortarString
+    hx.syscall hx.trimString
 
     pop esi
 
@@ -341,7 +341,7 @@ loadImage:
 
     stc
 
-    hx.syscall iniciarProcesso
+    hx.syscall hx.exec
 
     jc .failedToExecute
 
@@ -359,7 +359,7 @@ commandHELP:
 
 commandCLS:
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
     jmp getCommand
 
@@ -369,11 +369,11 @@ commandDIR:
 
     fputs DOSsh.dir.dirLine1
 
-    hx.syscall obterDisco
+    hx.syscall hx.getVolume
 
     mov esi, edi
 
-    imprimirString
+    printString
 
     fputs DOSsh.dir.dirLine2
 
@@ -381,7 +381,7 @@ commandDIR:
 
 .obterListaArquivos:
 
-    hx.syscall listarArquivos ;; Get files in ESI
+    hx.syscall hx.listFiles ;; Get files in ESI
 
    ;; jc .listError
 
@@ -410,19 +410,19 @@ commandDIR:
 
     mov edi, DOSsh.extensionMAN
 
-    hx.syscall compararPalavrasString ;; Check for .MAN extension
+    hx.syscall hx.compareWordsString ;; Check for .MAN extension
 
     jc .hide
 
     mov edi, DOSsh.extensionOCL
 
-    hx.syscall compararPalavrasString ;; Check for .OCL extension
+    hx.syscall hx.compareWordsString ;; Check for .OCL extension
 
     jc .hide
 
     mov edi, DOSsh.extensionCOW
 
-    hx.syscall compararPalavrasString ;; Check for .COW extension
+    hx.syscall hx.compareWordsString ;; Check for .COW extension
 
     jc .hide
 
@@ -474,14 +474,14 @@ commandTYPE:
 
     mov esi, edi
 
-    hx.syscall arquivoExiste
+    hx.syscall hx.fileExists
 
     jc fileNotFound
 
     mov esi, edi
     mov edi, appFileBuffer
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
     jc fileNotFound
 
@@ -510,19 +510,19 @@ commandVER:
 
 finishShell:
 
-    logSistema DOSsh.verboseExitDOSsh, 00h, Log.Prioridades.p4
+    systemLog DOSsh.verboseExitDOSsh, 00h, Log.Priorities.p4
 
     putNewLine
 
     mov ebx, 00h
 
-    hx.syscall encerrarProcesso
+    hx.syscall hx.exit
 
     jmp getCommand
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
-    hx.syscall encerrarProcesso
+    hx.syscall hx.exit
 
 ;;************************************************************************************
 
@@ -585,7 +585,7 @@ getArguments:
     mov byte[esi-1], 0
     mov ebx, esi
 
-    hx.syscall tamanhoString
+    hx.syscall hx.stringSize
 
     mov ecx, eax
 
@@ -625,7 +625,7 @@ readFileList:
 
     mov al, ' '
 
-    hx.syscall encontrarCaractere
+    hx.syscall hx.findCharacter
 
     jc .done
 
