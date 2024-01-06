@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, Quartzo, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 00, Quartzo, 01h
 
 ;;*************************************************************************************************
 
@@ -96,7 +96,7 @@ COLOR_HIGHLIGHT = HEXAGONIX_BLOSSOM_ROXO
 
 ;; Variables, constants and structures
 
-VERSION equ "3.3.0"
+VERSION equ "3.4.0"
 
 footerSize = 44
 
@@ -149,12 +149,12 @@ returnOrigin:            db 0 ;; Used to check if the return comes from a menu (
 
 Quartzo:
 
-    hx.syscall obterInfoTela
+    hx.syscall hx.getConsoleInfo
 
     mov byte[maxColumns], bl
     mov byte[maxLines], bh
 
-    hx.syscall obterCor
+    hx.syscall hx.getColor
 
     mov dword[quartzo.fontColor], eax
     mov dword[quartzo.backGroundColor], ebx
@@ -164,7 +164,7 @@ Quartzo:
 
     mov esi, edi ;; Application arguments
 
-    hx.syscall tamanhoString
+    hx.syscall hx.stringSize
 
     cmp eax, 12 ;; Invalid filename
     ja .createNewFile
@@ -189,7 +189,7 @@ Quartzo:
 
     mov esi, filename
 
-    hx.syscall arquivoExiste
+    hx.syscall hx.fileExists
 
     jc .createNewFile ;; The file does not exist
 
@@ -197,11 +197,11 @@ Quartzo:
 
     mov edi, appFileBuffer ;; Loading address
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
     mov esi, filename
 
-    hx.syscall tamanhoString
+    hx.syscall hx.stringSize
 
     mov ecx, eax
 
@@ -249,7 +249,7 @@ Quartzo:
 
     mov esi, appFileBuffer
 
-    hx.syscall encontrarCaractere
+    hx.syscall hx.findCharacter
 
     mov dword[totalLines], eax
 
@@ -276,9 +276,9 @@ Quartzo:
 
     mov esi, Hexagon.LibASM.Dev.video.tty1
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
     mov eax, dword[totalLines]
 
@@ -314,11 +314,11 @@ Quartzo:
     mov eax, BRANCO_ANDROMEDA
     mov ebx, COLOR_HIGHLIGHT
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, 0
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs quartzo.applicationTitle
 
@@ -326,17 +326,17 @@ Quartzo:
 
     dec al
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs quartzo.applicationFooter
 
-    hx.syscall obterCursor
+    hx.syscall hx.getCursor
 
     mov dl, byte[maxColumns]
 
     sub dl, 41
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs quartzo.separator
 
@@ -347,17 +347,17 @@ Quartzo:
     mov eax, dword[quartzo.fontColor]
     mov ebx, dword[quartzo.backGroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
 ;; Refresh tela
 
 .updateBuffer:
 
-    hx.syscall atualizarTela
+    hx.syscall hx.updateScreen
 
     mov esi, Hexagon.LibASM.Dev.video.tty0
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
 .otherPrintedLines:
 
@@ -366,7 +366,7 @@ Quartzo:
     mov dl, 0
     mov dh, byte[positionLineOnScreen]
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
 ;; Print last line
 
@@ -378,14 +378,14 @@ Quartzo:
 
     mov al, ' '
 
-    hx.syscall imprimirCaractere
+    hx.syscall hx.printCharacter
 
 ;; Print current line and column
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, COLOR_HIGHLIGHT
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov dl, byte[maxColumns]
 
@@ -395,7 +395,7 @@ Quartzo:
 
     dec dh
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs quartzo.line
 
@@ -403,7 +403,7 @@ Quartzo:
 
     inc eax ;; Counting from 1
 
-    imprimirInteiro
+    printInteger
 
     fputs quartzo.comma
 
@@ -413,16 +413,16 @@ Quartzo:
 
     inc eax ;; Counting from 1
 
-    imprimirInteiro
+    printInteger
 
     mov al, ' '
 
-    hx.syscall imprimirCaractere
+    hx.syscall hx.printCharacter
 
     mov eax, dword[quartzo.fontColor]
     mov ebx, dword[quartzo.backGroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
 .startProcessingInput:
 
@@ -431,7 +431,7 @@ Quartzo:
     mov dl, byte[positionCurrentOnLine]
     mov dh, byte[positionLineOnScreen]
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
 .processInput:
 
@@ -454,28 +454,28 @@ saveFileEditor:
     mov eax, PRETO
     mov ebx, CINZA_CLARO
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, byte[maxLines]
 
     sub al, 2
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     mov dl, 0
     mov dh, byte[maxLines]
 
     sub dh, 2
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs quartzo.askForFile
 
     mov eax, 12 ;; Maximum characters
 
-    hx.syscall obterString
+    hx.syscall hx.getString
 
-    hx.syscall tamanhoString
+    hx.syscall hx.stringSize
 
     cmp eax, 0
     je .end
@@ -510,7 +510,7 @@ saveFileEditor:
     mov eax, dword[quartzo.fontColor]
     mov ebx, dword[quartzo.backGroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     jmp .continue
 
@@ -520,7 +520,7 @@ saveFileEditor:
 
     mov esi, filename
 
-    hx.syscall deletarArquivo
+    hx.syscall hx.unlink
 
     jc .unlinkError
 
@@ -530,34 +530,34 @@ saveFileEditor:
 
     mov esi, appFileBuffer
 
-    hx.syscall tamanhoString
+    hx.syscall hx.stringSize
 
 ;; Save file
 
     mov esi, filename
     mov edi, appFileBuffer
 
-    hx.syscall salvarArquivo
+    hx.syscall hx.create
 
 ;; Display save message
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, VERDE
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, byte[maxLines]
 
     sub al, 2
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     mov dl, 0
     mov dh, byte[maxLines]
 
     sub dh, 2
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs quartzo.fileSaved
 
@@ -566,7 +566,7 @@ saveFileEditor:
     mov eax, dword[quartzo.fontColor]
     mov ebx, dword[quartzo.backGroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov byte[screenRefreshIsRequired], 1
 
@@ -574,30 +574,30 @@ saveFileEditor:
 
 .unlinkError:
 
-    cmp eax, IO.operacaoNegada
+    cmp eax, IO.operationDenied
     je .permissionDenied
 
     mov eax, PRETO
     mov ebx, CINZA_CLARO
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, byte[maxLines]
 
     sub al, 2
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     mov dl, 0
     mov dh, byte[maxLines]
 
     sub dh, 2
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs quartzo.unlinkError
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     jmp .end
 
@@ -606,20 +606,20 @@ saveFileEditor:
     mov eax, BRANCO_ANDROMEDA
     mov ebx, VERMELHO_TIJOLO
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, byte[maxLines]
 
     sub al, 2
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     mov dl, 0
     mov dh, byte[maxLines]
 
     sub dh, 2
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs quartzo.permissionDenied
 
@@ -634,28 +634,28 @@ openFileEditor:
     mov eax, BRANCO_ANDROMEDA
     mov ebx, VERDE
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, byte[maxLines]
 
     sub al, 2
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     mov dl, 0
     mov dh, byte[maxLines]
 
     sub dh, 2
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs quartzo.askForFile
 
     mov eax, 12 ;; Maximum characters
 
-    hx.syscall obterString
+    hx.syscall hx.getString
 
-    hx.syscall tamanhoString
+    hx.syscall hx.stringSize
 
     cmp eax, 0
     je .end
@@ -690,7 +690,7 @@ openFileEditor:
     mov eax, dword[quartzo.fontColor]
     mov ebx, dword[quartzo.backGroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     call restartVideoBuffer
 
@@ -705,7 +705,7 @@ openFileEditor:
     mov eax, dword[quartzo.fontColor]
     mov ebx, dword[quartzo.backGroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov byte[screenRefreshIsRequired], 1
 
@@ -717,15 +717,15 @@ restartVideoBuffer:
 
     mov esi, Hexagon.LibASM.Dev.video.tty1
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
     mov esi, Hexagon.LibASM.Dev.video.tty0
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
     ret
 
@@ -749,13 +749,13 @@ restartTextBuffer:
 
 processInput:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
 ;; Let's check if the CTRL key is pressed and take the necessary action
 
     push eax
 
-    hx.syscall obterEstadoTeclas
+    hx.syscall hx.getKeyState
 
     bt eax, 0
     jc .controlKeys
@@ -827,7 +827,7 @@ processInput:
     add esi, dword[positionCurrentLine]
     add esi, appFileBuffer
 
-    hx.syscall inserirCaractere ;; Insert char into string
+    hx.syscall hx.insertCharacter ;; Insert char into string
 
     inc byte[positionCurrentOnLine] ;; A character has been added
     inc byte[sizeCurrentLine]
@@ -851,7 +851,7 @@ processInput:
 
     mov al, 10
 
-    hx.syscall inserirCaractere
+    hx.syscall hx.insertCharacter
 
 ;; New line
 
@@ -883,7 +883,7 @@ processInput:
     mov al, 10 ;; New line character
     mov esi, appFileBuffer
 
-    hx.syscall encontrarCaractere
+    hx.syscall hx.findCharacter
 
     mov dword[totalLines], eax
 
@@ -970,7 +970,7 @@ processInput:
 
     mov esi, appFileBuffer
 
-    hx.syscall removerCaractereString
+    hx.syscall hx.removeCharacterString
 
     dec byte[positionCurrentOnLine] ;; A character has been removed
     dec byte[sizeCurrentLine]
@@ -1032,7 +1032,7 @@ processInput:
 
     mov esi, appFileBuffer
 
-    hx.syscall removerCaractereString
+    hx.syscall hx.removeCharacterString
 
     dec byte[totalLines] ;; A line has been removed
     dec dword[line]
@@ -1093,7 +1093,7 @@ processInput:
 
     mov esi, appFileBuffer
 
-    hx.syscall removerCaractereString
+    hx.syscall hx.removeCharacterString
 
     dec byte[sizeCurrentLine] ;; A character has been removed
 
@@ -1639,11 +1639,11 @@ finishApplication:
 
     ;; call saveFileEditor
 
-    hx.syscall rolarTela
+    hx.syscall hx.scrollConsole
 
     mov ebx, 00h
 
-    hx.syscall encerrarProcesso
+    hx.syscall hx.exit
 
 ;;*************************************************************************************************
 
@@ -1688,7 +1688,7 @@ printLine:
 
     mov ebx, 01h
 
-    hx.syscall imprimirCaractere ;; Print character in AL
+    hx.syscall hx.printCharacter ;; Print character in AL
 
     popad
 
