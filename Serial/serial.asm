@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, applicationStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -87,18 +87,18 @@ applicationStart:
 
     Andromeda.Estelar.obterInfoConsole
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
-    hx.syscall obterInfoTela
+    hx.syscall hx.getConsoleInfo
 
 ;; Format: title, footer, titleColor, footerColor, titleTextColor,
 ;; footerTextColor, textColor, backgroundColor
 
     Andromeda.Estelar.criarInterface serial.title, serial.footer, \
     COLOR_HIGHLIGHT, COLOR_HIGHLIGHT, COLOT_FONT, COLOT_FONT, \
-    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     gotoxy 02, 01
 
@@ -107,13 +107,13 @@ applicationStart:
     xyfputs 41, 6, serial.trademark
 
     Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, \
-    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
     gotoxy 02, 10
 
     mov esi, serial.deviceName
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
     jc openError
 
@@ -131,7 +131,7 @@ applicationStart:
 
 .loopCheckCategories:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     cmp al, '1'
     je .continue
@@ -151,31 +151,31 @@ applicationStart:
 
     sub al, 20
 
-    hx.syscall obterString
+    hx.syscall hx.getString
 
-    ;; hx.syscall cortarString ;; Remove extra spaces
+    ;; hx.syscall hx.trimString ;; Remove extra spaces
 
     mov [msg], esi
 
     mov si, [msg]
 
-    hx.syscall escrever
+    hx.syscall hx.write
 
     jc writeError
 
     mov eax, COLOR_SUCCESS
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     xyfputs 02, 22, serial.sent
 
     fputs serial.prompt
 
-    mov eax, dword[Andromeda.Interface.corFonte]
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, dword[Andromeda.Interface.fontColor]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     jmp getKeys
 
@@ -183,11 +183,11 @@ applicationStart:
 
 getKeys:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     push eax
 
-    hx.syscall obterEstadoTeclas
+    hx.syscall hx.getKeyState
 
     bt eax, 0
     jc .controlKeys
@@ -218,7 +218,7 @@ getKeys:
 
 finish:
 
-    Andromeda.Estelar.finalizarProcessoGrafico 0, 0
+    Andromeda.Estelar.finishGraphicProcess 0, 0
 
 ;;************************************************************************************
 
@@ -226,11 +226,11 @@ writeError:
 
     xyfputs 02, 22, serial.portError
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
-    hx.syscall encerrarProcesso
+    hx.syscall hx.exit
 
 ;;************************************************************************************
 
@@ -238,7 +238,7 @@ openError:
 
     xyfputs 02, 14, serial.openError
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     jmp finish
 
@@ -248,7 +248,7 @@ openError:
 ;;
 ;;************************************************************************************
 
-VERSION equ "1.4.0"
+VERSION equ "1.5.0"
 
 COLOR_HIGHLIGHT = AZUL_ROYAL
 COLOT_FONT      = HEXAGONIX_CLASSICO_BRANCO
