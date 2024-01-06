@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, shellStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 00, shellStart, 01h
 
 ;;************************************************************************************
 
@@ -97,7 +97,7 @@ ASHError           = VERMELHO
 ASHLimitReached    = AMARELO_ANDROMEDA
 ASHSuccess         = VERDE
 
-VERSION             equ "4.7.1"
+VERSION             equ "4.8.0"
 compatibleHexagonix equ "System I"
 
 ;;**************************
@@ -200,16 +200,16 @@ currentVolume: times 3 db 0
 
 shellStart:
 
-    logSistema ASH.verboseStartingASH, 00h, Log.Prioridades.p4
-    logSistema ASH.verboseVersionASH, 00h, Log.Prioridades.p4
-    logSistema ASH.verboseAuthors, 00h, Log.Prioridades.p4
-    logSistema ASH.verboseCopyright, 00h, Log.Prioridades.p4
+    systemLog ASH.verboseStartingASH, 00h, Log.Priorities.p4
+    systemLog ASH.verboseVersionASH, 00h, Log.Priorities.p4
+    systemLog ASH.verboseAuthors, 00h, Log.Priorities.p4
+    systemLog ASH.verboseCopyright, 00h, Log.Priorities.p4
 
 ;; Start console configuration
 
     Andromeda.Estelar.obterInfoConsole
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
     putNewLine
 
@@ -223,16 +223,16 @@ shellStart:
 
     call showBanner
 
-    hx.syscall obterCursor
+    hx.syscall hx.getCursor
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     push ecx
 
     xor ecx, ecx
 
     mov eax, ASHConsoleTheme
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
     call changeColor
 
@@ -248,9 +248,9 @@ shellStart:
 
     sub al, 20
 
-    hx.syscall obterString
+    hx.syscall hx.getString
 
-    hx.syscall cortarString ;; Remove extra spaces
+    hx.syscall hx.trimString ;; Remove extra spaces
 
     cmp byte[esi], 0 ;; No command entered
     je .getCommand
@@ -261,7 +261,7 @@ shellStart:
 
     mov edi, ASH.commands.exit
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc .finishShell
 
@@ -269,7 +269,7 @@ shellStart:
 
     mov edi, ASH.commands.version
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc .commandVER
 
@@ -277,7 +277,7 @@ shellStart:
 
     mov edi, ASH.commands.help
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc .commandHELP
 
@@ -285,7 +285,7 @@ shellStart:
 
     mov edi, ASH.commands.changeVolume
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc .commandCVOL
 
@@ -304,20 +304,20 @@ shellStart:
 
 ;; Now the error sent by the system will be analyzed, so that the shell knows its nature
 
-    cmp eax, Hexagon.limiteProcessos ;; Limit of running processes reached
+    cmp eax, Hexagon.processesLimit ;; Limit of running processes reached
     je .limitReached                 ;; If yes, display the appropriate message
 
-    cmp eax, Hexagon.imagemInvalida ;; Invalid HAPP image
+    cmp eax, Hexagon.invalidImage ;; Invalid HAPP image
     je .invalidHAPPImage            ;; If yes, display the appropriate message
 
-    hx.syscall obterCursor
+    hx.syscall hx.getCursor
 
     push ecx
 
     xor ecx, ecx
 
     mov eax, ASHError
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
     call changeColor
 
@@ -340,14 +340,14 @@ shellStart:
 
     pop esi
 
-    imprimirString
+    printString
 
     push ecx
 
     xor ecx, ecx
 
     mov eax, ASHError
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
     call changeColor
 
@@ -363,14 +363,14 @@ shellStart:
 
 .limitReached:
 
-    logSistema ASH.verboseProcessLimit, 00h, Log.Prioridades.p4
+    systemLog ASH.verboseProcessLimit, 00h, Log.Priorities.p4
 
     push ecx
 
     xor ecx, ecx
 
     mov eax, ASHLimitReached
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
     call changeColor
 
@@ -392,7 +392,7 @@ shellStart:
 
     mov esi, edi
 
-    hx.syscall cortarString
+    hx.syscall hx.trimString
 
     pop esi
 
@@ -400,7 +400,7 @@ shellStart:
 
     stc
 
-    hx.syscall iniciarProcesso
+    hx.syscall hx.exec
 
     jc .failedToExecute
 
@@ -426,7 +426,7 @@ shellStart:
     xor ecx, ecx
 
     mov eax, ASHWarning
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
     call changeColor
 
@@ -443,35 +443,35 @@ shellStart:
 
     add esi, 04h
 
-    hx.syscall cortarString
+    hx.syscall hx.trimString
 
     mov edi, ASH.volume.hd0
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc .changeToHD0
 
     mov edi, ASH.volume.hd1
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc .changeToHD1
 
     mov edi, ASH.volume.hd2
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc .changeToHD2
 
     mov edi, ASH.volume.hd3
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc .changeToHD3
 
     mov edi, ASH.volume.info
 
-    hx.syscall compararPalavrasString
+    hx.syscall hx.compareWordsString
 
     jc .volumeInfo
 
@@ -479,11 +479,11 @@ shellStart:
 
 .changeToHD0:
 
-    logSistema ASH.verboseDeprecatedInterface, 00h, Log.Prioridades.p4
+    systemLog ASH.verboseDeprecatedInterface, 00h, Log.Priorities.p4
 
     mov esi, ASH.volume.hd0
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
     putNewLine
 
@@ -491,11 +491,11 @@ shellStart:
 
 .changeToHD1:
 
-    logSistema ASH.verboseDeprecatedInterface, 00h, Log.Prioridades.p4
+    systemLog ASH.verboseDeprecatedInterface, 00h, Log.Priorities.p4
 
     mov esi, ASH.volume.hd1
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
     putNewLine
 
@@ -503,11 +503,11 @@ shellStart:
 
 .changeToHD2:
 
-    logSistema ASH.verboseDeprecatedInterface, 00h, Log.Prioridades.p4
+    systemLog ASH.verboseDeprecatedInterface, 00h, Log.Priorities.p4
 
     mov esi, ASH.volume.hd2
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
     putNewLine
 
@@ -515,11 +515,11 @@ shellStart:
 
 .changeToHD3:
 
-    logSistema ASH.verboseDeprecatedInterface, 00h, Log.Prioridades.p4
+    systemLog ASH.verboseDeprecatedInterface, 00h, Log.Priorities.p4
 
     mov esi, ASH.volume.hd3
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
     putNewLine
 
@@ -535,7 +535,7 @@ shellStart:
 
     fputs ASH.volume.currentVolume
 
-    hx.syscall obterDisco
+    hx.syscall hx.getVolume
 
     push edi
     push esi
@@ -545,7 +545,7 @@ shellStart:
     xor ecx, ecx
 
     mov eax, ASHTheme
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
     call changeColor
 
@@ -553,7 +553,7 @@ shellStart:
 
     pop esi
 
-    imprimirString
+    printString
 
     mov ecx, 01h
 
@@ -566,7 +566,7 @@ shellStart:
     xor ecx, ecx
 
     mov eax, ASHTheme
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
     call changeColor
 
@@ -595,7 +595,7 @@ shellStart:
     xor ecx, ecx
 
     mov eax, ASHTheme
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
     call changeColor
 
@@ -617,19 +617,19 @@ shellStart:
 
 .finishShell:
 
-    logSistema ASH.verboseExitASH, 00h, Log.Prioridades.p4
+    systemLog ASH.verboseExitASH, 00h, Log.Priorities.p4
 
     putNewLine
 
     mov ebx, 00h
 
-    hx.syscall encerrarProcesso
+    hx.syscall hx.exit
 
     jmp .getCommand
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
-    hx.syscall encerrarProcesso
+    hx.syscall hx.exit
 
 ;;************************************************************************************
 
@@ -684,7 +684,7 @@ getArguments:
     mov byte[esi-1], 0
     mov ebx, esi
 
-    hx.syscall tamanhoString
+    hx.syscall hx.stringSize
 
     mov ecx, eax
 
@@ -727,16 +727,16 @@ changeColor:
     cmp ecx, 01h
     je .default
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     ret
 
 .default:
 
-    mov eax, dword[Andromeda.Interface.corFonte]
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, dword[Andromeda.Interface.fontColor]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     ret
 
@@ -744,7 +744,7 @@ changeColor:
 
 showBanner:
 
-    hx.syscall obterCursor
+    hx.syscall hx.getCursor
 
     push edx
 
@@ -761,7 +761,7 @@ showBanner:
 
     mov al, 0
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs ASH.bannerASH
 
@@ -775,7 +775,7 @@ showBanner:
 
     mov dl, 00h
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     ret
 
