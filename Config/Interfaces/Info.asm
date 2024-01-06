@@ -68,17 +68,17 @@
 
 mostrarInterfaceInfo:
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
 ;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, interfaceDefaultColor
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, 0
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs TITLE.info
 
@@ -86,7 +86,7 @@ mostrarInterfaceInfo:
 
     dec al
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs FOOTER.info
 
@@ -120,17 +120,17 @@ mostrarInterfaceInfo:
 
     mov al, ' '
 
-    hx.syscall imprimirCaractere
+    hx.syscall hx.printCharacter
 
     mov al, '['
 
-    hx.syscall imprimirCaractere
+    hx.syscall hx.printCharacter
 
     fputs release
 
     mov al, ']'
 
-    hx.syscall imprimirCaractere
+    hx.syscall hx.printCharacter
 
     call setDefaultColor
 
@@ -164,18 +164,18 @@ mostrarInterfaceInfo:
 
     call setDefaultTheme
 
-    hx.syscall retornarVersao
+    hx.syscall hx.uname
 
     push ecx
     push ebx
 
-    imprimirInteiro
+    printInteger
 
     fputs infoInterfaceData.dot
 
     pop eax
 
-    imprimirInteiro
+    printInteger
 
     pop ecx
 
@@ -188,7 +188,7 @@ mostrarInterfaceInfo:
 
     pop eax
 
-    imprimirInteiro
+    printInteger
 
 .continue:
 
@@ -232,11 +232,11 @@ mostrarInterfaceInfo:
 
     call setDefaultTheme
 
-    hx.syscall usoMemoria
+    hx.syscall hx.memoryUsage
 
     mov eax, ecx
 
-    imprimirInteiro
+    printInteger
 
     call setDefaultColor
 
@@ -244,7 +244,7 @@ mostrarInterfaceInfo:
 
 .getKeys:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     cmp al, 'b'
     je showMainInterface

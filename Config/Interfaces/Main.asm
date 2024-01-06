@@ -68,18 +68,18 @@
 
 showMainInterface:
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
 ;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, interfaceDefaultColor
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, 0
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs TITLE.main
 
@@ -87,21 +87,21 @@ showMainInterface:
 
     dec al
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs FOOTER.main
 
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     call showResolutionWarning
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     call setDefaultTheme
 
@@ -121,7 +121,7 @@ showMainInterface:
 
 .getKeys:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     cmp al, '1'
     je showConfigInterface

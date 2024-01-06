@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, applicationStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -143,19 +143,19 @@ match =SIM, VERBOSE
 
 {
 
-    logSistema Log.Config.logInicio, 00h, Log.Prioridades.p4
-    logSistema Log.Config.logInicioResolucaoCores, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logInicio, 00h, Log.Priorities.p4
+    systemLog Log.Config.logInicioResolucaoCores, 00h, Log.Priorities.p4
 
 }
 
-    hx.syscall obterInfoTela
+    hx.syscall hx.getConsoleInfo
 
     mov byte[maxColumns], bl
     mov byte[maxRows], bh
 
     mov byte[changed], 0
 
-    hx.syscall obterCor
+    hx.syscall hx.getColor
 
     mov dword[fontColor], ecx
     mov dword[backgroundColor], edx
@@ -164,7 +164,7 @@ match =SIM, VERBOSE
 
 {
 
-    logSistema Log.Config.logVersaoDistro, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logVersaoDistro, 00h, Log.Priorities.p4
 
 }
 
@@ -180,7 +180,7 @@ match =SIM, VERBOSE
 
 {
 
-    logSistema Log.Config.logErroVersaoDistro, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logErroVersaoDistro, 00h, Log.Priorities.p4
 
 }
 

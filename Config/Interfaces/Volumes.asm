@@ -68,17 +68,17 @@
 
 showVolumeInterface:
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
 ;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, interfaceDefaultColor
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, 0
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs TITLE.volumes
 
@@ -86,21 +86,21 @@ showVolumeInterface:
 
     dec al
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs FOOTER.volumes
 
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     call showResolutionWarning
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     xyfputs 02, 02, volumesInterfaceData.intro
 
@@ -113,11 +113,11 @@ showVolumeInterface:
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logDiscos, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logDiscos, 00h, Log.Priorities.p4
 
 }
 
-    hx.syscall obterDisco
+    hx.syscall hx.getVolume
 
     push edi ;; Volume label
     push esi ;; Device name depending on the system
@@ -125,32 +125,32 @@ match =SIM, VERBOSE
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     pop esi
 
-    imprimirString
+    printString
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     xyfputs 04, 07, volumesInterfaceData.volumeLabel
 
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     pop esi
 
-    imprimirString
+    printString
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     jmp .putNewLine
 
@@ -160,7 +160,7 @@ match =SIM, VERBOSE
 
 .getKeys:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     cmp al, 'b'
     je showConfigInterface

@@ -71,14 +71,14 @@ exibirProcessadorInstalado:
 ;; Vamos verificar se existe um processador reconhecido. Se não, exibir que o mesmo
 ;; não suporta a instrução CPUID
 
-    mov esi, Hexagon.LibASM.Dev.processadores.proc0
+    mov esi, Hexagon.LibASM.Dev.processors.proc0
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
     cmp byte [esi], 0
     je .withoutCPUID
 
-    imprimirString
+    printString
 
     ret
 
@@ -88,7 +88,7 @@ exibirProcessadorInstalado:
 
     mov esi, infoInterfaceData.withoutCPUID
 
-    imprimirString
+    printString
 
     call setDefaultColor
 

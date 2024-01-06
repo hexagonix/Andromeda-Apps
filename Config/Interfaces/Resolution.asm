@@ -68,18 +68,18 @@
 
 showResolutionInterface:
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
 ;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, interfaceDefaultColor
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, 0
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs TITLE.resolution
 
@@ -87,14 +87,14 @@ showResolutionInterface:
 
     dec al
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs FOOTER.resolution
 
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     call showResolutionWarning
 
@@ -103,7 +103,7 @@ showResolutionInterface:
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     xyfputs 02, 02, resolutionInterfaceData.intro
 
@@ -122,7 +122,7 @@ showResolutionInterface:
 
 .getKeys:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     cmp al, 'b'
     je showConfigInterface
@@ -149,26 +149,26 @@ showResolutionInterface:
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov dh, 15
     mov dl, 02
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs resolutionInterfaceData.resolutionChanged
 
     mov dh, 17
     mov dl, 02
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs resolutionInterfaceData.changed
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     jmp .getKeys
 
@@ -177,15 +177,15 @@ graphicMode1:
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logTrocarResolucao800x600, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logTrocarResolucao800x600, 00h, Log.Priorities.p4
 
 }
 
     mov eax, 1
 
-    hx.syscall definirResolucao
+    hx.syscall hx.setResolution
 
-    hx.syscall obterInfoTela
+    hx.syscall hx.getConsoleInfo
 
     mov byte[maxColumns], bl
     mov byte[maxRows], bh
@@ -202,14 +202,14 @@ graphicMode2:
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logTrocarResolucao1024x768, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logTrocarResolucao1024x768, 00h, Log.Priorities.p4
 
 }
 
     mov eax, 2
-    hx.syscall definirResolucao
+    hx.syscall hx.setResolution
 
-    hx.syscall obterInfoTela
+    hx.syscall hx.getConsoleInfo
 
     mov byte[maxColumns], bl
     mov byte[maxRows], bh
@@ -223,9 +223,9 @@ showResolution:
     mov dh, 13
     mov dl, 02
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
-    hx.syscall obterResolucao
+    hx.syscall hx.getResolution
 
     cmp eax, 1
     je .graphicMode1

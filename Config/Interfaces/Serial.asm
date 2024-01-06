@@ -71,22 +71,22 @@ showSerialInterface:
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logSerial, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logSerial, 00h, Log.Priorities.p4
 
 }
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
 ;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, interfaceDefaultColor
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, 0
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs TITLE.serialPort
 
@@ -94,21 +94,21 @@ match =SIM, VERBOSE
 
     dec al
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs FOOTER.serialPort
 
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     call showResolutionWarning
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     xyfputs 02, 02, serialInterfaceData.intro
 
@@ -119,14 +119,14 @@ match =SIM, VERBOSE
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
-    fputs Hexagon.LibASM.Dev.portasSeriais.com1
+    fputs Hexagon.LibASM.Dev.serialPorts.com1
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     xyfputs 04, 05, serialInterfaceData.options
 
@@ -136,7 +136,7 @@ match =SIM, VERBOSE
 
 .getKeys:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     cmp al, 'b'
     je showConfigInterface
@@ -171,20 +171,20 @@ serialPortTest: ;; Automatically send data to the default serial port
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logSerialAutomatico, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logSerialAutomatico, 00h, Log.Priorities.p4
 
 }
 
     mov dh, 10
     mov dl, 04
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs serialInterfaceData.msgSending
 
-    mov esi, Hexagon.LibASM.Dev.portasSeriais.com1
+    mov esi, Hexagon.LibASM.Dev.serialPorts.com1
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
     jc openError
 
@@ -194,21 +194,21 @@ match =SIM, VERBOSE
 
     mov si, [Buffers.msg]
 
-    hx.syscall escrever
+    hx.syscall hx.write
 
     jc error
 
     mov eax, VERDE_FLORESTA
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     fputs serialInterfaceData.sent
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     jmp showSerialInterface.getKeys
 
@@ -219,24 +219,24 @@ sendOverSerialPort: ;; Performs manual data sending via the serial port
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logSerialManual, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logSerialManual, 00h, Log.Priorities.p4
 
 }
 
-    mov esi, Hexagon.LibASM.Dev.portasSeriais.com1
+    mov esi, Hexagon.LibASM.Dev.serialPorts.com1
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
     jc openError
 
     mov al, 10
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     mov dh, 10
     mov dl, 04
 
-    hx.syscall definirCursor
+    hx.syscall hx.setCursor
 
     fputs serialInterfaceData.insertMessage
 
@@ -245,14 +245,14 @@ match =SIM, VERBOSE
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
-    fputs Hexagon.LibASM.Dev.portasSeriais.com1
+    fputs Hexagon.LibASM.Dev.serialPorts.com1
 
     mov eax,  Andromeda.Estelar.Tema.Fonte.fontePadrao
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     fputs serialInterfaceData.rightBracket
 
@@ -261,29 +261,29 @@ match =SIM, VERBOSE
     mov al, byte[maxColumns] ;; Maximum characters to get
     sub al, 20
 
-    hx.syscall obterString
+    hx.syscall hx.getString
 
-    ;; hx.syscall cortarString ;; Remove extra spaces
+    ;; hx.syscall hx.trimString ;; Remove extra spaces
 
     mov [Buffers.msg], esi
 
     mov si, [Buffers.msg]
 
-    hx.syscall escrever
+    hx.syscall hx.write
 
     jc error
 
     mov eax, VERDE_FLORESTA
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     fputs serialInterfaceData.sent
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     jmp showSerialInterface.getKeys
 
@@ -296,7 +296,7 @@ error:
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logFalha, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logFalha, 00h, Log.Priorities.p4
 
 }
 
@@ -309,7 +309,7 @@ openError:
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logFalha, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logFalha, 00h, Log.Priorities.p4
 
 }
 

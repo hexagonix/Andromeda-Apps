@@ -68,7 +68,7 @@
 
 showResolutionWarning:
 
-    hx.syscall obterResolucao
+    hx.syscall hx.getResolution
 
     cmp eax, 1
     je .graphicMode1
@@ -83,7 +83,7 @@ showResolutionWarning:
     dec al
     dec al
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs generalData.resolutionWarning
 
@@ -96,14 +96,14 @@ showFlatLogo:
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     xyfputs 02, 02, generalData.flatLogo
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     ret
 
@@ -123,7 +123,7 @@ showHexagonixLogo:
     mov edi, 150     ;; Height
     mov edx, interfaceDefaultColor ;; Color
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
 .secondLine:
 
@@ -133,7 +133,7 @@ showHexagonixLogo:
     mov edi, 150     ;; Height
     mov edx, interfaceDefaultColor ;; Color
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
 .thirdLine:
 
@@ -143,11 +143,11 @@ showHexagonixLogo:
     mov edi, 30      ;; Height
     mov edx, interfaceDefaultColor ;; Color
 
-    hx.syscall desenharBloco
+    hx.syscall hx.drawBlock
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     ret

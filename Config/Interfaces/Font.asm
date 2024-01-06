@@ -68,17 +68,17 @@
 
 showFontInterface:
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
 ;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, interfaceDefaultColor
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, 0
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs TITLE.font
 
@@ -86,21 +86,21 @@ showFontInterface:
 
     dec al
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs FOOTER.font
 
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     call showResolutionWarning
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     xyfputs 02, 02, fontInterfaceData.intro
 
@@ -111,20 +111,20 @@ showFontInterface:
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logPedirArquivoFonte, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logPedirArquivoFonte, 00h, Log.Priorities.p4
 
 }
 
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, 13
 
-    hx.syscall obterString
+    hx.syscall hx.getString
 
-    hx.syscall cortarString ;; Remove extra spaces
+    hx.syscall hx.trimString ;; Remove extra spaces
 
     mov dword[font], esi
 
@@ -134,7 +134,7 @@ match =SIM, VERBOSE
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logFontes, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logFontes, 00h, Log.Priorities.p4
 
 }
 
@@ -142,41 +142,41 @@ match =SIM, VERBOSE
 
     clc
 
-    hx.syscall arquivoExiste
+    hx.syscall hx.fileExists
 
     jc .fileError
 
     clc
 
-    hx.syscall alterarFonte
+    hx.syscall hx.changeConsoleFont
 
     jc .fontError
 
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logSucessoFonte, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logSucessoFonte, 00h, Log.Priorities.p4
 
 }
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     xyfputs 04, 08, fontInterfaceData.success
 
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     fputs dword[font]
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     fputs fontInterfaceData.closure
 
@@ -185,14 +185,14 @@ match =SIM, VERBOSE
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     fputs dword[font]
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     fputs fontInterfaceData.dot
 
@@ -205,7 +205,7 @@ match =SIM, VERBOSE
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     xyfputs 04, 08, fontInterfaceData.withoutFile
 
@@ -216,7 +216,7 @@ match =SIM, VERBOSE
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logFonteAusente, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logFonteAusente, 00h, Log.Priorities.p4
 
 }
 
@@ -239,7 +239,7 @@ match =SIM, VERBOSE
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logFalhaFonte, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logFalhaFonte, 00h, Log.Priorities.p4
 
 }
 
@@ -252,7 +252,7 @@ match =SIM, VERBOSE
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logFalhaFonte, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logFalhaFonte, 00h, Log.Priorities.p4
 
 }
 
@@ -265,7 +265,7 @@ match =SIM, VERBOSE
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logFalhaFonte, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logFalhaFonte, 00h, Log.Priorities.p4
 
 }
 
@@ -275,7 +275,7 @@ match =SIM, VERBOSE
 
 .getKeys:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     cmp al, 'b'
     je showConfigInterface

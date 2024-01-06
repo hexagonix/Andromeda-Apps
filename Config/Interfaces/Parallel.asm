@@ -71,22 +71,22 @@ showParallelInterface:
 match =SIM, VERBOSE
 {
 
-    logSistema Log.Config.logParalela, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logParalela, 00h, Log.Priorities.p4
 
 }
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
 ;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, interfaceDefaultColor
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, 0
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs TITLE.parallelPort
 
@@ -94,21 +94,21 @@ match =SIM, VERBOSE
 
     dec al
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs FOOTER.parallelPort
 
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     call showResolutionWarning
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     xyfputs 02, 02, parallelInterfaceData.intro
 
@@ -121,18 +121,18 @@ match =SIM, VERBOSE
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
-    fputs Hexagon.LibASM.Dev.portasParalelas.lpt0
+    fputs Hexagon.LibASM.Dev.parallelPorts.lpt0
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
 .getKeys:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     cmp al, 'b'
     je showConfigInterface

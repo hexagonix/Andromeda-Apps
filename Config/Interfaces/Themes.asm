@@ -68,18 +68,18 @@
 
 showThemeInterface:
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
 ;; Display program title and footer
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, interfaceDefaultColor
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     mov al, 0
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs TITLE.theme
 
@@ -87,21 +87,21 @@ showThemeInterface:
 
     dec al
 
-    hx.syscall limparLinha
+    hx.syscall hx.clearLine
 
     fputs FOOTER.theme
 
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     call showResolutionWarning
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     xyfputs 02, 02, themeInterfaceData.intro
 
@@ -113,7 +113,7 @@ showThemeInterface:
 
 .getKeys:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     cmp al, 'b'
     je showConfigInterface
@@ -145,7 +145,7 @@ applyDarkTheme:
     mov dword[fontColor], eax
     mov ecx, 1234h
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     call configureConsoles
 
@@ -161,7 +161,7 @@ applyLightTheme:
     mov dword[fontColor], eax
     mov ecx, 1234h
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     call configureConsoles
 
@@ -175,7 +175,7 @@ configureConsoles:
 
     hx.syscall hx.open ;; Open the device
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
     mov esi, Hexagon.LibASM.Dev.video.tty0 ;; Reopen the default console
 

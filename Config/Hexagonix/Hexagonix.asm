@@ -72,7 +72,7 @@ printSystemVersion:
 
     mov esi, versionObtained
 
-    imprimirString
+    printString
 
     ret
 
@@ -84,13 +84,13 @@ match =SIM, VERBOSE
 
 {
 
-    logSistema Log.Config.logFinalizando, 00h, Log.Prioridades.p4
+    systemLog Log.Config.logFinalizando, 00h, Log.Priorities.p4
 
 }
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
-    hx.syscall encerrarProcesso
+    hx.syscall hx.exit
 
 ;;************************************************************************************
 

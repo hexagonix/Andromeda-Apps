@@ -71,7 +71,7 @@ setDefaultTheme:
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     ret
 
@@ -82,7 +82,7 @@ setDefaultColor:
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     ret
 
