@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, applicationStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -92,21 +92,21 @@ applicationStart:
 
 .executarInterface:
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
 ;; Format: title, footer, titleColor, footerColor, titleTextColor,
 ;; footerTextColor, textColor, backgroundColor
 
     Andromeda.Estelar.criarInterface gfont.title, gfont.footer, \
     AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
-    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
     xyfputs 39, 4, gfont.bannerHexagonix
     xyfputs 27, 5, gfont.copyright
     xyfputs 41, 6, gfont.trademark
 
     Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, \
-    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
     gotoxy 02, 10
 
@@ -118,9 +118,9 @@ applicationStart:
 
     sub al, 20
 
-    hx.syscall obterString
+    hx.syscall hx.getString
 
-    hx.syscall cortarString ;; Remove extra spaces
+    hx.syscall hx.trimString ;; Remove extra spaces
 
     mov [fontFile], esi
 
@@ -128,7 +128,7 @@ applicationStart:
 
     jc formatError
 
-    hx.syscall alterarFonte
+    hx.syscall hx.changeConsoleFont
 
     jc fontError
 
@@ -152,9 +152,9 @@ formatError:
 
 finish:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
-    Andromeda.Estelar.finalizarProcessoGrafico 0, 0
+    Andromeda.Estelar.finishGraphicProcess 0, 0
 
 ;;************************************************************************************
 
@@ -163,7 +163,7 @@ validateFont:
     mov esi, [fontFile]
     mov edi, appFileBuffer
 
-    hx.syscall abrir
+    hx.syscall hx.open
 
     jc .fileNotFound
 
@@ -183,7 +183,7 @@ validateFont:
 
 .verificarTamanho:
 
-    hx.syscall arquivoExiste
+    hx.syscall hx.fileExists
 
 ;; In EAX, the file size. It must not be larger than 2000 bytes
 
@@ -224,7 +224,7 @@ validateFont:
 ;;
 ;;************************************************************************************
 
-VERSION equ "2.5.1"
+VERSION equ "2.6.0"
 
 gfont:
 
