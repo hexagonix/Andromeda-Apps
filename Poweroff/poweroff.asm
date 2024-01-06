@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, applicationStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -101,19 +101,19 @@ buildInterface:
 
     Andromeda.Estelar.obterInfoConsole
 
-    hx.syscall limparTela
+    hx.syscall hx.clearConsole
 
-    hx.syscall obterInfoTela
+    hx.syscall hx.getConsoleInfo
 
 ;; Format: title, footer, titleColor, footerColor, titleTextColor,
 ;; footerTextColor, textColor, backgroundColor
 
     Andromeda.Estelar.criarInterface poweroff.title, poweroff.footer, \
     COLOR_HIGHLIGHT, COLOR_HIGHLIGHT, COLOR_FONT, COLOR_FONT, \
-    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
     Andromeda.Estelar.criarLogotipo COLOR_HIGHLIGHT, COLOR_FONT,\
-    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
 ;; Operating system information messages
 
@@ -140,16 +140,16 @@ buildInterface:
     xyfputs 02, 18, poweroff.shutdownMessage
 
     mov eax, VERDE_FLORESTA
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     fputs poweroff.done
 
-    mov eax, dword[Andromeda.Interface.corFonte]
-    mov ebx, dword[Andromeda.Interface.corFundo]
+    mov eax, dword[Andromeda.Interface.fontColor]
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
 
-    hx.syscall definirCor
+    hx.syscall hx.setColor
 
     ret
 
@@ -157,11 +157,11 @@ buildInterface:
 
 getKeys:
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     push eax
 
-    hx.syscall obterEstadoTeclas
+    hx.syscall hx.getKeyState
 
     bt eax, 0
     jc .controlKeys
@@ -222,7 +222,7 @@ runUnixShutdownUtilityPoweroff:
     mov edi, poweroff.shutdownParameter
     mov eax, 01h
 
-    hx.syscall iniciarProcesso
+    hx.syscall hx.exec
 
     jc shutdowUtilityError
 
@@ -234,7 +234,7 @@ runUnixShutdownUtilityReboot:
     mov edi, poweroff.rebootParameter
     mov eax, 01h
 
-    hx.syscall iniciarProcesso
+    hx.syscall hx.exec
 
     jc shutdowUtilityError
 
@@ -244,7 +244,7 @@ shutdowUtilityError:
 
     fputs poweroff.failureShutdownUtility
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     jmp finish
 
@@ -252,7 +252,7 @@ shutdowUtilityError:
 
 finish:
 
-    Andromeda.Estelar.finalizarProcessoGrafico 0, 0
+    Andromeda.Estelar.finishGraphicProcess 0, 0
 
 ;;************************************************************************************
 ;;
@@ -261,7 +261,7 @@ finish:
 ;;************************************************************************************
 
 SHUTDOWN equ "shutdown"
-VERSION  equ "1.7.0"
+VERSION  equ "1.8.0"
 
 COLOR_HIGHLIGHT = HEXAGONIX_BLOSSOM_AZUL_ANDROMEDA
 COLOR_FONT      = HEXAGONIX_CLASSICO_BRANCO
