@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-cabecalhoAPP cabecalhoHAPP HAPP.Arquiteturas.i386, 1, 00, applicationStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -92,7 +92,7 @@ applicationStart:
 
     Andromeda.Estelar.criarInterface calc.title, calc.footer, \
     VERDE_ESCURO, VERDE_ESCURO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
-    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
     xyfputs 39, 4, calc.bannerHexagonix
     xyfputs 27, 5, calc.copyright
@@ -132,7 +132,7 @@ calculate:
 
     fputs calc.operation
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     cmp al, '0'
     je addNumbers
@@ -223,7 +223,7 @@ displayResult:
 
     mov eax, dword[result]
 
-    imprimirInteiro
+    printInteger
 
 .next:
 
@@ -232,7 +232,7 @@ displayResult:
 
     fputs calc.requestKey
 
-    hx.syscall aguardarTeclado
+    hx.syscall hx.waitKeyboard
 
     jmp applicationStart
 
@@ -248,11 +248,11 @@ getNumber:
 
     mov al, 10 ;; Maximum 10 characters
 
-    hx.syscall obterString
+    hx.syscall hx.getString
 
-    hx.syscall cortarString
+    hx.syscall hx.trimString
 
-    hx.syscall stringParaInt
+    hx.syscall hx.stringToInt
 
     push eax
 
@@ -266,14 +266,14 @@ getNumber:
 
 finish:
 
-    Andromeda.Estelar.finalizarProcessoGrafico 0, 0
+    Andromeda.Estelar.finishGraphicProcess 0, 0
 
 ;;************************************************************************************
 
 showSystemLogo:
 
     Andromeda.Estelar.criarLogotipo VERDE_ESCURO, BRANCO_ANDROMEDA, \
-    [Andromeda.Interface.corFonte], [Andromeda.Interface.corFundo]
+    [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
     ret
 
@@ -285,7 +285,7 @@ showSystemLogo:
 ;;
 ;;************************************************************************************
 
-VERSION equ "1.9.1"
+VERSION equ "1.10.0"
 
 calc:
 
