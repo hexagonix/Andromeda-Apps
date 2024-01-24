@@ -68,9 +68,9 @@
 #
 # $HexagonixOS$
 
-# Versão 2.2
+# Version 3.0
 
-gerarBaseGrafica(){
+buildAndromedaApplications(){
 
 echo
 echo -e "\e[1;94mBuilding Hexagonix graphical applications...\e[0m {"
@@ -79,7 +79,7 @@ echo
 echo "Building Hexagonix graphical applications... {" >> $LOG
 echo >> $LOG
 
-# Vamos agora automatizar a construção dos aplicativos
+# Let's now automate the construction of applications
 
 for i in */
 do
@@ -93,7 +93,7 @@ do
 
     echo " > Building Hexagonix graphical application $(basename $h .asm)..." >> ../$LOG
 
-    fasm $h ../$DIRETORIO/bin/`basename $h .asm` -d $FLAGS_COMUM >> ../$LOG || desmontar
+    fasm $h ../$BUILD_DIRECTORY/bin/`basename $h .asm` -d $COMMON_FLAGS >> ../$LOG || umount
 
     echo -e " [\e[32mOk\e[0m]"
 
@@ -117,16 +117,14 @@ echo >> $LOG
 
 }
 
-desmontar()
+umount()
 {
 
 cd ..
 
 cd ..
 
-umount Sistema || exit
-
-# Desmontar tudo"
+umount SystemBuild || exit
 
 umount -a
 
@@ -142,11 +140,11 @@ exit
 }
 
 export LOG="../../log.log"
-export DIRETORIO="../../$1"
+export BUILD_DIRECTORY="../../$1"
 
 case $1 in
 
 hexagonix) hexagonix; exit;;
-*) gerarBaseGrafica; exit;;
+*) buildAndromedaApplications; exit;;
 
 esac
