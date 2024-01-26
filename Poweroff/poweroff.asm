@@ -99,7 +99,7 @@ applicationStart:
 
 buildInterface:
 
-    Andromeda.Estelar.obterInfoConsole
+    Andromeda.Estelar.getConsoleInfo
 
     hx.syscall hx.clearConsole
 
@@ -108,11 +108,11 @@ buildInterface:
 ;; Format: title, footer, titleColor, footerColor, titleTextColor,
 ;; footerTextColor, textColor, backgroundColor
 
-    Andromeda.Estelar.criarInterface poweroff.title, poweroff.footer, \
+    Andromeda.Estelar.createInterface poweroff.title, poweroff.footer, \
     COLOR_HIGHLIGHT, COLOR_HIGHLIGHT, COLOR_FONT, COLOR_FONT, \
     [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
-    Andromeda.Estelar.criarLogotipo COLOR_HIGHLIGHT, COLOR_FONT,\
+    Andromeda.Estelar.buildLogo COLOR_HIGHLIGHT, COLOR_FONT,\
     [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
 ;; Operating system information messages
@@ -261,7 +261,7 @@ finish:
 ;;************************************************************************************
 
 SHUTDOWN equ "shutdown"
-VERSION  equ "1.8.0"
+VERSION  equ "1.9.0"
 
 COLOR_HIGHLIGHT = HEXAGONIX_BLOSSOM_AZUL_ANDROMEDA
 COLOR_FONT      = HEXAGONIX_CLASSICO_BRANCO
