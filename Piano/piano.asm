@@ -85,14 +85,14 @@ include "macros.s"
 
 applicationStart:
 
-    Andromeda.Estelar.obterInfoConsole
+    Andromeda.Estelar.getConsoleInfo
 
     hx.syscall hx.clearConsole
 
 ;; Format: title, footer, titleColor, footerColor, titleTextColor,
 ;; footerTextColor, textColor, backgroundColor
 
-    Andromeda.Estelar.criarInterface piano.title, piano.footer, \
+    Andromeda.Estelar.createInterface piano.title, piano.footer, \
     COLOR_HIGHTLIGHT, COLOR_HIGHTLIGHT, COLOR_FONT, COLOR_FONT, \
     [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
@@ -240,7 +240,7 @@ applicationStart:
 
     hx.syscall hx.setColor
 
-    hx.syscall hx.offSound
+    hx.syscall hx.turnOffSound
 
     hx.syscall hx.clearConsole
 
@@ -593,7 +593,7 @@ highlightKeys:
 
 showInfoInterface:
 
-    hx.syscall hx.offSound
+    hx.syscall hx.turnOffSound
 
     mov eax, dword[Andromeda.Interface.fontColor]
     mov ebx, dword[Andromeda.Interface.backgroundColor]
@@ -615,7 +615,7 @@ showInfoInterface:
 
     fputs piano.title
 
-    mov al, byte[Andromeda.Interface.numLinhas] ;; Last line
+    mov al, byte[Andromeda.Interface.numRows] ;; Last line
 
     dec al
 
@@ -710,7 +710,7 @@ showInfoInterface:
 ;;
 ;;************************************************************************************
 
-VERSION equ "1.9.0"
+VERSION equ "1.11.0"
 
 COLOR_HIGHTLIGHT     = HEXAGONIX_BLOSSOM_AZUL
 COLOR_FONT           = HEXAGONIX_CLASSICO_BRANCO
