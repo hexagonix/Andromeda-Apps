@@ -88,7 +88,7 @@ applicationStart:
     push ds ;; User mode data segment (38h selector)
     pop es
 
-   Andromeda.Estelar.obterInfoConsole
+   Andromeda.Estelar.getConsoleInfo
 
 .executarInterface:
 
@@ -97,7 +97,7 @@ applicationStart:
 ;; Format: title, footer, titleColor, footerColor, titleTextColor,
 ;; footerTextColor, textColor, backgroundColor
 
-    Andromeda.Estelar.criarInterface gfont.title, gfont.footer, \
+    Andromeda.Estelar.createInterface gfont.title, gfont.footer, \
     AZUL_ROYAL, AZUL_ROYAL, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
@@ -105,7 +105,7 @@ applicationStart:
     xyfputs 27, 5, gfont.copyright
     xyfputs 41, 6, gfont.trademark
 
-    Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, \
+    Andromeda.Estelar.buildLogo AZUL_ROYAL, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
     gotoxy 02, 10
@@ -114,7 +114,7 @@ applicationStart:
 
     fputs gfont.fontFilename
 
-    mov al, byte[Andromeda.Interface.numColunas] ;; Maximum characters to get
+    mov al, byte[Andromeda.Interface.numColumns] ;; Maximum characters to get
 
     sub al, 20
 
@@ -224,7 +224,7 @@ validateFont:
 ;;
 ;;************************************************************************************
 
-VERSION equ "2.6.0"
+VERSION equ "2.7.0"
 
 gfont:
 
