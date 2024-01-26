@@ -249,7 +249,7 @@ match =SIM, VERBOSE
 
     fputs Hexagon.LibASM.Dev.serialPorts.com1
 
-    mov eax,  Andromeda.Estelar.Tema.Fonte.fontePadrao
+    mov eax,  Andromeda.Estelar.Theme.Font.defaultFontColor
     mov ebx, dword[backgroundColor]
 
     hx.syscall hx.setColor
