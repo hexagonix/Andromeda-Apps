@@ -85,7 +85,7 @@ include "macros.s"
 
 applicationStart:
 
-    Andromeda.Estelar.obterInfoConsole
+    Andromeda.Estelar.getConsoleInfo
 
     hx.syscall hx.clearConsole
 
@@ -94,7 +94,7 @@ applicationStart:
 ;; Format: title, footer, titleColor, footerColor, titleTextColor,
 ;; footerTextColor, textColor, backgroundColor
 
-    Andromeda.Estelar.criarInterface serial.title, serial.footer, \
+    Andromeda.Estelar.createInterface serial.title, serial.footer, \
     COLOR_HIGHLIGHT, COLOR_HIGHLIGHT, COLOT_FONT, COLOT_FONT, \
     [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
@@ -106,7 +106,7 @@ applicationStart:
     xyfputs 27, 5, serial.copyright
     xyfputs 41, 6, serial.trademark
 
-    Andromeda.Estelar.criarLogotipo AZUL_ROYAL, BRANCO_ANDROMEDA, \
+    Andromeda.Estelar.buildLogo AZUL_ROYAL, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
     gotoxy 02, 10
@@ -147,7 +147,7 @@ applicationStart:
 
     fputs serial.separator
 
-    mov al, byte[Andromeda.Interface.numColunas] ;; Maximum characters to get
+    mov al, byte[Andromeda.Interface.numColumns] ;; Maximum characters to get
 
     sub al, 20
 
@@ -248,7 +248,7 @@ openError:
 ;;
 ;;************************************************************************************
 
-VERSION equ "1.5.0"
+VERSION equ "1.6.0"
 
 COLOR_HIGHLIGHT = AZUL_ROYAL
 COLOT_FONT      = HEXAGONIX_CLASSICO_BRANCO
