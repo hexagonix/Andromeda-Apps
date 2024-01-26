@@ -85,12 +85,12 @@ include "macros.s"
 
 applicationStart:
 
-    Andromeda.Estelar.obterInfoConsole
+    Andromeda.Estelar.getConsoleInfo
 
 ;; Format: title, footer, titleColor, footerColor, titleTextColor,
 ;; footerTextColor, textColor, backgroundColor
 
-    Andromeda.Estelar.criarInterface calc.title, calc.footer, \
+    Andromeda.Estelar.createInterface calc.title, calc.footer, \
     VERDE_ESCURO, VERDE_ESCURO, BRANCO_ANDROMEDA, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
@@ -272,7 +272,7 @@ finish:
 
 showSystemLogo:
 
-    Andromeda.Estelar.criarLogotipo VERDE_ESCURO, BRANCO_ANDROMEDA, \
+    Andromeda.Estelar.buildLogo VERDE_ESCURO, BRANCO_ANDROMEDA, \
     [Andromeda.Interface.fontColor], [Andromeda.Interface.backgroundColor]
 
     ret
@@ -285,7 +285,7 @@ showSystemLogo:
 ;;
 ;;************************************************************************************
 
-VERSION equ "1.10.0"
+VERSION equ "1.11.0"
 
 calc:
 
