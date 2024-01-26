@@ -97,7 +97,7 @@ ASHError           = VERMELHO
 ASHLimitReached    = AMARELO_ANDROMEDA
 ASHSuccess         = VERDE
 
-VERSION             equ "4.8.0"
+VERSION             equ "4.9.0"
 compatibleHexagonix equ "System I"
 
 ;;**************************
@@ -207,7 +207,7 @@ shellStart:
 
 ;; Start console configuration
 
-    Andromeda.Estelar.obterInfoConsole
+    Andromeda.Estelar.getConsoleInfo
 
     hx.syscall hx.clearConsole
 
@@ -244,7 +244,7 @@ shellStart:
 
     call changeColor
 
-    mov al, byte[Andromeda.Interface.numColunas] ;; Maximum characters to get
+    mov al, byte[Andromeda.Interface.numColumns] ;; Maximum characters to get
 
     sub al, 20
 
