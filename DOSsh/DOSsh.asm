@@ -89,7 +89,7 @@ include "macros.s"
 ;;
 ;;************************************************************************************
 
-VERSION             equ "0.10.0"
+VERSION             equ "0.11.0"
 compatibleHexagonix equ "System I"
 
 ;;**************************
@@ -194,7 +194,7 @@ shellStart:
 
 ;; Start console configuration
 
-    Andromeda.Estelar.obterInfoConsole
+    Andromeda.Estelar.getConsoleInfo
 
     hx.syscall hx.clearConsole
 
@@ -210,7 +210,7 @@ getCommand:
 
     fputs DOSsh.prompt
 
-    mov al, byte[Andromeda.Interface.numColunas] ;; Maximum characters to get
+    mov al, byte[Andromeda.Interface.numColumns] ;; Maximum characters to get
 
     sub al, 20
 
