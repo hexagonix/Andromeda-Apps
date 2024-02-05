@@ -68,7 +68,7 @@
 
 showSerialInterface:
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logSerial, 00h, Log.Priorities.p4
@@ -168,7 +168,7 @@ match =SIM, VERBOSE
 
 serialPortTest: ;; Automatically send data to the default serial port
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logSerialAutomatico, 00h, Log.Priorities.p4
@@ -216,7 +216,7 @@ match =SIM, VERBOSE
 
 sendOverSerialPort: ;; Performs manual data sending via the serial port
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logSerialManual, 00h, Log.Priorities.p4
@@ -293,7 +293,7 @@ match =SIM, VERBOSE
 
 error:
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logFalha, 00h, Log.Priorities.p4
@@ -306,7 +306,7 @@ match =SIM, VERBOSE
 
 openError:
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logFalha, 00h, Log.Priorities.p4

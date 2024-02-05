@@ -110,7 +110,7 @@ showVolumeInterface:
 
     xyfputs 04, 06, volumesInterfaceData.currentVolume
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logDiscos, 00h, Log.Priorities.p4

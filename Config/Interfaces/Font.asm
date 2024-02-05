@@ -108,7 +108,7 @@ showFontInterface:
 
     xyfputs 02, 06, fontInterfaceData.requestFile
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logPedirArquivoFonte, 00h, Log.Priorities.p4
@@ -131,7 +131,7 @@ match =SIM, VERBOSE
     cmp byte[esi], 0
     je .withoutFile
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logFontes, 00h, Log.Priorities.p4
@@ -152,7 +152,7 @@ match =SIM, VERBOSE
 
     jc .fontError
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logSucessoFonte, 00h, Log.Priorities.p4
@@ -213,7 +213,7 @@ match =SIM, VERBOSE
 
 .fileError:
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logFonteAusente, 00h, Log.Priorities.p4
@@ -236,7 +236,7 @@ match =SIM, VERBOSE
 
 .fileNotFound:
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logFalhaFonte, 00h, Log.Priorities.p4
@@ -249,7 +249,7 @@ match =SIM, VERBOSE
 
 .invalidFile:
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logFalhaFonte, 00h, Log.Priorities.p4
@@ -262,7 +262,7 @@ match =SIM, VERBOSE
 
 .unknownError:
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logFalhaFonte, 00h, Log.Priorities.p4

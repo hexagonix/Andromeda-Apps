@@ -97,7 +97,7 @@ include "version.s"
 ;; Log data will only be included in the application if necessary.
 ;; The default is that they are included
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
 include "Data\log.asm"
@@ -139,7 +139,7 @@ applicationStart:
 
 configEntrypoint:
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 
 {
 
@@ -160,7 +160,7 @@ match =SIM, VERBOSE
     mov dword[fontColor], ecx
     mov dword[backgroundColor], edx
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 
 {
 
@@ -176,7 +176,7 @@ match =SIM, VERBOSE
 
 .versionError:
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 
 {
 

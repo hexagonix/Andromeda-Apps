@@ -174,7 +174,7 @@ showResolutionInterface:
 
 graphicMode1:
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logTrocarResolucao800x600, 00h, Log.Priorities.p4
@@ -199,7 +199,7 @@ match =SIM, VERBOSE
 
 graphicMode2:
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logTrocarResolucao1024x768, 00h, Log.Priorities.p4

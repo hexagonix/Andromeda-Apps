@@ -68,7 +68,7 @@
 
 showParallelInterface:
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 {
 
     systemLog Log.Config.logParalela, 00h, Log.Priorities.p4

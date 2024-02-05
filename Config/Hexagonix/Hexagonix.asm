@@ -80,7 +80,7 @@ printSystemVersion:
 
 finishApplication:
 
-match =SIM, VERBOSE
+match =YES, VERBOSE
 
 {
 
