@@ -68,8 +68,6 @@
 #
 # $HexagonixOS$
 
-# Version 3.1
-
 buildAndromedaApplications(){
 
 echo
@@ -138,6 +136,8 @@ echo
 exit
 
 }
+
+export APPS_VERSION="5.4.1"
 
 export LOG="../../log.log"
 export BUILD_DIRECTORY="../../$1"
