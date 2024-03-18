@@ -137,7 +137,7 @@ exit
 
 }
 
-export APPS_VERSION="5.4.1"
+export APPS_MOD_VERSION="5.4.2"
 
 export LOG="../../log.log"
 export BUILD_DIRECTORY="../../$1"
