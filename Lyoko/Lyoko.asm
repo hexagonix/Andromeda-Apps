@@ -96,11 +96,11 @@ include "macros.s"
 HIGHLIGHT_COLOR = HEXAGONIX_BLOSSOM_VERMELHO
 BANNER_COLOR    = HEXAGONIX_BLOSSOM_LARANJA
 
-tamanhoParaNomeArquivo = 8
+sizeToFilename = 8
 
 ;; Variables, constants and structures
 
-VERSION   equ "2.3.1"
+VERSION   equ "3.0.0"
 ASSEMBLER equ "fasmX"
 AUTHOR    equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 TRADEMARK equ "All rights reserved."
@@ -151,7 +151,7 @@ db "Error updating file.", 0
 db "Lyoko - An IDE for Hexagonix - Version ", VERSION, 0
 .fasmX:
 db ASSEMBLER, 0
-.withoutSorceCode:
+.withoutSourceCode:
 db "No source file specified. Try saving your file to disk first.", 10, 10, 0
 .saveWarning:
 db "The contents of the file have been changed and not saved. This may lead to data loss.", 10, 10
@@ -231,17 +231,17 @@ LyokoIDE:
 
     mov dword[resolution], eax
 
-    cmp byte[edi], 0 ;; Em caso de falta de argumentos
-    je .criarNovoArquivo
+    cmp byte[edi], 0 ;; In case of lack of arguments
+    je .createNewFile
 
-    mov esi, edi ;; Argumentos do programa
+    mov esi, edi ;; Application arguments
 
     hx.syscall hx.stringSize
 
-    cmp eax, 12 ;; Nome de arquivo inválido
-    ja .criarNovoArquivo
+    cmp eax, 12 ;; Invalid filename
+    ja .createNewFile
 
-.salvarNomeArquivo: ;; Salvar nome do arquivo
+.saveFilename: ;; Save filename
 
     push es
 
@@ -249,25 +249,25 @@ LyokoIDE:
     pop es
 
     mov edi, filename
-    mov ecx, eax ;; Caracteres no nome do arquivo
+    mov ecx, eax ;; Characters in the filename
 
-    inc ecx ;; Incluindo o caractere NULL
+    inc ecx ;; Including the NULL character
 
     rep movsb
 
     pop es
 
-.carregarArquivo: ;; Open arquivo
+.openFile: ;; Open file
 
     mov esi, filename
 
     hx.syscall hx.fileExists
 
-    jc .criarNovoArquivo ;; O arquivo não existe
+    jc .createNewFile ;; The file does not exist
 
     mov esi, filename
 
-    mov edi, appFileBuffer ;; Endereço para o carregamento
+    mov edi, appFileBuffer ;; Loading address
 
     hx.syscall hx.open
 
@@ -277,31 +277,31 @@ LyokoIDE:
 
     mov ecx, eax
 
-.configurarRodape: ;; Adicionar nome do arquivo no título do programa
+.setupTitle: ;; Add file name in program footer
 
     push es
 
-;; Vamos configurar DS e ES com o segmento de dados do modo usuário
+;; Let's configure DS and ES with user mode data segment
 
     push ds
     pop es
 
-;; Agora o nome do arquivo aberto será exibido na interface do aplicativo
+;; Now the name of the opened file will be displayed in the application interface
 
-    mov edi, Lyoko.fileIdentifier+tamanhoParaNomeArquivo ;; Posição
+    mov edi, Lyoko.fileIdentifier+sizeToFilename ;; Position
     mov esi, filename
 
     rep movsb
 
     pop es
 
-    jmp .iniciarInterface
+    jmp .startInterface
 
-.criarNovoArquivo:
+.createNewFile:
 
     mov byte[filename], 0
 
-;; Adicionar 'New file', ao título do programa
+;; Add 'New file' to the program title
 
     push es
 
@@ -311,15 +311,15 @@ LyokoIDE:
     mov ecx, 12
 
     mov esi, Lyoko.newFileTitle
-    mov edi, Lyoko.fileIdentifier+tamanhoParaNomeArquivo ;; Posição
+    mov edi, Lyoko.fileIdentifier+sizeToFilename ;; Position
 
     rep movsb
 
     pop es
 
-.iniciarInterface:
+.startInterface:
 
-    mov al, 10 ;; Caractere de nova line
+    mov al, 10 ;; New line character
 
     mov esi, appFileBuffer
 
@@ -334,19 +334,19 @@ LyokoIDE:
 
     add esi, dword[currentLinePosition]
 
-    call tamanhoLinha ;; Encontrar tamanho da line atual
+    call lineSize ;; Find current line size
 
-    mov byte[currentPositionInLine], dl ;; Cursor no final da line
-    mov byte[currentLineSize], dl   ;; Salvar tamanho da line atual
+    mov byte[currentPositionInLine], dl ;; Cursor at the end of the line
+    mov byte[currentLineSize], dl   ;; Save current line size
 
     mov dword[currentPagePosition], 0
 
-.aguardarInteragirPrincipal:
+.awaitInteraction:
 
     cmp byte[screenRefreshIsRequired], 00h
-    je .outrasLinhasImpressas ;; Não é necessário imprimir outras linhas
+    je .otherPrintedLines ;; No need to print other lines
 
-;; Imprimir outras linhas
+;; Print other lines
 
     mov esi, Hexagon.LibASM.Dev.video.tty1
 
@@ -357,9 +357,9 @@ LyokoIDE:
     mov eax, dword[totalLines]
 
     cmp dword[line], eax
-    je .outrasLinhasImpressas
+    je .otherPrintedLines
 
-.imprimirOutrasLinhas:
+.printOtherLines:
 
     mov esi, appFileBuffer
 
@@ -371,19 +371,19 @@ LyokoIDE:
 
     sub ecx, 2
 
-.imprimirOutrasLinhasLoop:
+.printOtherLinesLoop:
 
-    call imprimirLinha
+    call printLine
 
-    jc .imprimirTitulo
+    jc .showTitleAndFooter
 
     putNewLine
 
-    loop .imprimirOutrasLinhasLoop
+    loop .printOtherLinesLoop
 
-.imprimirTitulo:
+.showTitleAndFooter:
 
-;; Imprime o título do programa e rodapé
+;; Prints program title and footer
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, HIGHLIGHT_COLOR
@@ -396,7 +396,7 @@ LyokoIDE:
 
     fputs Lyoko.applicationTitle
 
-    mov al, byte[maxLines] ;; Última line
+    mov al, byte[maxLines] ;; Last line
 
     dec al
 
@@ -441,9 +441,9 @@ LyokoIDE:
 
     hx.syscall hx.setColor
 
-;; Atualizar tela
+;; Update screen
 
-.atualizarBuffer:
+.updateBuffer:
 
     hx.syscall hx.updateScreen
 
@@ -451,7 +451,7 @@ LyokoIDE:
 
     hx.syscall hx.open
 
-.outrasLinhasImpressas:
+.otherPrintedLines:
 
     mov byte[screenRefreshIsRequired], 0
 
@@ -460,19 +460,19 @@ LyokoIDE:
 
     hx.syscall hx.setCursor
 
-;; Imprimir line atual
+;; Print current line
 
     mov esi, appFileBuffer
 
     add esi, dword[currentLinePosition]
 
-    call imprimirLinha
+    call printLine
 
     mov al, ' '
 
     hx.syscall hx.printCharacter
 
-;; Imprimir line e coluna atuais
+;; Print current line and column
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, HIGHLIGHT_COLOR
@@ -493,7 +493,7 @@ LyokoIDE:
 
     mov eax, dword[line]
 
-    inc eax ;; Contando de 1
+    inc eax ;; Counting from 1
 
     printInteger
 
@@ -503,7 +503,7 @@ LyokoIDE:
 
     movzx eax, byte[currentPositionInLine]
 
-    inc eax ;; Contando de 1
+    inc eax ;; Counting from 1
 
     printInteger
 
@@ -517,38 +517,38 @@ LyokoIDE:
     hx.syscall hx.setColor
 
     cmp byte[Lyoko.firstExecution], 01h
-    jne .iniciarProcessamentoEntrada
+    jne .startInputProcessing
 
-    call exibirBoasVindas
+    call lyokoShowWelcome
 
-    jmp .aguardarInteragirPrincipal
+    jmp .awaitInteraction
 
-.iniciarProcessamentoEntrada:
+.startInputProcessing:
 
-;; Colocar cursor na posição atual na line
+;; Place cursor at current position on line
 
     mov dl, byte[currentPositionInLine]
     mov dh, byte[linePositionOnScreen]
 
     hx.syscall hx.setCursor
 
-.processarEntrada:
+.processInput:
 
-    call processarEntrada
+    call processInput
 
     cmp byte[returnOrigin], 01h
-    je .iniciarProcessamentoEntrada
+    je .startInputProcessing
 
-    jmp .aguardarInteragirPrincipal
+    jmp .awaitInteraction
 
 ;;*************************************************************************************************
 
-salvarArquivoEditor:
+lyokoSaveFile:
 
     cmp byte[filename], 0
-    jne .naoNovoArquivo
+    jne .fileAlreadyOpened
 
-;; Obter nome de arquivo
+;; Get filename
 
     mov eax, PRETO
     mov ebx, CINZA_CLARO
@@ -570,39 +570,39 @@ salvarArquivoEditor:
 
     fputs Lyoko.requestFile
 
-    mov eax, 12 ;; Máximo de caracteres
+    mov eax, 12 ;; Maximum characters
 
     hx.syscall hx.getString
 
     hx.syscall hx.stringSize
 
     cmp eax, 0
-    je .fim
+    je .end
 
-;; Salvar nome de arquivo
+;; Save filename
 
     push es
 
-;; Vamos configurar DS e ES com o segmento de dados do modo usuário
+;; Let's configure DS and ES with user mode data segment
 
     push ds
     pop es
 
     mov edi, filename
-    mov ecx, eax ;; Caracteres no nome de arquivo
+    mov ecx, eax ;; Characters in the filename
 
-    inc ecx ;; Incluindo NULL
+    inc ecx ;; Including NULL
 
     rep movsb
 
-;; Adicionar ao rodapé
+;; Add to footer
 
-    mov ecx, eax ;; Caracteres do nome do arquivo
+    mov ecx, eax ;; Filename characters
 
     inc ecx
 
     mov esi, filename
-    mov edi, Lyoko.fileIdentifier+tamanhoParaNomeArquivo
+    mov edi, Lyoko.fileIdentifier+sizeToFilename
 
     rep movsb
 
@@ -613,11 +613,11 @@ salvarArquivoEditor:
 
     hx.syscall hx.setColor
 
-    jmp .continuar
+    jmp .continue
 
-.naoNovoArquivo:
+.fileAlreadyOpened:
 
-;; Se o arquivo já existe, delete-o
+;; If the file already exists, delete it
 
     mov esi, filename
 
@@ -625,22 +625,22 @@ salvarArquivoEditor:
 
     jc .unlinkError
 
-.continuar:
+.continue:
 
-;; Encontrar tamanho do arquivo
+;; Find file size
 
     mov esi, appFileBuffer
 
     hx.syscall hx.stringSize
 
-;; Salvar arquivo
+;; Save file
 
     mov esi, filename
     mov edi, appFileBuffer
 
     hx.syscall hx.create
 
-;; Exibir mensagem de salvamento
+;; Display save message
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, VERDE
@@ -662,9 +662,9 @@ salvarArquivoEditor:
 
     fputs Lyoko.fileSaved
 
-    mov byte [Lyoko.changed], 0 ;; Limpar o status de alterado
+    mov byte [Lyoko.changed], 0 ;; Clear changed status
 
-.fim:
+.end:
 
     mov eax, dword[Lyoko.fontColor]
     mov ebx, dword[Lyoko.backgroundColor]
@@ -702,7 +702,7 @@ salvarArquivoEditor:
 
     hx.syscall hx.waitKeyboard
 
-    jmp .fim
+    jmp .end
 
 .permissionDenied:
 
@@ -726,13 +726,13 @@ salvarArquivoEditor:
 
     fputs Lyoko.permissionDenied
 
-    jmp .fim
+    jmp .end
 
 ;;*************************************************************************************************
 
-abrirArquivoEditor:
+lyokoOpenFile:
 
-;; Obter nome de arquivo
+;; Get filename
 
     mov eax, BRANCO_ANDROMEDA
     mov ebx, VERDE
@@ -754,39 +754,39 @@ abrirArquivoEditor:
 
     fputs Lyoko.requestFile
 
-    mov eax, 12 ;; Máximo de caracteres
+    mov eax, 12 ;; Maximum characters
 
     hx.syscall hx.getString
 
     hx.syscall hx.stringSize
 
     cmp eax, 0
-    je .fim
+    je .end
 
-;; Salvar nome de arquivo
+;; Save filename
 
     push es
 
-;; Vamos configurar DS e ES com o segmento de dados do modo usuário
+;; Let's configure DS and ES with user mode data segment
 
     push ds
     pop es
 
     mov edi, filename
-    mov ecx, eax ;; Caracteres no nome de arquivo
+    mov ecx, eax ;; Characters in the filename
 
-    inc ecx ;; Incluindo NULL
+    inc ecx ;; Including NULL
 
     rep movsb
 
-;; Adicionar ao rodapé
+;; Add to footer
 
-    mov ecx, eax ;; Caracteres do nome do arquivo
+    mov ecx, eax ;; Filename characters
 
     inc ecx
 
     mov esi, filename
-    mov edi, Lyoko.fileIdentifier+tamanhoParaNomeArquivo
+    mov edi, Lyoko.fileIdentifier+sizeToFilename
 
     rep movsb
 
@@ -797,16 +797,16 @@ abrirArquivoEditor:
 
     hx.syscall hx.setColor
 
-    call reiniciarBufferVideo
+    call clearVideoBuffer
 
-    call reiniciarBufferTexto
+    call clearTextBuffer
 
     mov byte[screenRefreshIsRequired], 1
 
 
-    jmp LyokoIDE.carregarArquivo
+    jmp LyokoIDE.openFile
 
-.fim:
+.end:
 
     mov eax, dword[Lyoko.fontColor]
     mov ebx, dword[Lyoko.backgroundColor]
@@ -819,30 +819,30 @@ abrirArquivoEditor:
 
 ;;************************************************************************************
 
-evidenciarEdicao:
+highlightEdition:
 
     push es
 
-;; Vamos configurar DS e ES com o segmento de dados do modo usuário
+;; Let's configure DS and ES with user mode data segment
 
     push ds
     pop es
 
     mov edi, Lyoko.edited
-    mov ecx, eax ;; Caracteres no nome de arquivo
+    mov ecx, eax ;; Characters in the filename
 
-    inc ecx ;; Incluindo NULL
+    inc ecx ;; Including NULL
 
     rep movsb
 
-;; Adicionar ao rodapé
+;; Add to footer
 
-    mov ecx, eax ;; Caracteres do nome do arquivo
+    mov ecx, eax ;; Filename characters
 
     inc ecx
 
     mov esi, Lyoko.edited
-    mov edi, Lyoko.fileIdentifier+tamanhoParaNomeArquivo+8
+    mov edi, Lyoko.fileIdentifier+sizeToFilename+8
 
     rep movsb
 
@@ -854,29 +854,29 @@ evidenciarEdicao:
 
 ;;*************************************************************************************************
 
-realizarMontagem:
+lyokoExecuteAssembler:
 
-    call montarAviso
+    call buildWarning
 
     fputs Lyoko.runningAssembler
 
     mov esi, filename
 
     cmp byte[esi], 0
-    je .withoutSorceCode
+    je .withoutSourceCode
 
     mov esi, Lyoko.fasmX
     mov edi, filename
 
     hx.syscall hx.exec
 
-    jmp .fim
+    jmp .end
 
-.withoutSorceCode:
+.withoutSourceCode:
 
-    fputs Lyoko.withoutSorceCode
+    fputs Lyoko.withoutSourceCode
 
-.fim:
+.end:
 
     fputs Lyoko.closeWarning
 
@@ -891,15 +891,15 @@ realizarMontagem:
 
 ;;*************************************************************************************************
 
-exibirAjuda:
+lyokoShowHelp:
 
     mov byte[Lyoko.biggerBox], 01h
 
-    call montarAviso
+    call buildWarning
 
     fputs Lyoko.quickWarning
 
-.fim:
+.end:
 
     fputs Lyoko.closeWarning
 
@@ -914,15 +914,15 @@ exibirAjuda:
 
 ;;*************************************************************************************************
 
-exibirInfo:
+lyokoShowInfo:
 
     mov byte[Lyoko.biggerBox], 01h
 
-    call montarAviso
+    call buildWarning
 
     fputs Lyoko.infoLyoko
 
-.fim:
+.end:
 
     fputs Lyoko.closeWarning
 
@@ -937,13 +937,13 @@ exibirInfo:
 
 ;;*************************************************************************************************
 
-exibirBoasVindas:
+lyokoShowWelcome:
 
-    call montarAviso
+    call buildWarning
 
     fputs Lyoko.welcome
 
-.fim:
+.end:
 
     mov eax, dword[Lyoko.fontColor]
     mov ebx, dword[Lyoko.backgroundColor]
@@ -960,54 +960,54 @@ exibirBoasVindas:
 
 ;;*************************************************************************************************
 
-montarAviso:
+buildWarning:
 
     cmp byte[Lyoko.biggerBox], 01h
-    je .checarResolucaoCaixaMaior
+    je .checkResolutionLargerBox
 
-.checarResolucaoCaixaMenor:
-
-    cmp dword[resolution], 01h
-    je .caixaMenorResolucao1
-
-    cmp dword[resolution], 02h
-    je .caixaMenorResolucao2
-
-    jmp .fim
-
-.checarResolucaoCaixaMaior:
+.checkResolutionSmallBox:
 
     cmp dword[resolution], 01h
-    je .caixaMaiorResolucao1
+    je .smallBoxResolution1
 
     cmp dword[resolution], 02h
-    je .caixaMaiorResolucao2
+    je .smallBoxResolution2
 
-    jmp .fim
+    jmp .end
 
-.caixaMenorResolucao1:
+.checkResolutionLargerBox:
 
-    mov eax, 0   ;; Início do bloco em X
-    mov ebx, 350 ;; Início do bloco em Y
-    mov esi, 800 ;; Comprimento do bloco
-    mov edi, 200 ;; Altura do bloco
-    mov edx, HIGHLIGHT_COLOR ;; Cor do bloco
+    cmp dword[resolution], 01h
+    je .largerBoxResolution1
+
+    cmp dword[resolution], 02h
+    je .largerBoxResolution2
+
+    jmp .end
+
+.smallBoxResolution1:
+
+    mov eax, 0   ;; Start of block at X
+    mov ebx, 350 ;; Start of block at Y
+    mov esi, 800 ;; Block length
+    mov edi, 200 ;; Block height
+    mov edx, HIGHLIGHT_COLOR ;; Block color
 
     hx.syscall hx.drawBlock
 
-    mov eax, 0   ;; Início do bloco em X
-    mov ebx, 340 ;; Início do bloco em Y
-    mov esi, 800 ;; Comprimento do bloco
-    mov edi, 10  ;; Altura do bloco
-    mov edx, BANNER_COLOR ;; Cor do bloco
+    mov eax, 0   ;; Start of block at X
+    mov ebx, 340 ;; Start of block at Y
+    mov esi, 800 ;; Block length
+    mov edi, 10  ;; Block height
+    mov edx, BANNER_COLOR ;; Block color
 
     hx.syscall hx.drawBlock
 
-    mov eax, 0   ;; Início do bloco em X
-    mov ebx, 550 ;; Início do bloco em Y
-    mov esi, 800 ;; Comprimento do bloco
-    mov edi, 10  ;; Altura do bloco
-    mov edx, BANNER_COLOR ;; Cor do bloco
+    mov eax, 0   ;; Start of block at X
+    mov ebx, 550 ;; Start of block at Y
+    mov esi, 800 ;; Block length
+    mov edi, 10  ;; Block height
+    mov edx, BANNER_COLOR ;; Block color
 
     hx.syscall hx.drawBlock
 
@@ -1021,31 +1021,31 @@ montarAviso:
 
     hx.syscall hx.setCursor
 
-    jmp .fim
+    jmp .end
 
-.caixaMenorResolucao2:
+.smallBoxResolution2:
 
-    mov eax, 0    ;; Início do bloco em X
-    mov ebx, 470  ;; Início do bloco em Y
-    mov esi, 1024 ;; Comprimento do bloco
-    mov edi, 250  ;; Altura do bloco
-    mov edx, HIGHLIGHT_COLOR ;; Cor do bloco
-
-    hx.syscall hx.drawBlock
-
-    mov eax, 0    ;; Início do bloco em X
-    mov ebx, 460  ;; Início do bloco em Y
-    mov esi, 1024 ;; Comprimento do bloco
-    mov edi, 10   ;; Altura do bloco
-    mov edx, BANNER_COLOR ;; Cor do bloco
+    mov eax, 0    ;; Start of block at X
+    mov ebx, 470  ;; Start of block at Y
+    mov esi, 1024 ;; Block length
+    mov edi, 250  ;; Block height
+    mov edx, HIGHLIGHT_COLOR ;; Block color
 
     hx.syscall hx.drawBlock
 
-    mov eax, 0    ;; Início do bloco em X
-    mov ebx, 710  ;; Início do bloco em Y
-    mov esi, 1024 ;; Comprimento do bloco
-    mov edi, 10   ;; Altura do bloco
-    mov edx, BANNER_COLOR ;; Cor do bloco
+    mov eax, 0    ;; Start of block at X
+    mov ebx, 460  ;; Start of block at Y
+    mov esi, 1024 ;; Block length
+    mov edi, 10   ;; Block height
+    mov edx, BANNER_COLOR ;; Block color
+
+    hx.syscall hx.drawBlock
+
+    mov eax, 0    ;; Start of block at X
+    mov ebx, 710  ;; Start of block at Y
+    mov esi, 1024 ;; Block length
+    mov edi, 10   ;; Block height
+    mov edx, BANNER_COLOR ;; Block color
 
     hx.syscall hx.drawBlock
 
@@ -1059,69 +1059,31 @@ montarAviso:
 
     hx.syscall hx.setCursor
 
-    jmp .fim
+    jmp .end
 
-.caixaMaiorResolucao1:
+.largerBoxResolution1:
 
-    mov eax, 0   ;; Início do bloco em X
-    mov ebx, 200 ;; Início do bloco em Y
-    mov esi, 800 ;; Comprimento do bloco
-    mov edi, 360 ;; Altura do bloco
-    mov edx, HIGHLIGHT_COLOR ;; Cor do bloco
-
-    hx.syscall hx.drawBlock
-
-    mov eax, 0   ;; Início do bloco em X
-    mov ebx, 190 ;; Início do bloco em Y
-    mov esi, 800 ;; Comprimento do bloco
-    mov edi, 10  ;; Altura do bloco
-    mov edx, BANNER_COLOR ;; Cor do bloco
+    mov eax, 0   ;; Start of block at X
+    mov ebx, 200 ;; Start of block at Y
+    mov esi, 800 ;; Block length
+    mov edi, 360 ;; Block height
+    mov edx, HIGHLIGHT_COLOR ;; Block color
 
     hx.syscall hx.drawBlock
 
-    mov eax, 0   ;; Início do bloco em X
-    mov ebx, 550 ;; Início do bloco em Y
-    mov esi, 800 ;; Comprimento do bloco
-    mov edi, 10  ;; Altura do bloco
-    mov edx, BANNER_COLOR ;; Cor do bloco
+    mov eax, 0   ;; Start of block at X
+    mov ebx, 190 ;; Start of block at Y
+    mov esi, 800 ;; Block length
+    mov edi, 10  ;; Block height
+    mov edx, BANNER_COLOR ;; Block color
 
     hx.syscall hx.drawBlock
 
-    mov eax, BRANCO_ANDROMEDA
-    mov ebx, HIGHLIGHT_COLOR
-
-    hx.syscall hx.setColor
-
-    mov dl, 0h
-    mov dh, 14
-
-    hx.syscall hx.setCursor
-
-    jmp .fim
-
-.caixaMaiorResolucao2:
-
-    mov eax, 0    ;; Início do bloco em X
-    mov ebx, 200  ;; Início do bloco em Y
-    mov esi, 1024 ;; Comprimento do bloco
-    mov edi, 510  ;; Altura do bloco
-    mov edx, HIGHLIGHT_COLOR ;; Cor do bloco
-
-    hx.syscall hx.drawBlock
-
-    mov eax, 0    ;; Início do bloco em X
-    mov ebx, 190  ;; Início do bloco em Y
-    mov esi, 1024 ;; Comprimento do bloco
-    mov edi, 10   ;; Altura do bloco
-    mov edx, BANNER_COLOR ;; Cor do bloco
-
-    hx.syscall hx.drawBlock
-
-    mov eax, 0    ;; Início do bloco em X
-    mov ebx, 710  ;; Início do bloco em Y
-    mov esi, 1024 ;; Comprimento do bloco
-    mov edi, 10   ;; Altura do bloco
-    mov edx, BANNER_COLOR ;; Cor do bloco
+    mov eax, 0   ;; Start of block at X
+    mov ebx, 550 ;; Start of block at Y
+    mov esi, 800 ;; Block length
+    mov edi, 10  ;; Block height
+    mov edx, BANNER_COLOR ;; Block color
 
     hx.syscall hx.drawBlock
 
@@ -1135,9 +1097,47 @@ montarAviso:
 
     hx.syscall hx.setCursor
 
-    jmp .fim
+    jmp .end
 
-.fim:
+.largerBoxResolution2:
+
+    mov eax, 0    ;; Start of block at X
+    mov ebx, 200  ;; Start of block at Y
+    mov esi, 1024 ;; Block length
+    mov edi, 510  ;; Block height
+    mov edx, HIGHLIGHT_COLOR ;; Block color
+
+    hx.syscall hx.drawBlock
+
+    mov eax, 0    ;; Start of block at X
+    mov ebx, 190  ;; Start of block at Y
+    mov esi, 1024 ;; Block length
+    mov edi, 10   ;; Block height
+    mov edx, BANNER_COLOR ;; Block color
+
+    hx.syscall hx.drawBlock
+
+    mov eax, 0    ;; Start of block at X
+    mov ebx, 710  ;; Start of block at Y
+    mov esi, 1024 ;; Block length
+    mov edi, 10   ;; Block height
+    mov edx, BANNER_COLOR ;; Block color
+
+    hx.syscall hx.drawBlock
+
+    mov eax, BRANCO_ANDROMEDA
+    mov ebx, HIGHLIGHT_COLOR
+
+    hx.syscall hx.setColor
+
+    mov dl, 0h
+    mov dh, 14
+
+    hx.syscall hx.setCursor
+
+    jmp .end
+
+.end:
 
     mov byte[Lyoko.biggerBox], 00h
 
@@ -1145,72 +1145,72 @@ montarAviso:
 
 ;;*************************************************************************************************
 
-processarEntrada:
+processInput:
 
     hx.syscall hx.waitKeyboard
 
-;; Vamos checar se a tecla CTRL está pressionada e tomar as devidas providências
+;; Let's check if the CTRL key is pressed and take the necessary action
 
     push eax
 
     hx.syscall hx.getKeyState
 
     bt eax, 0
-    jc .teclasControl
+    jc .controlKeys
 
     pop eax
 
-;; Vamos agora interpretar os scan codes do teclado
+;; Let's now interpret the keyboard scan codes
 
     cmp ah, 28
-    je .teclasReturn
+    je .returnKey
 
     cmp ah, 15 ;; Tab
-    je .caractereImprimivel
+    je .printableCharacter
 
     cmp ah, 71
-    je .teclaHome
+    je .homeKey
 
     cmp ah, 79
-    je .teclaEnd
+    je .endKey
 
     cmp ah, 14
-    je .teclaBackspace
+    je .backspaceKey
 
     cmp ah, 83
-    je .teclaDelete
+    je .deleteKey
 
     cmp ah, 75
-    je .teclaEsquerda
+    je .leftKey
 
     cmp ah, 77
-    je .teclaDireita
+    je .rightKey
 
     cmp ah, 72
-    je .teclaCima
+    je .upKey
 
     cmp ah, 80
-    je .teclaBaixo
+    je .downKey
 
     cmp ah, 81
-    je .teclaPageDown
+    je .pageDownKey
 
     cmp ah, 73
-    je .teclaPageUp
+    je .pageUpKey
 
-;; Se o caractere não foi imprimível
+;; If the character was not printable
 
     cmp al, ' '
-    jl .prepararRetorno
+    jl .prepareReturn
 
     cmp al, '~'
-    ja .prepararRetorno
+    ja .prepareReturn
 
-;; Outra tecla
+;; Other key
 
-.caractereImprimivel:
+.printableCharacter:
 
-;; Não são suportados mais de 79 caracteres por line
+;; No more than 79 characters per line are supported
 
     mov byte [Lyoko.changed], 1
 
@@ -1219,26 +1219,26 @@ processarEntrada:
     dec bl
 
     cmp byte[currentLineSize], bl
-    jae .prepararRetorno
+    jae .prepareReturn
 
     mov edx, 0
-    movzx esi, byte[currentPositionInLine] ;; Posição para inserir caracteres
+    movzx esi, byte[currentPositionInLine] ;; Position to insert characters
 
     add esi, dword[currentLinePosition]
     add esi, appFileBuffer
 
-    hx.syscall hx.insertCharacter ;; Inserir char na string
+    hx.syscall hx.insertCharacter ;; Insert char into string
 
-    inc byte[currentPositionInLine] ;; Um caractere foi adicionado
+    inc byte[currentPositionInLine] ;; A character has been added
     inc byte[currentLineSize]
 
-;; Mais teclas
+;; More keys
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-;; Tecla Return ou Enter
+;; Return/Enter key
 
-.teclasReturn:
+.returnKey:
 
     mov byte[screenRefreshIsRequired], 1
 
@@ -1253,50 +1253,50 @@ processarEntrada:
 
     hx.syscall hx.insertCharacter
 
-;; Nova line
+;; New line
 
     inc dword[line]
 
     mov esi, appFileBuffer
     mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
     sub esi, appFileBuffer
 
     mov dword[currentLinePosition], esi
 
-;; Calcular valores para essa line
+;; Calculate values ​​for this line
 
     mov edx, 0
     mov esi, appFileBuffer
 
     add esi, dword[currentLinePosition]
 
-    call tamanhoLinha ;; Encontrar tamanho para essa line
+    call lineSize ;; Find size for this line
 
-    mov byte[currentPositionInLine], 0 ;; Cursor no fim da line
-    mov byte[currentLineSize], dl  ;; Salvar o tamanho atual da line
+    mov byte[currentPositionInLine], 0 ;; Cursor at the end of the line
+    mov byte[currentLineSize], dl  ;; Save current line size
 
-    mov al, 10 ;; Caractere de nova line
+    mov al, 10 ;; New line character
     mov esi, appFileBuffer
 
     hx.syscall hx.findCharacter
 
     mov dword[totalLines], eax
 
-;; Tentar mover o cursor para baixo
+;; Try moving the cursor down
 
     mov bl, byte[maxLines]
 
     sub bl, 2
 
     cmp byte[linePositionOnScreen], bl
-    jb .teclasReturn.cursorProximaLinha
+    jb .returnKey.cursorNextLine
 
-;; Se for última line, rode a tela
+;; If it is the last line, rotate the screen
 
     mov bl, byte[maxLines]
 
@@ -1311,74 +1311,74 @@ processarEntrada:
     sub bl, 3
     sub eax, ebx
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
     sub esi, appFileBuffer
 
     mov dword[currentPagePosition], esi
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclasReturn.cursorProximaLinha:
+.returnKey.cursorNextLine:
 
     inc byte[linePositionOnScreen]
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-;; Teclas Control
+;; Control keys
 
-.teclasControl:
+.controlKeys:
 
     pop eax
 
     cmp al, 's'
-    je .teclaControlS
+    je .ControlSKeys
 
     cmp al, 'S'
-    je .teclaControlS
+    je .ControlSKeys
 
     cmp al, 'x'
-    je .teclaControlX
+    je .ControlXKeys
 
     cmp al, 'X'
-    je .teclaControlX
+    je .ControlXKeys
 
     cmp al, 'a'
-    je .teclaControlA
+    je .ControlAKeys
 
     cmp al, 'A'
-    je .teclaControlA
+    je .ControlAKeys
 
     cmp al, 'v'
-    je .teclaControlV
+    je .ControlVKeys
 
     cmp al, 'V'
-    je .teclaControlV
+    je .ControlVKeys
 
     cmp al, 'm'
-    je .teclaControlM
+    je .ControlMKeys
 
     cmp al, 'M'
-    je .teclaControlM
+    je .ControlMKeys
 
     cmp al, 'f'
-    je fimPrograma
+    je lyokoExitIDE
 
     cmp al, 'F'
-    je fimPrograma
+    je lyokoExitIDE
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaBackspace:
+.backspaceKey:
 
-;; Se na primeira coluna, não fazer nada
+;; If in the first column, do nothing
 
     cmp byte[currentPositionInLine], 0
-    je .teclaBackspace.primeiraColuna
+    je .backspaceKey.firstColumn
 
-;; Remover caractere da esquerda
+;; Remove character from left
 
     movzx eax, byte[currentPositionInLine]
 
@@ -1390,26 +1390,26 @@ processarEntrada:
 
     hx.syscall hx.removeCharacterString
 
-    dec byte[currentPositionInLine] ;; Um caractere foi removido
+    dec byte[currentPositionInLine] ;; A character has been removed
     dec byte[currentLineSize]
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaBackspace.primeiraColuna:
+.backspaceKey.firstColumn:
 
     cmp byte[line], 0
-    je .prepararRetorno
+    je .prepareReturn
 
-;; Calcular tamanho anterior da line
+;; Calculate previous line size
 
     mov esi, appFileBuffer
     mov eax, dword[line]
 
-    dec eax ;; Linha anterior
+    dec eax ;; Previous line
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
     sub esi, appFileBuffer
 
@@ -1417,28 +1417,28 @@ processarEntrada:
 
     add esi, appFileBuffer
 
-    call tamanhoLinha ;; Encontrar tamanho
+    call lineSize ;; Find size
 
-    push edx ;; Salvar tamanho da line
+    push edx ;; Save line size
 
     add dl, byte[currentLineSize]
 
-;; Backspace não habilitado (suporte de até 79 caracteres por line)
+;; Backspace not enabled (support of up to 79 characters per line)
 
     mov bl, byte[maxColumns]
 
     dec bl
 
-    cmp dl, bl ;; Contando de 0
-    jnae .continuar
+    cmp dl, bl ;; Counting from 0
+    jnae .continue
 
     pop edx
 
     ret
 
-.continuar:
+.continue:
 
-;; Remover caractere de nova line
+;; Remove newline character
 
     mov byte[screenRefreshIsRequired], 1
 
@@ -1452,23 +1452,23 @@ processarEntrada:
 
     hx.syscall hx.removeCharacterString
 
-    dec byte[totalLines] ;; Uma line foi removida
+    dec byte[totalLines] ;; One line was removed
     dec dword[line]
 
-;; Linha anterior
+;; Previous line
 
     mov esi, appFileBuffer
     mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .retornoPush
+    jc .pushReturn
 
     sub esi, appFileBuffer
 
     push esi
 
-;; Calcular valores para essa line
+;; Calculate values ​​for this line
 
     mov edx, 0
 
@@ -1478,9 +1478,9 @@ processarEntrada:
 
     add esi, appFileBuffer
 
-    call tamanhoLinha ;; Encontrar tamanho da line atual
+    call lineSize ;; Find size of current line
 
-    mov byte[currentLineSize], dl ;; Salvar tamanho da line
+    mov byte[currentLineSize], dl ;; Save line size
 
     pop dword[currentLinePosition]
 
@@ -1488,22 +1488,22 @@ processarEntrada:
 
     mov byte[currentPositionInLine], dl
 
-    jmp .teclaCima.cursorMovido
+    jmp .upKey.cursorMoved
 
-.retornoPush:
+.pushReturn:
 
     pop edx
 
     ret
 
-.teclaDelete:
+.deleteKey:
 
-;; Se na última coluna, não fazer nada
+;; If in the last column, do nothing
 
     mov dl, byte[currentLineSize]
 
     cmp byte[currentPositionInLine], dl
-    jae .prepararRetorno
+    jae .prepareReturn
 
     movzx eax, byte[currentPositionInLine]
 
@@ -1513,136 +1513,136 @@ processarEntrada:
 
     hx.syscall hx.removeCharacterString
 
-    dec byte[currentLineSize] ;; Um caractere foi removido
+    dec byte[currentLineSize] ;; A character has been removed
 
     inc byte[currentPositionInLine]
 
-.teclaEsquerda:
+.leftKey:
 
-;; Se na primeira coluna, não fazer nada
+;; If in the first column, do nothing
 
     cmp byte[currentPositionInLine], 0
-    jne .teclaEsquerda.moverEsquerda
+    jne .leftKey.moveToLeft
 
     cmp byte[line], 0
-    je .prepararRetorno
+    je .prepareReturn
 
     mov bl, byte[maxColumns]
     mov byte[currentPositionInLine], bl
 
-    jmp .teclaCima
+    jmp .upKey
 
-;; Mover cursor para a esquerda
+;; Move cursor left
 
-.teclaEsquerda.moverEsquerda:
+.leftKey.moveToLeft:
 
     dec byte[currentPositionInLine]
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaDireita:
+.rightKey:
 
-;; Se na última coluna, não fazer nada
+;; If in the last column, do nothing
 
     mov dl, byte[currentLineSize]
 
     cmp byte[currentPositionInLine], dl
-    jnae .teclaDireita.moverDireita
+    jnae .rightKey.moveToRight
 
-;; Nova line não permitida
+;; New line not allowed
 
     mov eax, dword[line]
 
     inc eax
 
     cmp dword[totalLines], eax
-    je .prepararRetorno
+    je .prepareReturn
 
-;; Nova line
+;; New line
 
     inc dword[line]
 
     mov esi, appFileBuffer
     mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
     sub esi, appFileBuffer
 
     mov dword[currentLinePosition], esi
 
-;; Calcular valores para essa line
+;; Calculate values ​​for this line
 
     mov edx, 0
     mov esi, appFileBuffer
 
     add esi, dword[currentLinePosition]
 
-    call tamanhoLinha
+    call lineSize
 
-    mov byte[currentPositionInLine], 0 ;; Cursor no fim da line
-    mov byte[currentLineSize], dl  ;; Salvar tamanho da line
+    mov byte[currentPositionInLine], 0 ;; Cursor at the end of the line
+    mov byte[currentLineSize], dl  ;; Save line size
 
-    jmp .teclaBaixo.proximo
+    jmp .downKey.next
 
-.teclaDireita.moverDireita:
+.rightKey.moveToRight:
 
     inc byte[currentPositionInLine]
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaCima:
+.upKey:
 
-;; Linha anterior não permitida
+;; Previous line not allowed
 
     cmp dword[line], 0
-    je .prepararRetorno
+    je .prepareReturn
 
-;; Linha anterior
+;; Previous line
 
     dec dword[line]
 
     mov esi, appFileBuffer
     mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
     sub esi, appFileBuffer
 
     mov dword[currentLinePosition], esi
 
-;; Calcular valores para essa line
+;; Calculate values ​​for this line
 
     mov edx, 0
     mov esi, appFileBuffer
 
     add esi, dword[currentLinePosition]
 
-    call tamanhoLinha
+    call lineSize
 
     mov byte[currentLineSize], dl
 
     cmp dl, byte[currentPositionInLine]
-    jb .teclaCima.moverCursorAteOFim
+    jb .upKey.moveCursorToTheEnd
 
-    jmp .teclaCima.cursorMovido ;; Não alterar a coluna do cursor
+    jmp .upKey.cursorMoved ;; Do not change the cursor column
 
-.teclaCima.moverCursorAteOFim:
+.upKey.moveCursorToTheEnd:
 
-    mov byte[currentPositionInLine], dl ;; Cursor ao fim da line
+    mov byte[currentPositionInLine], dl ;; Cursor at the end of the line
 
-.teclaCima.cursorMovido:
+.upKey.cursorMoved:
 
-;; Tentar mover o cursor para cima
+;; Try moving the cursor up
 
     cmp byte[linePositionOnScreen], 1
-    ja .teclaCima.cursorLinhaAnterior
+    ja .upKey.moveCursorToPreviousLine
 
-;; Se o cursor estiver na primeira line, role a tela para cima
+;; If the cursor is on the first line, scroll up
 
     mov byte[linePositionOnScreen], 1
     mov eax, dword[currentLinePosition]
@@ -1650,74 +1650,74 @@ processarEntrada:
 
     mov byte[screenRefreshIsRequired], 1
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaCima.cursorLinhaAnterior:
+.upKey.moveCursorToPreviousLine:
 
     dec byte[linePositionOnScreen]
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaBaixo:
+.downKey:
 
-;; Próxima line não disponível
+;; Next line not available
 
     mov eax, dword[line]
 
     inc eax
 
     cmp dword[totalLines], eax
-    je .prepararRetorno
+    je .prepareReturn
 
-;; Próxima line
+;; Next line
 
     inc dword[line]
 
     mov esi, appFileBuffer
     mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
     sub esi, appFileBuffer
 
     mov dword[currentLinePosition], esi
 
-;; Calcular valores para a line
+;; Calculate values ​​for the line
 
     mov edx, 0
     mov esi, appFileBuffer
 
     add esi, dword[currentLinePosition]
 
-    call tamanhoLinha
+    call lineSize
 
     mov byte[currentLineSize], dl
 
     cmp dl, byte[currentPositionInLine]
-    jb .teclaBaixo.moverCursorAteOFim
+    jb .downKey.moveCursorToTheEnd
 
-    jmp .teclaBaixo.cursorMovido ;; Não alterar a coluna
+    jmp .downKey.cursorMoved ;; Do not change the column
 
-.teclaBaixo.moverCursorAteOFim:
+.downKey.moveCursorToTheEnd:
 
-    mov byte[currentPositionInLine], dl ;; Cursor ao fim da line
+    mov byte[currentPositionInLine], dl ;; Cursor at the end of the line
 
-.teclaBaixo.cursorMovido:
+.downKey.cursorMoved:
 
-.teclaBaixo.proximo:
+.downKey.next:
 
-;; Tentar mover o cursor para baixo
+;; Try moving the cursor down
 
     mov bl, byte[maxLines]
 
     sub bl, 2
 
     cmp byte[linePositionOnScreen], bl
-    jb .teclaBaixo.cursorProximaLinha
+    jb .downKey.cursorNextLine
 
-;; Se na última line, girar tela para baixo
+;; If in the last line, scroll the screen down
 
     mov bl, byte[maxLines]
 
@@ -1732,9 +1732,9 @@ processarEntrada:
     sub bl, 3
     sub eax, ebx
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
     sub esi, appFileBuffer
 
@@ -1742,38 +1742,38 @@ processarEntrada:
 
     mov byte[screenRefreshIsRequired], 1
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaBaixo.cursorProximaLinha:
+.downKey.cursorNextLine:
 
     inc byte[linePositionOnScreen]
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaHome:
+.homeKey:
 
-;; Mover cursor para primeira coluna
+;; Move cursor to first column
 
     mov byte[currentPositionInLine], 0
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaEnd:
+.endKey:
 
-;; Mover cursor para última coluna
+;; Move cursor to last column
 
     mov edx, 0
     mov esi, appFileBuffer
 
     add esi, dword[currentLinePosition]
 
-    call tamanhoLinha
+    call lineSize
 
     mov byte[currentPositionInLine], dl
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaPageUp:
+.pageUpKey:
 
     mov eax, dword[line]
     movzx ebx, byte[maxLines]
@@ -1782,22 +1782,22 @@ processarEntrada:
     sub eax, ebx
 
     cmp eax, 0
-    jle .teclaPageUp.irParaPrimeiraLinha
+    jle .pageUpKey.goToFirstLine
 
-;; Não redesenhar se na última line
+;; Do not redraw if in the last line
 
     mov bl, byte[maxLines]
 
     sub bl, 2
 
     cmp byte[linePositionOnScreen], bl
-    jae .teclaPageUp.naoNecessarioRedesenhar
+    jae .pageUpKey.noNeedToRedraw
 
     mov byte[screenRefreshIsRequired], 1
 
-.teclaPageUp.naoNecessarioRedesenhar:
+.pageUpKey.noNeedToRedraw:
 
-;; Linha anterior
+;; Previous line
 
     movzx ebx, byte[maxLines]
 
@@ -1807,40 +1807,40 @@ processarEntrada:
     mov esi, appFileBuffer
     mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
     sub esi, appFileBuffer
 
     mov dword[currentLinePosition], esi
 
-;; Calcular valores para essa line
+;; Calculate values ​​for this line
 
     mov edx, 0
     mov esi, appFileBuffer
 
     add esi, dword[currentLinePosition]
 
-    call tamanhoLinha
+    call lineSize
 
-    mov byte[currentPositionInLine], dl ;; Cursor no fim da line
+    mov byte[currentPositionInLine], dl ;; Cursor at the end of the line
     mov byte[currentLineSize], dl
 
-.teclaPageUp.fim:
+.pageUpKey.end:
 
     mov byte[linePositionOnScreen], 1
     mov eax, dword[currentLinePosition]
     mov dword[currentPagePosition], eax
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaPageUp.irParaPrimeiraLinha:
+.pageUpKey.goToFirstLine:
 
-;; Page Up não disponível
+;; Page Up not available
 
     cmp dword[line], 0
-    je .prepararRetorno
+    je .prepareReturn
 
     mov byte[screenRefreshIsRequired], 1
 
@@ -1848,27 +1848,27 @@ processarEntrada:
     mov eax, 0
     mov dword[line], eax
 
-    call posicaoLinha
+    call linePosition
 
     sub esi, appFileBuffer
 
     mov dword[currentLinePosition], esi
 
-;; Calcular valores para a line
+;; Calculate values ​​for the line
 
     mov edx, 0
     mov esi, appFileBuffer
 
     add esi, dword[currentLinePosition]
 
-    call tamanhoLinha
+    call lineSize
 
-    mov byte[currentPositionInLine], dl ;; Cursor no fim da line
+    mov byte[currentPositionInLine], dl ;; Cursor at the end of the line
     mov byte[currentLineSize], dl
 
-    jmp .teclaPageUp.fim
+    jmp .pageUpKey.end
 
-.teclaPageDown:
+.pageDownKey:
 
     mov eax, dword[line]
     movzx ebx, byte[maxLines]
@@ -1878,18 +1878,18 @@ processarEntrada:
     add eax, ebx
 
     cmp eax, dword[totalLines]
-    jae .teclaPageDown.irParaUltimaLinha
+    jae .pageDownKey.goToLastLine
 
-;; Não redesenhar se primeira line
+;; Do not redraw the first line
 
     cmp byte[linePositionOnScreen], 1
-    jle .teclaPageDown.naoNecessarioRedesenhar
+    jle .pageDownKey.noNeedToRedraw
 
     mov byte[screenRefreshIsRequired], 1
 
-.teclaPageDown.naoNecessarioRedesenhar:
+.pageDownKey.noNeedToRedraw:
 
-;; Próxima line
+;; Next line
 
     movzx ebx, byte[maxLines]
 
@@ -1900,22 +1900,22 @@ processarEntrada:
     mov esi, appFileBuffer
     mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
     sub esi, appFileBuffer
 
     mov dword[currentLinePosition], esi
 
-;; Calcular valores para a line
+;; Calculate values ​​for the line
 
     mov edx, 0
     mov esi, appFileBuffer
 
     add esi, dword[currentLinePosition]
 
-    call tamanhoLinha
+    call lineSize
 
     mov byte[currentPositionInLine], dl
     mov byte[currentLineSize], dl
@@ -1934,56 +1934,56 @@ processarEntrada:
 
     mov esi, appFileBuffer
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
     sub esi, appFileBuffer
 
     mov dword[currentPagePosition], esi
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaPageDown.irParaUltimaLinha:
+.pageDownKey.goToLastLine:
 
-;; Page Down não disponível
+;; Page Down not available
 
     mov eax, dword[line]
 
     inc eax
 
     cmp eax, dword[totalLines]
-    jae .prepararRetorno
+    jae .prepareReturn
 
     mov byte[screenRefreshIsRequired], 1
 
-;; Próxima line
+;; Next line
 
-    mov eax, dword[totalLines] ;; Última line é o total de linhas - 1
+    mov eax, dword[totalLines] ;; Last line is the total number of lines - 1
 
     dec eax
 
-    mov dword[line], eax ;; Fazer da última line a line atual
+    mov dword[line], eax ;; Make the last line the current line
 
     mov esi, appFileBuffer
     mov eax, dword[line]
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
     sub esi, appFileBuffer
 
     mov dword[currentLinePosition], esi
 
-;; Calcular valores para essa line
+;; Calculate values ​​for this line
 
     mov edx, 0
     mov esi, appFileBuffer
 
     add esi, dword[currentLinePosition]
 
-    call tamanhoLinha
+    call lineSize
 
     mov byte[currentPositionInLine], dl
     mov byte[currentLineSize], dl
@@ -1992,18 +1992,18 @@ processarEntrada:
 
     sub ebx, 3
 
-    cmp dword[totalLines], ebx ;; Checar por arquivos pequenos ou grandes
-    jae .maisQueUmaPagina
+    cmp dword[totalLines], ebx ;; Check for small or large files
+    jae .moreThanOnePage
 
-;; Se arquivo pequeno
+;; If small file
 
     mov ebx, dword[totalLines]
 
     dec ebx
 
-;; Se arquivo grande
+;; If large file
 
-.maisQueUmaPagina:
+.moreThanOnePage:
 
     inc bl
 
@@ -2017,53 +2017,53 @@ processarEntrada:
 
     mov esi, appFileBuffer
 
-    call posicaoLinha
+    call linePosition
 
-    jc .prepararRetorno
+    jc .prepareReturn
 
     sub esi, appFileBuffer
 
     mov dword[currentPagePosition], esi
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.teclaControlS:
+.ControlSKeys:
 
-    call salvarArquivoEditor
+    call lyokoSaveFile
 
-    jmp .prepararRetornoEspecial
+    jmp .prepareSpecialReturn
 
-.teclaControlX:
+.ControlXKeys:
 
-    call exibirAjuda
+    call lyokoShowHelp
 
-    jmp .prepararRetornoEspecial
+    jmp .prepareSpecialReturn
 
-.teclaControlV:
+.ControlVKeys:
 
-    call exibirInfo
+    call lyokoShowInfo
 
-    jmp .prepararRetornoEspecial
+    jmp .prepareSpecialReturn
 
-.teclaControlM:
+.ControlMKeys:
 
-    call realizarMontagem
+    call lyokoExecuteAssembler
 
-    jmp .prepararRetornoEspecial
+    jmp .prepareSpecialReturn
 
-.teclaControlA:
+.ControlAKeys:
 
-    call abrirArquivoEditor
+    call lyokoOpenFile
 
-    jmp .prepararRetorno
+    jmp .prepareReturn
 
-.prepararRetorno:
+.prepareReturn:
 
     mov byte[returnOrigin], 00h
 
     ret
 
-.prepararRetornoEspecial:
+.prepareSpecialReturn:
 
     hx.syscall hx.waitKeyboard
 
@@ -2073,40 +2073,40 @@ processarEntrada:
 
 ;;*************************************************************************************************
 
-fimPrograma:
+lyokoExitIDE:
 
     mov ah, byte[Lyoko.changed]
 
     cmp ah, 0
-    je .terminar
+    je .finish
 
-    call montarAviso
+    call buildWarning
 
     fputs Lyoko.saveWarning
 
-.loopTeclas:
+.loopKeys:
 
     hx.syscall hx.waitKeyboard
 
     cmp al, 's'
-    je .iniciarSalvamento
+    je .startSavingFile
 
     cmp al, 'S'
-    je .iniciarSalvamento
+    je .startSavingFile
 
     cmp al, 'n'
-    je .terminar
+    je .finish
 
     cmp al, 'N'
-    je .terminar
+    je .finish
 
-jmp .loopTeclas
+jmp .loopKeys
 
-.iniciarSalvamento:
+.startSavingFile:
 
-    call salvarArquivoEditor
+    call lyokoSaveFile
 
-.terminar:
+.finish:
 
     mov eax, dword[Lyoko.fontColor]
     mov ebx, dword[Lyoko.backgroundColor]
@@ -2123,158 +2123,158 @@ jmp .loopTeclas
 
 ;;*************************************************************************************************
 ;;
-;; Demais funções do aplicativo
+;; Other application functions
 ;;
 ;;*************************************************************************************************
 
-;; Imprimir uma line da String
+;; Print a line of string
 ;;
-;; Entrada:
+;; Input:
 ;;
-;; ESI - Endereço do buffer
+;; ESI - Buffer Address
 ;;
-;; Saída:
+;; Output:
 ;;
-;; ESI - Próximo buffer
-;; Carry definido no fim do arquivo
+;; ESI - Next buffer
+;; Carry defined at the end of the file
 
-imprimirLinha:
+printLine:
 
-    mov edx, 0 ;; Contador de caracteres
+    mov edx, 0 ;; Character counter
 
-.loopImprimir:
+.printLoop:
 
     lodsb
 
-    cmp al, 10 ;; Fim da line
-    je .fim
+    cmp al, 10 ;; End of the line
+    je .end
 
-    cmp al, 0 ;; Fim da String
-    je .fimArquivo
+    cmp al, 0 ;; End of String
+    je .fileEnd
 
     movzx ebx, byte[maxColumns]
     dec bl
 
     cmp edx, ebx
-    jae .tamanhoMaximoLinha
+    jae .maxLineSize
 
     pushad
 
     mov ebx, 01h
 
-    hx.syscall hx.printCharacter ;; Imprimir caractere em AL
+    hx.syscall hx.printCharacter ;; Print character in AL
 
     popad
 
     inc edx
 
-    jmp .loopImprimir ;; Mais caracteres
+    jmp .printLoop ;; More characters
 
-.tamanhoMaximoLinha:
+.maxLineSize:
 
-    jmp .loopImprimir
+    jmp .printLoop
 
-.fimArquivo:
+.fileEnd:
 
     stc
 
-.fim:
+.end:
 
     ret
 
 ;;*************************************************************************************************
 
-;; Encontrar tamanho da line
+;; Find line size
 ;;
-;; Entrada:
+;; Input:
 ;;
-;; ESI - Endereço do buffer
+;; ESI - Buffer address
 ;;
-;; Saída:
+;; Output:
 ;;
-;; ESI - Próximo buffer
-;; EDX - += tamanho da line
+;; ESI - Next Buffer
+;; EDX - Line size
 
-tamanhoLinha:
+lineSize:
 
     mov al, byte[esi]
 
     inc esi
 
-    cmp al, 10 ;; Fim da line
-    je .fim
+    cmp al, 10 ;; End of the line
+    je .end
 
-    cmp al, 0 ;; Fim da string
-    je .fim
+    cmp al, 0 ;; End of string
+    je .end
 
     inc edx
 
-    jmp tamanhoLinha ;; Mais caracteres
+    jmp lineSize ;; More characters
 
-.fim:
+.end:
 
     ret
 
 ;;*************************************************************************************************
 
-;; Encontrar endereço da line na string
+;; Find line address in string
 ;;
-;; Entrada:
+;; Input:
 ;;
 ;; ESI - String
-;; EAX - Número da line (contando de 0)
+;; EAX - Line number (counting from 0)
 ;;
-;; Saída:
+;; Output:
 ;;
-;; ESI - Posição da string na line
-;; Carry definido em line não encontrada
+;; ESI - Position of the string on the line
+;; Carry defined if line not found
 
-posicaoLinha:
+linePosition:
 
     push ebx
 
     cmp eax, 0
-    je .linhaDesejadaEncontrada ;; Já na primeira line
+    je .linhaDesejadaEncontrada ;; Already in the first line
 
-    mov edx, 0   ;; Contador de linhas
-    mov ebx, eax ;; Salvar line
+    mov edx, 0   ;; Line counter
+    mov ebx, eax ;; Save line
 
     dec ebx
 
-.proximoCaractere:
+.nextCharacter:
 
     mov al, byte[esi]
 
     inc esi
 
-    cmp al, 10 ;; Caractere de nova line
-    je .linhaEncontrada
+    cmp al, 10 ;; New line character
+    je .lineFound
 
-    cmp al, 0 ;; Fim da string
-    je .linhaNaoEncontrada
+    cmp al, 0 ;; End of string
+    je .lineNotFound
 
-    jmp .proximoCaractere
+    jmp .nextCharacter
 
-.linhaEncontrada:
+.lineFound:
 
     cmp edx, ebx
     je .linhaDesejadaEncontrada
 
-    inc edx ;; Contador de linhas
+    inc edx ;; Line counter
 
-    jmp .proximoCaractere
+    jmp .nextCharacter
 
 .linhaDesejadaEncontrada:
 
     clc
 
-    jmp .fim
+    jmp .end
 
-.linhaNaoEncontrada:
+.lineNotFound:
 
     stc
 
-.fim:
+.end:
 
     pop ebx
 
@@ -2283,7 +2283,7 @@ posicaoLinha:
 
 ;;*************************************************************************************************
 
-reiniciarBufferVideo:
+clearVideoBuffer:
 
     mov esi, Hexagon.LibASM.Dev.video.tty1
 
@@ -2301,9 +2301,9 @@ reiniciarBufferVideo:
 
 ;;************************************************************************************
 
-reiniciarBufferTexto:
+clearTextBuffer:
 
-    mov dword[appFileBuffer], 10 ;; Vamos zerar o buffer de texto
+    mov dword[appFileBuffer], 10 ;; Let's clear the text buffer
 
     mov esi, appFileBuffer
     mov eax, 0
@@ -2319,7 +2319,7 @@ reiniciarBufferTexto:
 
 ;;*************************************************************************************************
 ;;
-;; Buffer para armazenamento do arquivo solicitado
+;; Buffer for storing the requested file
 ;;
 ;;*************************************************************************************************
 
