@@ -96,7 +96,7 @@ COLOR_HIGHLIGHT = HEXAGONIX_BLOSSOM_ROXO
 
 ;; Variables, constants and structures
 
-VERSION equ "3.4.0"
+VERSION equ "3.4.1"
 
 footerSize = 44
 
@@ -1719,7 +1719,7 @@ printLine:
 ;; Output:
 ;;
 ;; ESI - Next Buffer
-;; EDX - += line size
+;; EDX - Line size
 
 lineSize:
 
