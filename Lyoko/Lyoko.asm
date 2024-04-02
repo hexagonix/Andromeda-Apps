@@ -100,7 +100,7 @@ sizeToFilename = 8
 
 ;; Variables, constants and structures
 
-VERSION   equ "3.0.0"
+VERSION   equ "3.0.1"
 ASSEMBLER equ "fasmX"
 AUTHOR    equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 TRADEMARK equ "All rights reserved."
@@ -2234,7 +2234,7 @@ linePosition:
     push ebx
 
     cmp eax, 0
-    je .linhaDesejadaEncontrada ;; Already in the first line
+    je .desiredLineFound ;; Already in the first line
 
     mov edx, 0   ;; Line counter
     mov ebx, eax ;; Save line
@@ -2258,13 +2258,13 @@ linePosition:
 .lineFound:
 
     cmp edx, ebx
-    je .linhaDesejadaEncontrada
+    je .desiredLineFound
 
     inc edx ;; Line counter
 
     jmp .nextCharacter
 
-.linhaDesejadaEncontrada:
+.desiredLineFound:
 
     clc
 
