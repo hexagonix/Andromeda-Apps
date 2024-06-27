@@ -68,7 +68,19 @@
 #
 # $HexagonixOS$
 
-buildAndromedaApplications(){
+function main() {
+
+case $1 in
+
+hexagonix) hexagonix; exit;;
+--version) showVersion; exit;;
+*) buildAndromedaApplications; exit;;
+
+esac
+
+}
+
+function buildAndromedaApplications() {
 
 echo
 echo -e "\e[1;94mBuilding Hexagonix graphical applications...\e[0m {"
@@ -110,11 +122,9 @@ echo -e "----------------------------------------------------------------------\
 
 }
 
-umount()
-{
+function umount() {
 
 cd ..
-
 cd ..
 
 umount $MOUNT_POINT_DIRECTORY || exit
@@ -132,20 +142,15 @@ exit
 
 }
 
-showVersion()
-{
+function showVersion() {
+
 echo "hx build module for Andromeda utilities, version $APPS_MOD_VERSION"
 echo
 echo -e "\e[0mCopyright (c) 2015-2024 Felipe Miguel Nery Lunkes\e[0m"
 echo -e "hx and hx modules are licensed under BSD-3-Clause and comes with no warranty."
+
 }
 
 export APPS_MOD_VERSION="6.0.1"
 
-case $1 in
-
-hexagonix) hexagonix; exit;;
---version) showVersion; exit;;
-*) buildAndromedaApplications; exit;;
-
-esac
+main $1
