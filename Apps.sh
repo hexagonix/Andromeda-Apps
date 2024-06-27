@@ -89,13 +89,13 @@ do
 
     echo -en "Building Hexagonix graphical application \e[1;94m$(basename $h .asm)\e[0m..."
 
-    echo " > Building Hexagonix graphical application $(basename $h .asm)..." >> ../$LOG
+    echo " > Building Hexagonix graphical application $(basename $h .asm)..." >> $LOG
 
-    fasm $h ../$BUILD_DIRECTORY/bin/`basename $h .asm` -d $COMMON_FLAGS >> ../$LOG || umount
+    fasm $h $BUILD_DIRECTORY/bin/`basename $h .asm` -d $COMMON_FLAGS >> $LOG || umount
 
     echo -e " [\e[32mOk\e[0m]"
 
-    echo >> ../$LOG
+    echo >> $LOG
 
     done
 
@@ -145,10 +145,7 @@ echo -e "\e[0mCopyright (c) 2015-2024 Felipe Miguel Nery Lunkes\e[0m"
 echo -e "hx and hx modules are licensed under BSD-3-Clause and comes with no warranty."
 }
 
-export APPS_MOD_VERSION="5.5.0"
-
-export LOG="../../log.log"
-export BUILD_DIRECTORY="../../$1"
+export APPS_MOD_VERSION="6.0.0"
 
 case $1 in
 
