@@ -103,15 +103,10 @@ cd ..
 
 done
 
-echo
-echo -e "} [\e[32mHexagonix graphical applications built successfully\e[0m]."
-echo
+echo -e "\n} [\e[32mHexagonix graphical applications built successfully\e[0m]."
 
-echo >> $LOG
-echo -e "} Hexagonix graphical applications built successfully." >> $LOG
-echo >> $LOG
-echo "----------------------------------------------------------------------" >> $LOG
-echo >> $LOG
+echo -e "\n} Hexagonix graphical applications built successfully.\n" >> $LOG
+echo -e "----------------------------------------------------------------------\n" >> $LOG
 
 }
 
@@ -145,7 +140,7 @@ echo -e "\e[0mCopyright (c) 2015-2024 Felipe Miguel Nery Lunkes\e[0m"
 echo -e "hx and hx modules are licensed under BSD-3-Clause and comes with no warranty."
 }
 
-export APPS_MOD_VERSION="6.0.0"
+export APPS_MOD_VERSION="6.0.1"
 
 case $1 in
 
