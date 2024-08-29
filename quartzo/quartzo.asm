@@ -79,7 +79,7 @@ appHeader headerHAPP HAPP.Architectures.i386, 1, 00, Quartzo, 01h
 
 include "hexagon.s"
 include "Estelar/estelar.s"
-include "erros.s"
+include "errors.s"
 include "dev.s"
 
 ;;*************************************************************************************************
@@ -96,7 +96,7 @@ COLOR_HIGHLIGHT = HEXAGONIX_BLOSSOM_ROXO
 
 ;; Variables, constants and structures
 
-VERSION equ "3.4.1"
+VERSION equ "3.4.2"
 
 footerSize = 44
 
