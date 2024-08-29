@@ -79,7 +79,7 @@ appHeader headerHAPP HAPP.Architectures.i386, 1, 00, LyokoIDE, 01h
 
 include "hexagon.s"
 include "Estelar/estelar.s"
-include "erros.s"
+include "errors.s"
 include "dev.s"
 include "macros.s"
 
@@ -100,7 +100,7 @@ sizeToFilename = 8
 
 ;; Variables, constants and structures
 
-VERSION   equ "3.0.1"
+VERSION   equ "3.0.2"
 ASSEMBLER equ "fasmX"
 AUTHOR    equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
 TRADEMARK equ "All rights reserved."
