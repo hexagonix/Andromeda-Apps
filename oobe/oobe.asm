@@ -83,7 +83,7 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.4.0"
+versaoOOBE = "1.5.0"
 
 COLOR_LOGO    = VERDE_40
 COLOR_DIVIDER = HEXAGONIX_BLOSSOM_VERMELHO
@@ -180,9 +180,10 @@ db "Press any key to go to the next page...", 0
 .finalMessage:
 db 10, 10
 db "You will no longer see this message on the next boot.", 10, 10
-db "Press any key to finish the tour...", 10, 10, 0 ;;'
-.manualRemove:
-db 10, "An error occurred while removing OOBE. Remove it manually. For this, enter 'rm oobe'.", 10, 10, 0
+db "Press any key to finish the tour...", 10, 10, 0
+.manualUnlink:
+db 10, "An error occurred while removing OOBE and you need to remove it manually."
+db 10, "For this, enter 'rm oobe' as root after login.", 10, 10, 0
 .fileOOBE:
 db "oobe", 0
 .root:
@@ -213,7 +214,6 @@ applicationStart:
     call showDivider
 
     hx.syscall hx.waitKeyboard
-
 
 .page2:
 
@@ -301,10 +301,10 @@ applicationStart:
 
 ;;************************************************************************************
 
-.removerOOBE:
+.unlinkOOBE:
 
-;; We will automatically login as root to delete oobe. Then, let's
-;; login as a normal user, "jack".
+;; We will automatically login as root to unlink oobe file.
+;; Then, let's login as a normal user, "jack"
 
 .root:
 
@@ -342,9 +342,7 @@ applicationStart:
 
     setConsoleColor COLOR_ERROR, [Lib.Console.backgroundColor]
 
-    fputs OOBE.manualRemove
-
-    fputs OOBE.finalMessage
+    fputs OOBE.manualUnlink
 
     setConsoleColor COLOR_DIVIDER, [Lib.Console.backgroundColor]
 
