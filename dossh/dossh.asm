@@ -79,7 +79,7 @@ appHeader headerHAPP HAPP.Architectures.i386, 1, 00, shellStart, 01h
 
 include "hexagon.s"
 include "Estelar/estelar.s"
-include "erros.s"
+include "errors.s"
 include "log.s"
 include "macros.s"
 
@@ -89,8 +89,8 @@ include "macros.s"
 ;;
 ;;************************************************************************************
 
-VERSION             equ "0.11.0"
-compatibleHexagonix equ "System I"
+VERSION             equ "0.11.1"
+compatibleHexagonix equ "Zonai"
 
 ;;**************************
 
