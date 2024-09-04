@@ -83,11 +83,10 @@ esac
 function buildAndromedaApplications() {
 
 echo
-echo -e "\e[1;94mBuilding Hexagonix graphical applications...\e[0m {"
+echo -e "\e[1;94mBuilding Hexagonix-Andromeda applications...\e[0m {"
 echo
 
-echo "Building Hexagonix graphical applications... {" >> $LOG
-echo >> $LOG
+echo "Building Hexagonix-Andromeda applications... {" >> $LOG
 
 # Let's now automate the construction of applications
 
@@ -99,15 +98,15 @@ do
     for h in *.asm
     do
 
-    echo -en "Building Hexagonix graphical application \e[1;94m$(basename $h .asm)\e[0m..."
+    echo >> $LOG
 
-    echo " > Building Hexagonix graphical application $(basename $h .asm)..." >> $LOG
+    echo -en "Building Andromeda application \e[1;94m$(basename $h .asm)\e[0m..."
+
+    echo " > Building Andromeda application $(basename $h .asm)..." >> $LOG
 
     fasm $h $BUILD_DIRECTORY/bin/`basename $h .asm` -d $COMMON_FLAGS >> $LOG || umount
 
     echo -e " [\e[32mOk\e[0m]"
-
-    echo >> $LOG
 
     done
 
@@ -115,9 +114,9 @@ cd ..
 
 done
 
-echo -e "\n} [\e[32mHexagonix graphical applications built successfully\e[0m]."
+echo -e "\n} [\e[32mHexagonix-Andromeda applications built successfully\e[0m]."
 
-echo -e "\n} Hexagonix graphical applications built successfully.\n" >> $LOG
+echo -e "\n} Hexagonix-Andromeda applications built successfully.\n" >> $LOG
 echo -e "----------------------------------------------------------------------\n" >> $LOG
 
 }
@@ -131,7 +130,7 @@ umount $MOUNT_POINT_DIRECTORY || exit
 
 umount -a
 
-echo "An error occurred while building some system component."
+echo "An error occurred while building at least one Andromeda (Hexagonix-Andromeda) application."
 echo
 echo "Check the status of the components and use the above error outputs to verify the problem."
 echo
@@ -144,13 +143,13 @@ exit
 
 function showVersion() {
 
-echo "hx build module for Andromeda utilities, version $APPS_MOD_VERSION"
+echo "hx build module for Hexagonix-Andromeda applications, version $APPS_MOD_VERSION"
 echo
 echo -e "\e[0mCopyright (c) 2015-2024 Felipe Miguel Nery Lunkes\e[0m"
 echo -e "hx and hx modules are licensed under BSD-3-Clause and comes with no warranty."
 
 }
 
-export APPS_MOD_VERSION="6.0.1"
+export APPS_MOD_VERSION="6.1.0"
 
 main $1
