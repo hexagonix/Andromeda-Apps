@@ -102,7 +102,7 @@ db "HIMEM is testing extended memory... done.", 10, 0
 .invalidCommand:
 db "Bad command or filename.", 0
 .copyright:
-db 10, 10, "Copyright (C) 2022-", __stringano, " Felipe Miguel Nery Lunkes", 10
+db 10, 10, "Copyright (C) 2022-", __stringYear, " Felipe Miguel Nery Lunkes", 10
 db "All rights reserved.", 10, 0
 .processLimit:
 db 10, 10, "There is not enough memory available to run the requested application.", 10
@@ -129,7 +129,7 @@ db "[DOSsh]: DOSsh for Hexagonix version ", compatibleHexagonix, " or superior."
 .verboseDOSshVersion:
 db "[DOSsh]: DOSsh version ", VERSION, ".", 0
 .verboseAuthor:
-db "[DOSsh]: Copyright (C) 2022-", __stringano, " Felipe Miguel Nery Lunkes.", 0
+db "[DOSsh]: Copyright (C) 2022-", __stringYear, " Felipe Miguel Nery Lunkes.", 0
 .verboseCopyright:
 db "[DOSsh]: All rights reserved.", 0
 .verboseExitDOSsh:

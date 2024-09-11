@@ -245,7 +245,7 @@ db "Press any key to continue...", 10, 10, 0
 .bannerHexagonix:
 db "Hexagonix Operating System", 0
 .copyright:
-db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 0
+db "Copyright (C) 2015-", __stringYear, " Felipe Miguel Nery Lunkes", 0
 .trademark:
 db "All rights reserved.", 0
 .title:

@@ -725,7 +725,7 @@ db "return PIANO; for Hexagonix Operating System", 0
 .pianoVersion:
 db "Version ", VERSION, 0
 .author:
-db "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes", 0
+db "Copyright (C) 2017-", __stringYear, " Felipe Miguel Nery Lunkes", 0
 .copyright:
 db "All rights reserved.", 0
 .help:

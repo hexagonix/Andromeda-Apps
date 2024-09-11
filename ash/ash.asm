@@ -110,10 +110,10 @@ db 10, 10, "[!] Invalid internal command or application not found.", 10, 0
 db "ASH - Andromeda SHell", 0
 .welcome:
 db "Welcome to Andromeda SHell - ASH", 10, 10
-db "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
+db "Copyright (C) 2015-", __stringYear, " Felipe Miguel Nery Lunkes", 10
 db "All rights reserved.", 10, 0
 .copyright:
-db 10, 10, "Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes", 10
+db 10, 10, "Copyright (C) 2015-", __stringYear, " Felipe Miguel Nery Lunkes", 10
 db "All rights reserved.", 10, 0
 .processLimit:
 db 10, 10, "[!] There is no available process slot to run the requested application.", 10
@@ -130,7 +130,7 @@ db "[ASH]: Andromeda SHell (ASH) for Hexagonix ", compatibleHexagonix, " or supe
 .verboseVersionASH:
 db "[ASH]: Andromeda SHell version ", VERSION, ".", 0
 .verboseAuthors:
-db "[ASH]: Copyright (C) 2015-", __stringano, " Felipe Miguel Nery Lunkes.", 0
+db "[ASH]: Copyright (C) 2015-", __stringYear, " Felipe Miguel Nery Lunkes.", 0
 .verboseCopyright:
 db "[ASH]: All rights reserved.", 0
 .verboseExitASH:

@@ -102,7 +102,7 @@ sizeToFilename = 8
 
 VERSION   equ "3.0.2"
 ASSEMBLER equ "fasmX"
-AUTHOR    equ "Copyright (C) 2017-", __stringano, " Felipe Miguel Nery Lunkes"
+AUTHOR    equ "Copyright (C) 2017-", __stringYear, " Felipe Miguel Nery Lunkes"
 TRADEMARK equ "All rights reserved."
 
 Lyoko:
