@@ -710,7 +710,7 @@ showInfoInterface:
 ;;
 ;;************************************************************************************
 
-VERSION equ "1.11.0"
+VERSION equ "1.11.1"
 
 COLOR_HIGHTLIGHT     = HEXAGONIX_BLOSSOM_AZUL
 COLOR_FONT           = HEXAGONIX_CLASSICO_BRANCO
@@ -735,7 +735,7 @@ db "+ Use the [QWERTYUI] keys to issue notes.", 0
 .topic2:
 db "+ Use the [SPACE] key to mute notes when necessary.", 0
 .topic3:
-db "+ Finally, use the [Z] key to terminate this application at any time.", 0
+db "+ Finally, use the [X] key to terminate this application at any time.", 0
 .title:
 db "return PIANO;", 0
 .footer:
