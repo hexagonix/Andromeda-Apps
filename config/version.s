@@ -66,6 +66,6 @@
 ;;
 ;; $HexagonixOS$
 
-VERSION             equ "5.2.1"
-versionTools        equ "3.0.0"
+VERSION             equ "5.2.2"
+toolsVersion        equ "3.0.0"
 compatibleHexagonix equ "System I"
