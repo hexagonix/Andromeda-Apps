@@ -89,8 +89,8 @@ include "macros.s"
 ;;
 ;;************************************************************************************
 
-VERSION             equ "0.11.1"
-compatibleHexagonix equ "Zonai"
+VERSION             equ "0.2.0"
+compatibleHexagonix equ "Dormin"
 
 ;;**************************
 
@@ -113,6 +113,10 @@ db ": unable to load image. Unsupported executable format.", 10, 0
 db "C:\> ", 0
 .fileNotFound:
 db 10, "File not found.", 10, 0
+.errorChangingDirectory:
+db 10, "Directory not found or invalid.", 10, 0
+.directory:
+db "<DIR> ", 0
 .license:
 db 10, "Licenced under BSD-3-Clause.", 0
 .extensionCOW:
@@ -162,6 +166,8 @@ db "cls", 0
 db "dir", 0
 .type:
 db "type", 0
+.cd:
+db "cd", 0
 
 ;; Regarding the help and ver commands
 
@@ -172,6 +178,7 @@ db 10, 10, "HX-DOS version 6.22", 10
 db "DOSsh version ", VERSION, 0
 .helpContent:
 db 10, 10, "Internal commands available:", 10, 10
+db " CD   - Change current directory.", 10
 db " DIR  - Displays files on the current volume.", 10
 db " TYPE - Displays the contents of a file given as a parameter.", 10
 db " CLS  - Clears the screen (in the case of Hexagonix, the terminal opened at tty0).", 10
@@ -270,6 +277,14 @@ getCommand:
     hx.syscall hx.compareWordsString
 
     jc commandTYPE
+
+    ;; CD command
+
+    mov edi, DOSsh.commands.cd
+
+    hx.syscall hx.compareWordsString
+
+    jc commandCD
 
 ;;************************************************************************************
 
@@ -406,6 +421,12 @@ commandDIR:
 
     push esi
 
+    cmp eax, 02h
+    je .printDirectory
+
+    cmp eax, 00h
+    je getCommand
+
     sub esi, 5
 
     mov edi, DOSsh.extensionMAN
@@ -425,6 +446,14 @@ commandDIR:
     hx.syscall hx.compareWordsString ;; Check for .COW extension
 
     jc .hide
+
+jmp .continue
+
+.printDirectory:
+
+    fputs DOSsh.directory
+
+.continue:
 
     pop esi
 
@@ -463,6 +492,28 @@ commandDIR:
 .finished:
 
     jmp getCommand.withoutNewLine
+
+;;************************************************************************************
+
+commandCD:
+
+    call getArguments
+
+    clc
+
+    mov esi, edi
+
+    hx.syscall hx.changeDirectory
+
+    jc .errorChangingDirectory
+
+    jmp getCommand
+
+.errorChangingDirectory:
+
+    fputs DOSsh.errorChangingDirectory
+
+    jmp getCommand
 
 ;;************************************************************************************
 
@@ -615,59 +666,56 @@ getArguments:
 
 ;;************************************************************************************
 
+;; Get a file/directory name from list and get entry type
+;;
+;; Output:
+;;
+;; ESI - Entry content
+;; EAX - Entry type (01h = file, 02h = directory, 00h = reached the end of the list)
+
 readFileList:
 
-    push ds ;; User mode data segment (38h selector)
+    push ds
     pop es
 
     mov esi, [remainingList]
     mov [currentFile], esi
 
-    mov al, ' '
+.findDelimiter:
 
-    hx.syscall hx.findCharacter
+    lodsb ;; Load byte from [ESI] in AL and increase ESI
 
-    jc .done
+    cmp al, 0x90
+    je .foundFile
 
-    mov al, ' '
+    cmp al, 0x80
+    je .foundDirectory
 
-    call findCharacterInFileList
+    cmp al, 0 ;; End of string
+    je .endList
 
+    jmp .findDelimiter
+
+.foundFile:
+
+    mov byte [esi - 1], 0 ;; End string
     mov [remainingList], esi
-
-    jmp .done
-
-.done:
-
-    clc
+    mov eax, 01h
 
     ret
 
-;;************************************************************************************
+.foundDirectory:
 
-;; Searches for a specific character in the given string
-;;
-;; Input:
-;;
-;; ESI - String to be checked
-;; AL  - Character to search for
-;;
-;; Output:
-;;
-;; ESI - Character position in the given string
+    mov byte [esi - 1], 0 ;; End string
+    mov [remainingList], esi
+    mov eax, 02h
 
-findCharacterInFileList:
+    ret
 
-    lodsb
+.endList:
 
-    cmp al, ' '
-    je .done
-
-    jmp findCharacterInFileList
-
-.done:
-
-    mov byte[esi-1], 0
+    mov dword [currentFile], 0  ;; The list reached the end
+    xor eax, eax
 
     ret
 
