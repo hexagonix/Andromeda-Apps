@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 00, shellStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 3, shellStart, 01h
 
 ;;************************************************************************************
 
@@ -97,7 +97,7 @@ ASHError           = VERMELHO
 ASHLimitReached    = AMARELO_ANDROMEDA
 ASHSuccess         = VERDE
 
-VERSION             equ "5.0.0"
+VERSION             equ "5.0.1"
 compatibleHexagonix equ "Dormin"
 
 ;;**************************
@@ -124,6 +124,8 @@ db ": unable to load image. Unsupported executable format.", 10, 0
 db "[/]: ", 0
 .invalidDirectory:
 db 10, 10,"[!] Directory invalid or not found!", 10, 0
+.argumentRequired:
+db 10, 10, "[!] An argument is required!", 10, 0
 .license:
 db 10, "Licenced under BSD-3-Clause.", 10, 0
 
@@ -293,6 +295,8 @@ shellStart:
 
     jc .commandCVOL
 
+    ;; CD command
+
     mov edi, ASH.commands.cd
 
     hx.syscall hx.compareWordsString
@@ -432,6 +436,9 @@ shellStart:
 
     hx.syscall hx.trimString
 
+    cmp byte[esi], 00h
+    je .argumentRequired 
+
     clc
 
     hx.syscall hx.changeDirectory
@@ -442,14 +449,31 @@ shellStart:
 
 .errorChangingDirectory:
 
+    xor ecx, ecx
+    
     mov eax, ASHError
     mov ebx, dword[Andromeda.Interface.backgroundColor]
 
     call changeColor
 
-    pop ecx
-
     fputs ASH.invalidDirectory
+
+    mov ecx, 01h
+
+    call changeColor
+
+    jmp .getCommand
+
+.argumentRequired:
+
+    xor ecx, ecx
+
+    mov eax, ASHError
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
+
+    call changeColor
+
+    fputs ASH.argumentRequired
 
     mov ecx, 01h
 
