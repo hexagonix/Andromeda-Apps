@@ -97,8 +97,8 @@ ASHError           = VERMELHO
 ASHLimitReached    = AMARELO_ANDROMEDA
 ASHSuccess         = VERDE
 
-VERSION             equ "4.9.1"
-compatibleHexagonix equ "Zonai"
+VERSION             equ "5.0.0"
+compatibleHexagonix equ "Dormin"
 
 ;;**************************
 
@@ -122,6 +122,8 @@ db "[!] Try to terminate applications or their instances first, and try again.",
 db ": unable to load image. Unsupported executable format.", 10, 0
 .prompt:
 db "[/]: ", 0
+.invalidDirectory:
+db 10, 10,"[!] Directory invalid or not found!", 10, 0
 .license:
 db 10, "Licenced under BSD-3-Clause.", 10, 0
 
@@ -152,6 +154,8 @@ db "exit",0
 db "ver", 0
 .help:
 db "help", 0
+.cd:
+db "cd", 0
 
 ;;**************************
 
@@ -289,6 +293,12 @@ shellStart:
 
     jc .commandCVOL
 
+    mov edi, ASH.commands.cd
+
+    hx.syscall hx.compareWordsString
+
+    jc .commandCD
+
 ;;************************************************************************************
 
 ;; Try to load a program
@@ -415,6 +425,37 @@ shellStart:
     jmp .getCommand
 
 ;;************************************************************************************
+
+.commandCD:
+
+    add esi, 02h
+
+    hx.syscall hx.trimString
+
+    clc
+
+    hx.syscall hx.changeDirectory
+
+    jc .errorChangingDirectory
+
+    jmp .getCommand
+
+.errorChangingDirectory:
+
+    mov eax, ASHError
+    mov ebx, dword[Andromeda.Interface.backgroundColor]
+
+    call changeColor
+
+    pop ecx
+
+    fputs ASH.invalidDirectory
+
+    mov ecx, 01h
+
+    call changeColor
+
+    jmp .getCommand
 
 .commandCVOL:
 
