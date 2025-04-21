@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 00, shellStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 3, shellStart, 01h
 
 ;;************************************************************************************
 
@@ -89,7 +89,7 @@ include "macros.s"
 ;;
 ;;************************************************************************************
 
-VERSION             equ "0.2.0"
+VERSION             equ "0.2.1"
 compatibleHexagonix equ "Dormin"
 
 ;;**************************
@@ -112,9 +112,9 @@ db ": unable to load image. Unsupported executable format.", 10, 0
 .prompt:
 db "C:\> ", 0
 .fileNotFound:
-db 10, "File not found.", 10, 0
+db 10, "File not found.", 0
 .errorChangingDirectory:
-db 10, "Directory not found or invalid.", 10, 0
+db 10, "Directory not found or invalid.", 0
 .directory:
 db "<DIR> ", 0
 .license:
