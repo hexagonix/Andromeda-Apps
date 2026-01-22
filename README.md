@@ -21,8 +21,8 @@
 <img src="https://github.com/hexagonix/Doc/blob/main/Img/hr.png" width="100%" height="2px" />
 
 <details title="Português (Brasil)" align='left'>
-<br>
 <summary align='left'>🇧🇷 Português (Brasil)</summary>
+<br>
 
 <div align="justify">
 
@@ -67,8 +67,8 @@ Este utilitário permite ao usuário enviar dados via porta serial, atuando como
 </details>
 
 <details title="English" align='left'>
-<br>
 <summary align='left'>🇬🇧 English</summary>
+<br>
 
 <div align="justify">
 
@@ -113,8 +113,8 @@ This utility allows the user to send data via the serial port, acting as a termi
 </details>
 
 <details title="Graphic Utilities License" align='left'>
-<br>
 <summary align='left'>Licença dos utilitários gráficos/Graphic Utilities License</summary>
+<br>
 
 <div align="justify">
 
