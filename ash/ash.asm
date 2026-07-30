@@ -97,7 +97,7 @@ ASHError           = VERMELHO
 ASHLimitReached    = AMARELO_ANDROMEDA
 ASHSuccess         = VERDE
 
-VERSION             equ "5.0.1"
+VERSION             equ "5.1.0"
 compatibleHexagonix equ "Dormin"
 
 ;;**************************
@@ -128,6 +128,10 @@ db 10, 10,"[!] Directory invalid or not found!", 10, 0
 db 10, 10, "[!] An argument is required!", 10, 0
 .license:
 db 10, "Licenced under BSD-3-Clause.", 10, 0
+.backgroundStart:
+db 10, "Process in background: [", 0
+.backgroundEnd:
+db "]", 0
 
 .verboseStartingASH:
 db "[ASH]: Andromeda SHell (ASH) for Hexagonix ", compatibleHexagonix, " or superior.", 0
@@ -201,6 +205,8 @@ db "You can find documentation for mount using 'man mount' anytime.", 0
 ;; Buffers
 
 currentVolume: times 3 db 0
+
+ASH.background: db 0 ;; Set to 1 when the current command line ends in "&"
 
 ;;************************************************************************************
 
@@ -304,6 +310,27 @@ shellStart:
     jc .commandCD
 
 ;;************************************************************************************
+
+;; Check for a trailing "&", which backgrounds the command instead of
+;; blocking the shell until it exits
+
+    hx.syscall hx.stringSize
+
+    mov byte[ASH.background], 0
+
+    cmp eax, 0
+    je .checkedBackground
+
+    cmp byte[esi+eax-1], '&'
+    jne .checkedBackground
+
+    mov byte[esi+eax-1], 0
+
+    hx.syscall hx.trimString
+
+    mov byte[ASH.background], 1
+
+.checkedBackground:
 
 ;; Try to load a program
 
@@ -410,6 +437,9 @@ shellStart:
 
     pop esi
 
+    cmp byte[ASH.background], 1
+    je .loadApplicationBackground
+
     mov eax, edi
 
     stc
@@ -417,6 +447,26 @@ shellStart:
     hx.syscall hx.exec
 
     jc .failedToExecute
+
+    jmp .getCommand
+
+.loadApplicationBackground:
+
+    hx.syscall hx.spawn
+
+    jc .failedToExecute
+
+    push eax
+
+    fputs ASH.backgroundStart
+
+    pop eax
+
+    printInteger
+
+    fputs ASH.backgroundEnd
+
+    putNewLine
 
     jmp .getCommand
 
@@ -437,7 +487,7 @@ shellStart:
     hx.syscall hx.trimString
 
     cmp byte[esi], 00h
-    je .argumentRequired 
+    je .argumentRequired
 
     clc
 
@@ -450,7 +500,7 @@ shellStart:
 .errorChangingDirectory:
 
     xor ecx, ecx
-    
+
     mov eax, ASHError
     mov ebx, dword[Andromeda.Interface.backgroundColor]
 
