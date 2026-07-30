@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 3, shellStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 4, shellStart, 01h
 
 ;;************************************************************************************
 
@@ -97,7 +97,7 @@ ASHError           = VERMELHO
 ASHLimitReached    = AMARELO_ANDROMEDA
 ASHSuccess         = VERDE
 
-VERSION             equ "5.1.0"
+VERSION             equ "5.2.0"
 compatibleHexagonix equ "Dormin"
 
 ;;**************************
@@ -465,8 +465,6 @@ shellStart:
     printInteger
 
     fputs ASH.backgroundEnd
-
-    putNewLine
 
     jmp .getCommand
 
