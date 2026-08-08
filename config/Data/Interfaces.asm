@@ -129,7 +129,7 @@ db "System build: ", 0
 .systemType:
 db "System type (arch):", 0
 .systemModel:
-db " x86", 10, 0
+db " i386", 10, 0
 .updatePackage:
 db "Update package installed: ", 0
 .copyright:
