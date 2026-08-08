@@ -188,7 +188,7 @@ validateFont:
     cmp byte[edi+3], "T"
     jne .invalidHFNT
 
-.verificarTamanho:
+.checkSize:
 
     hx.syscall hx.fileExists
 
@@ -231,7 +231,7 @@ validateFont:
 ;;
 ;;************************************************************************************
 
-VERSION equ "2.7.0"
+VERSION equ "2.7.1"
 
 gfont:
 
