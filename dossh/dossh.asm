@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 3, shellStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 7, shellStart, 01h
 
 ;;************************************************************************************
 
@@ -90,8 +90,8 @@ include "shell.s"
 ;;
 ;;************************************************************************************
 
-VERSION             equ "0.2.1"
-compatibleHexagonix equ "Dormin"
+VERSION             equ "0.2.2"
+compatibleHexagonix equ "Mineru"
 
 ;;**************************
 
@@ -220,7 +220,7 @@ shellStart:
 
     hx.syscall hx.fileExists
 
-    jc .start ;; Not a file (or some other argument shape); interactive as usual
+    jc .start ;; Not a file (or some other argument shape). Interactive as usual
 
     mov esi, [commandLine]
 
@@ -260,7 +260,7 @@ getCommand:
 
     hx.syscall hx.trimString ;; Remove extra spaces
 
-    cmp byte[esi], 0 ;; Nenhum comando inserido
+    cmp byte[esi], 0 ;; No command inserted
     je getCommand
 
 ;; Compare with available internal commands
@@ -411,7 +411,7 @@ loadImage:
 
     jc .noShebang
 
-;; ESI = shell name from the shebang line; run that shell with the
+;; ESI = shell name from the shebang line. Run that shell with the
 ;; resolved script as its own argument, ignoring any arguments this
 ;; command line itself may have had
 
