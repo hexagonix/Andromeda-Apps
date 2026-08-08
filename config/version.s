@@ -66,6 +66,6 @@
 ;;
 ;; $HexagonixOS$
 
-VERSION             equ "5.2.2"
+VERSION             equ "5.2.3"
 toolsVersion        equ "3.0.0"
-compatibleHexagonix equ "System I"
+compatibleHexagonix equ "Mineru"
