@@ -269,6 +269,8 @@ LyokoIDE:
 
     mov edi, appFileBuffer ;; Loading address
 
+    xor ecx, ecx
+
     hx.syscall hx.open
 
     mov esi, filename
@@ -349,6 +351,8 @@ LyokoIDE:
 ;; Print other lines
 
     mov esi, Hexagon.LibASM.Dev.video.tty1
+
+    xor ecx, ecx
 
     hx.syscall hx.open
 
@@ -448,6 +452,8 @@ LyokoIDE:
     hx.syscall hx.updateScreen
 
     mov esi, Hexagon.LibASM.Dev.video.tty0
+
+    xor ecx, ecx
 
     hx.syscall hx.open
 
@@ -2287,11 +2293,15 @@ clearVideoBuffer:
 
     mov esi, Hexagon.LibASM.Dev.video.tty1
 
+    xor ecx, ecx
+
     hx.syscall hx.open
 
     hx.syscall hx.clearConsole
 
     mov esi, Hexagon.LibASM.Dev.video.tty0
+
+    xor ecx, ecx
 
     hx.syscall hx.open
 

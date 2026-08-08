@@ -184,6 +184,8 @@ match =YES, VERBOSE
 
     mov esi, Hexagon.LibASM.Dev.serialPorts.com1
 
+    xor ecx, ecx
+
     hx.syscall hx.open
 
     jc openError
@@ -224,6 +226,8 @@ match =YES, VERBOSE
 }
 
     mov esi, Hexagon.LibASM.Dev.serialPorts.com1
+
+    xor ecx, ecx
 
     hx.syscall hx.open
 

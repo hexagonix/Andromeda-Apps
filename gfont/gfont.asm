@@ -158,10 +158,17 @@ finish:
 
 ;;************************************************************************************
 
+;; Only the first 4 bytes (the "HFNT" magic, checked below) are looked at
+;; here. The real size check comes right after, but that's too late to
+;; protect this read itself, so cap it independently rather than pulling in
+;; the rest of a possibly much larger file first
+
 validateFont:
 
     mov esi, [fontFile]
     mov edi, appFileBuffer
+
+    mov ecx, 128
 
     hx.syscall hx.open
 

@@ -197,6 +197,8 @@ Quartzo:
 
     mov edi, appFileBuffer ;; Loading address
 
+    xor ecx, ecx
+
     hx.syscall hx.open
 
     mov esi, filename
@@ -275,6 +277,8 @@ Quartzo:
 ;; Print other lines
 
     mov esi, Hexagon.LibASM.Dev.video.tty1
+
+    xor ecx, ecx
 
     hx.syscall hx.open
 
@@ -356,6 +360,8 @@ Quartzo:
     hx.syscall hx.updateScreen
 
     mov esi, Hexagon.LibASM.Dev.video.tty0
+
+    xor ecx, ecx
 
     hx.syscall hx.open
 
@@ -717,11 +723,15 @@ restartVideoBuffer:
 
     mov esi, Hexagon.LibASM.Dev.video.tty1
 
+    xor ecx, ecx
+
     hx.syscall hx.open
 
     hx.syscall hx.clearConsole
 
     mov esi, Hexagon.LibASM.Dev.video.tty0
+
+    xor ecx, ecx
 
     hx.syscall hx.open
 

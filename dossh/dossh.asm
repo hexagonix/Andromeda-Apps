@@ -623,6 +623,8 @@ commandTYPE:
     mov esi, edi
     mov edi, appFileBuffer
 
+    xor ecx, ecx
+
     hx.syscall hx.open
 
     jc fileNotFound

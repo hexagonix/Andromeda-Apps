@@ -684,6 +684,8 @@ shellStart:
 
     mov esi, ASH.volume.hd0
 
+    xor ecx, ecx
+
     hx.syscall hx.open
 
     putNewLine
@@ -695,6 +697,8 @@ shellStart:
     systemLog ASH.verboseDeprecatedInterface, 00h, Log.Priorities.p4
 
     mov esi, ASH.volume.hd1
+
+    xor ecx, ecx
 
     hx.syscall hx.open
 
@@ -708,6 +712,8 @@ shellStart:
 
     mov esi, ASH.volume.hd2
 
+    xor ecx, ecx
+
     hx.syscall hx.open
 
     putNewLine
@@ -719,6 +725,8 @@ shellStart:
     systemLog ASH.verboseDeprecatedInterface, 00h, Log.Priorities.p4
 
     mov esi, ASH.volume.hd3
+
+    xor ecx, ecx
 
     hx.syscall hx.open
 

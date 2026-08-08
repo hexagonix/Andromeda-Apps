@@ -262,7 +262,7 @@ finish:
 ;;
 ;;************************************************************************************
 
-SHUTDOWN equ "shutdown"
+SHUTDOWN equ "/sbin/shutdown"
 VERSION  equ "1.10.0"
 
 COLOR_HIGHLIGHT = HEXAGONIX_BLOSSOM_AZUL_ANDROMEDA
