@@ -104,7 +104,7 @@ do
 
     echo " > Building Andromeda application $(basename $h .asm)..." >> $LOG
 
-    fasm $h $BUILD_DIRECTORY/bin/`basename $h .asm` -d $COMMON_FLAGS >> $LOG || umount
+    fasm $h $BUILD_DIRECTORY/usr/bin/`basename $h .asm` -d $COMMON_FLAGS >> $LOG || umount
 
     echo -e " [\e[32mOk\e[0m]"
 
@@ -150,6 +150,6 @@ echo -e "hx and hx modules are licensed under BSD-3-Clause and comes with no war
 
 }
 
-export APPS_MOD_VERSION="6.1.0"
+export APPS_MOD_VERSION="6.3.0"
 
 main $1
