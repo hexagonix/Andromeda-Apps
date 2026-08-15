@@ -809,7 +809,6 @@ lyokoOpenFile:
 
     mov byte[screenRefreshIsRequired], 1
 
-
     jmp LyokoIDE.openFile
 
 .end:
@@ -2285,7 +2284,6 @@ linePosition:
     pop ebx
 
     ret
-
 
 ;;*************************************************************************************************
 

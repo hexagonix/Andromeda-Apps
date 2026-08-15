@@ -145,7 +145,6 @@ applicationStart:
 
     jmp .again
 
-
 .r:
 
     cmp al, 'r'
