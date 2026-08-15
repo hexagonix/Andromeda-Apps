@@ -113,6 +113,8 @@ applicationStart:
 
     mov esi, serial.deviceName
 
+    xor ecx, ecx
+
     hx.syscall hx.open
 
     jc openError

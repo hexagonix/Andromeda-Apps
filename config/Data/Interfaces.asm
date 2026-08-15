@@ -121,15 +121,15 @@ infoInterfaceData:
 .intro:
 db "Detailed Information of the Hexagonix Operating System", 0
 .systemName:
-db "Installed Operating System name: ", 0
+db "Operating System: ", 0
 .systemVersion:
-db "Operating System version: ", 0
+db "System version: ", 0
 .systemBuild:
-db "Operating System build: ", 0
+db "System build: ", 0
 .systemType:
-db "Operating System type:", 0
+db "System type (arch):", 0
 .systemModel:
-db " 32-bit", 10, 0
+db " i386", 10, 0
 .updatePackage:
 db "Update package installed: ", 0
 .copyright:
@@ -139,7 +139,7 @@ db "All rights reserved.", 0
 .hardwareIntro:
 db "Hardware information for this device", 0
 .mainProcessor:
-db "Installed processor (considering only the main processor):", 0
+db "Installed processor:", 0
 .processorNumber:
 db "1) ", 0
 .processorOperationMode:

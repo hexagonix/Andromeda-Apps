@@ -173,11 +173,15 @@ configureConsoles:
 
     mov esi, Hexagon.LibASM.Dev.video.tty1 ;; Open the secondary console
 
+    xor ecx, ecx
+
     hx.syscall hx.open ;; Open the device
 
     hx.syscall hx.clearConsole
 
     mov esi, Hexagon.LibASM.Dev.video.tty0 ;; Reopen the default console
+
+    xor ecx, ecx
 
     hx.syscall hx.open ;; Open the device
 

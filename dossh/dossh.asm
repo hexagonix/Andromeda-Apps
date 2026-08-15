@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 3, shellStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 7, shellStart, 01h
 
 ;;************************************************************************************
 
@@ -82,6 +82,7 @@ include "Estelar/estelar.s"
 include "errors.s"
 include "log.s"
 include "macros.s"
+include "shell.s"
 
 ;;************************************************************************************
 ;;
@@ -89,8 +90,8 @@ include "macros.s"
 ;;
 ;;************************************************************************************
 
-VERSION             equ "0.2.1"
-compatibleHexagonix equ "Dormin"
+VERSION             equ "0.2.2"
+compatibleHexagonix equ "Mineru"
 
 ;;**************************
 
@@ -168,6 +169,8 @@ db "dir", 0
 db "type", 0
 .cd:
 db "cd", 0
+.set:
+db "set", 0
 
 ;; Regarding the help and ver commands
 
@@ -190,14 +193,42 @@ db " EXIT - Terminate this DOSsh session.", 10, 0
 remainingList: dd ?
 currentFile:   dd ' '
 
+DOSsh.resolvedPath: dd 0 ;; Command path after Shell.resolveCommandPath, across the shebang check
+
+commandLine: dd 0
+
 ;;************************************************************************************
 
 shellStart:
+
+    mov [commandLine], edi
 
     systemLog DOSsh.verboseStartingDOSsh, 00h, Log.Priorities.p4
     systemLog DOSsh.verboseDOSshVersion, 00h, Log.Priorities.p4
     systemLog DOSsh.verboseAuthor, 00h, Log.Priorities.p4
     systemLog DOSsh.verboseCopyright, 00h, Log.Priorities.p4
+
+    mov esi, [commandLine]
+
+    cmp byte[esi], 0
+    je .start
+
+;; Launched with a single existing file as an argument: run it as a
+;; script instead of starting an interactive prompt. This is how a
+;; shebang dispatch from Shell.checkShebang hands a script off to the
+;; shell named on its "#!" line
+
+    hx.syscall hx.fileExists
+
+    jc .start ;; Not a file (or some other argument shape). Interactive as usual
+
+    mov esi, [commandLine]
+
+    call Shell.runScriptFile
+
+    jmp finishShell
+
+.start:
 
 ;; Start console configuration
 
@@ -206,6 +237,10 @@ shellStart:
     hx.syscall hx.clearConsole
 
     fputs DOSsh.starting
+
+    putNewLine
+
+    call Shell.loadRc
 
 ;;************************************************************************************
 
@@ -225,7 +260,7 @@ getCommand:
 
     hx.syscall hx.trimString ;; Remove extra spaces
 
-    cmp byte[esi], 0 ;; Nenhum comando inserido
+    cmp byte[esi], 0 ;; No command inserted
     je getCommand
 
 ;; Compare with available internal commands
@@ -285,6 +320,14 @@ getCommand:
     hx.syscall hx.compareWordsString
 
     jc commandCD
+
+    ;; SET command
+
+    mov edi, DOSsh.commands.set
+
+    hx.syscall hx.compareWordsString
+
+    jc commandSET
 
 ;;************************************************************************************
 
@@ -351,6 +394,42 @@ loadImage:
     hx.syscall hx.trimString
 
     pop esi
+
+;; Protect the arguments from Shell.checkShebang before it opens the
+;; resolved command's own file into appFileBuffer
+
+    call Shell.protectArguments
+
+;; Resolve the command name against PATH if it isn't already valid as
+;; given, then check for a "#!name" shebang on the resolved file
+
+    call Shell.resolveCommandPath
+
+    mov [DOSsh.resolvedPath], esi
+
+    call Shell.checkShebang
+
+    jc .noShebang
+
+;; ESI = shell name from the shebang line. Run that shell with the
+;; resolved script as its own argument, ignoring any arguments this
+;; command line itself may have had
+
+    mov edi, dword[DOSsh.resolvedPath]
+
+    mov eax, 1
+
+    stc
+
+    hx.syscall hx.exec
+
+    jc .failedToExecute
+
+    jmp getCommand
+
+.noShebang:
+
+    mov esi, dword[DOSsh.resolvedPath]
 
     mov eax, edi
 
@@ -517,6 +596,18 @@ commandCD:
 
 ;;************************************************************************************
 
+commandSET:
+
+    add esi, 03h
+
+    hx.syscall hx.trimString
+
+    call Shell.handleSet
+
+    jmp getCommand
+
+;;************************************************************************************
+
 commandTYPE:
 
     call getArguments
@@ -531,6 +622,8 @@ commandTYPE:
 
     mov esi, edi
     mov edi, appFileBuffer
+
+    xor ecx, ecx
 
     hx.syscall hx.open
 

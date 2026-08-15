@@ -73,6 +73,8 @@ exibirProcessadorInstalado:
 
     mov esi, Hexagon.LibASM.Dev.processors.proc0
 
+    xor ecx, ecx
+
     hx.syscall hx.open
 
     cmp byte [esi], 0

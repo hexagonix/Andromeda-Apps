@@ -73,7 +73,7 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 4, shellStart, 01h
+appHeader headerHAPP HAPP.Architectures.i386, 1, 7, shellStart, 01h
 
 ;;************************************************************************************
 
@@ -82,6 +82,7 @@ include "Estelar/estelar.s"
 include "errors.s"
 include "log.s"
 include "macros.s"
+include "shell.s"
 
 ;;************************************************************************************
 ;;
@@ -97,8 +98,8 @@ ASHError           = VERMELHO
 ASHLimitReached    = AMARELO_ANDROMEDA
 ASHSuccess         = VERDE
 
-VERSION             equ "5.2.0"
-compatibleHexagonix equ "Dormin"
+VERSION             equ "5.3.0"
+compatibleHexagonix equ "Mineru"
 
 ;;**************************
 
@@ -162,6 +163,8 @@ db "ver", 0
 db "help", 0
 .cd:
 db "cd", 0
+.set:
+db "set", 0
 
 ;;**************************
 
@@ -207,15 +210,42 @@ db "You can find documentation for mount using 'man mount' anytime.", 0
 currentVolume: times 3 db 0
 
 ASH.background: db 0 ;; Set to 1 when the current command line ends in "&"
+ASH.resolvedPath: dd 0 ;; Command path after Shell.resolveCommandPath, across the shebang check
+
+commandLine: dd 0
 
 ;;************************************************************************************
 
 shellStart:
 
+    mov [commandLine], edi
+
     systemLog ASH.verboseStartingASH, 00h, Log.Priorities.p4
     systemLog ASH.verboseVersionASH, 00h, Log.Priorities.p4
     systemLog ASH.verboseAuthors, 00h, Log.Priorities.p4
     systemLog ASH.verboseCopyright, 00h, Log.Priorities.p4
+
+    mov esi, [commandLine]
+
+    cmp byte[esi], 0
+    je .start
+
+;; Launched with a single existing file as an argument: run it as a
+;; script instead of starting an interactive prompt. This is how a
+;; shebang dispatch from Shell.checkShebang hands a script off to the
+;; shell named on its "#!" line
+
+    hx.syscall hx.fileExists
+
+    jc .start ;; Not a file (or some other argument shape). Interactive as usual
+
+    mov esi, [commandLine]
+
+    call Shell.runScriptFile
+
+    jmp .finishShell
+
+.start:
 
 ;; Start console configuration
 
@@ -228,6 +258,10 @@ shellStart:
     call showBanner
 
     fputs ASH.welcome
+
+    putNewLine
+
+    call Shell.loadRc
 
 ;;************************************************************************************
 
@@ -308,6 +342,14 @@ shellStart:
     hx.syscall hx.compareWordsString
 
     jc .commandCD
+
+    ;; SET command
+
+    mov edi, ASH.commands.set
+
+    hx.syscall hx.compareWordsString
+
+    jc .commandSET
 
 ;;************************************************************************************
 
@@ -437,6 +479,42 @@ shellStart:
 
     pop esi
 
+;; Protect the arguments from Shell.checkShebang before it opens the
+;; resolved command's own file into appFileBuffer
+
+    call Shell.protectArguments
+
+;; Resolve the command name against PATH if it isn't already valid as
+;; given, then check for a "#!name" shebang on the resolved file
+
+    call Shell.resolveCommandPath
+
+    mov [ASH.resolvedPath], esi
+
+    call Shell.checkShebang
+
+    jc .noShebang
+
+;; ESI = shell name from the shebang line. Run that shell with the
+;; resolved script as its own argument, ignoring any arguments this
+;; command line itself may have had
+
+    mov edi, dword[ASH.resolvedPath]
+
+    mov eax, 1
+
+    stc
+
+    hx.syscall hx.exec
+
+    jc .failedToExecute
+
+    jmp .getCommand
+
+.noShebang:
+
+    mov esi, dword[ASH.resolvedPath]
+
     cmp byte[ASH.background], 1
     je .loadApplicationBackground
 
@@ -529,6 +607,16 @@ shellStart:
 
     jmp .getCommand
 
+.commandSET:
+
+    add esi, 03h
+
+    hx.syscall hx.trimString
+
+    call Shell.handleSet
+
+    jmp .getCommand
+
 .commandCVOL:
 
     push esi
@@ -596,6 +684,8 @@ shellStart:
 
     mov esi, ASH.volume.hd0
 
+    xor ecx, ecx
+
     hx.syscall hx.open
 
     putNewLine
@@ -607,6 +697,8 @@ shellStart:
     systemLog ASH.verboseDeprecatedInterface, 00h, Log.Priorities.p4
 
     mov esi, ASH.volume.hd1
+
+    xor ecx, ecx
 
     hx.syscall hx.open
 
@@ -620,6 +712,8 @@ shellStart:
 
     mov esi, ASH.volume.hd2
 
+    xor ecx, ecx
+
     hx.syscall hx.open
 
     putNewLine
@@ -631,6 +725,8 @@ shellStart:
     systemLog ASH.verboseDeprecatedInterface, 00h, Log.Priorities.p4
 
     mov esi, ASH.volume.hd3
+
+    xor ecx, ecx
 
     hx.syscall hx.open
 
