@@ -208,7 +208,7 @@ Buffers:
 
 ;; Buffer for temporary data storage
 
-.msg: db 0
+.serialDescriptor: dd 0
 
 .typedLine: ;; hx.getString and hx.uname each write into a buffer of the caller's own
 times 256 db 0

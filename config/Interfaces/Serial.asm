@@ -186,13 +186,11 @@ match =YES, VERBOSE
 
     jc openError
 
+    mov dword[Buffers.serialDescriptor], eax
+
     mov esi, serialInterfaceData.automaticMessage
 
-    mov [Buffers.msg], esi
-
-    mov si, [Buffers.msg]
-
-    hx.syscall hx.write
+    call sendToSerial
 
     jc error
 
@@ -228,6 +226,8 @@ match =YES, VERBOSE
     hx.syscall hx.open
 
     jc openError
+
+    mov dword[Buffers.serialDescriptor], eax
 
     mov al, 10
 
@@ -270,10 +270,7 @@ match =YES, VERBOSE
 
     ;; call trimString ;; Remove extra spaces
 
-    mov [Buffers.msg], esi
-    mov si, [Buffers.msg]
-
-    hx.syscall hx.write
+    call sendToSerial
 
     jc error
 
@@ -290,6 +287,29 @@ match =YES, VERBOSE
     hx.syscall hx.setColor
 
     jmp showSerialInterface.getKeys
+
+;;************************************************************************************
+
+;; Sends the string at ESI through the open serial port, then closes it
+
+sendToSerial:
+
+    call stringSize
+
+    mov ecx, eax
+    mov eax, dword[Buffers.serialDescriptor]
+
+    hx.syscall hx.write
+
+    pushfd
+
+    mov eax, dword[Buffers.serialDescriptor]
+
+    hx.syscall hx.close
+
+    popfd
+
+    ret
 
 ;;************************************************************************************
 

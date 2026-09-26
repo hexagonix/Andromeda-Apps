@@ -120,6 +120,8 @@ applicationStart:
 
     jc openError
 
+    mov dword[serialDescriptor], eax
+
     push edi
 
 ;; Welcome
@@ -161,10 +163,20 @@ applicationStart:
 
     ;; call trimString ;; Remove extra spaces
 
-    mov [msg], esi
-    mov si, [msg]
+    call stringSize
+
+    mov ecx, eax
+    mov eax, dword[serialDescriptor]
 
     hx.syscall hx.write
+
+    pushfd
+
+    mov eax, dword[serialDescriptor]
+
+    hx.syscall hx.close
+
+    popfd
 
     jc writeError
 
@@ -292,6 +304,6 @@ db "Serial port utility for Hexagonix", 0
 .footer:
 db "[", VERSION, "] | [^N] New message, [^X] Exit", 0
 
-msg: db 0 ;; Buffer
+serialDescriptor: dd 0
 typedLine: ;; hx.getString writes the typed line into a buffer of the caller's own
 times 256 db 0

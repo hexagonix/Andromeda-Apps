@@ -325,16 +325,7 @@ StudioIDE:
 
 ;; Print other lines
 
-    mov esi, Hexagon.LibASM.Dev.video.tty
-
-    xor ecx, ecx
-
-    hx.syscall hx.open
-
-    mov ebx, 1 ;; Activate console
-    mov ecx, 1 ;; Secondary console
-
-    hx.syscall hx.ioctl
+    activateConsole 1
 
     hx.syscall hx.clearConsole
 
@@ -435,16 +426,7 @@ StudioIDE:
 
     hx.syscall hx.updateScreen
 
-    mov esi, Hexagon.LibASM.Dev.video.tty
-
-    xor ecx, ecx
-
-    hx.syscall hx.open
-
-    mov ebx, 1 ;; Activate console
-    mov ecx, 0 ;; Main console
-
-    hx.syscall hx.ioctl
+    activateConsole 0
 
 .otherPrintedLines:
 
@@ -2423,29 +2405,11 @@ linePosition:
 
 clearVideoBuffer:
 
-    mov esi, Hexagon.LibASM.Dev.video.tty
-
-    xor ecx, ecx
-
-    hx.syscall hx.open
-
-    mov ebx, 1 ;; Activate console
-    mov ecx, 1 ;; Secondary console
-
-    hx.syscall hx.ioctl
+    activateConsole 1
 
     hx.syscall hx.clearConsole
 
-    mov esi, Hexagon.LibASM.Dev.video.tty
-
-    xor ecx, ecx
-
-    hx.syscall hx.open
-
-    mov ebx, 1 ;; Activate console
-    mov ecx, 0 ;; Main console
-
-    hx.syscall hx.ioctl
+    activateConsole 0
 
     hx.syscall hx.clearConsole
 

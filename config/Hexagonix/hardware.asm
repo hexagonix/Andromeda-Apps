@@ -78,6 +78,12 @@ exibirProcessadorInstalado:
 
     hx.syscall hx.open
 
+    jc .nameRead
+
+    hx.syscall hx.close ;; Only the name was needed
+
+.nameRead:
+
     cmp byte[Buffers.processorName], 0
     je .withoutCPUID
 
