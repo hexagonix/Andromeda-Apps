@@ -111,9 +111,7 @@ match =YES, VERBOSE
     hx.syscall hx.setColor
 
     xyfputs 02, 02, serialInterfaceData.intro
-
     xyfputs 02, 03, serialInterfaceData.intro2
-
     xyfputs 04, 04, serialInterfaceData.defaultPort
 
     mov eax, interfaceDefaultColor
@@ -129,9 +127,7 @@ match =YES, VERBOSE
     hx.syscall hx.setColor
 
     xyfputs 04, 05, serialInterfaceData.options
-
     xyfputs 04, 08, serialInterfaceData.options2
-
     xyfputs 04, 09, serialInterfaceData.options3
 
 .getKeys:
@@ -263,14 +259,18 @@ match =YES, VERBOSE
     fputs serialInterfaceData.colon
 
     mov al, byte[maxColumns] ;; Maximum characters to get
+
     sub al, 20
+
+    mov edi, Buffers.typedLine
 
     hx.syscall hx.getString
 
-    ;; hx.syscall hx.trimString ;; Remove extra spaces
+    mov esi, Buffers.typedLine
+
+    ;; call trimString ;; Remove extra spaces
 
     mov [Buffers.msg], esi
-
     mov si, [Buffers.msg]
 
     hx.syscall hx.write

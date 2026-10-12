@@ -111,7 +111,6 @@ match =YES, VERBOSE
     hx.syscall hx.setColor
 
     xyfputs 02, 02, parallelInterfaceData.intro
-
     xyfputs 02, 03, parallelInterfaceData.intro2
 
 .parallelPortInfo:

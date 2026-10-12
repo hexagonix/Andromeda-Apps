@@ -112,11 +112,8 @@ showMainInterface:
 ;; From here, we are below the logo
 
     xyfputs 01, 13, mainInterfaceData.intro
-
     xyfputs 01, 14, mainInterfaceData.intro2
-
     xyfputs 01, 17, mainInterfaceData.category1
-
     xyfputs 01, 18, mainInterfaceData.category2
 
 .getKeys:

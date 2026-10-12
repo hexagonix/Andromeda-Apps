@@ -103,19 +103,12 @@ showConfigInterface:
     hx.syscall hx.setColor
 
     xyfputs 02, 02, configInterfaceData.intro
-
     xyfputs 02, 05, configInterfaceData.intro2
-
     xyfputs 04, 07, configInterfaceData.category1
-
     xyfputs 04, 08, configInterfaceData.category2
-
     xyfputs 04, 09, configInterfaceData.category3
-
     xyfputs 04, 10, configInterfaceData.category4
-
     xyfputs 04, 11, configInterfaceData.category5
-
     xyfputs 04, 12, configInterfaceData.category6
 
 .getKeys:

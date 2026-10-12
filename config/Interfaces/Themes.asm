@@ -104,11 +104,8 @@ showThemeInterface:
     hx.syscall hx.setColor
 
     xyfputs 02, 02, themeInterfaceData.intro
-
     xyfputs 02, 05, themeInterfaceData.insert
-
     xyfputs 04, 07, themeInterfaceData.option1
-
     xyfputs 04, 08, themeInterfaceData.option2
 
 .getKeys:
@@ -171,18 +168,28 @@ applyLightTheme:
 
 configureConsoles:
 
-    mov esi, Hexagon.LibASM.Dev.video.tty1 ;; Open the secondary console
+    mov esi, Hexagon.LibASM.Dev.video.tty
 
     xor ecx, ecx
 
     hx.syscall hx.open ;; Open the device
+
+    mov ebx, 1 ;; Activate console
+    mov ecx, 1 ;; Secondary console
+
+    hx.syscall hx.ioctl
 
     hx.syscall hx.clearConsole
 
-    mov esi, Hexagon.LibASM.Dev.video.tty0 ;; Reopen the default console
+    mov esi, Hexagon.LibASM.Dev.video.tty ;; Reopen the default console
 
     xor ecx, ecx
 
     hx.syscall hx.open ;; Open the device
+
+    mov ebx, 1 ;; Activate console
+    mov ecx, 0 ;; Main console
+
+    hx.syscall hx.ioctl
 
     ret

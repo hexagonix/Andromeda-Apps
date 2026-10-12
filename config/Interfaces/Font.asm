@@ -103,9 +103,7 @@ showFontInterface:
     hx.syscall hx.setColor
 
     xyfputs 02, 02, fontInterfaceData.intro
-
     xyfputs 02, 03, fontInterfaceData.intro2
-
     xyfputs 02, 06, fontInterfaceData.requestFile
 
 match =YES, VERBOSE
@@ -120,11 +118,14 @@ match =YES, VERBOSE
 
     hx.syscall hx.setColor
 
-    mov al, 13
+    mov al, 64 ;; Longest path the system accepts
+    mov edi, Buffers.typedLine
 
     hx.syscall hx.getString
 
-    hx.syscall hx.trimString ;; Remove extra spaces
+    mov esi, Buffers.typedLine
+
+    call trimString ;; Remove extra spaces
 
     mov dword[font], esi
 
@@ -142,7 +143,7 @@ match =YES, VERBOSE
 
     clc
 
-    hx.syscall hx.fileExists
+    hx.syscall hx.stat
 
     jc .fileError
 
