@@ -88,6 +88,8 @@ echo
 
 echo "Building Hexagonix-Andromeda applications... {" >> $LOG
 
+mkdir -p "$BUILD_DIRECTORY/usr/bin"
+
 # Let's now automate the construction of applications
 
 for i in */
