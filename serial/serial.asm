@@ -72,14 +72,15 @@ use32
 
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
+;; Architecture | Version | Subversion | Entry point | Image type | BSS size
+headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
 include "hexagon.s"
 include "Estelar/estelar.s"
 include "macros.s"
+include "string.s"
 
 ;;************************************************************************************
 
@@ -125,7 +126,6 @@ applicationStart:
 
     xyfputs 01, 14, serial.intro
     xyfputs 01, 15, serial.intro2
-
     xyfputs 02, 18, serial.category1
     xyfputs 02, 19, serial.category2
 
@@ -153,12 +153,15 @@ applicationStart:
 
     sub al, 20
 
+    mov edi, typedLine
+
     hx.syscall hx.getString
 
-    ;; hx.syscall hx.trimString ;; Remove extra spaces
+    mov esi, typedLine
+
+    ;; call trimString ;; Remove extra spaces
 
     mov [msg], esi
-
     mov si, [msg]
 
     hx.syscall hx.write
@@ -250,7 +253,7 @@ openError:
 ;;
 ;;************************************************************************************
 
-VERSION equ "1.6.0"
+VERSION equ "1.7.0"
 
 COLOR_HIGHLIGHT = AZUL_ROYAL
 COLOT_FONT      = HEXAGONIX_CLASSICO_BRANCO
@@ -290,3 +293,5 @@ db "Serial port utility for Hexagonix", 0
 db "[", VERSION, "] | [^N] New message, [^X] Exit", 0
 
 msg: db 0 ;; Buffer
+typedLine: ;; hx.getString writes the typed line into a buffer of the caller's own
+times 256 db 0
