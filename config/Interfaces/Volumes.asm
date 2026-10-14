@@ -78,6 +78,7 @@ showVolumeInterface:
     hx.syscall hx.setColor
 
     mov al, 0
+
     hx.syscall hx.clearLine
 
     fputs TITLE.volumes
@@ -104,11 +105,7 @@ showVolumeInterface:
 
     xyfputs 02, 02, volumesInterfaceData.intro
 
-    xyfputs 02, 03, volumesInterfaceData.intro2
-
 .infoVolumes:
-
-    xyfputs 04, 06, volumesInterfaceData.currentVolume
 
 match =YES, VERBOSE
 {
@@ -117,46 +114,107 @@ match =YES, VERBOSE
 
 }
 
-    hx.syscall hx.getVolume
+    xyfputs 04, 06, volumesInterfaceData.columnMountPoint
+    xyfputs 22, 06, volumesInterfaceData.columnDevice
+    xyfputs 44, 06, volumesInterfaceData.columnLabel
+    xyfputs 58, 06, volumesInterfaceData.columnType
 
-    push edi ;; Volume label
-    push esi ;; Device name depending on the system
+    mov ebx, volumesInterfaceData.mountsBufferSize
+
+    call malloc
+
+    cmp eax, 0
+    je .mallocError
+
+    mov dword[volumesInterfaceData.mountsBuffer], ebx
+    mov esi, ebx
+
+    hx.syscall hx.getMounts
+
+    mov dword[volumesInterfaceData.mountsCount], eax
+    mov eax, dword[volumesInterfaceData.mountsBuffer]
+    mov dword[volumesInterfaceData.mountsPointer], eax
+    mov byte[volumesInterfaceData.mountsRow], 07
+
+.mountsLoop:
+
+    cmp dword[volumesInterfaceData.mountsCount], 0
+    je .mountsDone
 
     mov eax, interfaceDefaultColor
     mov ebx, dword[backgroundColor]
 
     hx.syscall hx.setColor
 
-    pop esi
+    mov dl, 04
+    mov dh, byte[volumesInterfaceData.mountsRow]
+
+    hx.syscall hx.setCursor
+
+    mov esi, dword[volumesInterfaceData.mountsPointer] ;; Mount point path, offset 0
 
     printString
+
+    mov dl, 22
+    mov dh, byte[volumesInterfaceData.mountsRow]
+
+    hx.syscall hx.setCursor
+
+    mov esi, dword[volumesInterfaceData.mountsPointer]
+
+    add esi, hx.mount.record.deviceName
+
+    printString
+
+    mov dl, 44
+    mov dh, byte[volumesInterfaceData.mountsRow]
+
+    hx.syscall hx.setCursor
+
+    mov esi, dword[volumesInterfaceData.mountsPointer]
+
+    add esi, hx.mount.record.volumeLabel
+
+    printString
+
+    mov dl, 58
+    mov dh, byte[volumesInterfaceData.mountsRow]
+
+    hx.syscall hx.setCursor
+
+    mov esi, dword[volumesInterfaceData.mountsPointer]
+    movzx eax, byte[esi + hx.mount.record.filesystemType]
+
+    call printFilesystemType
 
     mov eax, dword[fontColor]
     mov ebx, dword[backgroundColor]
 
     hx.syscall hx.setColor
 
-    xyfputs 04, 07, volumesInterfaceData.volumeLabel
+    mov eax, dword[volumesInterfaceData.mountsPointer]
 
-    mov eax, interfaceDefaultColor
-    mov ebx, dword[backgroundColor]
+    add eax, hx.mount.record.size
 
-    hx.syscall hx.setColor
+    mov dword[volumesInterfaceData.mountsPointer], eax
 
-    pop esi
+    inc byte[volumesInterfaceData.mountsRow]
+    dec dword[volumesInterfaceData.mountsCount]
 
-    printString
+    jmp .mountsLoop
 
-    mov eax, dword[fontColor]
-    mov ebx, dword[backgroundColor]
+.mountsDone:
 
-    hx.syscall hx.setColor
+    mov ebx, dword[volumesInterfaceData.mountsBuffer]
+    mov ecx, volumesInterfaceData.mountsBufferSize
 
-    jmp .putNewLine
+    call free
 
-.putNewLine:
+    jmp .getKeys
 
-    putNewLine
+.mallocError:
+
+    xyfputs 04, 07, volumesInterfaceData.mallocError
 
 .getKeys:
 
@@ -175,3 +233,54 @@ match =YES, VERBOSE
     je finishApplication
 
     jmp .getKeys
+
+;;************************************************************************************
+
+;; Prints the filesystem name for a mount record's type code at the current
+;; cursor position
+;;
+;; Input:
+;;
+;; AL - Filesystem type code
+
+printFilesystemType:
+
+    cmp al, 01h
+    je .fat12
+
+    cmp al, 04h
+    je .fat16_32
+
+    cmp al, 06h
+    je .fat16
+
+    cmp al, 0FFh ;; Hexagon.VFS.FS.DEVFS
+    je .devfs
+
+    fputs volumesInterfaceData.unknownFilesystem
+
+    ret
+
+.fat12:
+
+    fputs volumesInterfaceData.fat12
+
+    ret
+
+.fat16_32:
+
+    fputs volumesInterfaceData.fat16_32
+
+    ret
+
+.fat16:
+
+    fputs volumesInterfaceData.fat16
+
+    ret
+
+.devfs:
+
+    fputs volumesInterfaceData.devfs
+
+    ret

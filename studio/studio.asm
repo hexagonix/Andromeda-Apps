@@ -72,8 +72,8 @@ use32
 
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 00, LyokoIDE, 01h
+;; Architecture | Version | Subversion | Entry point | Image type | BSS size
+headerHAPP HAPP.Architectures.i386, 1, 8, StudioIDE, 01h
 
 ;;*************************************************************************************************
 
@@ -82,6 +82,7 @@ include "Estelar/estelar.s"
 include "errors.s"
 include "dev.s"
 include "macros.s"
+include "string.s"
 
 ;;*************************************************************************************************
 
@@ -97,29 +98,31 @@ HIGHLIGHT_COLOR = HEXAGONIX_BLOSSOM_VERMELHO
 BANNER_COLOR    = HEXAGONIX_BLOSSOM_LARANJA
 
 sizeToFilename = 8
+sizeOfFilename = 14 ;; What is left of the footer for the name itself
 
 ;; Variables, constants and structures
 
-VERSION   equ "3.0.2"
-ASSEMBLER equ "fasmX"
-AUTHOR    equ "Copyright (C) 2017-", __stringYear, " Felipe Miguel Nery Lunkes"
-TRADEMARK equ "All rights reserved."
+VERSION        equ "3.3.0"
+ASSEMBLER      equ "fasmX"
+ASSEMBLER_PATH equ "/usr/contrib/"
+AUTHOR         equ "Copyright (C) 2017-", __stringYear, " Felipe Miguel Nery Lunkes"
+TRADEMARK      equ "All rights reserved."
 
-Lyoko:
+Studio:
 
 .newFileTitle:
 db "New file", 0
 .quickWarning:
-db "Lyoko uses the '", ASSEMBLER, "' assembler for building applications.", 10
+db "Studio uses the '", ASSEMBLER, "' assembler for building applications.", 10
 db "This open source assembler has been ported and is fully compatible with Hexagonix.", 10, 10
-db "You can use keyboard shortcuts to interact with Lyoko.", 10
+db "You can use keyboard shortcuts to interact with Studio.", 10
 db "Shortcuts are triggered by the Ctrl (Control, ^) key, along with an action indicator key.", 10
 db "These key combinations can be (the Ctrl key represented by ^):", 10, 10
 db " [^A] - Requests to open a previously saved file on disk.", 10
 db " [^S] - Request to save changes to a file on disk.", 10
-db " [^F] - Close Lyoko after saving confirmation.", 10
+db " [^F] - Close Studio after saving confirmation.", 10
 db " [^M] - Call '", ASSEMBLER, "' assembler to build the executable image.", 10
-db " [^V] - Version information and more about Lyoko.", 10, 10
+db " [^V] - Version information and more about Studio.", 10, 10
 db "After building an image, you will receive the operation status directly on the screen and, if all", 10
 db "is correct, you will find the image with the .app extension on the disk containing your application.", 10
 db "You can use the 'lshapp' tool to verify image information if necessary.", 10
@@ -148,9 +151,9 @@ db "Only an administrative user can change this file. Press any key to continue.
 .unlinkError:
 db "Error updating file.", 0
 .applicationTitle:
-db "Lyoko - An IDE for Hexagonix - Version ", VERSION, 0
+db "Studio - An IDE for Hexagonix - Version ", VERSION, 0
 .fasmX:
-db ASSEMBLER, 0
+db ASSEMBLER_PATH, ASSEMBLER, 0
 .withoutSourceCode:
 db "No source file specified. Try saving your file to disk first.", 10, 10, 0
 .saveWarning:
@@ -164,20 +167,17 @@ db "| File:               ", 0
 db "| ", ASSEMBLER, 0
 .closeWarning:
 db 10, 10, "Press [ESC] to close this warning.", 10, 0
-.infoLyoko:
-db "The name Lyoko comes from a series that marked me a lot in childhood, called Code Lyoko.", 10
-db "In a way, this series made me fall even more in love with computing and it is fair to pay a symbolic", 10
-db "tribute.", 10, 10
-db "Lyoko was designed to be a simple and easy to use IDE for developing applications for Hexagonix on", 10
+.infoStudio:
+db "Studio was designed to be a simple and easy to use IDE for developing applications for Hexagonix on", 10
 db "the system itself. It is also being used for development various components of the operating system", 10
 db "itself.", 10
-db "Lyoko is gaining more and more functions and is also constantly updated.", 10, 10
-db "Version of this edition of Lyoko: ", VERSION, 10, 10
+db "Studio is gaining more and more functions and is also constantly updated.", 10, 10
+db "Version of this edition of Studio: ", VERSION, 10, 10
 db AUTHOR, 10
 db TRADEMARK, 10, 0
 .welcome:
-db "Welcome to Lyoko, the official IDE for Hexagonix!", 10, 10
-db "With Lyoko, you can quickly write and build wonderful applications for Hexagonix.", 10
+db "Welcome to Studio, the official IDE for Hexagonix!", 10, 10
+db "With Studio, you can quickly write and build wonderful applications for Hexagonix.", 10
 db "You can at any time press [^X] (Ctrl+X) for help.", 10, 10
 db "Shall we start?", 10, 10
 db "You can start by pressing Ctrl-A [^A] to open a file or press [ESC] and start encode your project", 10
@@ -196,7 +196,7 @@ db " *", 0
 .lineSize:        dd 0 ;; Line size
 
 filename: ;; Filename biffer
-times 13 db 0
+times 65 db 0
 totalLines:              dd 0  ;; Line counter in the file
 line:                    dd 0  ;; Current line in file
 currentLinePosition:     dd 0  ;; Current line position in the entire file
@@ -213,19 +213,18 @@ returnOrigin:            db 0  ;; Used to check if the return comes from a menu 
 
 ;;*************************************************************************************************
 
-LyokoIDE:
+StudioIDE:
 
     hx.syscall hx.getConsoleInfo
 
     mov byte[maxColumns], bl
     mov byte[maxLines], bh
-
-    mov byte[Lyoko.firstExecution], 01h
+    mov byte[Studio.firstExecution], 01h
 
     hx.syscall hx.getColor
 
-    mov dword[Lyoko.fontColor], ecx
-    mov dword[Lyoko.backgroundColor], edx
+    mov dword[Studio.fontColor], ecx
+    mov dword[Studio.backgroundColor], edx
 
     hx.syscall hx.getResolution
 
@@ -236,9 +235,9 @@ LyokoIDE:
 
     mov esi, edi ;; Application arguments
 
-    hx.syscall hx.stringSize
+    call stringSize
 
-    cmp eax, 12 ;; Invalid filename
+    cmp eax, 64 ;; Invalid filename
     ja .createNewFile
 
 .saveFilename: ;; Save filename
@@ -261,12 +260,11 @@ LyokoIDE:
 
     mov esi, filename
 
-    hx.syscall hx.fileExists
+    hx.syscall hx.stat
 
     jc .createNewFile ;; The file does not exist
 
     mov esi, filename
-
     mov edi, appFileBuffer ;; Loading address
 
     xor ecx, ecx
@@ -275,27 +273,18 @@ LyokoIDE:
 
     mov esi, filename
 
-    hx.syscall hx.stringSize
+    call stringSize
 
     mov ecx, eax
 
 .setupTitle: ;; Add file name in program footer
 
-    push es
-
-;; Let's configure DS and ES with user mode data segment
-
-    push ds
-    pop es
 
 ;; Now the name of the opened file will be displayed in the application interface
 
-    mov edi, Lyoko.fileIdentifier+sizeToFilename ;; Position
     mov esi, filename
 
-    rep movsb
-
-    pop es
+    call setFooterName
 
     jmp .startInterface
 
@@ -305,32 +294,19 @@ LyokoIDE:
 
 ;; Add 'New file' to the program title
 
-    push es
+    mov esi, Studio.newFileTitle
 
-    push ds ;; User mode data segment (38h selector)
-    pop es
-
-    mov ecx, 12
-
-    mov esi, Lyoko.newFileTitle
-    mov edi, Lyoko.fileIdentifier+sizeToFilename ;; Position
-
-    rep movsb
-
-    pop es
+    call setFooterName
 
 .startInterface:
 
     mov al, 10 ;; New line character
-
     mov esi, appFileBuffer
 
-    hx.syscall hx.findCharacter
+    call findCharacterInString
 
     mov dword[totalLines], eax
-
     mov dword[currentLinePosition], 0
-
     mov edx, 0
     mov esi, appFileBuffer
 
@@ -340,7 +316,6 @@ LyokoIDE:
 
     mov byte[currentPositionInLine], dl ;; Cursor at the end of the line
     mov byte[currentLineSize], dl   ;; Save current line size
-
     mov dword[currentPagePosition], 0
 
 .awaitInteraction:
@@ -350,18 +325,27 @@ LyokoIDE:
 
 ;; Print other lines
 
-    mov esi, Hexagon.LibASM.Dev.video.tty1
+    mov esi, Hexagon.LibASM.Dev.video.tty
 
     xor ecx, ecx
 
     hx.syscall hx.open
 
+    mov ebx, 1 ;; Activate console
+    mov ecx, 1 ;; Secondary console
+
+    hx.syscall hx.ioctl
+
     hx.syscall hx.clearConsole
 
     mov eax, dword[totalLines]
 
+;; An empty file has zero lines, so totalLines and line are both 0 here.
+;; Skip straight to .showTitleAndFooter, not .otherPrintedLines, so
+;; hx.updateScreen still runs even when there is nothing to redraw
+
     cmp dword[line], eax
-    je .otherPrintedLines
+    je .showTitleAndFooter
 
 .printOtherLines:
 
@@ -398,7 +382,7 @@ LyokoIDE:
 
     hx.syscall hx.clearLine
 
-    fputs Lyoko.applicationTitle
+    fputs Studio.applicationTitle
 
     mov al, byte[maxLines] ;; Last line
 
@@ -406,7 +390,7 @@ LyokoIDE:
 
     hx.syscall hx.clearLine
 
-    fputs Lyoko.applicationFooter
+    fputs Studio.applicationFooter
 
     hx.syscall hx.getCursor
 
@@ -416,7 +400,7 @@ LyokoIDE:
 
     hx.syscall hx.setCursor
 
-    fputs Lyoko.assemblerName
+    fputs Studio.assemblerName
 
     mov dl, byte[maxColumns]
 
@@ -424,11 +408,11 @@ LyokoIDE:
 
     hx.syscall hx.setCursor
 
-    fputs Lyoko.separator
+    fputs Studio.separator
 
-    fputs Lyoko.encoding
+    fputs Studio.encoding
 
-    fputs Lyoko.separator
+    fputs Studio.separator
 
     mov dl, byte[maxColumns]
 
@@ -438,10 +422,10 @@ LyokoIDE:
 
     hx.syscall hx.setCursor
 
-    fputs Lyoko.fileIdentifier
+    fputs Studio.fileIdentifier
 
-    mov eax, dword[Lyoko.fontColor]
-    mov ebx, dword[Lyoko.backgroundColor]
+    mov eax, dword[Studio.fontColor]
+    mov ebx, dword[Studio.backgroundColor]
 
     hx.syscall hx.setColor
 
@@ -451,11 +435,16 @@ LyokoIDE:
 
     hx.syscall hx.updateScreen
 
-    mov esi, Hexagon.LibASM.Dev.video.tty0
+    mov esi, Hexagon.LibASM.Dev.video.tty
 
     xor ecx, ecx
 
     hx.syscall hx.open
+
+    mov ebx, 1 ;; Activate console
+    mov ecx, 0 ;; Main console
+
+    hx.syscall hx.ioctl
 
 .otherPrintedLines:
 
@@ -495,7 +484,7 @@ LyokoIDE:
 
     hx.syscall hx.setCursor
 
-    fputs Lyoko.line
+    fputs Studio.line
 
     mov eax, dword[line]
 
@@ -503,9 +492,9 @@ LyokoIDE:
 
     printInteger
 
-    fputs Lyoko.comma
+    fputs Studio.comma
 
-    fputs Lyoko.column
+    fputs Studio.column
 
     movzx eax, byte[currentPositionInLine]
 
@@ -517,15 +506,15 @@ LyokoIDE:
 
     hx.syscall hx.printCharacter
 
-    mov eax, dword[Lyoko.fontColor]
-    mov ebx, dword[Lyoko.backgroundColor]
+    mov eax, dword[Studio.fontColor]
+    mov ebx, dword[Studio.backgroundColor]
 
     hx.syscall hx.setColor
 
-    cmp byte[Lyoko.firstExecution], 01h
+    cmp byte[Studio.firstExecution], 01h
     jne .startInputProcessing
 
-    call lyokoShowWelcome
+    call studioShowWelcome
 
     jmp .awaitInteraction
 
@@ -549,7 +538,7 @@ LyokoIDE:
 
 ;;*************************************************************************************************
 
-lyokoSaveFile:
+studioSaveFile:
 
     cmp byte[filename], 0
     jne .fileAlreadyOpened
@@ -574,13 +563,16 @@ lyokoSaveFile:
 
     hx.syscall hx.setCursor
 
-    fputs Lyoko.requestFile
+    fputs Studio.requestFile
 
-    mov eax, 12 ;; Maximum characters
+    mov eax, 64 ;; Maximum characters
+    mov edi, typedLine
 
     hx.syscall hx.getString
 
-    hx.syscall hx.stringSize
+    mov esi, typedLine
+
+    call stringSize
 
     cmp eax, 0
     je .end
@@ -601,21 +593,16 @@ lyokoSaveFile:
 
     rep movsb
 
-;; Add to footer
-
-    mov ecx, eax ;; Filename characters
-
-    inc ecx
-
-    mov esi, filename
-    mov edi, Lyoko.fileIdentifier+sizeToFilename
-
-    rep movsb
-
     pop es
 
-    mov eax, dword[Lyoko.fontColor]
-    mov ebx, dword[Lyoko.backgroundColor]
+;; Add to footer
+
+    mov esi, filename
+
+    call setFooterName
+
+    mov eax, dword[Studio.fontColor]
+    mov ebx, dword[Studio.backgroundColor]
 
     hx.syscall hx.setColor
 
@@ -637,7 +624,7 @@ lyokoSaveFile:
 
     mov esi, appFileBuffer
 
-    hx.syscall hx.stringSize
+    call stringSize
 
 ;; Save file
 
@@ -666,14 +653,14 @@ lyokoSaveFile:
 
     hx.syscall hx.setCursor
 
-    fputs Lyoko.fileSaved
+    fputs Studio.fileSaved
 
-    mov byte [Lyoko.changed], 0 ;; Clear changed status
+    mov byte [Studio.changed], 0 ;; Clear changed status
 
 .end:
 
-    mov eax, dword[Lyoko.fontColor]
-    mov ebx, dword[Lyoko.backgroundColor]
+    mov eax, dword[Studio.fontColor]
+    mov ebx, dword[Studio.backgroundColor]
 
     hx.syscall hx.setColor
 
@@ -704,7 +691,7 @@ lyokoSaveFile:
 
     hx.syscall hx.setCursor
 
-    fputs Lyoko.unlinkError
+    fputs Studio.unlinkError
 
     hx.syscall hx.waitKeyboard
 
@@ -730,13 +717,13 @@ lyokoSaveFile:
 
     hx.syscall hx.setCursor
 
-    fputs Lyoko.permissionDenied
+    fputs Studio.permissionDenied
 
     jmp .end
 
 ;;*************************************************************************************************
 
-lyokoOpenFile:
+studioOpenFile:
 
 ;; Get filename
 
@@ -758,13 +745,16 @@ lyokoOpenFile:
 
     hx.syscall hx.setCursor
 
-    fputs Lyoko.requestFile
+    fputs Studio.requestFile
 
-    mov eax, 12 ;; Maximum characters
+    mov eax, 64 ;; Maximum characters
+    mov edi, typedLine
 
     hx.syscall hx.getString
 
-    hx.syscall hx.stringSize
+    mov esi, typedLine
+
+    call stringSize
 
     cmp eax, 0
     je .end
@@ -785,21 +775,16 @@ lyokoOpenFile:
 
     rep movsb
 
-;; Add to footer
-
-    mov ecx, eax ;; Filename characters
-
-    inc ecx
-
-    mov esi, filename
-    mov edi, Lyoko.fileIdentifier+sizeToFilename
-
-    rep movsb
-
     pop es
 
-    mov eax, dword[Lyoko.fontColor]
-    mov ebx, dword[Lyoko.backgroundColor]
+;; Add to footer
+
+    mov esi, filename
+
+    call setFooterName
+
+    mov eax, dword[Studio.fontColor]
+    mov ebx, dword[Studio.backgroundColor]
 
     hx.syscall hx.setColor
 
@@ -809,16 +794,180 @@ lyokoOpenFile:
 
     mov byte[screenRefreshIsRequired], 1
 
-    jmp LyokoIDE.openFile
+    jmp StudioIDE.openFile
 
 .end:
 
-    mov eax, dword[Lyoko.fontColor]
-    mov ebx, dword[Lyoko.backgroundColor]
+    mov eax, dword[Studio.fontColor]
+    mov ebx, dword[Studio.backgroundColor]
 
     hx.syscall hx.setColor
 
     mov byte[screenRefreshIsRequired], 1
+
+    ret
+
+;;************************************************************************************
+
+;; Writes a path into the footer's field. A path too long for it shows only
+;; the file's own name, and a name still too long keeps its extension whole,
+;; since that is what says what the file is, losing characters before it
+;;
+;; Input:
+;;
+;; ESI - Path to show, terminated by a 0
+
+setFooterName:
+
+    push es
+
+    push ds ;; User mode data segment (38h selector)
+    pop es
+
+    push eax
+    push ebx
+    push ecx
+    push edx
+    push esi
+    push edi
+
+    mov edi, Studio.fileIdentifier + sizeToFilename
+
+;; The whole path is shown while it fits. Past that only the file's own name
+;; is, since the end of the path is what tells one file from another
+
+    mov ebx, esi
+
+    mov ecx, esi
+
+.measurePath:
+
+    cmp byte[ecx], 0
+    je .pathMeasured
+
+    inc ecx
+
+    jmp .measurePath
+
+.pathMeasured:
+
+    sub ecx, esi ;; Characters in the whole path
+
+    cmp ecx, sizeOfFilename
+    jbe .writeName
+
+.findName:
+
+    mov al, byte[esi]
+
+    cmp al, 0
+    je .nameFound
+
+    inc esi
+
+    cmp al, '/'
+    jne .findName
+
+    mov ebx, esi
+
+    jmp .findName
+
+.nameFound:
+
+    mov ecx, esi
+
+    sub ecx, ebx ;; Characters in the name
+
+    mov esi, ebx
+
+    cmp ecx, sizeOfFilename
+    jbe .writeName
+
+;; It does not fit even without the path, so what comes before the extension
+;; is what gets cut
+
+    push esi
+
+    mov ebx, ecx ;; Stands for a name carrying no extension at all
+
+    xor edx, edx
+
+.findExtension:
+
+    cmp edx, ecx
+    je .measured
+
+    cmp byte[esi + edx], '.'
+    jne .nextCharacter
+
+    mov ebx, edx
+
+.nextCharacter:
+
+    inc edx
+
+    jmp .findExtension
+
+.measured:
+
+    mov edx, ecx
+
+    sub edx, ebx ;; Characters in the extension, the dot included
+
+    cmp edx, sizeOfFilename
+    jae .withoutExtension
+
+    mov ecx, sizeOfFilename
+
+    sub ecx, edx ;; Room left for the name before the extension
+
+    rep movsb
+
+    pop esi
+
+    add esi, ebx ;; The dot itself
+
+    mov ecx, edx
+
+    rep movsb
+
+    xor ecx, ecx ;; The field is full, nothing left to blank
+
+    jmp .blank
+
+.withoutExtension:
+
+;; An extension that fills the field on its own leaves nothing of the name
+;; worth keeping
+
+    pop esi
+
+    mov ecx, sizeOfFilename
+
+.writeName:
+
+    mov edx, sizeOfFilename
+
+    sub edx, ecx ;; What is left of the field after the name
+
+    rep movsb
+
+    mov ecx, edx
+
+.blank:
+
+    mov al, ' '
+
+    rep stosb
+
+    pop edi
+    pop esi
+    pop edx
+    pop ecx
+    pop ebx
+    pop eax
+
+    pop es
 
     ret
 
@@ -833,7 +982,7 @@ highlightEdition:
     push ds
     pop es
 
-    mov edi, Lyoko.edited
+    mov edi, Studio.edited
     mov ecx, eax ;; Characters in the filename
 
     inc ecx ;; Including NULL
@@ -846,8 +995,8 @@ highlightEdition:
 
     inc ecx
 
-    mov esi, Lyoko.edited
-    mov edi, Lyoko.fileIdentifier+sizeToFilename+8
+    mov esi, Studio.edited
+    mov edi, Studio.fileIdentifier+sizeToFilename+8
 
     rep movsb
 
@@ -859,18 +1008,18 @@ highlightEdition:
 
 ;;*************************************************************************************************
 
-lyokoExecuteAssembler:
+studioExecuteAssembler:
 
     call buildWarning
 
-    fputs Lyoko.runningAssembler
+    fputs Studio.runningAssembler
 
     mov esi, filename
 
     cmp byte[esi], 0
     je .withoutSourceCode
 
-    mov esi, Lyoko.fasmX
+    mov esi, Studio.fasmX
     mov edi, filename
 
     hx.syscall hx.exec
@@ -879,14 +1028,14 @@ lyokoExecuteAssembler:
 
 .withoutSourceCode:
 
-    fputs Lyoko.withoutSourceCode
+    fputs Studio.withoutSourceCode
 
 .end:
 
-    fputs Lyoko.closeWarning
+    fputs Studio.closeWarning
 
-    mov eax, dword[Lyoko.fontColor]
-    mov ebx, dword[Lyoko.backgroundColor]
+    mov eax, dword[Studio.fontColor]
+    mov ebx, dword[Studio.backgroundColor]
 
     hx.syscall hx.setColor
 
@@ -896,20 +1045,20 @@ lyokoExecuteAssembler:
 
 ;;*************************************************************************************************
 
-lyokoShowHelp:
+studioShowHelp:
 
-    mov byte[Lyoko.biggerBox], 01h
+    mov byte[Studio.biggerBox], 01h
 
     call buildWarning
 
-    fputs Lyoko.quickWarning
+    fputs Studio.quickWarning
 
 .end:
 
-    fputs Lyoko.closeWarning
+    fputs Studio.closeWarning
 
-    mov eax, dword[Lyoko.fontColor]
-    mov ebx, dword[Lyoko.backgroundColor]
+    mov eax, dword[Studio.fontColor]
+    mov ebx, dword[Studio.backgroundColor]
 
     hx.syscall hx.setColor
 
@@ -919,20 +1068,20 @@ lyokoShowHelp:
 
 ;;*************************************************************************************************
 
-lyokoShowInfo:
+studioShowInfo:
 
-    mov byte[Lyoko.biggerBox], 01h
+    mov byte[Studio.biggerBox], 01h
 
     call buildWarning
 
-    fputs Lyoko.infoLyoko
+    fputs Studio.infoStudio
 
 .end:
 
-    fputs Lyoko.closeWarning
+    fputs Studio.closeWarning
 
-    mov eax, dword[Lyoko.fontColor]
-    mov ebx, dword[Lyoko.backgroundColor]
+    mov eax, dword[Studio.fontColor]
+    mov ebx, dword[Studio.backgroundColor]
 
     hx.syscall hx.setColor
 
@@ -942,24 +1091,23 @@ lyokoShowInfo:
 
 ;;*************************************************************************************************
 
-lyokoShowWelcome:
+studioShowWelcome:
 
     call buildWarning
 
-    fputs Lyoko.welcome
+    fputs Studio.welcome
 
 .end:
 
-    mov eax, dword[Lyoko.fontColor]
-    mov ebx, dword[Lyoko.backgroundColor]
+    mov eax, dword[Studio.fontColor]
+    mov ebx, dword[Studio.backgroundColor]
 
     hx.syscall hx.setColor
 
     hx.syscall hx.waitKeyboard
 
     mov byte[screenRefreshIsRequired], 01h
-
-    mov byte[Lyoko.firstExecution], 00h
+    mov byte[Studio.firstExecution], 00h
 
     ret
 
@@ -967,7 +1115,7 @@ lyokoShowWelcome:
 
 buildWarning:
 
-    cmp byte[Lyoko.biggerBox], 01h
+    cmp byte[Studio.biggerBox], 01h
     je .checkResolutionLargerBox
 
 .checkResolutionSmallBox:
@@ -1144,7 +1292,7 @@ buildWarning:
 
 .end:
 
-    mov byte[Lyoko.biggerBox], 00h
+    mov byte[Studio.biggerBox], 00h
 
     ret
 
@@ -1217,8 +1365,7 @@ processInput:
 
 ;; No more than 79 characters per line are supported
 
-    mov byte [Lyoko.changed], 1
-
+    mov byte [Studio.changed], 1
     mov bl, byte[maxColumns]
 
     dec bl
@@ -1232,7 +1379,7 @@ processInput:
     add esi, dword[currentLinePosition]
     add esi, appFileBuffer
 
-    hx.syscall hx.insertCharacter ;; Insert char into string
+    call insertCharacterInString ;; Insert char into string
 
     inc byte[currentPositionInLine] ;; A character has been added
     inc byte[currentLineSize]
@@ -1246,9 +1393,7 @@ processInput:
 .returnKey:
 
     mov byte[screenRefreshIsRequired], 1
-
     mov edx, 0
-
     movzx esi, byte[currentPositionInLine]
 
     add esi, appFileBuffer
@@ -1256,7 +1401,7 @@ processInput:
 
     mov al, 10
 
-    hx.syscall hx.insertCharacter
+    call insertCharacterInString
 
 ;; New line
 
@@ -1284,11 +1429,10 @@ processInput:
 
     mov byte[currentPositionInLine], 0 ;; Cursor at the end of the line
     mov byte[currentLineSize], dl  ;; Save current line size
-
     mov al, 10 ;; New line character
     mov esi, appFileBuffer
 
-    hx.syscall hx.findCharacter
+    call findCharacterInString
 
     mov dword[totalLines], eax
 
@@ -1308,7 +1452,6 @@ processInput:
     sub bl, 2
 
     mov byte[linePositionOnScreen], bl
-
     mov esi, appFileBuffer
     mov eax, dword[line]
     movzx ebx, byte[maxLines]
@@ -1369,10 +1512,10 @@ processInput:
     je .ControlMKeys
 
     cmp al, 'f'
-    je lyokoExitIDE
+    je studioExitIDE
 
     cmp al, 'F'
-    je lyokoExitIDE
+    je studioExitIDE
 
     jmp .prepareReturn
 
@@ -1393,7 +1536,7 @@ processInput:
 
     mov esi, appFileBuffer
 
-    hx.syscall hx.removeCharacterString
+    call removeCharacterInString
 
     dec byte[currentPositionInLine] ;; A character has been removed
     dec byte[currentLineSize]
@@ -1446,7 +1589,6 @@ processInput:
 ;; Remove newline character
 
     mov byte[screenRefreshIsRequired], 1
-
     movzx eax, byte[currentPositionInLine]
 
     add eax, dword[currentLinePosition]
@@ -1455,7 +1597,7 @@ processInput:
 
     mov esi, appFileBuffer
 
-    hx.syscall hx.removeCharacterString
+    call removeCharacterInString
 
     dec byte[totalLines] ;; One line was removed
     dec dword[line]
@@ -1516,7 +1658,7 @@ processInput:
 
     mov esi, appFileBuffer
 
-    hx.syscall hx.removeCharacterString
+    call removeCharacterInString
 
     dec byte[currentLineSize] ;; A character has been removed
 
@@ -1652,7 +1794,6 @@ processInput:
     mov byte[linePositionOnScreen], 1
     mov eax, dword[currentLinePosition]
     mov dword[currentPagePosition], eax
-
     mov byte[screenRefreshIsRequired], 1
 
     jmp .prepareReturn
@@ -1729,7 +1870,6 @@ processInput:
     sub bl, 2
 
     mov byte[linePositionOnScreen], bl
-
     mov esi, appFileBuffer
     mov eax, dword[line]
     movzx ebx, byte[maxLines]
@@ -1744,7 +1884,6 @@ processInput:
     sub esi, appFileBuffer
 
     mov dword[currentPagePosition], esi
-
     mov byte[screenRefreshIsRequired], 1
 
     jmp .prepareReturn
@@ -1848,7 +1987,6 @@ processInput:
     je .prepareReturn
 
     mov byte[screenRefreshIsRequired], 1
-
     mov esi, appFileBuffer
     mov eax, 0
     mov dword[line], eax
@@ -1924,13 +2062,11 @@ processInput:
 
     mov byte[currentPositionInLine], dl
     mov byte[currentLineSize], dl
-
     mov bl, byte[maxLines]
 
     sub bl, 2
 
     mov byte[linePositionOnScreen], bl
-
     mov eax, dword[line]
     movzx ebx, byte[maxLines]
 
@@ -1969,7 +2105,6 @@ processInput:
     dec eax
 
     mov dword[line], eax ;; Make the last line the current line
-
     mov esi, appFileBuffer
     mov eax, dword[line]
 
@@ -1992,7 +2127,6 @@ processInput:
 
     mov byte[currentPositionInLine], dl
     mov byte[currentLineSize], dl
-
     movzx ebx, byte[maxLines]
 
     sub ebx, 3
@@ -2013,7 +2147,6 @@ processInput:
     inc bl
 
     mov byte[linePositionOnScreen], bl
-
     mov eax, dword[line]
 
     sub eax, ebx
@@ -2034,31 +2167,31 @@ processInput:
 
 .ControlSKeys:
 
-    call lyokoSaveFile
+    call studioSaveFile
 
     jmp .prepareSpecialReturn
 
 .ControlXKeys:
 
-    call lyokoShowHelp
+    call studioShowHelp
 
     jmp .prepareSpecialReturn
 
 .ControlVKeys:
 
-    call lyokoShowInfo
+    call studioShowInfo
 
     jmp .prepareSpecialReturn
 
 .ControlMKeys:
 
-    call lyokoExecuteAssembler
+    call studioExecuteAssembler
 
     jmp .prepareSpecialReturn
 
 .ControlAKeys:
 
-    call lyokoOpenFile
+    call studioOpenFile
 
     jmp .prepareReturn
 
@@ -2078,16 +2211,16 @@ processInput:
 
 ;;*************************************************************************************************
 
-lyokoExitIDE:
+studioExitIDE:
 
-    mov ah, byte[Lyoko.changed]
+    mov ah, byte[Studio.changed]
 
     cmp ah, 0
     je .finish
 
     call buildWarning
 
-    fputs Lyoko.saveWarning
+    fputs Studio.saveWarning
 
 .loopKeys:
 
@@ -2109,12 +2242,12 @@ jmp .loopKeys
 
 .startSavingFile:
 
-    call lyokoSaveFile
+    call studioSaveFile
 
 .finish:
 
-    mov eax, dword[Lyoko.fontColor]
-    mov ebx, dword[Lyoko.backgroundColor]
+    mov eax, dword[Studio.fontColor]
+    mov ebx, dword[Studio.backgroundColor]
 
     hx.syscall hx.setColor
 
@@ -2158,6 +2291,7 @@ printLine:
     je .fileEnd
 
     movzx ebx, byte[maxColumns]
+
     dec bl
 
     cmp edx, ebx
@@ -2289,19 +2423,29 @@ linePosition:
 
 clearVideoBuffer:
 
-    mov esi, Hexagon.LibASM.Dev.video.tty1
+    mov esi, Hexagon.LibASM.Dev.video.tty
 
     xor ecx, ecx
 
     hx.syscall hx.open
+
+    mov ebx, 1 ;; Activate console
+    mov ecx, 1 ;; Secondary console
+
+    hx.syscall hx.ioctl
 
     hx.syscall hx.clearConsole
 
-    mov esi, Hexagon.LibASM.Dev.video.tty0
+    mov esi, Hexagon.LibASM.Dev.video.tty
 
     xor ecx, ecx
 
     hx.syscall hx.open
+
+    mov ebx, 1 ;; Activate console
+    mov ecx, 0 ;; Main console
+
+    hx.syscall hx.ioctl
 
     hx.syscall hx.clearConsole
 
@@ -2312,7 +2456,6 @@ clearVideoBuffer:
 clearTextBuffer:
 
     mov dword[appFileBuffer], 10 ;; Let's clear the text buffer
-
     mov esi, appFileBuffer
     mov eax, 0
     mov dword[line], eax
@@ -2330,5 +2473,8 @@ clearTextBuffer:
 ;; Buffer for storing the requested file
 ;;
 ;;*************************************************************************************************
+
+typedLine: ;; hx.getString writes the typed line into a buffer of the caller's own
+times 256 db 0
 
 appFileBuffer: db 10

@@ -72,14 +72,15 @@ use32
 
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
+;; Architecture | Version | Subversion | Entry point | Image type | BSS size
+headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h, HAPP.bss.trailingBuffer
 
 ;;************************************************************************************
 
 include "hexagon.s"
 include "Estelar/estelar.s"
 include "macros.s"
+include "string.s"
 
 ;;************************************************************************************
 
@@ -118,9 +119,13 @@ applicationStart:
 
     sub al, 20
 
+    mov edi, typedLine
+
     hx.syscall hx.getString
 
-    hx.syscall hx.trimString ;; Remove extra spaces
+    mov esi, typedLine
+
+    call trimString ;; Remove extra spaces
 
     mov [fontFile], esi
 
@@ -167,7 +172,6 @@ validateFont:
 
     mov esi, [fontFile]
     mov edi, appFileBuffer
-
     mov ecx, 128
 
     hx.syscall hx.open
@@ -190,7 +194,7 @@ validateFont:
 
 .checkSize:
 
-    hx.syscall hx.fileExists
+    hx.syscall hx.stat
 
 ;; In EAX, the file size. It must not be larger than 2000 bytes
 
@@ -231,7 +235,7 @@ validateFont:
 ;;
 ;;************************************************************************************
 
-VERSION equ "2.7.1"
+VERSION equ "2.8.0"
 
 gfont:
 
@@ -264,5 +268,10 @@ db 10, 10, "This font file exceeds the maximum size of 2 Kb.", 10, 0
 
 commandLine: dd 0
 fontFile:    dd ?
+
+;; hx.getString writes the typed line into a buffer of the caller's own
+
+typedLine:
+times 256 db 0
 
 appFileBuffer:

@@ -72,12 +72,13 @@ use32
 
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 00, Quartzo, 01h
+;; Architecture | Version | Subversion | Entry point | Image type | BSS size
+headerHAPP HAPP.Architectures.i386, 1, 8, Pico, 01h
 
 ;;*************************************************************************************************
 
 include "hexagon.s"
+include "string.s"
 include "Estelar/estelar.s"
 include "errors.s"
 include "dev.s"
@@ -96,11 +97,12 @@ COLOR_HIGHLIGHT = HEXAGONIX_BLOSSOM_ROXO
 
 ;; Variables, constants and structures
 
-VERSION equ "3.4.2"
+VERSION equ "3.7.0"
 
-footerSize = 44
+footerSize     = 44
+footerNameSize = 14 ;; What is left of the footer for the name itself
 
-quartzo:
+pico:
 
 .format:
 db "UTF-8", 0
@@ -127,12 +129,12 @@ db "Only an administrative user can change this file. Press any key to continue.
 .unlinkError:
 db "Error updating file.", 0
 .applicationTitle:
-db "Quartzo Text Editor for Hexagonix - Version ", VERSION, 0
+db "Pico Text Editor for Hexagonix - Version ", VERSION, 0
 .fontColor: dd 0
 .backGroundColor: dd 0
 
 filename: ;; Filename
-times 13 db 0
+times 65 db 0
 totalLines:              dd 0 ;; Line counter in the file
 line:                    dd 0 ;; Current line in file
 positionCurrentLine:     dd 0 ;; Current line position throughout the file
@@ -147,7 +149,7 @@ returnOrigin:            db 0 ;; Used to check if the return comes from a menu (
 
 ;;*************************************************************************************************
 
-Quartzo:
+Pico:
 
     hx.syscall hx.getConsoleInfo
 
@@ -156,17 +158,17 @@ Quartzo:
 
     hx.syscall hx.getColor
 
-    mov dword[quartzo.fontColor], eax
-    mov dword[quartzo.backGroundColor], ebx
+    mov dword[pico.fontColor], eax
+    mov dword[pico.backGroundColor], ebx
 
     cmp byte[edi], 0 ;; In case of lack of arguments
     je .createNewFile
 
     mov esi, edi ;; Application arguments
 
-    hx.syscall hx.stringSize
+    call stringSize
 
-    cmp eax, 12 ;; Invalid filename
+    cmp eax, 64 ;; Invalid filename
     ja .createNewFile
 
 .saveFilename: ;; Save filename
@@ -189,39 +191,22 @@ Quartzo:
 
     mov esi, filename
 
-    hx.syscall hx.fileExists
+    hx.syscall hx.stat
 
     jc .createNewFile ;; The file does not exist
 
     mov esi, filename
-
     mov edi, appFileBuffer ;; Loading address
 
     xor ecx, ecx
 
     hx.syscall hx.open
 
-    mov esi, filename
-
-    hx.syscall hx.stringSize
-
-    mov ecx, eax
-
 .configureFooter: ;; Add file name in footer
 
-    push es
-
-    push ds ;; User mode data segment (38h selector)
-    pop es
-
-;; Now the name of the opened file will be displayed in the application interface
-
-    mov edi, quartzo.applicationFooter+footerSize ;; Poaition
     mov esi, filename
 
-    rep movsb
-
-    pop es
+    call setFooterName
 
     jmp .startInterface
 
@@ -231,32 +216,19 @@ Quartzo:
 
 ;; Add 'New file' to the application footer
 
-    push es
+    mov esi, pico.newFileFooter
 
-    push ds ;; User mode data segment (38h selector)
-    pop es
-
-    mov ecx, 12
-
-    mov esi, quartzo.newFileFooter
-    mov edi, quartzo.applicationFooter+footerSize
-
-    rep movsb
-
-    pop es
+    call setFooterName
 
 .startInterface:
 
     mov al, 10 ;; New line character
-
     mov esi, appFileBuffer
 
-    hx.syscall hx.findCharacter
+    call findCharacterInString
 
     mov dword[totalLines], eax
-
     mov dword[positionCurrentLine], 0
-
     mov edx, 0
     mov esi, appFileBuffer
 
@@ -266,7 +238,6 @@ Quartzo:
 
     mov byte[positionCurrentOnLine], dl ;; Cursor at end of line
     mov byte[sizeCurrentLine], dl       ;; Save current line size
-
     mov dword[positionCurrentPage], 0
 
 .waitInteract:
@@ -276,18 +247,27 @@ Quartzo:
 
 ;; Print other lines
 
-    mov esi, Hexagon.LibASM.Dev.video.tty1
+    mov esi, Hexagon.LibASM.Dev.video.tty
 
     xor ecx, ecx
 
     hx.syscall hx.open
 
+    mov ebx, 1 ;; Activate console
+    mov ecx, 1 ;; Secondary console
+
+    hx.syscall hx.ioctl
+
     hx.syscall hx.clearConsole
 
     mov eax, dword[totalLines]
 
+;; An empty file has zero lines, so totalLines and line are both 0 here.
+;; Skip straight to .printTitle, not .otherPrintedLines, so hx.updateScreen
+;; still runs even when there is nothing to redraw in the body
+
     cmp dword[line], eax
-    je .otherPrintedLines
+    je .printTitle
 
 .printOtherLines:
 
@@ -324,7 +304,7 @@ Quartzo:
 
     hx.syscall hx.clearLine
 
-    fputs quartzo.applicationTitle
+    fputs pico.applicationTitle
 
     mov al, byte[maxLines] ;; Last line
 
@@ -332,7 +312,7 @@ Quartzo:
 
     hx.syscall hx.clearLine
 
-    fputs quartzo.applicationFooter
+    fputs pico.applicationFooter
 
     hx.syscall hx.getCursor
 
@@ -342,14 +322,14 @@ Quartzo:
 
     hx.syscall hx.setCursor
 
-    fputs quartzo.separator
+    fputs pico.separator
 
-    fputs quartzo.format
+    fputs pico.format
 
-    fputs quartzo.separator
+    fputs pico.separator
 
-    mov eax, dword[quartzo.fontColor]
-    mov ebx, dword[quartzo.backGroundColor]
+    mov eax, dword[pico.fontColor]
+    mov ebx, dword[pico.backGroundColor]
 
     hx.syscall hx.setColor
 
@@ -359,16 +339,20 @@ Quartzo:
 
     hx.syscall hx.updateScreen
 
-    mov esi, Hexagon.LibASM.Dev.video.tty0
+    mov esi, Hexagon.LibASM.Dev.video.tty
 
     xor ecx, ecx
 
     hx.syscall hx.open
 
+    mov ebx, 1 ;; Activate console
+    mov ecx, 0 ;; Main console
+
+    hx.syscall hx.ioctl
+
 .otherPrintedLines:
 
     mov byte[screenRefreshIsRequired], 0
-
     mov dl, 0
     mov dh, byte[positionLineOnScreen]
 
@@ -403,7 +387,7 @@ Quartzo:
 
     hx.syscall hx.setCursor
 
-    fputs quartzo.line
+    fputs pico.line
 
     mov eax, dword[line]
 
@@ -411,9 +395,9 @@ Quartzo:
 
     printInteger
 
-    fputs quartzo.comma
+    fputs pico.comma
 
-    fputs quartzo.column
+    fputs pico.column
 
     movzx eax, byte[positionCurrentOnLine]
 
@@ -425,8 +409,8 @@ Quartzo:
 
     hx.syscall hx.printCharacter
 
-    mov eax, dword[quartzo.fontColor]
-    mov ebx, dword[quartzo.backGroundColor]
+    mov eax, dword[pico.fontColor]
+    mov ebx, dword[pico.backGroundColor]
 
     hx.syscall hx.setColor
 
@@ -475,13 +459,16 @@ saveFileEditor:
 
     hx.syscall hx.setCursor
 
-    fputs quartzo.askForFile
+    fputs pico.askForFile
 
-    mov eax, 12 ;; Maximum characters
+    mov eax, 64 ;; Maximum characters
+    mov edi, typedLine
 
     hx.syscall hx.getString
 
-    hx.syscall hx.stringSize
+    mov esi, typedLine
+
+    call stringSize
 
     cmp eax, 0
     je .end
@@ -500,21 +487,16 @@ saveFileEditor:
 
     rep movsb
 
-;; Add to footer
-
-    mov ecx, eax ;; Characters in the filename
-
-    inc ecx
-
-    mov esi, filename
-    mov edi, quartzo.applicationFooter+footerSize
-
-    rep movsb
-
     pop es
 
-    mov eax, dword[quartzo.fontColor]
-    mov ebx, dword[quartzo.backGroundColor]
+;; Add to footer
+
+    mov esi, filename
+
+    call setFooterName
+
+    mov eax, dword[pico.fontColor]
+    mov ebx, dword[pico.backGroundColor]
 
     hx.syscall hx.setColor
 
@@ -536,7 +518,7 @@ saveFileEditor:
 
     mov esi, appFileBuffer
 
-    hx.syscall hx.stringSize
+    call stringSize
 
 ;; Save file
 
@@ -565,12 +547,12 @@ saveFileEditor:
 
     hx.syscall hx.setCursor
 
-    fputs quartzo.fileSaved
+    fputs pico.fileSaved
 
 .end:
 
-    mov eax, dword[quartzo.fontColor]
-    mov ebx, dword[quartzo.backGroundColor]
+    mov eax, dword[pico.fontColor]
+    mov ebx, dword[pico.backGroundColor]
 
     hx.syscall hx.setColor
 
@@ -601,7 +583,7 @@ saveFileEditor:
 
     hx.syscall hx.setCursor
 
-    fputs quartzo.unlinkError
+    fputs pico.unlinkError
 
     hx.syscall hx.waitKeyboard
 
@@ -627,7 +609,7 @@ saveFileEditor:
 
     hx.syscall hx.setCursor
 
-    fputs quartzo.permissionDenied
+    fputs pico.permissionDenied
 
     jmp .end
 
@@ -655,13 +637,16 @@ openFileEditor:
 
     hx.syscall hx.setCursor
 
-    fputs quartzo.askForFile
+    fputs pico.askForFile
 
-    mov eax, 12 ;; Maximum characters
+    mov eax, 64 ;; Maximum characters
+    mov edi, typedLine
 
     hx.syscall hx.getString
 
-    hx.syscall hx.stringSize
+    mov esi, typedLine
+
+    call stringSize
 
     cmp eax, 0
     je .end
@@ -680,21 +665,16 @@ openFileEditor:
 
     rep movsb
 
-;; Add to footer
-
-    mov ecx, eax ;; Filename characters
-
-    inc ecx
-
-    mov esi, filename
-    mov edi, quartzo.applicationFooter+footerSize
-
-    rep movsb
-
     pop es
 
-    mov eax, dword[quartzo.fontColor]
-    mov ebx, dword[quartzo.backGroundColor]
+;; Add to footer
+
+    mov esi, filename
+
+    call setFooterName
+
+    mov eax, dword[pico.fontColor]
+    mov ebx, dword[pico.backGroundColor]
 
     hx.syscall hx.setColor
 
@@ -704,12 +684,12 @@ openFileEditor:
 
     mov byte[screenRefreshIsRequired], 1
 
-    jmp Quartzo.loadFile
+    jmp Pico.loadFile
 
 .end:
 
-    mov eax, dword[quartzo.fontColor]
-    mov ebx, dword[quartzo.backGroundColor]
+    mov eax, dword[pico.fontColor]
+    mov ebx, dword[pico.backGroundColor]
 
     hx.syscall hx.setColor
 
@@ -721,19 +701,29 @@ openFileEditor:
 
 restartVideoBuffer:
 
-    mov esi, Hexagon.LibASM.Dev.video.tty1
+    mov esi, Hexagon.LibASM.Dev.video.tty
 
     xor ecx, ecx
 
     hx.syscall hx.open
+
+    mov ebx, 1 ;; Activate console
+    mov ecx, 1 ;; Secondary console
+
+    hx.syscall hx.ioctl
 
     hx.syscall hx.clearConsole
 
-    mov esi, Hexagon.LibASM.Dev.video.tty0
+    mov esi, Hexagon.LibASM.Dev.video.tty
 
     xor ecx, ecx
 
     hx.syscall hx.open
+
+    mov ebx, 1 ;; Activate console
+    mov ecx, 0 ;; Main console
+
+    hx.syscall hx.ioctl
 
     hx.syscall hx.clearConsole
 
@@ -744,7 +734,6 @@ restartVideoBuffer:
 restartTextBuffer:
 
     mov dword[appFileBuffer], 10 ;; Let's clear the text buffer
-
     mov esi, appFileBuffer
     mov eax, 0
     mov dword[line], eax
@@ -837,7 +826,7 @@ processInput:
     add esi, dword[positionCurrentLine]
     add esi, appFileBuffer
 
-    hx.syscall hx.insertCharacter ;; Insert char into string
+    call insertCharacterInString ;; Insert char into string
 
     inc byte[positionCurrentOnLine] ;; A character has been added
     inc byte[sizeCurrentLine]
@@ -851,9 +840,7 @@ processInput:
 .returnKeys:
 
     mov byte[screenRefreshIsRequired], 1
-
     mov edx, 0
-
     movzx esi, byte[positionCurrentOnLine]
 
     add esi, appFileBuffer
@@ -861,7 +848,7 @@ processInput:
 
     mov al, 10
 
-    hx.syscall hx.insertCharacter
+    call insertCharacterInString
 
 ;; New line
 
@@ -889,11 +876,10 @@ processInput:
 
     mov byte[positionCurrentOnLine], 0 ;; Cursor at end of line
     mov byte[sizeCurrentLine], dl  ;; Save current line size
-
     mov al, 10 ;; New line character
     mov esi, appFileBuffer
 
-    hx.syscall hx.findCharacter
+    call findCharacterInString
 
     mov dword[totalLines], eax
 
@@ -913,7 +899,6 @@ processInput:
     sub bl, 2
 
     mov byte[positionLineOnScreen], bl
-
     mov esi, appFileBuffer
     mov eax, dword[line]
     movzx ebx, byte[maxLines]
@@ -980,7 +965,7 @@ processInput:
 
     mov esi, appFileBuffer
 
-    hx.syscall hx.removeCharacterString
+    call removeCharacterInString
 
     dec byte[positionCurrentOnLine] ;; A character has been removed
     dec byte[sizeCurrentLine]
@@ -1033,7 +1018,6 @@ processInput:
 ;; Remove newline character
 
     mov byte[screenRefreshIsRequired], 1
-
     movzx eax, byte[positionCurrentOnLine]
 
     add eax, dword[positionCurrentLine]
@@ -1042,7 +1026,7 @@ processInput:
 
     mov esi, appFileBuffer
 
-    hx.syscall hx.removeCharacterString
+    call removeCharacterInString
 
     dec byte[totalLines] ;; A line has been removed
     dec dword[line]
@@ -1065,7 +1049,6 @@ processInput:
     mov edx, 0
 
     pop esi
-
     push esi
 
     add esi, appFileBuffer
@@ -1075,7 +1058,6 @@ processInput:
     mov byte[sizeCurrentLine], dl ;; Save line size
 
     pop dword[positionCurrentLine]
-
     pop edx
 
     mov byte[positionCurrentOnLine], dl
@@ -1103,7 +1085,7 @@ processInput:
 
     mov esi, appFileBuffer
 
-    hx.syscall hx.removeCharacterString
+    call removeCharacterInString
 
     dec byte[sizeCurrentLine] ;; A character has been removed
 
@@ -1239,7 +1221,6 @@ processInput:
     mov byte[positionLineOnScreen], 1
     mov eax, dword[positionCurrentLine]
     mov dword[positionCurrentPage], eax
-
     mov byte[screenRefreshIsRequired], 1
 
     jmp .prepareReturn
@@ -1316,7 +1297,6 @@ processInput:
     sub bl, 2
 
     mov byte[positionLineOnScreen], bl
-
     mov esi, appFileBuffer
     mov eax, dword[line]
     movzx ebx, byte[maxLines]
@@ -1331,7 +1311,6 @@ processInput:
     sub esi, appFileBuffer
 
     mov dword[positionCurrentPage], esi
-
     mov byte[screenRefreshIsRequired], 1
 
     jmp .prepareReturn
@@ -1435,7 +1414,6 @@ processInput:
     je .prepareReturn
 
     mov byte[screenRefreshIsRequired], 1
-
     mov esi, appFileBuffer
     mov eax, 0
     mov dword[line], eax
@@ -1511,13 +1489,11 @@ processInput:
 
     mov byte[positionCurrentOnLine], dl
     mov byte[sizeCurrentLine], dl
-
     mov bl, byte[maxLines]
 
     sub bl, 2
 
     mov byte[positionLineOnScreen], bl
-
     mov eax, dword[line]
     movzx ebx, byte[maxLines]
 
@@ -1556,7 +1532,6 @@ processInput:
     dec eax
 
     mov dword[line], eax ;; Make the last line the current line
-
     mov esi, appFileBuffer
     mov eax, dword[line]
 
@@ -1579,7 +1554,6 @@ processInput:
 
     mov byte[positionCurrentOnLine], dl
     mov byte[sizeCurrentLine], dl
-
     movzx ebx, byte[maxLines]
 
     sub ebx, 3
@@ -1600,7 +1574,6 @@ processInput:
     inc bl
 
     mov byte[positionLineOnScreen], bl
-
     mov eax, dword[line]
 
     sub eax, ebx
@@ -1689,6 +1662,7 @@ printLine:
     je .fileEnd
 
     movzx ebx, byte[maxColumns]
+
     dec bl
 
     cmp edx, ebx
@@ -1818,4 +1792,171 @@ linePosition:
 
 ;;*************************************************************************************************
 
-appFileBuffer: db 10 ;; Address for opening files
+;;*************************************************************************************************
+
+;; Writes a path into the footer's field. A path too long for it shows only
+;; the file's own name, and a name still too long keeps its extension whole,
+;; since that is what says what the file is, losing characters before it
+;;
+;; Input:
+;;
+;; ESI - Path to show, terminated by a 0
+
+setFooterName:
+
+    push es
+
+    push ds ;; User mode data segment (38h selector)
+    pop es
+
+    push eax
+    push ebx
+    push ecx
+    push edx
+    push esi
+    push edi
+
+    mov edi, pico.applicationFooter + footerSize
+
+;; The whole path is shown while it fits. Past that only the file's own name
+;; is, since the end of the path is what tells one file from another
+
+    mov ebx, esi
+
+    mov ecx, esi
+
+.measurePath:
+
+    cmp byte[ecx], 0
+    je .pathMeasured
+
+    inc ecx
+
+    jmp .measurePath
+
+.pathMeasured:
+
+    sub ecx, esi ;; Characters in the whole path
+
+    cmp ecx, footerNameSize
+    jbe .writeName
+
+.findName:
+
+    mov al, byte[esi]
+
+    cmp al, 0
+    je .nameFound
+
+    inc esi
+
+    cmp al, '/'
+    jne .findName
+
+    mov ebx, esi
+
+    jmp .findName
+
+.nameFound:
+
+    mov ecx, esi
+
+    sub ecx, ebx ;; Characters in the name
+
+    mov esi, ebx
+
+    cmp ecx, footerNameSize
+    jbe .writeName
+
+;; It does not fit even without the path, so what comes before the extension
+;; is what gets cut
+
+    push esi
+
+    mov ebx, ecx ;; Stands for a name carrying no extension at all
+
+    xor edx, edx
+
+.findExtension:
+
+    cmp edx, ecx
+    je .measured
+
+    cmp byte[esi + edx], '.'
+    jne .nextCharacter
+
+    mov ebx, edx
+
+.nextCharacter:
+
+    inc edx
+
+    jmp .findExtension
+
+.measured:
+
+    mov edx, ecx
+
+    sub edx, ebx ;; Characters in the extension, the dot included
+
+    cmp edx, footerNameSize
+    jae .withoutExtension
+
+    mov ecx, footerNameSize
+
+    sub ecx, edx ;; Room left for the name before the extension
+
+    rep movsb
+
+    pop esi
+
+    add esi, ebx ;; The dot itself
+
+    mov ecx, edx
+
+    rep movsb
+
+    xor ecx, ecx ;; The field is full, nothing left to blank
+
+    jmp .blank
+
+.withoutExtension:
+
+;; An extension that fills the field on its own leaves nothing of the name
+;; worth keeping
+
+    pop esi
+
+    mov ecx, footerNameSize
+
+.writeName:
+
+    mov edx, footerNameSize
+
+    sub edx, ecx ;; What is left of the field after the name
+
+    rep movsb
+
+    mov ecx, edx
+
+.blank:
+
+    mov al, ' '
+
+    rep stosb
+
+    pop edi
+    pop esi
+    pop edx
+    pop ecx
+    pop ebx
+    pop eax
+
+    pop es
+
+    ret
+
+typedLine: ;; hx.getString writes the typed line into a buffer of the caller's own
+times 256 db 0
+
+appFileBuffer: db 10  ;; Address for opening files

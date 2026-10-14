@@ -72,8 +72,8 @@ use32
 
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 7, shellStart, 01h
+;; Architecture | Version | Subversion | Entry point | Image type | BSS size
+headerHAPP HAPP.Architectures.i386, 1, 8, shellStart, 01h, HAPP.bss.none
 
 ;;************************************************************************************
 
@@ -82,6 +82,8 @@ include "Estelar/estelar.s"
 include "errors.s"
 include "log.s"
 include "macros.s"
+include "string.s"
+include "malloc.s"
 include "shell.s"
 
 ;;************************************************************************************
@@ -98,7 +100,7 @@ ASHError           = VERMELHO
 ASHLimitReached    = AMARELO_ANDROMEDA
 ASHSuccess         = VERDE
 
-VERSION             equ "5.3.0"
+VERSION             equ "5.4.0"
 compatibleHexagonix equ "Mineru"
 
 ;;**************************
@@ -121,8 +123,12 @@ db 10, 10, "[!] There is no available process slot to run the requested applicat
 db "[!] Try to terminate applications or their instances first, and try again.", 10, 0
 .invalidImage:
 db ": unable to load image. Unsupported executable format.", 10, 0
-.prompt:
-db "[/]: ", 0
+.promptOpen:
+db "[", 0
+.promptClose:
+db "]: ", 0
+.currentDirectory:
+times 64 db 0
 .invalidDirectory:
 db 10, 10,"[!] Directory invalid or not found!", 10, 0
 .argumentRequired:
@@ -146,15 +152,11 @@ db "[ASH]: All rights reserved.", 0
 db "[ASH]: Terminating the ASH...", 0
 .verboseProcessLimit:
 db "[ASH]: Warning: memory full or process limit reached!", 0
-.verboseDeprecatedInterface:
-db "[ASH]: Warning: performing mount point manipulation using deprecated functions that will be removed.", 0
 
 ;;**************************
 
 ASH.commands:
 
-.changeVolume:
-db "cvol", 0
 .exit:
 db "exit",0
 .version:
@@ -180,36 +182,9 @@ db " EXIT - Terminate this ASH session.", 10, 0
 
 ;;**************************
 
-ASH.volume:
-
-.hd0:
-db "hd0", 0
-.hd1:
-db "hd1", 0
-.hd2:
-db "hd2", 0
-.hd3:
-db "hd3", 0
-.info:
-db "info", 0
-.currentVolume:
-db 10, 10, "Current volume used by the system: ", 0
-.mountError:
-db 10, 10, "A valid volume or parameter was not provided for this command.", 10, 10
-db "Cannot change default volume.", 10, 10
-db "Use a device name as an argument or 'info' for current disk information.", 10, 0
-.volumeLabel:
-db 10, 10, "Volume label: ", 0
-.deprecatedInterfaceWarning:
-db 10, 10, "Warning! This is an obsolete built-in Andromeda SHell command.", 10
-db "Be aware that it may be removed soon. Use the Unix 'mount' tool instead.", 10
-db "You can find documentation for mount using 'man mount' anytime.", 0
-
 ;; Buffers
 
-currentVolume: times 3 db 0
-
-ASH.background: db 0 ;; Set to 1 when the current command line ends in "&"
+ASH.background:   db 0 ;; Set to 1 when the current command line ends in "&"
 ASH.resolvedPath: dd 0 ;; Command path after Shell.resolveCommandPath, across the shebang check
 
 commandLine: dd 0
@@ -235,7 +210,7 @@ shellStart:
 ;; shebang dispatch from Shell.checkShebang hands a script off to the
 ;; shell named on its "#!" line
 
-    hx.syscall hx.fileExists
+    hx.syscall hx.stat
 
     jc .start ;; Not a file (or some other argument shape). Interactive as usual
 
@@ -284,7 +259,15 @@ shellStart:
 
     pop ecx
 
-    fputs ASH.prompt
+    fputs ASH.promptOpen
+
+    mov edi, ASH.currentDirectory
+
+    hx.syscall hx.getCurrentDirectory
+
+    fputs ASH.currentDirectory
+
+    fputs ASH.promptClose
 
     mov ecx, 01h
 
@@ -294,9 +277,13 @@ shellStart:
 
     sub al, 20
 
+    mov edi, typedLine
+
     hx.syscall hx.getString
 
-    hx.syscall hx.trimString ;; Remove extra spaces
+    mov esi, typedLine
+
+    call trimString ;; Remove extra spaces
 
     cmp byte[esi], 0 ;; No command entered
     je .getCommand
@@ -307,7 +294,7 @@ shellStart:
 
     mov edi, ASH.commands.exit
 
-    hx.syscall hx.compareWordsString
+    call compareWordsInString
 
     jc .finishShell
 
@@ -315,7 +302,7 @@ shellStart:
 
     mov edi, ASH.commands.version
 
-    hx.syscall hx.compareWordsString
+    call compareWordsInString
 
     jc .commandVER
 
@@ -323,23 +310,15 @@ shellStart:
 
     mov edi, ASH.commands.help
 
-    hx.syscall hx.compareWordsString
+    call compareWordsInString
 
     jc .commandHELP
-
-    ;; CVOL command
-
-    mov edi, ASH.commands.changeVolume
-
-    hx.syscall hx.compareWordsString
-
-    jc .commandCVOL
 
     ;; CD command
 
     mov edi, ASH.commands.cd
 
-    hx.syscall hx.compareWordsString
+    call compareWordsInString
 
     jc .commandCD
 
@@ -347,7 +326,7 @@ shellStart:
 
     mov edi, ASH.commands.set
 
-    hx.syscall hx.compareWordsString
+    call compareWordsInString
 
     jc .commandSET
 
@@ -356,7 +335,7 @@ shellStart:
 ;; Check for a trailing "&", which backgrounds the command instead of
 ;; blocking the shell until it exits
 
-    hx.syscall hx.stringSize
+    call stringSize
 
     mov byte[ASH.background], 0
 
@@ -368,7 +347,7 @@ shellStart:
 
     mov byte[esi+eax-1], 0
 
-    hx.syscall hx.trimString
+    call trimString
 
     mov byte[ASH.background], 1
 
@@ -475,12 +454,12 @@ shellStart:
 
     mov esi, edi
 
-    hx.syscall hx.trimString
+    call trimString
 
     pop esi
 
 ;; Protect the arguments from Shell.checkShebang before it opens the
-;; resolved command's own file into appFileBuffer
+;; resolved command's own file into a buffer of its own
 
     call Shell.protectArguments
 
@@ -500,7 +479,6 @@ shellStart:
 ;; command line itself may have had
 
     mov edi, dword[ASH.resolvedPath]
-
     mov eax, 1
 
     stc
@@ -529,6 +507,8 @@ shellStart:
     jmp .getCommand
 
 .loadApplicationBackground:
+
+    mov eax, edi
 
     hx.syscall hx.spawn
 
@@ -560,7 +540,7 @@ shellStart:
 
     add esi, 02h
 
-    hx.syscall hx.trimString
+    call trimString
 
     cmp byte[esi], 00h
     je .argumentRequired
@@ -607,191 +587,15 @@ shellStart:
 
     jmp .getCommand
 
+;;************************************************************************************
+
 .commandSET:
 
     add esi, 03h
 
-    hx.syscall hx.trimString
+    call trimString
 
     call Shell.handleSet
-
-    jmp .getCommand
-
-.commandCVOL:
-
-    push esi
-    push edi
-
-    push ecx
-
-    xor ecx, ecx
-
-    mov eax, ASHWarning
-    mov ebx, dword[Andromeda.Interface.backgroundColor]
-
-    call changeColor
-
-    pop ecx
-
-    fputs ASH.volume.deprecatedInterfaceWarning
-
-    mov ecx, 01h
-
-    call changeColor
-
-    pop edi
-    pop esi
-
-    add esi, 04h
-
-    hx.syscall hx.trimString
-
-    mov edi, ASH.volume.hd0
-
-    hx.syscall hx.compareWordsString
-
-    jc .changeToHD0
-
-    mov edi, ASH.volume.hd1
-
-    hx.syscall hx.compareWordsString
-
-    jc .changeToHD1
-
-    mov edi, ASH.volume.hd2
-
-    hx.syscall hx.compareWordsString
-
-    jc .changeToHD2
-
-    mov edi, ASH.volume.hd3
-
-    hx.syscall hx.compareWordsString
-
-    jc .changeToHD3
-
-    mov edi, ASH.volume.info
-
-    hx.syscall hx.compareWordsString
-
-    jc .volumeInfo
-
-    jmp .mountError
-
-.changeToHD0:
-
-    systemLog ASH.verboseDeprecatedInterface, 00h, Log.Priorities.p4
-
-    mov esi, ASH.volume.hd0
-
-    xor ecx, ecx
-
-    hx.syscall hx.open
-
-    putNewLine
-
-    jmp .getCommand
-
-.changeToHD1:
-
-    systemLog ASH.verboseDeprecatedInterface, 00h, Log.Priorities.p4
-
-    mov esi, ASH.volume.hd1
-
-    xor ecx, ecx
-
-    hx.syscall hx.open
-
-    putNewLine
-
-    jmp .getCommand
-
-.changeToHD2:
-
-    systemLog ASH.verboseDeprecatedInterface, 00h, Log.Priorities.p4
-
-    mov esi, ASH.volume.hd2
-
-    xor ecx, ecx
-
-    hx.syscall hx.open
-
-    putNewLine
-
-    jmp .getCommand
-
-.changeToHD3:
-
-    systemLog ASH.verboseDeprecatedInterface, 00h, Log.Priorities.p4
-
-    mov esi, ASH.volume.hd3
-
-    xor ecx, ecx
-
-    hx.syscall hx.open
-
-    putNewLine
-
-    jmp .getCommand
-
-.mountError:
-
-    fputs ASH.volume.mountError
-
-    jmp .getCommand
-
-.volumeInfo:
-
-    fputs ASH.volume.currentVolume
-
-    hx.syscall hx.getVolume
-
-    push edi
-    push esi
-
-    push ecx
-
-    xor ecx, ecx
-
-    mov eax, ASHTheme
-    mov ebx, dword[Andromeda.Interface.backgroundColor]
-
-    call changeColor
-
-    pop ecx
-
-    pop esi
-
-    printString
-
-    mov ecx, 01h
-
-    call changeColor
-
-    fputs ASH.volume.volumeLabel
-
-    push ecx
-
-    xor ecx, ecx
-
-    mov eax, ASHTheme
-    mov ebx, dword[Andromeda.Interface.backgroundColor]
-
-    call changeColor
-
-    pop ecx
-
-    pop edi
-
-    fputs edi
-
-    mov ecx, 01h
-
-    call changeColor
-
-.putNewLine:
-
-    putNewLine
 
     jmp .getCommand
 
@@ -893,7 +697,7 @@ getArguments:
     mov byte[esi-1], 0
     mov ebx, esi
 
-    hx.syscall hx.stringSize
+    call stringSize
 
     mov ecx, eax
 
@@ -905,13 +709,13 @@ getArguments:
     pop es
 
     mov esi, ebx
-    mov edi, appFileBuffer
+    mov edi, argumentsBuffer
 
     rep movsb ;; Copy (ECX) string characters from ESI to EDI
 
     pop es
 
-    mov edi, appFileBuffer
+    mov edi, argumentsBuffer
 
     pop esi
 
@@ -990,4 +794,12 @@ showBanner:
 
 ;;************************************************************************************
 
-appFileBuffer: ;; Address for opening files
+typedLine: ;; hx.getString writes the typed line into a buffer of the caller's own
+times 256 db 0
+
+;; Where a command's arguments are copied to, out of the typed line, so that
+;; opening a file cannot land on top of them
+
+argumentsBuffer:
+times 256 db 0
+

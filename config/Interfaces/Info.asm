@@ -164,6 +164,8 @@ mostrarInterfaceInfo:
 
     call setDefaultTheme
 
+    mov edi, Buffers.unameBuffer ;; hx.uname always writes into a buffer of the caller's own
+
     hx.syscall hx.uname
 
     push ecx

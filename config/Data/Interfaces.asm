@@ -183,9 +183,9 @@ db "[6] Change the default system font.", 0
 resolutionInterfaceData:
 
 .intro:
-db "Here you can change the resolution of the computer video, among", 0
+db "Here you can choose the resolution HBoot sets on the next boot,", 0
 .intro2:
-db "the available options.", 0
+db "among the available options. The running console is not changed.", 0
 .insert:
 db "Choose from one of the options below, inserting the number:", 0
 .option1:
@@ -197,9 +197,13 @@ db "Current resolution: 800x600 pixels", 0
 .mode2:
 db "Current resolution: 1024x768 pixels", 0
 .resolutionChanged:
-db "The resolution has recently changed.", 0
-.changed:
-db "The resolution has been changed. If you don't like it, go back to the previous resolution.", 0
+db "The chosen resolution has been written to /boot/boot.cfg.", 0
+.restartRequired:
+db "Restart the computer for the new resolution to take effect.", 0
+.writeError:
+db "/boot/boot.cfg could not be written. The resolution was not changed.", 0
+.permissionDenied:
+db "Changing the resolution requires administrative privileges (root).", 0
 
 ;;************************************************************************************
 
@@ -219,13 +223,34 @@ db "[2] Light mode", 0
 volumesInterfaceData:
 
 .intro:
-db "Here you can track information about your computer's storage and disks", 0
-.intro2:
-db "available for use.", 0
-.currentVolume:
-db "Current disk mounted at [/] used by system: ", 0
-.volumeLabel:
-db "Label of the volume mounted at [/] used by the system: ", 0
+db "Here you can track information about your computer's storage and disks available for use.", 0
+.columnMountPoint:
+db "Mount point", 0
+.columnDevice:
+db "Device", 0
+.columnLabel:
+db "Label", 0
+.columnType:
+db "Type", 0
+.fat12:
+db "fat12", 0
+.fat16_32:
+db "fat16 <32 mb", 0
+.fat16:
+db "fat16b", 0
+.devfs:
+db "devfs", 0
+.unknownFilesystem:
+db "unknown", 0
+.mallocError:
+db "Failed to allocate a buffer for the mount listing.", 0
+
+.mountsBufferSize = 4096
+
+.mountsBuffer:  dd ?
+.mountsCount:   dd ?
+.mountsPointer: dd ?
+.mountsRow:     db ?
 
 ;;************************************************************************************
 

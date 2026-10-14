@@ -72,8 +72,8 @@ use32
 
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 7, shellStart, 01h
+;; Architecture | Version | Subversion | Entry point | Image type | BSS size
+headerHAPP HAPP.Architectures.i386, 1, 8, shellStart, 01h, HAPP.bss.none
 
 ;;************************************************************************************
 
@@ -82,6 +82,9 @@ include "Estelar/estelar.s"
 include "errors.s"
 include "log.s"
 include "macros.s"
+include "string.s"
+include "malloc.s"
+include "mount.s"
 include "shell.s"
 
 ;;************************************************************************************
@@ -90,8 +93,8 @@ include "shell.s"
 ;;
 ;;************************************************************************************
 
-VERSION             equ "0.2.2"
-compatibleHexagonix equ "Mineru"
+VERSION             equ "0.3.0"
+compatibleHexagonix equ "Hylia"
 
 ;;**************************
 
@@ -152,6 +155,10 @@ db 10, 10, "Volume in drive C is ", 0
 db 10, "Volume Serial Number is HXHX-HXHX", 0
 .dirLine3:
 db 10, "Directory of C:\", 10, 10, 0
+.listError:
+db 10, "Error listing the files present on the volume.", 0
+.mallocError:
+db 10, "Failed to allocate a buffer for the file listing.", 0
 
 DOSsh.commands:
 
@@ -190,10 +197,23 @@ db " EXIT - Terminate this DOSsh session.", 10, 0
 
 ;; Buffers
 
-remainingList: dd ?
-currentFile:   dd ' '
+remainingList:  dd ?
+currentFile:    dd ' '
+listBuffer:     dd 0
+listBufferSize: dd ?
 
 DOSsh.resolvedPath: dd 0 ;; Command path after Shell.resolveCommandPath, across the shebang check
+
+currentDirBuffer: ;; Dir command own volume-label lookup
+times 64 db 0
+
+mountsBufferSize = 4096
+
+mountsBuffer:     dd ?
+mountsCount:      dd ?
+mountsPointer:    dd ?
+bestMatchLength:  dd ?
+bestMatchRecord:  dd ?
 
 commandLine: dd 0
 
@@ -218,7 +238,7 @@ shellStart:
 ;; shebang dispatch from Shell.checkShebang hands a script off to the
 ;; shell named on its "#!" line
 
-    hx.syscall hx.fileExists
+    hx.syscall hx.stat
 
     jc .start ;; Not a file (or some other argument shape). Interactive as usual
 
@@ -256,9 +276,13 @@ getCommand:
 
     sub al, 20
 
+    mov edi, typedLine
+
     hx.syscall hx.getString
 
-    hx.syscall hx.trimString ;; Remove extra spaces
+    mov esi, typedLine
+
+    call trimString ;; Remove extra spaces
 
     cmp byte[esi], 0 ;; No command inserted
     je getCommand
@@ -269,7 +293,7 @@ getCommand:
 
     mov edi, DOSsh.commands.exit
 
-    hx.syscall hx.compareWordsString
+    call compareWordsInString
 
     jc finishShell
 
@@ -277,7 +301,7 @@ getCommand:
 
     mov edi, DOSsh.commands.version
 
-    hx.syscall hx.compareWordsString
+    call compareWordsInString
 
     jc commandVER
 
@@ -285,7 +309,7 @@ getCommand:
 
     mov edi, DOSsh.commands.help
 
-    hx.syscall hx.compareWordsString
+    call compareWordsInString
 
     jc commandHELP
 
@@ -293,7 +317,7 @@ getCommand:
 
     mov edi, DOSsh.commands.cls
 
-    hx.syscall hx.compareWordsString
+    call compareWordsInString
 
     jc commandCLS
 
@@ -301,7 +325,7 @@ getCommand:
 
     mov edi, DOSsh.commands.dir
 
-    hx.syscall hx.compareWordsString
+    call compareWordsInString
 
     jc commandDIR
 
@@ -309,7 +333,7 @@ getCommand:
 
     mov edi, DOSsh.commands.type
 
-    hx.syscall hx.compareWordsString
+    call compareWordsInString
 
     jc commandTYPE
 
@@ -317,7 +341,7 @@ getCommand:
 
     mov edi, DOSsh.commands.cd
 
-    hx.syscall hx.compareWordsString
+    call compareWordsInString
 
     jc commandCD
 
@@ -325,7 +349,7 @@ getCommand:
 
     mov edi, DOSsh.commands.set
 
-    hx.syscall hx.compareWordsString
+    call compareWordsInString
 
     jc commandSET
 
@@ -391,12 +415,12 @@ loadImage:
 
     mov esi, edi
 
-    hx.syscall hx.trimString
+    call trimString
 
     pop esi
 
 ;; Protect the arguments from Shell.checkShebang before it opens the
-;; resolved command's own file into appFileBuffer
+;; resolved command's own file into a buffer of its own
 
     call Shell.protectArguments
 
@@ -430,7 +454,6 @@ loadImage:
 .noShebang:
 
     mov esi, dword[DOSsh.resolvedPath]
-
     mov eax, edi
 
     stc
@@ -463,11 +486,7 @@ commandDIR:
 
     fputs DOSsh.dir.dirLine1
 
-    hx.syscall hx.getVolume
-
-    mov esi, edi
-
-    printString
+    call printCurrentVolumeLabel
 
     fputs DOSsh.dir.dirLine2
 
@@ -475,10 +494,47 @@ commandDIR:
 
 .obterListaArquivos:
 
-    hx.syscall hx.listFiles ;; Get files in ESI
+    mov dword[listBufferSize], 32768 ;; Arbitrary starting guess
 
-   ;; jc .listError
+.allocateBuffer:
 
+    mov ebx, dword[listBufferSize]
+
+    call malloc
+
+    cmp eax, 0
+    je .listMallocError
+
+    mov dword[listBuffer], ebx
+    mov esi, ebx
+    mov ecx, dword[listBufferSize]
+
+    hx.syscall hx.listFiles ;; EAX = entry count, or exact size needed if CF is set
+
+    jnc .haveList
+
+    cmp eax, 0
+    je .listError ;; A real filesystem error, not an undersized buffer
+
+;; The buffer was too small. EAX already holds the exact size needed,
+;; reported by the kernel before it wrote anything
+
+    push eax
+
+    mov ebx, dword[listBuffer]
+    mov ecx, dword[listBufferSize]
+
+    call free
+
+    pop eax
+
+    mov dword[listBufferSize], eax
+
+    jmp .allocateBuffer
+
+.haveList:
+
+    mov esi, dword[listBuffer]
     mov [remainingList], esi
 
     push eax
@@ -510,19 +566,19 @@ commandDIR:
 
     mov edi, DOSsh.extensionMAN
 
-    hx.syscall hx.compareWordsString ;; Check for .MAN extension
+    call compareWordsInString ;; Check for .MAN extension
 
     jc .hide
 
     mov edi, DOSsh.extensionOCL
 
-    hx.syscall hx.compareWordsString ;; Check for .OCL extension
+    call compareWordsInString ;; Check for .OCL extension
 
     jc .hide
 
     mov edi, DOSsh.extensionCOW
 
-    hx.syscall hx.compareWordsString ;; Check for .COW extension
+    call compareWordsInString ;; Check for .COW extension
 
     jc .hide
 
@@ -570,7 +626,158 @@ jmp .continue
 
 .finished:
 
+    mov ebx, dword[listBuffer]
+    mov ecx, dword[listBufferSize]
+
+    call free
+
+    mov dword[listBuffer], 0
+
     jmp getCommand.withoutNewLine
+
+.listError:
+
+    mov ebx, dword[listBuffer]
+    mov ecx, dword[listBufferSize]
+
+    call free
+
+    mov dword[listBuffer], 0
+
+    fputs DOSsh.dir.listError
+
+    jmp getCommand.withoutNewLine
+
+.listMallocError:
+
+    fputs DOSsh.dir.mallocError
+
+    jmp getCommand.withoutNewLine
+
+;;************************************************************************************
+
+;; Prints the volume label of whichever mount owns the current directory,
+;; at the current cursor position. Prints nothing if it can't be
+;; determined (allocation failure, or somehow no mount matches at all)
+
+printCurrentVolumeLabel:
+
+    mov edi, currentDirBuffer
+
+    hx.syscall hx.getCurrentDirectory
+
+    mov ebx, mountsBufferSize
+
+    call malloc
+
+    cmp eax, 0
+    je .done ;; Best effort, no label rather than a hard error here
+
+    mov dword[mountsBuffer], ebx
+    mov esi, ebx
+
+    hx.syscall hx.getMounts
+
+    mov dword[mountsCount], eax
+    mov eax, dword[mountsBuffer]
+    mov dword[mountsPointer], eax
+    mov dword[bestMatchLength], 0
+    mov dword[bestMatchRecord], 0
+
+.matchLoop:
+
+    cmp dword[mountsCount], 0
+    je .matchDone
+
+    mov esi, currentDirBuffer
+    mov edi, dword[mountsPointer] ;; Mount point path, offset 0
+
+    call .prefixLength
+
+    cmp eax, dword[bestMatchLength]
+    jbe .matchNext
+
+    mov dword[bestMatchLength], eax
+    mov eax, dword[mountsPointer]
+    mov dword[bestMatchRecord], eax
+
+.matchNext:
+
+    mov eax, dword[mountsPointer]
+
+    add eax, hx.mount.record.size
+    
+    mov dword[mountsPointer], eax
+
+    dec dword[mountsCount]
+
+    jmp .matchLoop
+
+.matchDone:
+
+    mov ebx, dword[mountsBuffer]
+    mov ecx, mountsBufferSize
+
+    call free
+
+    cmp dword[bestMatchRecord], 0
+    je .done
+
+    mov esi, dword[bestMatchRecord]
+
+    add esi, hx.mount.record.volumeLabel
+
+    printString
+
+.done:
+
+    ret
+
+;; Returns the length of EDI's own NUL-terminated string if it's a genuine
+;; prefix of ESI's string, or 0 if it isn't
+;;
+;; Input: ESI - String to check against, EDI - Candidate prefix
+;; Output: EAX - Length of EDI if it matched, otherwise 0
+
+.prefixLength:
+
+    push esi
+    push edi
+    push ecx
+
+    xor ecx, ecx
+
+.prefixLoop:
+
+    mov al, byte[edi + ecx]
+
+    cmp al, 0
+    je .prefixMatched
+
+    cmp al, byte[esi + ecx]
+    jne .prefixNotMatched
+
+    inc ecx
+
+    jmp .prefixLoop
+
+.prefixMatched:
+
+    mov eax, ecx
+
+    jmp .prefixDone
+
+.prefixNotMatched:
+
+    xor eax, eax
+
+.prefixDone:
+
+    pop ecx
+    pop edi
+    pop esi
+
+    ret
 
 ;;************************************************************************************
 
@@ -600,7 +807,7 @@ commandSET:
 
     add esi, 03h
 
-    hx.syscall hx.trimString
+    call trimString
 
     call Shell.handleSet
 
@@ -616,14 +823,29 @@ commandTYPE:
 
     mov esi, edi
 
-    hx.syscall hx.fileExists
+    hx.syscall hx.stat ;; EAX = size
 
     jc fileNotFound
 
-    mov esi, edi
-    mov edi, appFileBuffer
+;; Room for exactly this file, rather than whatever happens to sit past the
+;; end of this image
 
-    xor ecx, ecx
+    mov [fileSize], eax
+
+    inc eax ;; The terminator, in memory the kernel hands over already zeroed
+
+    mov ebx, eax
+
+    call malloc
+
+    cmp eax, 0
+    je fileNotFound
+
+    mov [fileBuffer], ebx
+    mov esi, edi
+    mov edi, ebx
+
+    mov ecx, [fileSize] ;; Never past what was asked for
 
     hx.syscall hx.open
 
@@ -632,7 +854,13 @@ commandTYPE:
     putNewLine
     putNewLine
 
-    fputs appFileBuffer
+    fputs [fileBuffer]
+
+    mov ebx, [fileBuffer]
+
+    call free
+
+    mov dword[fileBuffer], 0
 
     jmp getCommand
 
@@ -729,7 +957,7 @@ getArguments:
     mov byte[esi-1], 0
     mov ebx, esi
 
-    hx.syscall hx.stringSize
+    call stringSize
 
     mov ecx, eax
 
@@ -741,13 +969,13 @@ getArguments:
     pop es
 
     mov esi, ebx
-    mov edi, appFileBuffer
+    mov edi, argumentsBuffer
 
     rep movsb ;; Copy (ECX) string characters from ESI to EDI
 
     pop es
 
-    mov edi, appFileBuffer
+    mov edi, argumentsBuffer
 
     pop esi
 
@@ -814,4 +1042,15 @@ readFileList:
 
 ;;************************************************************************************
 
-appFileBuffer: ;; Address for opening files
+typedLine: ;; hx.getString writes the typed line into a buffer of the caller's own
+times 256 db 0
+
+;; Where a command's arguments are copied to, out of the typed line, so that
+;; opening a file cannot land on top of them
+
+argumentsBuffer:
+times 256 db 0
+
+fileBuffer: dd 0
+fileSize:   dd 0
+

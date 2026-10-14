@@ -72,15 +72,18 @@ use32
 
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 7, applicationStart, 01h
+;; Architecture | Version | Subversion | Entry point | Image type | BSS size
+headerHAPP HAPP.Architectures.i386, 1, 8, applicationStart, 01h
 
 ;;************************************************************************************
 
 include "hexagon.s"
 include "Estelar/estelar.s"
 include "macros.s"
+include "string.s"
+include "malloc.s"
 include "log.s"
+include "mount.s"
 
 ;; Version management functions
 
@@ -152,7 +155,6 @@ match =YES, VERBOSE
 
     mov byte[maxColumns], bl
     mov byte[maxRows], bh
-
     mov byte[changed], 0
 
     hx.syscall hx.getColor
@@ -202,10 +204,15 @@ backgroundColor: dd 0
 fontColor:       dd 0
 
 ;;************************************************************************************
-appFileBuffer:
-
 Buffers:
 
 ;; Buffer for temporary data storage
 
 .msg: db 0
+
+.typedLine: ;; hx.getString and hx.uname each write into a buffer of the caller's own
+times 256 db 0
+.unameBuffer:
+times 96 db 0
+.processorName: ;; hx.open on the processor device writes its name here
+times 100 db 0

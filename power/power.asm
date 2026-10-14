@@ -72,8 +72,8 @@ use32
 
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 7, applicationStart, 01h
+;; Architecture | Version | Subversion | Entry point | Image type | BSS size
+headerHAPP HAPP.Architectures.i386, 1, 7, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -90,7 +90,6 @@ applicationStart:
     pop es
 
     mov [parameter], edi ;; Save command line parameters
-
     mov esi, [parameter]
 
     jmp buildInterface
@@ -263,7 +262,7 @@ finish:
 ;;************************************************************************************
 
 SHUTDOWN equ "/sbin/shutdown"
-VERSION  equ "1.10.1"
+VERSION  equ "1.11.0"
 
 COLOR_HIGHLIGHT = HEXAGONIX_BLOSSOM_AZUL_ANDROMEDA
 COLOR_FONT      = HEXAGONIX_CLASSICO_BRANCO

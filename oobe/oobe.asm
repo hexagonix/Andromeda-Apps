@@ -72,8 +72,8 @@ use32
 
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
-;; Instance | Structure | Architecture | Version | Subversion | Entry Point | Image type
-appHeader headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
+;; Architecture | Version | Subversion | Entry point | Image type | BSS size
+headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
 
 ;;************************************************************************************
 
@@ -83,7 +83,7 @@ include "console.s"
 
 ;;************************************************************************************
 
-versaoOOBE = "1.5.0"
+versaoOOBE = "1.6.0"
 
 COLOR_LOGO    = VERDE_40
 COLOR_DIVIDER = HEXAGONIX_BLOSSOM_VERMELHO
@@ -308,8 +308,7 @@ applicationStart:
 
 .root:
 
-    mov eax, 777 ;; Root user code
-
+    mov eax, 0 ;; Root user code
     mov esi, OOBE.root
 
     hx.syscall hx.setUser
