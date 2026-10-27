@@ -78,6 +78,7 @@ headerHAPP HAPP.Architectures.i386, 1, 8, shellStart, 01h, HAPP.bss.none
 ;;************************************************************************************
 
 include "hexagon.s"
+include "tty.s"
 include "Estelar/estelar.s"
 include "errors.s"
 include "log.s"
@@ -278,7 +279,7 @@ getCommand:
 
     mov edi, typedLine
 
-    hx.syscall hx.getString
+    call readLine
 
     mov esi, typedLine
 
@@ -1042,7 +1043,7 @@ readFileList:
 
 ;;************************************************************************************
 
-typedLine: ;; hx.getString writes the typed line into a buffer of the caller's own
+typedLine: ;; readLine writes the typed line into a buffer of the caller's own
 times 256 db 0
 
 ;; Where a command's arguments are copied to, out of the typed line, so that

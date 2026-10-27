@@ -78,6 +78,7 @@ headerHAPP HAPP.Architectures.i386, 1, 8, StudioIDE, 01h
 ;;*************************************************************************************************
 
 include "hexagon.s"
+include "tty.s"
 include "Estelar/estelar.s"
 include "errors.s"
 include "dev.s"
@@ -550,7 +551,7 @@ studioSaveFile:
     mov eax, 64 ;; Maximum characters
     mov edi, typedLine
 
-    hx.syscall hx.getString
+    call readLine
 
     mov esi, typedLine
 
@@ -732,7 +733,7 @@ studioOpenFile:
     mov eax, 64 ;; Maximum characters
     mov edi, typedLine
 
-    hx.syscall hx.getString
+    call readLine
 
     mov esi, typedLine
 
@@ -2438,7 +2439,7 @@ clearTextBuffer:
 ;;
 ;;*************************************************************************************************
 
-typedLine: ;; hx.getString writes the typed line into a buffer of the caller's own
+typedLine: ;; readLine writes the typed line into a buffer of the caller's own
 times 256 db 0
 
 appFileBuffer: db 10

@@ -78,6 +78,7 @@ headerHAPP HAPP.Architectures.i386, 1, 8, Pico, 01h
 ;;*************************************************************************************************
 
 include "hexagon.s"
+include "tty.s"
 include "string.s"
 include "Estelar/estelar.s"
 include "errors.s"
@@ -446,7 +447,7 @@ saveFileEditor:
     mov eax, 64 ;; Maximum characters
     mov edi, typedLine
 
-    hx.syscall hx.getString
+    call readLine
 
     mov esi, typedLine
 
@@ -624,7 +625,7 @@ openFileEditor:
     mov eax, 64 ;; Maximum characters
     mov edi, typedLine
 
-    hx.syscall hx.getString
+    call readLine
 
     mov esi, typedLine
 
@@ -1920,7 +1921,7 @@ setFooterName:
 
     ret
 
-typedLine: ;; hx.getString writes the typed line into a buffer of the caller's own
+typedLine: ;; readLine writes the typed line into a buffer of the caller's own
 times 256 db 0
 
 appFileBuffer: db 10  ;; Address for opening files

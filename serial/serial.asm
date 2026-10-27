@@ -78,6 +78,7 @@ headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
 ;;************************************************************************************
 
 include "hexagon.s"
+include "tty.s"
 include "Estelar/estelar.s"
 include "macros.s"
 include "string.s"
@@ -157,7 +158,7 @@ applicationStart:
 
     mov edi, typedLine
 
-    hx.syscall hx.getString
+    call readLine
 
     mov esi, typedLine
 
@@ -305,5 +306,5 @@ db "Serial port utility for Hexagonix", 0
 db "[", VERSION, "] | [^N] New message, [^X] Exit", 0
 
 serialDescriptor: dd 0
-typedLine: ;; hx.getString writes the typed line into a buffer of the caller's own
+typedLine: ;; readLine writes the typed line into a buffer of the caller's own
 times 256 db 0

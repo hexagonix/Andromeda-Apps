@@ -78,6 +78,7 @@ headerHAPP HAPP.Architectures.i386, 1, 8, applicationStart, 01h
 ;;************************************************************************************
 
 include "hexagon.s"
+include "tty.s"
 include "Estelar/estelar.s"
 include "macros.s"
 include "string.s"
@@ -210,7 +211,7 @@ Buffers:
 
 .serialDescriptor: dd 0
 
-.typedLine: ;; hx.getString and hx.uname each write into a buffer of the caller's own
+.typedLine: ;; readLine and hx.uname each write into a buffer of the caller's own
 times 256 db 0
 .unameBuffer:
 times 96 db 0

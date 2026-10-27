@@ -264,7 +264,7 @@ match =YES, VERBOSE
 
     mov edi, Buffers.typedLine
 
-    hx.syscall hx.getString
+    call readLine
 
     mov esi, Buffers.typedLine
 
