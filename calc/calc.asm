@@ -73,11 +73,12 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Architecture | Version | Subversion | Entry point | Image type | BSS size
-headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
+headerHAPP HAPP.Architectures.i386, 1, 9, applicationStart, 01h
 
 ;;************************************************************************************
 
 include "hexagon.s"
+include "tty.s"
 include "Estelar/estelar.s"
 include "macros.s"
 include "string.s"
@@ -251,7 +252,7 @@ getNumber:
 
     mov edi, typedLine
 
-    hx.syscall hx.getString
+    call readLine
 
     mov esi, typedLine
 
@@ -327,7 +328,7 @@ firstNumber:  dd 0
 secondNumber: dd 0
 result:       dd 0
 
-;; hx.getString writes the typed line into a buffer of the caller's own
+;; readLine writes the typed line into a buffer of the caller's own
 
 typedLine:
 times 256 db 0

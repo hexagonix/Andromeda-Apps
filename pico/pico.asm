@@ -73,11 +73,12 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Architecture | Version | Subversion | Entry point | Image type | BSS size
-headerHAPP HAPP.Architectures.i386, 1, 8, Pico, 01h
+headerHAPP HAPP.Architectures.i386, 1, 9, Pico, 01h
 
 ;;*************************************************************************************************
 
 include "hexagon.s"
+include "tty.s"
 include "string.s"
 include "Estelar/estelar.s"
 include "errors.s"
@@ -247,16 +248,7 @@ Pico:
 
 ;; Print other lines
 
-    mov esi, Hexagon.LibASM.Dev.video.tty
-
-    xor ecx, ecx
-
-    hx.syscall hx.open
-
-    mov ebx, 1 ;; Activate console
-    mov ecx, 1 ;; Secondary console
-
-    hx.syscall hx.ioctl
+    activateConsole 1
 
     hx.syscall hx.clearConsole
 
@@ -339,16 +331,7 @@ Pico:
 
     hx.syscall hx.updateScreen
 
-    mov esi, Hexagon.LibASM.Dev.video.tty
-
-    xor ecx, ecx
-
-    hx.syscall hx.open
-
-    mov ebx, 1 ;; Activate console
-    mov ecx, 0 ;; Main console
-
-    hx.syscall hx.ioctl
+    activateConsole 0
 
 .otherPrintedLines:
 
@@ -464,7 +447,7 @@ saveFileEditor:
     mov eax, 64 ;; Maximum characters
     mov edi, typedLine
 
-    hx.syscall hx.getString
+    call readLine
 
     mov esi, typedLine
 
@@ -642,7 +625,7 @@ openFileEditor:
     mov eax, 64 ;; Maximum characters
     mov edi, typedLine
 
-    hx.syscall hx.getString
+    call readLine
 
     mov esi, typedLine
 
@@ -701,29 +684,11 @@ openFileEditor:
 
 restartVideoBuffer:
 
-    mov esi, Hexagon.LibASM.Dev.video.tty
-
-    xor ecx, ecx
-
-    hx.syscall hx.open
-
-    mov ebx, 1 ;; Activate console
-    mov ecx, 1 ;; Secondary console
-
-    hx.syscall hx.ioctl
+    activateConsole 1
 
     hx.syscall hx.clearConsole
 
-    mov esi, Hexagon.LibASM.Dev.video.tty
-
-    xor ecx, ecx
-
-    hx.syscall hx.open
-
-    mov ebx, 1 ;; Activate console
-    mov ecx, 0 ;; Main console
-
-    hx.syscall hx.ioctl
+    activateConsole 0
 
     hx.syscall hx.clearConsole
 
@@ -1956,7 +1921,7 @@ setFooterName:
 
     ret
 
-typedLine: ;; hx.getString writes the typed line into a buffer of the caller's own
+typedLine: ;; readLine writes the typed line into a buffer of the caller's own
 times 256 db 0
 
 appFileBuffer: db 10  ;; Address for opening files

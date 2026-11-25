@@ -73,11 +73,12 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Architecture | Version | Subversion | Entry point | Image type | BSS size
-headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h
+headerHAPP HAPP.Architectures.i386, 1, 9, applicationStart, 01h
 
 ;;************************************************************************************
 
 include "hexagon.s"
+include "tty.s"
 include "Estelar/estelar.s"
 include "macros.s"
 include "string.s"
@@ -120,6 +121,8 @@ applicationStart:
 
     jc openError
 
+    mov dword[serialDescriptor], eax
+
     push edi
 
 ;; Welcome
@@ -155,16 +158,26 @@ applicationStart:
 
     mov edi, typedLine
 
-    hx.syscall hx.getString
+    call readLine
 
     mov esi, typedLine
 
     ;; call trimString ;; Remove extra spaces
 
-    mov [msg], esi
-    mov si, [msg]
+    call stringSize
+
+    mov ecx, eax
+    mov eax, dword[serialDescriptor]
 
     hx.syscall hx.write
+
+    pushfd
+
+    mov eax, dword[serialDescriptor]
+
+    hx.syscall hx.close
+
+    popfd
 
     jc writeError
 
@@ -292,6 +305,6 @@ db "Serial port utility for Hexagonix", 0
 .footer:
 db "[", VERSION, "] | [^N] New message, [^X] Exit", 0
 
-msg: db 0 ;; Buffer
-typedLine: ;; hx.getString writes the typed line into a buffer of the caller's own
+serialDescriptor: dd 0
+typedLine: ;; readLine writes the typed line into a buffer of the caller's own
 times 256 db 0

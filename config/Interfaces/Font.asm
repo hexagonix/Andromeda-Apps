@@ -121,7 +121,7 @@ match =YES, VERBOSE
     mov al, 64 ;; Longest path the system accepts
     mov edi, Buffers.typedLine
 
-    hx.syscall hx.getString
+    call readLine
 
     mov esi, Buffers.typedLine
 

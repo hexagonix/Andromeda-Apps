@@ -73,11 +73,12 @@ use32
 include "HAPP.s" ;; Here is a structure for the HAPP header
 
 ;; Architecture | Version | Subversion | Entry point | Image type | BSS size
-headerHAPP HAPP.Architectures.i386, 1, 00, applicationStart, 01h, HAPP.bss.trailingBuffer
+headerHAPP HAPP.Architectures.i386, 1, 9, applicationStart, 01h, HAPP.bss.trailingBuffer
 
 ;;************************************************************************************
 
 include "hexagon.s"
+include "tty.s"
 include "Estelar/estelar.s"
 include "macros.s"
 include "string.s"
@@ -121,7 +122,7 @@ applicationStart:
 
     mov edi, typedLine
 
-    hx.syscall hx.getString
+    call readLine
 
     mov esi, typedLine
 
@@ -269,7 +270,7 @@ db 10, 10, "This font file exceeds the maximum size of 2 Kb.", 10, 0
 commandLine: dd 0
 fontFile:    dd ?
 
-;; hx.getString writes the typed line into a buffer of the caller's own
+;; readLine writes the typed line into a buffer of the caller's own
 
 typedLine:
 times 256 db 0
